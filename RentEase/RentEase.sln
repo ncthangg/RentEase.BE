@@ -1,0 +1,43 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.11.35327.3
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RentEase.Data", "RentEase.Data\RentEase.Data.csproj", "{79F55FCA-24BA-4E11-A642-A9CC8C418927}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RentEase.Service", "RentEase.Service\RentEase.Service.csproj", "{CB347382-57DB-451D-AF20-D8D2B51A7B17}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RentEase.Common", "RentEase.Common\RentEase.Common.csproj", "{17B22115-21F2-4783-9335-4E8C107D1AFE}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RentEase.API", "RentEase.API\RentEase.API.csproj", "{81264B50-3581-4B37-9CD2-1ED21CB21BAC}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{79F55FCA-24BA-4E11-A642-A9CC8C418927}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{79F55FCA-24BA-4E11-A642-A9CC8C418927}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{79F55FCA-24BA-4E11-A642-A9CC8C418927}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{79F55FCA-24BA-4E11-A642-A9CC8C418927}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CB347382-57DB-451D-AF20-D8D2B51A7B17}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CB347382-57DB-451D-AF20-D8D2B51A7B17}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CB347382-57DB-451D-AF20-D8D2B51A7B17}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CB347382-57DB-451D-AF20-D8D2B51A7B17}.Release|Any CPU.Build.0 = Release|Any CPU
+		{17B22115-21F2-4783-9335-4E8C107D1AFE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{17B22115-21F2-4783-9335-4E8C107D1AFE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{17B22115-21F2-4783-9335-4E8C107D1AFE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{17B22115-21F2-4783-9335-4E8C107D1AFE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{81264B50-3581-4B37-9CD2-1ED21CB21BAC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{81264B50-3581-4B37-9CD2-1ED21CB21BAC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{81264B50-3581-4B37-9CD2-1ED21CB21BAC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{81264B50-3581-4B37-9CD2-1ED21CB21BAC}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {5D698EFD-1D66-49C5-8038-F569FB31F343}
+	EndGlobalSection
+EndGlobal
