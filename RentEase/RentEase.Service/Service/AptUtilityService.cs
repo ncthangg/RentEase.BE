@@ -1,14 +1,9 @@
 ﻿using AutoMapper;
 using RentEase.Common.Base;
 using RentEase.Common.DTOs.Dto;
-using RentEase.Data.Models;
 using RentEase.Data;
+using RentEase.Data.Models;
 using RentEase.Service.Service.Base;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace RentEase.Service.Service
 {
@@ -41,7 +36,7 @@ namespace RentEase.Service.Service
                 AptId = request.AptId,
                 UtilityId = request.UtilityId,
                 Description = request.Description,
-                CreatedAt = DateTime.UtcNow,
+                CreatedAt = DateTime.Now,
                 UpdatedAt = null,
                 DeletedAt = null,
                 Status = true,
@@ -72,7 +67,7 @@ namespace RentEase.Service.Service
                 UtilityId = request.UtilityId,
                 Description = request.Description,
                 CreatedAt = request.CreatedAt,
-                UpdatedAt = DateTime.UtcNow,
+                UpdatedAt = DateTime.Now,
                 DeletedAt = null,
                 Status = request.Status,
             };
@@ -99,7 +94,7 @@ namespace RentEase.Service.Service
 
             if (item != null)
             {
-                item.DeletedAt = DateTime.UtcNow;
+                item.DeletedAt = DateTime.Now;
                 item.Status = false;
             }
 

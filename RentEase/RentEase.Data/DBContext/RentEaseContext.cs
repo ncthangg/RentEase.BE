@@ -76,17 +76,19 @@ public partial class RentEaseContext : DbContext
     {
         modelBuilder.Entity<Account>(entity =>
         {
-            entity.HasKey(e => e.Id).HasName("PK__Account__3214EC079950F2CC");
+            entity.HasKey(e => e.Id).HasName("PK__Account__3214EC07A7C06C38");
 
             entity.ToTable("Account");
 
             entity.HasIndex(e => e.Email, "IX_Account_Email");
 
+            entity.HasIndex(e => e.PhoneNumber, "IX_Account_PhoneNumber");
+
             entity.HasIndex(e => e.RoleId, "IX_Account_RoleId");
 
-            entity.HasIndex(e => e.PhoneNumber, "UQ__Account__85FB4E387DCE41F8").IsUnique();
+            entity.HasIndex(e => e.PhoneNumber, "UQ__Account__85FB4E386BB80190").IsUnique();
 
-            entity.HasIndex(e => e.Email, "UQ__Account__A9D105342D8A07D8").IsUnique();
+            entity.HasIndex(e => e.Email, "UQ__Account__A9D1053407B958D1").IsUnique();
 
             entity.Property(e => e.CreatedAt).HasColumnType("datetime");
             entity.Property(e => e.DeletedAt).HasColumnType("datetime");
@@ -115,7 +117,7 @@ public partial class RentEaseContext : DbContext
 
         modelBuilder.Entity<AccountToken>(entity =>
         {
-            entity.HasKey(e => e.Id).HasName("PK__AccountT__3214EC0792CB4AE3");
+            entity.HasKey(e => e.Id).HasName("PK__AccountT__3214EC070ED8A680");
 
             entity.ToTable("AccountToken");
 
@@ -133,7 +135,7 @@ public partial class RentEaseContext : DbContext
 
         modelBuilder.Entity<AccountVerification>(entity =>
         {
-            entity.HasKey(e => e.Id).HasName("PK__AccountV__3214EC075FE25059");
+            entity.HasKey(e => e.Id).HasName("PK__AccountV__3214EC07F79FD17B");
 
             entity.ToTable("AccountVerification");
 
@@ -152,7 +154,7 @@ public partial class RentEaseContext : DbContext
 
         modelBuilder.Entity<Apt>(entity =>
         {
-            entity.HasKey(e => e.Id).HasName("PK__Apt__3214EC071A050696");
+            entity.HasKey(e => e.Id).HasName("PK__Apt__3214EC0799E20537");
 
             entity.ToTable("Apt");
 
@@ -190,7 +192,7 @@ public partial class RentEaseContext : DbContext
 
         modelBuilder.Entity<AptCategory>(entity =>
         {
-            entity.HasKey(e => e.Id).HasName("PK__AptCateg__3214EC070B2E6285");
+            entity.HasKey(e => e.Id).HasName("PK__AptCateg__3214EC071308A9B9");
 
             entity.ToTable("AptCategory");
 
@@ -206,7 +208,7 @@ public partial class RentEaseContext : DbContext
 
         modelBuilder.Entity<AptImage>(entity =>
         {
-            entity.HasKey(e => e.Id).HasName("PK__AptImage__3214EC071AE0456D");
+            entity.HasKey(e => e.Id).HasName("PK__AptImage__3214EC07C7101E9F");
 
             entity.ToTable("AptImage");
 
@@ -229,7 +231,7 @@ public partial class RentEaseContext : DbContext
 
         modelBuilder.Entity<AptStatus>(entity =>
         {
-            entity.HasKey(e => e.Id).HasName("PK__AptStatu__3214EC07D21CC1DE");
+            entity.HasKey(e => e.Id).HasName("PK__AptStatu__3214EC07793BC0D7");
 
             entity.ToTable("AptStatus");
 
@@ -245,7 +247,7 @@ public partial class RentEaseContext : DbContext
 
         modelBuilder.Entity<AptUtility>(entity =>
         {
-            entity.HasKey(e => e.Id).HasName("PK__AptUtili__3214EC070C349F1C");
+            entity.HasKey(e => e.Id).HasName("PK__AptUtili__3214EC07C1A30303");
 
             entity.ToTable("AptUtility");
 
@@ -272,7 +274,7 @@ public partial class RentEaseContext : DbContext
 
         modelBuilder.Entity<Contract>(entity =>
         {
-            entity.HasKey(e => e.Id).HasName("PK__Contract__3214EC079D73252F");
+            entity.HasKey(e => e.Id).HasName("PK__Contract__3214EC07F9D66402");
 
             entity.ToTable("Contract");
 
@@ -318,7 +320,7 @@ public partial class RentEaseContext : DbContext
 
         modelBuilder.Entity<CurrentResident>(entity =>
         {
-            entity.HasKey(e => e.Id).HasName("PK__CurrentR__3214EC0798E9038F");
+            entity.HasKey(e => e.Id).HasName("PK__CurrentR__3214EC07FF4767B9");
 
             entity.ToTable("CurrentResident");
 
@@ -346,7 +348,7 @@ public partial class RentEaseContext : DbContext
 
         modelBuilder.Entity<MaintenanceRequest>(entity =>
         {
-            entity.HasKey(e => e.Id).HasName("PK__Maintena__3214EC07BF60A785");
+            entity.HasKey(e => e.Id).HasName("PK__Maintena__3214EC07CDAF9235");
 
             entity.ToTable("MaintenanceRequest");
 
@@ -379,7 +381,7 @@ public partial class RentEaseContext : DbContext
 
         modelBuilder.Entity<Review>(entity =>
         {
-            entity.HasKey(e => e.Id).HasName("PK__Review__3214EC0732E893BF");
+            entity.HasKey(e => e.Id).HasName("PK__Review__3214EC07E13FB91C");
 
             entity.ToTable("Review");
 
@@ -407,11 +409,11 @@ public partial class RentEaseContext : DbContext
 
         modelBuilder.Entity<Role>(entity =>
         {
-            entity.HasKey(e => e.Id).HasName("PK__Role__3214EC07926DC92E");
+            entity.HasKey(e => e.Id).HasName("PK__Role__3214EC073B0B480A");
 
             entity.ToTable("Role");
 
-            entity.HasIndex(e => e.RoleName, "UQ__Role__8A2B61606098855E").IsUnique();
+            entity.HasIndex(e => e.RoleName, "UQ__Role__8A2B616094AF70F7").IsUnique();
 
             entity.Property(e => e.CreatedAt).HasColumnType("datetime");
             entity.Property(e => e.DeletedAt).HasColumnType("datetime");
@@ -425,7 +427,7 @@ public partial class RentEaseContext : DbContext
 
         modelBuilder.Entity<TransactionType>(entity =>
         {
-            entity.HasKey(e => e.Id).HasName("PK__Transact__3214EC070C27D96F");
+            entity.HasKey(e => e.Id).HasName("PK__Transact__3214EC07E15E3D29");
 
             entity.ToTable("TransactionType");
 
@@ -441,7 +443,7 @@ public partial class RentEaseContext : DbContext
 
         modelBuilder.Entity<Utility>(entity =>
         {
-            entity.HasKey(e => e.Id).HasName("PK__Utility__3214EC07547BF99D");
+            entity.HasKey(e => e.Id).HasName("PK__Utility__3214EC07760491FF");
 
             entity.ToTable("Utility");
 
@@ -457,7 +459,7 @@ public partial class RentEaseContext : DbContext
 
         modelBuilder.Entity<Wallet>(entity =>
         {
-            entity.HasKey(e => e.AccountId).HasName("PK__Wallet__349DA5A6796CEDCF");
+            entity.HasKey(e => e.AccountId).HasName("PK__Wallet__349DA5A615ED24A0");
 
             entity.ToTable("Wallet");
 
@@ -477,7 +479,7 @@ public partial class RentEaseContext : DbContext
 
         modelBuilder.Entity<WalletTransaction>(entity =>
         {
-            entity.HasKey(e => e.Id).HasName("PK__WalletTr__3214EC074C2822AA");
+            entity.HasKey(e => e.Id).HasName("PK__WalletTr__3214EC0761861E39");
 
             entity.HasIndex(e => e.AccountId, "IDX_WalletTransactions_AccountId");
 

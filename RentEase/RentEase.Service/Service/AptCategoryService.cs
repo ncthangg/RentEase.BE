@@ -5,12 +5,6 @@ using RentEase.Common.DTOs.Dto;
 using RentEase.Data;
 using RentEase.Data.Models;
 using RentEase.Service.Service.Base;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using static RentEase.Common.Base.EnumType;
 
 namespace RentEase.Service.Service
 {
@@ -61,7 +55,7 @@ namespace RentEase.Service.Service
             var createItem = new AptCategory()
             {
                 CategoryName = request.CategoryName,
-                CreatedAt = DateTime.UtcNow,
+                CreatedAt = DateTime.Now,
                 UpdatedAt = null,
                 DeletedAt = null,
                 Status = true,
@@ -88,13 +82,14 @@ namespace RentEase.Service.Service
 
             if (await EntityExistsAsync("CategoryName", request.CategoryName))
             {
+                return new ServiceResult(Const.FAIL_UPDATE_CODE, Const.FAIL_UPDATE_MSG);
             }
 
             var updateItem = new AptCategory()
             {
                 CategoryName = request.CategoryName,
                 CreatedAt = request.CreatedAt,
-                UpdatedAt = DateTime.UtcNow,
+                UpdatedAt = DateTime.Now,
                 DeletedAt = null,
                 Status = request.Status,
             };

@@ -1,18 +1,20 @@
-﻿using Microsoft.Extensions.Configuration;
+﻿using Microsoft.AspNetCore.Http;
+using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
-using RentEase.Data.Models;
+using RentEase.Common.DTOs.Response;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
-using System.Security.Cryptography;
 using System.Text;
 
 namespace RentEase.Service.Helper
 {
     public interface ITokenHelper
     {
-        string GenerateJWT(Account account, string roleName);
-        string GenerateRefreshToken();
+        Task<ResponseToken> GenerateTokens(int userId, int roleId);
         string GenerateVerificationCode();
+        string GetUserIdFromHttpContextAccessor(IHttpContextAccessor httpContextAccessor);
+        bool IsTokenExpired(string token);
+
     }
     public class TokenHelper : ITokenHelper
     {
@@ -23,36 +25,60 @@ namespace RentEase.Service.Helper
             _configuration = configuration;
         }
 
-        public string GenerateJWT(Account account, string roleName)
+        //GENERATE
+        public async Task<ResponseToken> GenerateTokens(int userId, int roleId)
         {
-            var key = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(_configuration["JwtSettings:SecretKey"]));
+            var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["JwtSettings:Key"]));
             var credentials = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
 
             var claims = new List<Claim>
         {
-            new Claim("e", account.Email),
-            new Claim("r", roleName)
+            new Claim("", userId.ToString()),
+            new Claim(ClaimTypes.Role, roleId.ToString())
         };
 
-            var token = new JwtSecurityToken(
-                _configuration["JwtSettings:Issuer"],
-                _configuration["JwtSettings:Audience"],
-                claims,
-                expires: DateTime.UtcNow.AddMinutes(Convert.ToDouble(_configuration["JwtSettings:DurationInMinutes"])),
+            var accessTokenString = GenerateAccessToken(credentials, claims);
+            //var refreshTokenString = GenerateRefreshToken(credentials, claims);
+            var refreshTokenString = GenerateRefreshToken();
+
+            return new ResponseToken()
+            {
+                AccessToken = accessTokenString,
+                RefreshToken = refreshTokenString
+            };
+        }
+
+        private string GenerateAccessToken(SigningCredentials credentials, List<Claim> claims)
+        {
+
+            var accessToken = new JwtSecurityToken(
+                issuer: _configuration["JwtSettings:Issuer"],
+                audience: _configuration["JwtSettings:Audience"],
+                claims: claims,
+                expires: DateTime.Now.AddMinutes(Convert.ToInt32(_configuration["JwtSettings:AccessTokenExpirationMinutes"])),
                 signingCredentials: credentials
             );
+            var tokenString = new JwtSecurityTokenHandler().WriteToken(accessToken);
 
-            return new JwtSecurityTokenHandler().WriteToken(token);
+            return tokenString;
         }
-        public string GenerateRefreshToken()
-        {
-            var randomNumber = new byte[32];
-            using (var rng = new RNGCryptoServiceProvider())
-            {
-                rng.GetBytes(randomNumber);
-            }
 
-            return Convert.ToBase64String(randomNumber);
+        private string GenerateRefreshToken()
+        {
+            return Guid.NewGuid().ToString(); // Tạo refresh token ngẫu nhiên
+        }
+
+        private string GenerateRefreshToken(SigningCredentials credentials, List<Claim> claims)
+        {
+            var refreshToken = new JwtSecurityToken(
+                issuer: _configuration["JwtSettings:Issuer"],
+                audience: _configuration["JwtSettings:Audience"],
+                claims: claims,
+                notBefore: DateTime.Now,
+                expires: DateTime.Now.AddDays(Convert.ToInt32(_configuration["JwtSettings:RefreshTokenExpirationDays"])),
+                signingCredentials: credentials
+            );
+            return new JwtSecurityTokenHandler().WriteToken(refreshToken);
         }
 
         public string GenerateVerificationCode()
@@ -67,6 +93,70 @@ namespace RentEase.Service.Helper
             return new string(Enumerable.Repeat(chars, 5)
                                         .Select(s => s[random.Next(s.Length)])
                                         .ToArray());
+        }
+
+
+        //CHECK
+        public string GetUserIdFromHttpContextAccessor(IHttpContextAccessor httpContextAccessor)
+        {
+            if (httpContextAccessor.HttpContext == null || !httpContextAccessor.HttpContext.Request.Headers.ContainsKey("Authorization"))
+            {
+                throw new UnauthorizedAccessException("Authorization header is required!");
+            }
+
+            string? authorizationHeader = httpContextAccessor.HttpContext.Request.Headers["Authorization"];
+
+            if (string.IsNullOrWhiteSpace(authorizationHeader) || !authorizationHeader.StartsWith("Bearer ", StringComparison.OrdinalIgnoreCase))
+            {
+                throw new UnauthorizedAccessException($"Invalid authorization header: {authorizationHeader}");
+            }
+
+            string jwtToken = authorizationHeader["Bearer ".Length..].Trim();
+
+            if (!ValidateToken(jwtToken, out ClaimsPrincipal principal))
+            {
+                throw new UnauthorizedAccessException("Token validation failed!");
+            }
+
+            var idClaim = principal.Claims.FirstOrDefault(claim => claim.Type == "id");
+
+            return idClaim?.Value ?? throw new UnauthorizedAccessException("User ID claim not found in token!");
+        }
+
+        private bool ValidateToken(string token, out ClaimsPrincipal principal)
+        {
+            principal = null!;
+            var tokenHandler = new JwtSecurityTokenHandler();
+            var key = Encoding.UTF8.GetBytes(_configuration["JwtSettings:Key"]); // Ensure UTF-8 encoding
+
+            try
+            {
+                var validationParameters = new TokenValidationParameters
+                {
+                    ValidateIssuerSigningKey = true,
+                    IssuerSigningKey = new SymmetricSecurityKey(key), // Use the secret key to verify signature
+                    ValidateIssuer = false, // Optional: set to true if you want to validate the issuer
+                    ValidateAudience = false, // Optional: set to true if you want to validate the audience
+                    ClockSkew = TimeSpan.Zero, // Optional: to account for small time differences
+                    RequireSignedTokens = false // To avoid 'kid' requirement issues with symmetric keys
+                };
+
+                principal = tokenHandler.ValidateToken(token, validationParameters, out SecurityToken validatedToken);
+
+                return validatedToken is JwtSecurityToken jwtToken &&
+                       jwtToken.Header.Alg.Equals(SecurityAlgorithms.HmacSha256, StringComparison.InvariantCultureIgnoreCase);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("Token validation failed: " + ex.Message);
+                return false;
+            }
+        }
+
+        public bool IsTokenExpired(string token)
+        {
+            var jwtToken = new JwtSecurityTokenHandler().ReadJwtToken(token);
+            return jwtToken.ValidTo < DateTime.Now;
         }
     }
 }

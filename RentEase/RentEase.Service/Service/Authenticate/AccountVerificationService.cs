@@ -1,5 +1,7 @@
 ﻿using AutoMapper;
+using Microsoft.Extensions.Configuration;
 using RentEase.Common.Base;
+using RentEase.Common.DTOs.Dto;
 using RentEase.Data;
 using RentEase.Data.Models;
 
@@ -9,17 +11,19 @@ namespace RentEase.Service.Service.Authenticate
     {
         Task<ServiceResult> GetByAccountId(int accountId);
         Task<ServiceResult> Save(int accountId, string verificationCode);
-        Task<ServiceResult> CheckVerificationCodeValidity(int accountId, string verificationCode);
+        Task<ServiceResult> Verification(int accountId, string verificationCode);
         Task<ServiceResult> HandleVerificationCode(Account account);
     }
     public class AccountVerificationService : IAccountVerificationService
     {
+        private readonly IConfiguration _configuration;
         private readonly UnitOfWork _unitOfWork;
         private readonly IMapper _mapper;
         private readonly ServiceWrapper _serviceWrapper;
         private readonly HelperWrapper _helperWrapper;
-        public AccountVerificationService(IMapper mapper, ServiceWrapper serviceWrapper, HelperWrapper helperWrapper)
+        public AccountVerificationService(IConfiguration configuration, IMapper mapper, ServiceWrapper serviceWrapper, HelperWrapper helperWrapper)
         {
+            _configuration = configuration;
             _unitOfWork ??= new UnitOfWork();
             _mapper = mapper;
             _serviceWrapper = serviceWrapper;
@@ -31,7 +35,7 @@ namespace RentEase.Service.Service.Authenticate
             var account = await _unitOfWork.AccountVerificationRepository.GetByAccountId(accountId);
             if (account == null)
             {
-                return new ServiceResult(Const.FAIL_READ_CODE, Const.FAIL_READ_MSG, null);
+                return new ServiceResult(Const.FAIL_READ_CODE, Const.FAIL_READ_MSG);
             }
             else
             {
@@ -43,73 +47,101 @@ namespace RentEase.Service.Service.Authenticate
             var accountExist = await _serviceWrapper.AccountService.AccountExist(accountId);
             if (accountExist)
             {
-                var code = await _unitOfWork.AccountVerificationRepository.GetByAccountId(accountId);
+                var item = await _unitOfWork.AccountVerificationRepository.GetByAccountIdAndVerificationCode(accountId, verificationCode);
 
-                if (code == null)
+                if (item == null)
                 {
                     var newCode = new AccountVerification()
                     {
                         AccountId = accountId,
                         VerificationCode = verificationCode,
-                        CreatedAt = DateTime.UtcNow,
-                        ExpiresAt = DateTime.UtcNow.AddMinutes(5),
+                        CreatedAt = DateTime.Now,
+                        ExpiresAt = DateTime.Now.AddDays(Convert.ToInt64(_configuration["SmtpSettings:VerificationTokenExpirationMinutes"])),
                         IsUsed = false,
                     };
                     await _unitOfWork.AccountVerificationRepository.CreateAsync(newCode);
                     return new ServiceResult(Const.SUCCESS_CREATE_CODE, "Verification code created successfully", newCode);
                 }
+                
 
-                // Trường hợp mã đã hết hạn hoặc đã được sử dụng, cập nhật mã mới
-                if (code.ExpiresAt < DateTime.UtcNow || (bool)code.IsUsed)
+                // Trường hợp mã đã hết hạn hoặc chưa sử dụng, cập nhật mã mới
+                if (item.ExpiresAt < DateTime.Now && !(bool)item.IsUsed)
                 {
-                    code.VerificationCode = verificationCode;
-                    code.CreatedAt = DateTime.UtcNow;
-                    code.ExpiresAt = DateTime.UtcNow.AddMinutes(5);
-                    code.IsUsed = false;  // Đảm bảo mã chưa sử dụng
+                    item.VerificationCode = verificationCode;
+                    item.CreatedAt = DateTime.Now;
+                    item.ExpiresAt = DateTime.Now.AddMinutes(Convert.ToInt64(_configuration["SmtpSettings:VerificationTokenExpirationMinutes"]));
+                    item.IsUsed = false;  // Đảm bảo mã chưa sử dụng
 
-                    await _unitOfWork.AccountVerificationRepository.UpdateAsync(code);
-                    return new ServiceResult(Const.SUCCESS_CREATE_CODE, "Verification code updated successfully", code);
+                    await _unitOfWork.AccountVerificationRepository.UpdateAsync(item);
+                    return new ServiceResult(Const.SUCCESS_CREATE_CODE, "Verification code updated successfully", item);
                 }
 
-                return new ServiceResult(Const.SUCCESS_CREATE_CODE, "Verification code is still valid", code);
+                if (item.ExpiresAt > DateTime.Now && !(bool)item.IsUsed)
+                {
+                    item.IsUsed = true; 
+
+                    await _unitOfWork.AccountVerificationRepository.UpdateAsync(item);
+                    return new ServiceResult(Const.SUCCESS_CREATE_CODE, "Verification code is used", item);
+                }
+
+                return new ServiceResult(Const.SUCCESS_CREATE_CODE, "Verification code is still valid", item);
 
             }
             else
             {
-                return new ServiceResult(Const.FAIL_CREATE_CODE, Const.FAIL_CREATE_MSG, null);
+                return new ServiceResult(Const.FAIL_CREATE_CODE, Const.FAIL_CREATE_MSG);
             }
         }
-        public async Task<ServiceResult> CheckVerificationCodeValidity(int accountId, string verificationCode)
+        public async Task<ServiceResult> Verification(int accountId, string verificationCode)
         {
-            // Tìm AccountToken dựa trên AccountId và RefreshToken
-            var code = await _unitOfWork.AccountVerificationRepository.GetByAccountId(accountId);
+            var account = await _unitOfWork.AccountRepository.GetByIdAsync(accountId);
 
-            // Kiểm tra nếu không tìm thấy mã xác thực
-            if (code == null)
+            if (account == null)
+                return new ServiceResult(Const.ERROR_EXCEPTION, "User not found!");
+
+            if ((bool)account.IsActive)
+                return new ServiceResult(Const.ERROR_EXCEPTION, "Account already verified!");
+
+            bool isValid = await this.IsVerificationCodeValid(accountId, verificationCode);
+
+            if (!isValid)
+                return new ServiceResult(Const.ERROR_EXCEPTION, "Invalid or expired verification code!");
+
+            // Nếu hợp lệ, cập nhật trạng thái tài khoản
+            account.IsActive = true;
+            var accountDto = _mapper.Map<RequestAccountDto>(account);
+
+            var resultUpdateAccount = await _serviceWrapper.AccountService.Update(accountId, accountDto);
+            if(resultUpdateAccount.Status < 0)
             {
-                return new ServiceResult(Const.ERROR_EXCEPTION, "Verification code not found", null);
+                return new ServiceResult(Const.ERROR_EXCEPTION, "Update account thất bại!");
             }
 
-            // Kiểm tra mã xác thực có khớp không
-            if (!code.VerificationCode.Equals(verificationCode, StringComparison.OrdinalIgnoreCase))
+            var resultUpdateVerificationCode = await this.Save(accountId, verificationCode);
+            if (resultUpdateVerificationCode.Status < 0)
             {
-                return new ServiceResult(Const.ERROR_EXCEPTION, "Invalid verification code", null);
+                return new ServiceResult(Const.ERROR_EXCEPTION, "Update account thất bại!");
             }
 
-            // Kiểm tra mã xác thực đã sử dụng chưa
-            if ((bool)code.IsUsed)
-            {
-                return new ServiceResult(Const.ERROR_EXCEPTION, "Verification code has already been used", null);
-            }
-
-            // Kiểm tra thời gian hết hạn của mã xác thực
-            if (code.ExpiresAt < DateTime.UtcNow)
-            {
-                return new ServiceResult(Const.ERROR_EXCEPTION, "Verification code has expired", null);
-            }
-
-            return new ServiceResult(Const.SUCCESS_READ_CODE, "Verification code is valid", code);
+            return new ServiceResult(Const.SUCCESS_UPDATE_CODE, "Account verified successfully!");
         }
+
+        private async Task<bool> IsVerificationCodeValid(int accountId, string verificationCode)
+        {
+            var item = await _unitOfWork.AccountVerificationRepository.GetByAccountIdAndVerificationCode(accountId, verificationCode);
+
+            if (item == null)
+                return false; // Không có mã xác thực
+
+            if (item.VerificationCode != verificationCode)
+                return false; // Mã không khớp
+
+            if (item.ExpiresAt != null && item.ExpiresAt < DateTime.UtcNow)
+                return false; // Mã đã hết hạn
+
+            return true;
+        }
+
 
         public async Task<ServiceResult> HandleVerificationCode(Account account)
         {
@@ -124,9 +156,9 @@ namespace RentEase.Service.Service.Authenticate
 
             // Gửi email xác thực
             var verificationLink = $"https://yourdomain.com/verify?code={newVerificationCode}";
-            await _helperWrapper.EmailHelper.SendVerificationEmailAsync(account.Email, newVerificationCode, verificationLink);
+            //await _helperWrapper.EmailHelper.SendVerificationEmailAsync(account.Email, newVerificationCode, verificationLink);
 
-            return new ServiceResult(Const.SUCCESS_CREATE_CODE, "Verification code sent", newVerificationCode);
+            return new ServiceResult(Const.SUCCESS_CREATE_CODE, "Verification code sent", saveResult.Data);
         }
 
 

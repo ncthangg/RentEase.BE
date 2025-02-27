@@ -1,14 +1,9 @@
 ﻿using AutoMapper;
 using RentEase.Common.Base;
 using RentEase.Common.DTOs.Dto;
-using RentEase.Data.Models;
 using RentEase.Data;
+using RentEase.Data.Models;
 using RentEase.Service.Service.Base;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace RentEase.Service.Service
 {
@@ -33,19 +28,6 @@ namespace RentEase.Service.Service
             _helperWrapper = helperWrapper;
         }
 
-        //public async Task<ServiceResult> Search(string name)
-        //{
-        //    var WalletTransactions = await _unitOfWork.WalletTransactionRepository.GetByFullNameAsync(name);
-        //    if (!WalletTransactions.Any())
-        //    {
-        //        return new ServiceResult(Const.FAIL_READ_CODE, Const.FAIL_READ_MSG, null);
-        //    }
-        //    else
-        //    {
-        //        var response = _mapper.Map<IEnumerable<ResponseWalletTransactionDto>>(WalletTransactions);
-        //        return new ServiceResult(Const.SUCCESS_READ_CODE, Const.SUCCESS_READ_MSG, response, response.Count());
-        //    }
-        //}
 
         public async Task<ServiceResult> Create(RequestWalletTransactionDto request)
         {
@@ -61,7 +43,7 @@ namespace RentEase.Service.Service
                 TransactionTypeId = request.TransactionTypeId,
                 TransactionStatusId = request.TransactionStatusId,
                 Description = request.Description,
-                CreatedAt = DateTime.UtcNow,
+                CreatedAt = DateTime.Now,
             };
 
             var result = await _unitOfWork.WalletTransactionRepository.CreateAsync(createItem);

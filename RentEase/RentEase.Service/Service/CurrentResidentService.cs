@@ -4,11 +4,6 @@ using RentEase.Common.DTOs.Dto;
 using RentEase.Data;
 using RentEase.Data.Models;
 using RentEase.Service.Service.Base;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace RentEase.Service.Service
 {
@@ -45,7 +40,7 @@ namespace RentEase.Service.Service
                 MoveInDate = request.MoveInDate,
                 MoveOutDate = request.MoveOutDate,
                 StatusId = request.StatusId,
-                CreatedAt = DateTime.UtcNow,
+                CreatedAt = DateTime.Now,
                 UpdatedAt = null,
                 DeletedAt = null,
                 Status = true,
@@ -77,11 +72,11 @@ namespace RentEase.Service.Service
                 MoveOutDate = request.MoveOutDate,
                 StatusId = request.StatusId,
                 CreatedAt = request.CreatedAt,
-                UpdatedAt = DateTime.UtcNow,
+                UpdatedAt = DateTime.Now,
                 Status = request.Status,
             };
 
-            var result = await _unitOfWork.CurrentResidentRepository.UpdateAsync(updateItem); 
+            var result = await _unitOfWork.CurrentResidentRepository.UpdateAsync(updateItem);
             if (result > 0)
             {
                 var responseData = _mapper.Map<ResponseCurrentResidentDto>(updateItem);

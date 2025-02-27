@@ -1,6 +1,6 @@
 ﻿namespace RentEase.Common.DTOs.Response
 {
-    public class ResponseAccountVerificationDto
+    public class ResponseAccountVerification
     {
         public int Id { get; set; }
 

@@ -1,14 +1,9 @@
 ﻿using AutoMapper;
 using RentEase.Common.Base;
 using RentEase.Common.DTOs.Dto;
-using RentEase.Data.Models;
 using RentEase.Data;
+using RentEase.Data.Models;
 using RentEase.Service.Service.Base;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace RentEase.Service.Service
 {
@@ -59,13 +54,13 @@ namespace RentEase.Service.Service
             {
                 AccountId = request.AccountId,
                 Balance = request.Balance,
-                CreatedAt = DateTime.UtcNow,
+                CreatedAt = DateTime.Now,
                 UpdatedAt = null,
                 DeletedAt = null,
                 Status = true,
             };
 
-            var result = await _unitOfWork.WalletRepository.CreateAsync(createItem); 
+            var result = await _unitOfWork.WalletRepository.CreateAsync(createItem);
             if (result > 0)
             {
                 var responseData = _mapper.Map<ResponseWalletDto>(result);
@@ -94,7 +89,7 @@ namespace RentEase.Service.Service
                 AccountId = request.AccountId,
                 Balance = request.Balance,
                 CreatedAt = request.CreatedAt,
-                UpdatedAt = DateTime.UtcNow,
+                UpdatedAt = DateTime.Now,
                 DeletedAt = request.DeletedAt,
                 Status = request.Status,
             };

@@ -1,15 +1,9 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using RentEase.Common.DTOs.Response;
 using RentEase.Data.DBContext;
 using RentEase.Data.Models;
 using RentEase.Data.Repository.Base;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Linq.Expressions;
-using System.Numerics;
-using System.Text;
-using System.Threading.Tasks;
-using RentEase.Common.DTOs.Response;
 
 namespace RentEase.Data.Repository
 {
@@ -24,6 +18,17 @@ namespace RentEase.Data.Repository
             return await _context.Set<Account>()
             .Where(u => EF.Functions.Like(u.Email, $"%{email}%"))
             .SingleOrDefaultAsync();
+        }
+        public async Task<Account> GetByPhoneAsync(string phone)
+        {
+            return await _context.Set<Account>()
+            .Where(u => EF.Functions.Like(u.PhoneNumber, $"%{phone}%"))
+            .SingleOrDefaultAsync();
+        }
+
+        public async Task<Account> GetByEmailOrPhoneAsync(string username)
+        {
+            return await _context.Set<Account>().FirstOrDefaultAsync(a => a.Email == username || a.PhoneNumber == username);
         }
         public async Task<PagedResult<Account>> GetBySearchAsync(string? fullName, string? email, string? phoneNumber, bool? isActive, bool? status, int page, int pageSize)
         {

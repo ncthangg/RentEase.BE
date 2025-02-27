@@ -1,14 +1,9 @@
 ﻿using AutoMapper;
 using RentEase.Common.Base;
 using RentEase.Common.DTOs.Dto;
-using RentEase.Data.Models;
 using RentEase.Data;
+using RentEase.Data.Models;
 using RentEase.Service.Service.Base;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace RentEase.Service.Service
 {
@@ -41,10 +36,14 @@ namespace RentEase.Service.Service
             {
                 return new ServiceResult(Const.FAIL_CREATE_CODE, Const.FAIL_CREATE_MSG);
             }
+            var category = _unitOfWork.AptCategoryRepository.GetById(request.CategoryId);
+
+            var aptCode = await this.GenerateUniqueAptCodeAsync(category.CategoryName);
 
             var createItem = new Apt()
             {
                 OwnerId = request.OwnerId,
+                AptCode = aptCode,
                 Name = request.Name,
                 Description = request.Description,
                 Area = request.Area,
@@ -61,7 +60,7 @@ namespace RentEase.Service.Service
                 AvailableRoom = request.AvailableRoom,
                 ApproveStatusId = request.ApproveStatusId,
                 Note = request.Note,
-                CreatedAt = DateTime.UtcNow,
+                CreatedAt = DateTime.Now,
                 UpdatedAt = null,
                 DeletedAt = null,
                 Status = true,
@@ -93,6 +92,7 @@ namespace RentEase.Service.Service
             var updateItem = new Apt()
             {
                 OwnerId = request.OwnerId,
+                AptCode = request.AptCode,
                 Name = request.Name,
                 Description = request.Description,
                 Area = request.Area,
@@ -110,7 +110,7 @@ namespace RentEase.Service.Service
                 ApproveStatusId = request.ApproveStatusId,
                 Note = request.Note,
                 CreatedAt = request.CreatedAt,
-                UpdatedAt = DateTime.UtcNow,
+                UpdatedAt = DateTime.Now,
                 DeletedAt = null,
                 Status = request.Status,
             };
@@ -134,9 +134,9 @@ namespace RentEase.Service.Service
             }
             var item = (Apt)(await this.GetByIdAsync(id)).Data;
 
-            if(item != null)
+            if (item != null)
             {
-                item.DeletedAt = DateTime.UtcNow;
+                item.DeletedAt = DateTime.Now;
                 item.Status = false;
             }
 
@@ -151,5 +151,37 @@ namespace RentEase.Service.Service
 
             return new ServiceResult(Const.FAIL_DELETE_CODE, Const.FAIL_DELETE_MSG);
         }
+
+        private async Task<string> GenerateUniqueAptCodeAsync(string categoryName)
+        {
+            string aptCode;
+            bool isDuplicate;
+
+            do
+            {
+                // Tạo mã aptCode mới
+                aptCode = GenerateAptCode(categoryName);
+
+                // Kiểm tra xem mã đã tồn tại trong DB chưa
+                isDuplicate = !(await EntityExistsAsync("AptCode", aptCode));
+
+            } while (isDuplicate);
+
+            return aptCode;
+        }
+
+        // Hàm tạo aptCode thông thường
+        private string GenerateAptCode(string categoryName)
+        {
+            string prefix = string.Concat(categoryName.Split(' '))
+                                  .ToUpper()
+                                  .Substring(0, Math.Min(3, categoryName.Length));
+
+            Random random = new Random();
+            int randomNumber = random.Next(100000, 999999);  // 6 số ngẫu nhiên
+
+            return $"{prefix}{randomNumber}";
+        }
+
     }
 }

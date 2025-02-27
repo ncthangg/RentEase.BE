@@ -1,15 +1,7 @@
 ﻿using AutoMapper;
 using RentEase.Common.DTOs.Dto;
+using RentEase.Common.DTOs.Response;
 using RentEase.Data.Models;
-using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Numerics;
-using System.Reflection;
-using System.Text;
-using System.Threading.Tasks;
-using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace RentEase.Service.AutoMapper
 {
@@ -17,7 +9,12 @@ namespace RentEase.Service.AutoMapper
     {
         public MappingProfile()
         {
-            CreateMap<Account, ResponseAccountDto>()
+            //Login
+            CreateMap<AccountToken, ResponseAccountToken>();
+            CreateMap<AccountVerification, ResponseAccountVerification>();
+
+            CreateMap<Account, RequestAccountDto>().ReverseMap();
+            CreateMap<Account, ResponseAccountDto>().ReverseMap()
                     .ForMember(dest => dest.Gender, opt => opt.MapFrom(src => src.Gender ?? null))
                     .ForMember(dest => dest.AvatarUrl, opt => opt.MapFrom(src => src.AvatarUrl ?? null));
 

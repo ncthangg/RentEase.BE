@@ -1,4 +1,6 @@
-﻿namespace RentEase.Service.Helper
+﻿using Microsoft.Extensions.Configuration;
+
+namespace RentEase.Service.Helper
 {
     public interface IPasswordHelper
     {
@@ -7,6 +9,13 @@
     }
     public class PasswordHelper : IPasswordHelper
     {
+        private readonly IConfiguration _configuration;
+
+        public PasswordHelper(IConfiguration configuration)
+        {
+            _configuration = configuration;
+        }
+
         public string HashPassword(string password)
         {
             // Mã hóa mật khẩu với độ phức tạp 12 (có thể thay đổi nếu cần)

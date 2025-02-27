@@ -1,14 +1,9 @@
 ﻿using AutoMapper;
 using RentEase.Common.Base;
 using RentEase.Common.DTOs.Dto;
-using RentEase.Data.Models;
 using RentEase.Data;
+using RentEase.Data.Models;
 using RentEase.Service.Service.Base;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace RentEase.Service.Service
 {
@@ -46,11 +41,11 @@ namespace RentEase.Service.Service
             var createItem = new Role()
             {
                 RoleName = request.RoleName,
-                CreatedAt = DateTime.UtcNow,
+                CreatedAt = DateTime.Now,
                 UpdatedAt = null,
             };
 
-            var result = await _unitOfWork.RoleRepository.CreateAsync(createItem); 
+            var result = await _unitOfWork.RoleRepository.CreateAsync(createItem);
             if (result > 0)
             {
                 var responseData = _mapper.Map<ResponseRoleDto>(createItem);
@@ -75,9 +70,10 @@ namespace RentEase.Service.Service
 
             var updateItem = new Role()
             {
+                Id = id,
                 RoleName = request.RoleName,
                 CreatedAt = request.CreatedAt,
-                UpdatedAt = DateTime.UtcNow
+                UpdatedAt = DateTime.Now
             };
 
             var result = await _unitOfWork.RoleRepository.UpdateAsync(updateItem);

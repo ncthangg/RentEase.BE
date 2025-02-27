@@ -1,5 +1,6 @@
 ﻿
 using AutoMapper;
+using Microsoft.Extensions.Configuration;
 using RentEase.Common.Base;
 using RentEase.Data;
 using RentEase.Data.Models;
@@ -8,33 +9,37 @@ namespace RentEase.Service.Service.Authenticate
 {
     public interface IAccountTokenService
     {
-        Task<ServiceResult> Save(int id, string refreshToken);
+        Task<ServiceResult> Save(int accountId, string refreshToken);
         Task<ServiceResult> CheckRefreshTokenValidity(int id, string refreshToken);
     }
     public class AccountTokenService : IAccountTokenService
     {
+        private readonly IConfiguration _configuration;
         private readonly UnitOfWork _unitOfWork;
         private readonly IMapper _mapper;
         private readonly ServiceWrapper _serviceWrapper;
         private readonly HelperWrapper _helperWrapper;
-        public AccountTokenService(IMapper mapper, ServiceWrapper serviceWrapper, HelperWrapper helperWrapper)
+        public AccountTokenService(IConfiguration configuration,
+                                  IMapper mapper,
+                                  ServiceWrapper serviceWrapper,
+                                  HelperWrapper helperWrapper)
         {
+            _configuration = configuration;
             _unitOfWork ??= new UnitOfWork();
             _mapper = mapper;
             _serviceWrapper = serviceWrapper;
             _helperWrapper = helperWrapper;
         }
-        public async Task<ServiceResult> Save(int id, string refreshToken)
+        public async Task<ServiceResult> Save(int accountId, string refreshToken)
         {
-            var accountExist = await _serviceWrapper.AccountService.AccountExist(id);
-            if (accountExist)
+            if (accountId != null)
             {
                 var newToken = new AccountToken()
                 {
-                    AccountId = id,
+                    AccountId = accountId,
                     RefreshToken = refreshToken,
-                    ExpiresAt = DateTime.UtcNow.AddDays(7),
-                    CreatedAt = DateTime.UtcNow
+                    ExpiresAt = DateTime.Now.AddDays(Convert.ToInt32(_configuration["JwtSettings:RefreshTokenExpirationDays"])),
+                    CreatedAt = DateTime.Now
                 };
                 await _unitOfWork.AccountTokenRepository.CreateAsync(newToken);
                 return new ServiceResult(Const.SUCCESS_CREATE_CODE, Const.SUCCESS_CREATE_MSG, newToken);
@@ -57,7 +62,7 @@ namespace RentEase.Service.Service.Authenticate
             }
 
             // Kiểm tra thời gian hết hạn của RefreshToken
-            if (accountToken.ExpiresAt.HasValue && accountToken.ExpiresAt.Value < DateTime.UtcNow)
+            if (accountToken.ExpiresAt.HasValue && accountToken.ExpiresAt.Value < DateTime.Now)
             {
                 return new ServiceResult(Const.ERROR_EXCEPTION, "Refresh token has expired");
             }

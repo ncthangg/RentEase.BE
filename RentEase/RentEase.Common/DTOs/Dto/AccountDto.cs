@@ -17,7 +17,7 @@ public class RequestAccountDto
 
     public int RoleId { get; set; }
 
-    public bool? IsActive { get; set; }
+    public bool? IsActive { get; set; } = false;
 
     public DateTime CreatedAt { get; set; }
 

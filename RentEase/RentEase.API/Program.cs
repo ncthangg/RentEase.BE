@@ -1,21 +1,13 @@
-﻿using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.IdentityModel.Tokens;
-using Microsoft.OpenApi.Models;
-using RentEase.API;
-using System.Text;
+﻿using RentEase.API;
 using System.Text.Json.Serialization;
 
 var builder = WebApplication.CreateBuilder(args);
 
-builder.Services.AddHttpContextAccessor();
-
-// Add services to the container.
 builder.Services.AddControllers();
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
-
 builder.Services.AddSwaggerGen();
 
+builder.Services.AddHttpContextAccessor();
 builder.Services.ConfigureApiServices(builder.Configuration);
 
 // Nếu bị lỗi CYCLES
@@ -34,16 +26,20 @@ var app = builder.Build();
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
-    app.UseSwaggerUI();
+    app.UseSwaggerUI(c =>
+    {
+        c.SwaggerEndpoint("/swagger/v1/swagger.json", "RentEASE API V1");
+    });
 }
+
 ////Use Session
 //app.UseSession();
 
 app.UseHttpsRedirection();
-
-app.UseAuthorization();
+app.UseStaticFiles();
 
 app.UseAuthentication();
+app.UseAuthorization();
 
 app.MapControllers();
 

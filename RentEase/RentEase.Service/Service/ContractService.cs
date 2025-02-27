@@ -1,14 +1,9 @@
 ﻿using AutoMapper;
 using RentEase.Common.Base;
 using RentEase.Common.DTOs.Dto;
-using RentEase.Data.Models;
 using RentEase.Data;
+using RentEase.Data.Models;
 using RentEase.Service.Service.Base;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace RentEase.Service.Service
 {
@@ -19,7 +14,7 @@ namespace RentEase.Service.Service
         //Task<ServiceResult> Search(string name);
         Task<ServiceResult> Create(RequestContractDto request);
         Task<ServiceResult> Update(int id, RequestContractDto request);
-        Task<ServiceResult> DeleteByIdAsync(int id);
+        Task<ServiceResult> Delete(int id);
 
     }
     public class ContractService : BaseService<Contract, ResponseContractDto>, IContractService
@@ -50,7 +45,7 @@ namespace RentEase.Service.Service
                 FileUrl = request.FileUrl,
                 ContractStatusId = request.ContractStatusId,
                 ApproveStatusId = request.ApproveStatusId,
-                CreatedAt = DateTime.UtcNow,
+                CreatedAt = DateTime.Now,
                 UpdatedAt = null,
                 DeletedAt = null,
                 Status = true,
@@ -88,7 +83,7 @@ namespace RentEase.Service.Service
                 ContractStatusId = request.ContractStatusId,
                 ApproveStatusId = request.ApproveStatusId,
                 CreatedAt = request.CreatedAt,
-                UpdatedAt = DateTime.UtcNow,
+                UpdatedAt = DateTime.Now,
                 DeletedAt = request.DeletedAt,
                 Status = request.Status,
             };
@@ -102,6 +97,31 @@ namespace RentEase.Service.Service
             }
 
             return new ServiceResult(Const.FAIL_UPDATE_CODE, Const.FAIL_UPDATE_MSG);
+        }
+
+        public async Task<ServiceResult> Delete(int id)
+        {
+            if (!await EntityExistsAsync("Id", id))
+            {
+                return new ServiceResult(Const.FAIL_DELETE_CODE, Const.FAIL_DELETE_MSG);
+            }
+            var item = (Contract)(await this.GetByIdAsync(id)).Data;
+
+            if (item != null)
+            {
+                item.DeletedAt = DateTime.Now;
+                item.Status = false;
+            }
+
+            var result = await _unitOfWork.ContractRepository.UpdateAsync(item);
+            if (result > 0)
+            {
+                var responseData = _mapper.Map<ResponseContractDto>(item);
+
+                return new ServiceResult(Const.SUCCESS_DELETE_CODE, Const.SUCCESS_DELETE_MSG, responseData);
+            }
+
+            return new ServiceResult(Const.FAIL_DELETE_CODE, Const.FAIL_DELETE_MSG);
         }
     }
 }

@@ -4,6 +4,8 @@ public class RequestAptDto
 {
     public int OwnerId { get; set; }
 
+    public string AptCode { get; set; }
+
     public string Name { get; set; }
 
     public string Description { get; set; }
@@ -52,6 +54,8 @@ public class ResponseAptDto
     public int Id { get; set; }
 
     public int OwnerId { get; set; }
+
+    public string AptCode { get; set; }
 
     public string Name { get; set; }
 

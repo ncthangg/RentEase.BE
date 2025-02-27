@@ -1,13 +1,6 @@
 ﻿using AutoMapper;
-using Microsoft.EntityFrameworkCore;
 using RentEase.Common.Base;
-using RentEase.Common.DTOs.Response;
 using RentEase.Data;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Linq.Expressions;
-using System.Threading.Tasks;
 
 namespace RentEase.Service.Service.Base
 {
@@ -96,7 +89,7 @@ namespace RentEase.Service.Service.Base
             catch (Exception ex)
             {
                 Console.WriteLine("Lỗi khi kiểm tra entity tồn tại: " + ex.Message);
-                return false; 
+                return false;
             }
         }
 
@@ -109,10 +102,10 @@ namespace RentEase.Service.Service.Base
             catch (Exception ex)
             {
                 Console.WriteLine("Lỗi khi kiểm tra entity tồn tại: " + ex.Message);
-                return false; 
+                return false;
             }
         }
 
-        
+
     }
 }

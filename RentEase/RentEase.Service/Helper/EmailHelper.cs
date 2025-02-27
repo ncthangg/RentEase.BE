@@ -1,5 +1,5 @@
-﻿using MimeKit;
-using MailKit.Net.Smtp;
+﻿using MailKit.Net.Smtp;
+using MimeKit;
 
 namespace RentEase.Service.Helper
 {
@@ -26,7 +26,7 @@ namespace RentEase.Service.Helper
             // Email body (plain text)
             message.Body = new TextPart("plain")
             {
-Text = $@"Code: {verifyCode}
+                Text = $@"Code: {verifyCode}
 ==============^-^==============
 Please verify your email by clicking on this link: {verificationLink}
 

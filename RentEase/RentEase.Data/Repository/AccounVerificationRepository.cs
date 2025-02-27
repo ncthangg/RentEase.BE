@@ -11,11 +11,20 @@ namespace RentEase.Data.Repository
         {
         }
         public AccountVerificationRepository(RentEaseContext context) => _context = context;
+
         public async Task<AccountVerification> GetByAccountId(int accountId)
         {
             return await _context.Set<AccountVerification>()
-                .AsNoTracking()
-                .FirstOrDefaultAsync(token => token.AccountId == accountId);
+                .Where(v => v.AccountId == accountId)
+                .OrderByDescending(v => v.CreatedAt)
+                .FirstOrDefaultAsync();
+        }
+        public async Task<AccountVerification> GetByAccountIdAndVerificationCode(int accountId, string verificationCode)
+        {
+            return await _context.Set<AccountVerification>()
+                .Where(v => v.AccountId == accountId && v.VerificationCode == verificationCode)
+                .OrderByDescending(v => v.CreatedAt)
+                .FirstOrDefaultAsync();
         }
     }
 }

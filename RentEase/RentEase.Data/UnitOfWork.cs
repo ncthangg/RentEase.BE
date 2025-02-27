@@ -27,7 +27,7 @@ namespace RentEase.Data
         private RentEaseContext _dbContext;
         public UnitOfWork()
         {
-            _dbContext ??= new RentEaseContext(); 
+            _dbContext ??= new RentEaseContext();
         }
 
         public AccountRepository AccountRepository => _accountRepository ??= new Repository.AccountRepository(_dbContext);
