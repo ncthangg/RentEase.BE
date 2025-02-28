@@ -91,6 +91,7 @@ namespace RentEase.Service.Service
 
             var updateItem = new Apt()
             {
+                Id = id,
                 OwnerId = request.OwnerId,
                 AptCode = request.AptCode,
                 Name = request.Name,

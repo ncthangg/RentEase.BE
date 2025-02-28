@@ -14,7 +14,7 @@ namespace RentEase.Service.Service
         //Task<ServiceResult> Search(string name);
         Task<ServiceResult> Create(RequestWalletDto request);
         Task<ServiceResult> Update(int id, RequestWalletDto request);
-        Task<ServiceResult> DeleteByIdAsync(int id);
+        Task<ServiceResult> Delete(int id);
 
     }
     public class WalletService : BaseService<Wallet, ResponseWalletDto>, IWalletService
@@ -73,16 +73,11 @@ namespace RentEase.Service.Service
 
         public async Task<ServiceResult> Update(int id, RequestWalletDto request)
         {
-            if (!await EntityExistsAsync("AccountId", id))
-            {
-                return new ServiceResult(Const.FAIL_UPDATE_CODE, Const.FAIL_UPDATE_MSG);
-            }
 
             if (!await EntityExistsAsync("AccountId", request.AccountId))
             {
                 return new ServiceResult(Const.FAIL_UPDATE_CODE, Const.FAIL_UPDATE_MSG);
             }
-
 
             var updateItem = new Wallet()
             {
@@ -98,6 +93,31 @@ namespace RentEase.Service.Service
             if (result > 0)
             {
                 var responseData = _mapper.Map<ResponseWalletDto>(result);
+
+                return new ServiceResult(Const.SUCCESS_UPDATE_CODE, Const.SUCCESS_UPDATE_MSG, responseData);
+            }
+
+            return new ServiceResult(Const.FAIL_UPDATE_CODE, Const.FAIL_UPDATE_MSG);
+        }
+
+        public async Task<ServiceResult> Delete(int id)
+        {
+            if (!await EntityExistsAsync("AccountId", id))
+            {
+                return new ServiceResult(Const.FAIL_UPDATE_CODE, Const.FAIL_UPDATE_MSG);
+            }
+            var item = (Wallet)(await this.GetByIdAsync(id)).Data;
+
+            if (item != null)
+            {
+                item.DeletedAt = DateTime.Now;
+                item.Status = false;
+            }
+
+            var result = await _unitOfWork.WalletRepository.UpdateAsync(item);
+            if (result > 0)
+            {
+                var responseData = _mapper.Map<ResponseWalletDto>(item);
 
                 return new ServiceResult(Const.SUCCESS_UPDATE_CODE, Const.SUCCESS_UPDATE_MSG, responseData);
             }

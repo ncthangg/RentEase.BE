@@ -72,6 +72,7 @@ namespace RentEase.Service.Service
 
             var updateItem = new TransactionType()
             {
+                Id = id,
                 Name = request.Name,
                 Description = request.Description,
                 CreatedAt = request.CreatedAt,

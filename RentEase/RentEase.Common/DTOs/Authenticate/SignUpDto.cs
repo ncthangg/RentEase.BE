@@ -8,13 +8,12 @@ namespace RentEase.Common.DTOs.Authenticate
         public required string Username { get; set; }
         public required string Password { get; set; }
         public required string ConfirmPassword { get; set; }
-        public RequestAccountDto Account { get; set; }
+        public required int RoleId { get; set; }
     }
 
     public class ResponseRegisterDto
     {
         public ResponseAccountDto ResponseAccountDto { get; set; }
-        public ResponseAccountVerification ResponseAccountVerificationDto { get; set; }
-
+        public ResponseWalletDto? ResponseWalletDto { get; set; }
     }
 }

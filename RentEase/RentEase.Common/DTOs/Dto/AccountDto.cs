@@ -56,4 +56,5 @@ public class ResponseAccountDto
     public DateTime? DeletedAt { get; set; }
 
     public bool? Status { get; set; }
+    public ResponseWalletDto ResponseWalletDto { get; set; }
 }

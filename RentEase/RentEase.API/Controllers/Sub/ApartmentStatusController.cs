@@ -9,6 +9,7 @@ namespace RentEase.API.Controllers.Sub
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize(Roles = "1")]
     public class AptStatusController : ControllerBase
     {
         private readonly IAptStatusService _AptStatusService;
@@ -85,7 +86,6 @@ namespace RentEase.API.Controllers.Sub
         }
 
         [HttpPost]
-        [Authorize(Roles = "1")]
         public async Task<IActionResult> Post(RequestAptStatusDto request)
         {
             try
@@ -118,7 +118,6 @@ namespace RentEase.API.Controllers.Sub
         }
 
         [HttpPut("{id}")]
-        [Authorize(Roles = "1")]
         public async Task<IActionResult> Put(int id, RequestAptStatusDto request)
         {
             try
@@ -151,7 +150,6 @@ namespace RentEase.API.Controllers.Sub
         }
 
         [HttpDelete("{id}")]
-        [Authorize(Roles = "1")]
         public async Task<IActionResult> Delete(int id)
         {
             try

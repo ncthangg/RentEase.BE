@@ -29,12 +29,14 @@ namespace RentEase.Service.Service
         private readonly UnitOfWork _unitOfWork;
         private readonly IMapper _mapper;
         private readonly HelperWrapper _helperWrapper;
-        public AccountService(IMapper mapper, HelperWrapper helperWrapper)
+        private readonly IWalletService _walletService;
+        public AccountService(IMapper mapper, HelperWrapper helperWrapper, IWalletService walletService)
         : base(mapper)
         {
             _unitOfWork ??= new UnitOfWork();
             _mapper = mapper;
             _helperWrapper = helperWrapper;
+            _walletService = walletService;
         }
         public async Task<ServiceResult> GetByEmailAsync(string email)
         {
@@ -163,12 +165,26 @@ namespace RentEase.Service.Service
                 Status = true,
             };
 
-            var result = await _unitOfWork.AccountRepository.CreateAsync(createItem);
-            if (result > 0)
+            var result1 = await _unitOfWork.AccountRepository.CreateAsync(createItem);
+            if (result1 > 0)
             {
-                var responseData = _mapper.Map<ResponseAccountDto>(createItem);
+                var responseData1 = _mapper.Map<ResponseAccountDto>(createItem);
+                var createItemWallet = new RequestWalletDto()
+                {
+                    AccountId = responseData1.Id,
+                    Balance = 0,
+                    CreatedAt = DateTime.Now,
+                    UpdatedAt= null,
+                    DeletedAt= null,
+                    Status = true,
+                };
+                var result2 = await _walletService.Create(createItemWallet);
+                if (result2.Status > 0)
+                {
+                    return new ServiceResult(Const.SUCCESS_CREATE_CODE, Const.SUCCESS_CREATE_MSG, responseData1);
+                }
 
-                return new ServiceResult(Const.SUCCESS_CREATE_CODE, Const.SUCCESS_CREATE_MSG, responseData);
+                return new ServiceResult(Const.SUCCESS_CREATE_CODE, "Tạo tài khoản thành công Nhưng Tạo ví thất bại");
             }
 
             return new ServiceResult(Const.FAIL_CREATE_CODE, Const.FAIL_CREATE_MSG);
@@ -216,20 +232,25 @@ namespace RentEase.Service.Service
             {
                 return new ServiceResult(Const.FAIL_DELETE_CODE, Const.FAIL_DELETE_MSG);
             }
-            var item = (Account)(await this.GetByIdAsync(id)).Data;
+            var itemAccount = (Account)(await this.GetByIdAsync(id)).Data;
 
-            if (item != null)
+            if (itemAccount != null)
             {
-                item.DeletedAt = DateTime.Now;
-                item.Status = false;
+                itemAccount.DeletedAt = DateTime.Now;
+                itemAccount.Status = false;
             }
 
-            var result = await _unitOfWork.AccountRepository.UpdateAsync(item);
+            var result = await _unitOfWork.AccountRepository.UpdateAsync(itemAccount);
             if (result > 0)
             {
-                var responseData = _mapper.Map<ResponseAccountDto>(item);
+                var itemWallet = await _walletService.Delete(id);
 
-                return new ServiceResult(Const.SUCCESS_DELETE_CODE, Const.SUCCESS_DELETE_MSG, responseData);
+                if (itemWallet.Status < 0)
+                {
+                    return new ServiceResult(Const.FAIL_DELETE_CODE, Const.FAIL_DELETE_MSG);
+                }
+
+                return new ServiceResult(Const.SUCCESS_DELETE_CODE, Const.SUCCESS_DELETE_MSG);
             }
 
             return new ServiceResult(Const.FAIL_DELETE_CODE, Const.FAIL_DELETE_MSG);

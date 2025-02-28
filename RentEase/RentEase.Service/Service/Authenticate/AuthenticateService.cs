@@ -78,6 +78,7 @@ namespace RentEase.Service.Service.Authenticate
 
                 // Xử lí DTO trả về
                 var responseAccountDto = _mapper.Map<ResponseAccountDto>(accountData);
+                responseAccountDto.ResponseWalletDto = (ResponseWalletDto)((await _serviceWrapper.WalletService.GetByIdAsync(accountData.Id)).Data);
                 var responseAccountTokenDto = _mapper.Map<ResponseAccountToken>(tokenData);
 
                 var response = new ResponseLoginDto
@@ -111,7 +112,6 @@ namespace RentEase.Service.Service.Authenticate
                 var response = new ResponseRegisterDto
                 {
                     ResponseAccountDto = null,
-                    ResponseAccountVerificationDto = null,
                 };
 
                 var createItemResult = await SaveAccount(request);
@@ -139,7 +139,6 @@ namespace RentEase.Service.Service.Authenticate
                 }
 
                 response.ResponseAccountDto = _mapper.Map<ResponseAccountDto>(itemData);
-                response.ResponseAccountVerificationDto = _mapper.Map<ResponseAccountVerification>(verificationResult.Data);
 
                 return new ServiceResult(Const.SUCCESS_CREATE_CODE, "Register thành công, Verification Code đã được gửi.", response);
             }
@@ -166,14 +165,22 @@ namespace RentEase.Service.Service.Authenticate
                 }
 
                 var accountExist = await _serviceWrapper.AccountService.GetByIdAsync(accountIdInt);
-                var accountData = _mapper.Map<Account>(accountExist.Data);
-                if (accountData == null)
+                if (accountExist.Data == null)
                 {
                     return new ServiceResult(Const.ERROR_EXCEPTION, "Tài khoản không tồn tại ");
                 }
 
-                var responseData = _mapper.Map<ResponseAccountDto>(accountData);
-                return new ServiceResult(Const.SUCCESS_READ_CODE, Const.SUCCESS_READ_MSG, responseData);
+                var walletExist = await _serviceWrapper.WalletService.GetByIdAsync(accountIdInt);
+                if (walletExist.Data == null)
+                {
+                    return new ServiceResult(Const.ERROR_EXCEPTION, "Tài khoản không tồn tại ");
+                }
+
+                var responseAccountData = (ResponseAccountDto)accountExist.Data;
+                var responseWalletData = (ResponseWalletDto)walletExist.Data;
+                responseAccountData.ResponseWalletDto = responseWalletData;
+
+                return new ServiceResult(Const.SUCCESS_READ_CODE, Const.SUCCESS_READ_MSG, responseAccountData);
 
             }
             catch (Exception ex)
@@ -223,13 +230,13 @@ namespace RentEase.Service.Service.Authenticate
                     createItem = new Account()
                     {
                         Email = request.Username,
-                        FullName = request.Account.FullName,
-                        PasswordHash = request.Account.PasswordHash,
-                        PhoneNumber = request.Account.PhoneNumber,
-                        DateOfBirth = request.Account.DateOfBirth,
-                        Gender = request.Account.Gender,
-                        AvatarUrl = request.Account.AvatarUrl,
-                        RoleId = request.Account.RoleId,
+                        FullName = null,
+                        PasswordHash = request.Password,
+                        PhoneNumber = null,
+                        DateOfBirth = null,
+                        Gender = null,
+                        AvatarUrl = null,
+                        RoleId = request.RoleId,
                         IsActive = false,
                         CreatedAt = DateTime.Now,
                         UpdatedAt = null,
@@ -241,14 +248,14 @@ namespace RentEase.Service.Service.Authenticate
                 {
                     createItem = new Account()
                     {
-                        Email = request.Account.Email,
-                        FullName = request.Account.FullName,
-                        PasswordHash = request.Account.PasswordHash,
+                        Email = null,
+                        FullName = null,
+                        PasswordHash = request.Password,
                         PhoneNumber = request.Username,
-                        DateOfBirth = request.Account.DateOfBirth,
-                        Gender = request.Account.Gender,
-                        AvatarUrl = request.Account.AvatarUrl,
-                        RoleId = request.Account.RoleId,
+                        DateOfBirth = null,
+                        Gender = null,
+                        AvatarUrl = null,
+                        RoleId = request.RoleId,
                         IsActive = false,
                         CreatedAt = DateTime.Now,
                         UpdatedAt = null,

@@ -15,7 +15,7 @@ namespace RentEase.Service.Service
         //Task<ServiceResult> Search(string name);
         Task<ServiceResult> Create(RequestCurrentResidentDto request);
         Task<ServiceResult> Update(int id, RequestCurrentResidentDto request);
-        Task<ServiceResult> DeleteByIdAsync(int id);
+        Task<ServiceResult> Delete(int id);
 
     }
     public class CurrentResidentService : BaseService<CurrentResident, ResponseCurrentResidentDto>, ICurrentResidentService
@@ -66,6 +66,7 @@ namespace RentEase.Service.Service
 
             var updateItem = new CurrentResident()
             {
+                Id = id,
                 AptId = request.AptId,
                 AccountId = request.AccountId,
                 MoveInDate = request.MoveInDate,
@@ -85,6 +86,31 @@ namespace RentEase.Service.Service
             }
 
             return new ServiceResult(Const.FAIL_UPDATE_CODE, Const.FAIL_UPDATE_MSG);
+        }
+
+        public async Task<ServiceResult> Delete(int id)
+        {
+            if (!await EntityExistsAsync("Id", id))
+            {
+                return new ServiceResult(Const.FAIL_DELETE_CODE, Const.FAIL_DELETE_MSG);
+            }
+            var item = (CurrentResident)(await this.GetByIdAsync(id)).Data;
+
+            if (item != null)
+            {
+                item.DeletedAt = DateTime.Now;
+                item.Status = false;
+            }
+
+            var result = await _unitOfWork.CurrentResidentRepository.UpdateAsync(item);
+            if (result > 0)
+            {
+                var responseData = _mapper.Map<ResponseCurrentResidentDto>(item);
+
+                return new ServiceResult(Const.SUCCESS_DELETE_CODE, Const.SUCCESS_DELETE_MSG, responseData);
+            }
+
+            return new ServiceResult(Const.FAIL_DELETE_CODE, Const.FAIL_DELETE_MSG);
         }
     }
 }

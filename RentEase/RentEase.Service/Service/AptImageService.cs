@@ -71,6 +71,7 @@ namespace RentEase.Service.Service
 
             var updateItem = new AptImage()
             {
+                Id = id,
                 AptId = request.AptId,
                 ImageUrl1 = request.ImageUrl1,
                 ImageUrl2 = request.ImageUrl2,

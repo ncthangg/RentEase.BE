@@ -1,6 +1,8 @@
 ﻿using AutoMapper;
 using Microsoft.Extensions.Configuration;
+using Org.BouncyCastle.Asn1.Ocsp;
 using RentEase.Common.Base;
+using RentEase.Common.DTOs.Authenticate;
 using RentEase.Common.DTOs.Dto;
 using RentEase.Data;
 using RentEase.Data.Models;
@@ -93,19 +95,38 @@ namespace RentEase.Service.Service.Authenticate
             // Nếu hợp lệ, cập nhật trạng thái tài khoản
             account.IsActive = true;
             var accountDto = _mapper.Map<RequestAccountDto>(account);
-
             var resultUpdateAccount = await _serviceWrapper.AccountService.Update(accountId, accountDto);
             if (resultUpdateAccount.Status < 0)
             {
                 return new ServiceResult(Const.ERROR_EXCEPTION, "Update account thất bại!");
             }
 
+            var responseAccount = _mapper.Map<ResponseAccountDto>(account);
             var resultUpdateVerificationCode = await this.Save(accountId, verificationCode);
             if (resultUpdateVerificationCode.Status < 0)
             {
                 return new ServiceResult(Const.ERROR_EXCEPTION, "Update account thất bại!");
             }
-
+            var createItemWallet = new Wallet()
+            {
+                AccountId = accountId,
+                Balance = 0,
+                CreatedAt = DateTime.Now,
+                UpdatedAt = null,
+                DeletedAt = null,
+                Status = true,
+            };
+            var result2 = await _unitOfWork.WalletRepository.CreateAsync(createItemWallet);
+            if (result2 > 0)
+            {
+                var responseWallet = _mapper.Map<ResponseWalletDto>(createItemWallet);
+                var responseData = new ResponseRegisterDto
+                {
+                    ResponseAccountDto = responseAccount,
+                    ResponseWalletDto = responseWallet
+                };
+                return new ServiceResult(Const.SUCCESS_UPDATE_CODE, "Account verified successfully!", responseData);
+            }
             return new ServiceResult(Const.SUCCESS_UPDATE_CODE, "Account verified successfully!");
         }
 

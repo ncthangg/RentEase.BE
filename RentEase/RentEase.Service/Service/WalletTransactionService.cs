@@ -31,10 +31,6 @@ namespace RentEase.Service.Service
 
         public async Task<ServiceResult> Create(RequestWalletTransactionDto request)
         {
-            if (!await EntityExistsAsync("AccountId", request.AccountId))
-            {
-                return new ServiceResult(Const.FAIL_CREATE_CODE, Const.FAIL_CREATE_MSG);
-            }
 
             var createItem = new WalletTransaction()
             {

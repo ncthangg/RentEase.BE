@@ -87,6 +87,7 @@ namespace RentEase.Service.Service
 
             var updateItem = new AptCategory()
             {
+                Id = id,
                 CategoryName = request.CategoryName,
                 CreatedAt = request.CreatedAt,
                 UpdatedAt = DateTime.Now,

@@ -71,6 +71,7 @@ namespace RentEase.Service.Service
 
             var updateItem = new Contract()
             {
+                Id = id,
                 AptId = request.AptId,
                 LessorId = request.LessorId,
                 LesseeId = request.LesseeId,

@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using RentEase.Common.DTOs.Dto;
 using RentEase.Common.DTOs.Response;
 using RentEase.Service.Service;
@@ -8,6 +9,7 @@ namespace RentEase.API.Controllers.Main
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize(Roles = "1")]
     public class AccountsController : ControllerBase
     {
         private readonly IAccountService _accountService;

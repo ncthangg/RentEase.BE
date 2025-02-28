@@ -72,6 +72,7 @@ namespace RentEase.Service.Service
 
             var updateItem = new AptStatus()
             {
+                Id = id,
                 StatusName = request.StatusName,
                 Description = request.Description,
                 CreatedAt = request.CreatedAt,

@@ -85,6 +85,7 @@ namespace RentEase.Service.Service
 
             var updateItem = new Utility()
             {
+                Id = id,
                 Name = request.Name,
                 CreatedAt = request.CreatedAt,
                 UpdatedAt = DateTime.Now,
@@ -102,31 +103,6 @@ namespace RentEase.Service.Service
 
             return new ServiceResult(Const.FAIL_UPDATE_CODE, Const.FAIL_UPDATE_MSG);
 
-        }
-
-        public async Task<ServiceResult> Delete(int id)
-        {
-            if (!await EntityExistsAsync("Id", id))
-            {
-                return new ServiceResult(Const.FAIL_UPDATE_CODE, Const.FAIL_UPDATE_MSG);
-            }
-            var item = (Utility)(await this.GetByIdAsync(id)).Data;
-
-            if (item != null)
-            {
-                item.DeletedAt = DateTime.Now;
-                item.Status = false;
-            }
-
-            var result = await _unitOfWork.UtilityRepository.UpdateAsync(item);
-            if (result > 0)
-            {
-                var responseData = _mapper.Map<ResponseUtilityDto>(item);
-
-                return new ServiceResult(Const.SUCCESS_UPDATE_CODE, Const.SUCCESS_UPDATE_MSG, responseData);
-            }
-
-            return new ServiceResult(Const.FAIL_UPDATE_CODE, Const.FAIL_UPDATE_MSG);
         }
     }
 }

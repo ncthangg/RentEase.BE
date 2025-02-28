@@ -45,7 +45,7 @@ namespace RentEase.API.Controllers.Authenticate
             var result = await _authenticateService.SignIn(request);
 
             if (result.Status != 1)
-                return NotFound(new ApiResponse<IEnumerable<ResponseLoginDto>>
+                return NotFound(new ApiResponse<ResponseLoginDto>
                 {
                     StatusCode = HttpStatusCode.NotFound,
                     Message = result.Message,
@@ -77,7 +77,7 @@ namespace RentEase.API.Controllers.Authenticate
             var result = await _authenticateService.SignUp(request);
 
             if (result.Status != 1)
-                return NotFound(new ApiResponse<IEnumerable<ResponseRegisterDto>>
+                return NotFound(new ApiResponse<ResponseRegisterDto>
                 {
                     StatusCode = HttpStatusCode.NotFound,
                     Message = result.Message,
@@ -125,26 +125,28 @@ namespace RentEase.API.Controllers.Authenticate
         //}
 
         [HttpPost("Verification")]
+        [AllowAnonymous]
         public async Task<IActionResult> Verification(RequestVerification request)
         {
 
             var result = await _accountVerificationService.Verification(request.AccountId, request.VerificationCode);
 
             if (result.Status != 1)
-                return NotFound(new ApiResponse<ResponseAccountDto>
+                return NotFound(new ApiResponse<ResponseRegisterDto>
                 {
                     StatusCode = HttpStatusCode.NotFound,
                     Message = result.Message,
                     Data = null
                 });
 
-            return Ok(new ApiResponse<ResponseAccountDto>
+            return Ok(new ApiResponse<ResponseRegisterDto>
             {
                 StatusCode = HttpStatusCode.OK,
                 Message = result.Message,
-                Data = (ResponseAccountDto)result.Data
+                Data = (ResponseRegisterDto)result.Data
             });
         }
+
 
         [HttpGet("GetInfo")]
         public async Task<IActionResult> GetInfo()
@@ -167,6 +169,7 @@ namespace RentEase.API.Controllers.Authenticate
                 Data = (ResponseAccountDto)result.Data
             });
         }
+
 
     }
 }

@@ -14,7 +14,7 @@ namespace RentEase.Service.Service
         Task<ServiceResult> Search(string name);
         Task<ServiceResult> Create(RequestReviewDto request);
         Task<ServiceResult> Update(int id, RequestReviewDto request);
-        Task<ServiceResult> DeleteByIdAsync(int id);
+        Task<ServiceResult> Delete(int id);
 
     }
     public class ReviewService : BaseService<Review, ResponseReviewDto>, IReviewService
@@ -83,6 +83,7 @@ namespace RentEase.Service.Service
 
             var updateItem = new Review()
             {
+                Id = id,
                 ReviewerId = request.ReviewerId,
                 AptId = request.AptId,
                 Rating = request.Rating,
@@ -101,6 +102,31 @@ namespace RentEase.Service.Service
             }
 
             return new ServiceResult(Const.FAIL_UPDATE_CODE, Const.FAIL_UPDATE_MSG);
+        }
+
+        public async Task<ServiceResult> Delete(int id)
+        {
+            if (!await EntityExistsAsync("Id", id))
+            {
+                return new ServiceResult(Const.FAIL_DELETE_CODE, Const.FAIL_DELETE_MSG);
+            }
+            var item = (Review)(await this.GetByIdAsync(id)).Data;
+
+            if (item != null)
+            {
+                item.DeletedAt = DateTime.Now;
+                item.Status = false;
+            }
+
+            var result = await _unitOfWork.ReviewRepository.UpdateAsync(item);
+            if (result > 0)
+            {
+                var responseData = _mapper.Map<ResponseReviewDto>(item);
+
+                return new ServiceResult(Const.SUCCESS_DELETE_CODE, Const.SUCCESS_DELETE_MSG, responseData);
+            }
+
+            return new ServiceResult(Const.FAIL_DELETE_CODE, Const.FAIL_DELETE_MSG);
         }
     }
 }

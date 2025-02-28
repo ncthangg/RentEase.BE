@@ -9,6 +9,7 @@ namespace RentEase.API.Controllers.Sub
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize(Roles = "1")]
     public class RoleController : ControllerBase
     {
         private readonly IRoleService _RoleService;
@@ -16,7 +17,6 @@ namespace RentEase.API.Controllers.Sub
         {
             _RoleService = RoleService;
         }
-
 
         [HttpGet]
         public async Task<IActionResult> Get([FromQuery] int page = 1, [FromQuery] int pageSize = 10)
@@ -86,7 +86,6 @@ namespace RentEase.API.Controllers.Sub
         }
 
         [HttpPost]
-        [Authorize(Roles = "1")]
         public async Task<IActionResult> Post(RequestRoleDto request)
         {
             try
@@ -119,7 +118,6 @@ namespace RentEase.API.Controllers.Sub
         }
 
         [HttpPut("{id}")]
-        [Authorize(Roles = "1")]
         public async Task<IActionResult> Put(int id, RequestRoleDto request)
         {
             try
@@ -152,7 +150,6 @@ namespace RentEase.API.Controllers.Sub
         }
 
         [HttpDelete("{id}")]
-        [Authorize(Roles = "1")]
         public async Task<IActionResult> Delete(int id)
         {
             try

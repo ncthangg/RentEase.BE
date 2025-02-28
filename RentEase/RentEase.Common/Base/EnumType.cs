@@ -2,6 +2,13 @@
 {
     public class EnumType
     {
+        public enum Role
+        {
+            Admin = 1,
+            Manager = 2,
+            Lessor = 3,
+            Lesses = 4
+        }
         public enum ApproveStatus
         {
             Pending = 1,      // Đang xét duyệt

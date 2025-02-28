@@ -9,6 +9,7 @@ namespace RentEase.API.Controllers.Sub
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize(Roles = "1")]
     public class AptCategoryController : ControllerBase
     {
         private readonly IAptCategoryService _AptCategoryService;
@@ -85,7 +86,6 @@ namespace RentEase.API.Controllers.Sub
         }
 
         [HttpPost]
-        [Authorize(Roles = "1")]
         public async Task<IActionResult> Post(RequestAptCategoryDto request)
         {
             try
@@ -118,7 +118,6 @@ namespace RentEase.API.Controllers.Sub
         }
 
         [HttpPut("{id}")]
-        [Authorize(Roles = "1")]
         public async Task<IActionResult> Put(int id, RequestAptCategoryDto request)
         {
             try
@@ -151,7 +150,6 @@ namespace RentEase.API.Controllers.Sub
         }
 
         [HttpDelete("{id}")]
-        [Authorize(Roles = "1")]
         public async Task<IActionResult> Delete(int id)
         {
             try

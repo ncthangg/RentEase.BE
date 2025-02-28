@@ -33,7 +33,7 @@ namespace RentEase.Service.Helper
 
             var claims = new List<Claim>
         {
-            new Claim("", userId.ToString()),
+            new Claim("id", userId.ToString()),
             new Claim(ClaimTypes.Role, roleId.ToString())
         };
 
@@ -68,18 +68,18 @@ namespace RentEase.Service.Helper
             return Guid.NewGuid().ToString(); // Tạo refresh token ngẫu nhiên
         }
 
-        private string GenerateRefreshToken(SigningCredentials credentials, List<Claim> claims)
-        {
-            var refreshToken = new JwtSecurityToken(
-                issuer: _configuration["JwtSettings:Issuer"],
-                audience: _configuration["JwtSettings:Audience"],
-                claims: claims,
-                notBefore: DateTime.Now,
-                expires: DateTime.Now.AddDays(Convert.ToInt32(_configuration["JwtSettings:RefreshTokenExpirationDays"])),
-                signingCredentials: credentials
-            );
-            return new JwtSecurityTokenHandler().WriteToken(refreshToken);
-        }
+        //private string GenerateRefreshToken(SigningCredentials credentials, List<Claim> claims)
+        //{
+        //    var refreshToken = new JwtSecurityToken(
+        //        issuer: _configuration["JwtSettings:Issuer"],
+        //        audience: _configuration["JwtSettings:Audience"],
+        //        claims: claims,
+        //        notBefore: DateTime.Now,
+        //        expires: DateTime.Now.AddDays(Convert.ToInt32(_configuration["JwtSettings:RefreshTokenExpirationDays"])),
+        //        signingCredentials: credentials
+        //    );
+        //    return new JwtSecurityTokenHandler().WriteToken(refreshToken);
+        //}
 
         public string GenerateVerificationCode()
         {
