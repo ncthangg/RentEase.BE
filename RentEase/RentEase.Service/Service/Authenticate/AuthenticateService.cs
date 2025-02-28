@@ -132,7 +132,7 @@ namespace RentEase.Service.Service.Authenticate
                 }
 
                 // Xử lí gửi Verify Code
-                var verificationResult = await _accountVerificationService.HandleVerificationCode(itemData);
+                var verificationResult = await _accountVerificationService.HandleSendVerificationCode(itemData);
                 if (verificationResult.Status < 0)
                 {
                     return new ServiceResult(Const.ERROR_EXCEPTION, "Gửi code thất bại");

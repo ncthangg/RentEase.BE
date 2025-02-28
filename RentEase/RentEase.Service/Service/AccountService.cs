@@ -82,7 +82,7 @@ namespace RentEase.Service.Service
                 }
 
                 var item = await _unitOfWork.AccountRepository.GetByEmailOrPhoneAsync(username);
-                if (item != null)
+                if (item == null)
                 {
                     return new ServiceResult(Const.FAIL_READ_CODE, Const.FAIL_READ_MSG);
                 }

@@ -7,12 +7,16 @@
       "RelativeMoniker": "D:0:0:{CB347382-57DB-451D-AF20-D8D2B51A7B17}|RentEase.Service\\RentEase.Service.csproj|solutionrelative:rentease.service\\service\\authenticate\\accountverificationservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{CB347382-57DB-451D-AF20-D8D2B51A7B17}|RentEase.Service\\RentEase.Service.csproj|e:\\myproject\\rentease.be\\rentease\\rentease.service\\automapper\\mappingprofile.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{CB347382-57DB-451D-AF20-D8D2B51A7B17}|RentEase.Service\\RentEase.Service.csproj|solutionrelative:rentease.service\\automapper\\mappingprofile.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{CB347382-57DB-451D-AF20-D8D2B51A7B17}|RentEase.Service\\RentEase.Service.csproj|e:\\myproject\\rentease.be\\rentease\\rentease.service\\service\\accountservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{CB347382-57DB-451D-AF20-D8D2B51A7B17}|RentEase.Service\\RentEase.Service.csproj|solutionrelative:rentease.service\\service\\accountservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{CB347382-57DB-451D-AF20-D8D2B51A7B17}|RentEase.Service\\RentEase.Service.csproj|e:\\myproject\\rentease.be\\rentease\\rentease.service\\service\\authenticate\\authenticateservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{CB347382-57DB-451D-AF20-D8D2B51A7B17}|RentEase.Service\\RentEase.Service.csproj|solutionrelative:rentease.service\\service\\authenticate\\authenticateservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{CB347382-57DB-451D-AF20-D8D2B51A7B17}|RentEase.Service\\RentEase.Service.csproj|e:\\myproject\\rentease.be\\rentease\\rentease.service\\automapper\\mappingprofile.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{CB347382-57DB-451D-AF20-D8D2B51A7B17}|RentEase.Service\\RentEase.Service.csproj|solutionrelative:rentease.service\\automapper\\mappingprofile.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     }
   ],
   "DocumentGroupContainers": [
@@ -21,8 +25,8 @@
       "VerticalTabListWidth": 256,
       "DocumentGroups": [
         {
-          "DockedWidth": 400,
-          "SelectedChildIndex": 5,
+          "DockedWidth": 333,
+          "SelectedChildIndex": 6,
           "Children": [
             {
               "$type": "Bookmark",
@@ -38,20 +42,33 @@
             },
             {
               "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "AccountService.cs",
+              "DocumentMoniker": "E:\\MyProject\\RentEase.BE\\RentEase\\RentEase.Service\\Service\\AccountService.cs",
+              "RelativeDocumentMoniker": "RentEase.Service\\Service\\AccountService.cs",
+              "ToolTip": "E:\\MyProject\\RentEase.BE\\RentEase\\RentEase.Service\\Service\\AccountService.cs",
+              "RelativeToolTip": "RentEase.Service\\Service\\AccountService.cs",
+              "ViewState": "AgIAABEAAAAAAAAAAAAiwCUAAAAIAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-02-27T17:48:03.321Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
               "DocumentIndex": 2,
               "Title": "AuthenticateService.cs",
               "DocumentMoniker": "E:\\MyProject\\RentEase.BE\\RentEase\\RentEase.Service\\Service\\Authenticate\\AuthenticateService.cs",
               "RelativeDocumentMoniker": "RentEase.Service\\Service\\Authenticate\\AuthenticateService.cs",
               "ToolTip": "E:\\MyProject\\RentEase.BE\\RentEase\\RentEase.Service\\Service\\Authenticate\\AuthenticateService.cs",
               "RelativeToolTip": "RentEase.Service\\Service\\Authenticate\\AuthenticateService.cs",
-              "ViewState": "AgIAABsAAAAAAAAAAAAowAAAAAAAAAAAAAAAAA==",
+              "ViewState": "AgIAAEgAAAAAAAAAAAAkwF8AAAAIAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2025-02-27T17:30:31.669Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 1,
+              "DocumentIndex": 3,
               "Title": "MappingProfile.cs",
               "DocumentMoniker": "E:\\MyProject\\RentEase.BE\\RentEase\\RentEase.Service\\AutoMapper\\MappingProfile.cs",
               "RelativeDocumentMoniker": "RentEase.Service\\AutoMapper\\MappingProfile.cs",
@@ -59,8 +76,7 @@
               "RelativeToolTip": "RentEase.Service\\AutoMapper\\MappingProfile.cs",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAABUAAAAtAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-02-27T17:28:46.208Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-02-27T17:28:46.208Z"
             },
             {
               "$type": "Document",
@@ -68,9 +84,9 @@
               "Title": "AccountVerificationService.cs",
               "DocumentMoniker": "E:\\MyProject\\RentEase.BE\\RentEase\\RentEase.Service\\Service\\Authenticate\\AccountVerificationService.cs",
               "RelativeDocumentMoniker": "RentEase.Service\\Service\\Authenticate\\AccountVerificationService.cs",
-              "ToolTip": "E:\\MyProject\\RentEase.BE\\RentEase\\RentEase.Service\\Service\\Authenticate\\AccountVerificationService.cs*",
-              "RelativeToolTip": "RentEase.Service\\Service\\Authenticate\\AccountVerificationService.cs*",
-              "ViewState": "AgIAADYAAAAAAAAAAAAtwCwAAABVAAAAAAAAAA==",
+              "ToolTip": "E:\\MyProject\\RentEase.BE\\RentEase\\RentEase.Service\\Service\\Authenticate\\AccountVerificationService.cs",
+              "RelativeToolTip": "RentEase.Service\\Service\\Authenticate\\AccountVerificationService.cs",
+              "ViewState": "AgIAAFkAAAAAAAAAAAAkwHMAAAAdAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2025-02-27T17:27:40.852Z",
               "EditorCaption": ""
