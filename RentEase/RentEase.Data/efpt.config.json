@@ -59,6 +59,10 @@
          "ObjectType": 0
       },
       {
+         "Name": "[dbo].[Orders]",
+         "ObjectType": 0
+      },
+      {
          "Name": "[dbo].[Review]",
          "ObjectType": 0
       },
@@ -79,7 +83,7 @@
          "ObjectType": 0
       },
       {
-         "Name": "[dbo].[WalletTransactions]",
+         "Name": "[dbo].[WalletTransaction]",
          "ObjectType": 0
       }
    ],

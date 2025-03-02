@@ -4,7 +4,9 @@ public class RequestAptCategoryDto
 {
     public string CategoryName { get; set; }
 
-    public DateTime CreatedAt { get; set; }
+    public string Description { get; set; }
+
+    public DateTime CreatedAt { get; set; } = DateTime.Now;
 
     public DateTime? UpdatedAt { get; set; } = null;
 
@@ -17,6 +19,8 @@ public class ResponseAptCategoryDto
     public int Id { get; set; }
 
     public string CategoryName { get; set; }
+
+    public string Description { get; set; }
 
     public DateTime CreatedAt { get; set; }
 

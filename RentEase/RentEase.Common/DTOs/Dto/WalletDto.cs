@@ -6,7 +6,7 @@ public class RequestWalletDto
 
     public decimal Balance { get; set; } = 0;
 
-    public DateTime CreatedAt { get; set; }
+    public DateTime CreatedAt { get; set; } = DateTime.Now;
 
     public DateTime? UpdatedAt { get; set; } = null;
 

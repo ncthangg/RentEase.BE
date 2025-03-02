@@ -41,6 +41,8 @@ public partial class RentEaseContext : DbContext
 
     public virtual DbSet<MaintenanceRequest> MaintenanceRequests { get; set; }
 
+    public virtual DbSet<Order> Orders { get; set; }
+
     public virtual DbSet<Review> Reviews { get; set; }
 
     public virtual DbSet<Role> Roles { get; set; }
@@ -76,7 +78,7 @@ public partial class RentEaseContext : DbContext
     {
         modelBuilder.Entity<Account>(entity =>
         {
-            entity.HasKey(e => e.Id).HasName("PK__Account__3214EC07A7C06C38");
+            entity.HasKey(e => e.Id).HasName("PK__Account__3214EC07B4A3DB91");
 
             entity.ToTable("Account");
 
@@ -86,15 +88,13 @@ public partial class RentEaseContext : DbContext
 
             entity.HasIndex(e => e.RoleId, "IX_Account_RoleId");
 
-            entity.HasIndex(e => e.PhoneNumber, "UQ__Account__85FB4E386BB80190").IsUnique();
+            entity.HasIndex(e => e.PhoneNumber, "UQ__Account__85FB4E38FC8B5A22").IsUnique();
 
-            entity.HasIndex(e => e.Email, "UQ__Account__A9D1053407B958D1").IsUnique();
+            entity.HasIndex(e => e.Email, "UQ__Account__A9D10534D12BD081").IsUnique();
 
             entity.Property(e => e.CreatedAt).HasColumnType("datetime");
             entity.Property(e => e.DeletedAt).HasColumnType("datetime");
-            entity.Property(e => e.Email)
-                .IsRequired()
-                .HasMaxLength(255);
+            entity.Property(e => e.Email).HasMaxLength(255);
             entity.Property(e => e.FullName)
                 .IsRequired()
                 .HasMaxLength(255);
@@ -103,9 +103,7 @@ public partial class RentEaseContext : DbContext
             entity.Property(e => e.PasswordHash)
                 .IsRequired()
                 .HasMaxLength(255);
-            entity.Property(e => e.PhoneNumber)
-                .IsRequired()
-                .HasMaxLength(15);
+            entity.Property(e => e.PhoneNumber).HasMaxLength(15);
             entity.Property(e => e.Status).HasDefaultValue(true);
             entity.Property(e => e.UpdatedAt).HasColumnType("datetime");
 
@@ -117,7 +115,7 @@ public partial class RentEaseContext : DbContext
 
         modelBuilder.Entity<AccountToken>(entity =>
         {
-            entity.HasKey(e => e.Id).HasName("PK__AccountT__3214EC070ED8A680");
+            entity.HasKey(e => e.Id).HasName("PK__AccountT__3214EC07A9A4F3EB");
 
             entity.ToTable("AccountToken");
 
@@ -135,7 +133,7 @@ public partial class RentEaseContext : DbContext
 
         modelBuilder.Entity<AccountVerification>(entity =>
         {
-            entity.HasKey(e => e.Id).HasName("PK__AccountV__3214EC07F79FD17B");
+            entity.HasKey(e => e.Id).HasName("PK__AccountV__3214EC078E0D6018");
 
             entity.ToTable("AccountVerification");
 
@@ -154,7 +152,7 @@ public partial class RentEaseContext : DbContext
 
         modelBuilder.Entity<Apt>(entity =>
         {
-            entity.HasKey(e => e.Id).HasName("PK__Apt__3214EC0799E20537");
+            entity.HasKey(e => e.Id).HasName("PK__Apt__3214EC072568CE4A");
 
             entity.ToTable("Apt");
 
@@ -164,7 +162,9 @@ public partial class RentEaseContext : DbContext
 
             entity.HasIndex(e => e.OwnerId, "IX_Apt_OwnerId");
 
-            entity.Property(e => e.Address).HasMaxLength(500);
+            entity.Property(e => e.Address)
+                .IsRequired()
+                .HasMaxLength(500);
             entity.Property(e => e.AddressLink).HasMaxLength(500);
             entity.Property(e => e.AptCode)
                 .IsRequired()
@@ -192,9 +192,11 @@ public partial class RentEaseContext : DbContext
 
         modelBuilder.Entity<AptCategory>(entity =>
         {
-            entity.HasKey(e => e.Id).HasName("PK__AptCateg__3214EC071308A9B9");
+            entity.HasKey(e => e.Id).HasName("PK__AptCateg__3214EC07BE01104A");
 
             entity.ToTable("AptCategory");
+
+            entity.HasIndex(e => e.CategoryName, "UQ__AptCateg__8517B2E0E376593E").IsUnique();
 
             entity.Property(e => e.CategoryName)
                 .IsRequired()
@@ -208,7 +210,7 @@ public partial class RentEaseContext : DbContext
 
         modelBuilder.Entity<AptImage>(entity =>
         {
-            entity.HasKey(e => e.Id).HasName("PK__AptImage__3214EC07C7101E9F");
+            entity.HasKey(e => e.Id).HasName("PK__AptImage__3214EC07261512F6");
 
             entity.ToTable("AptImage");
 
@@ -231,9 +233,11 @@ public partial class RentEaseContext : DbContext
 
         modelBuilder.Entity<AptStatus>(entity =>
         {
-            entity.HasKey(e => e.Id).HasName("PK__AptStatu__3214EC07793BC0D7");
+            entity.HasKey(e => e.Id).HasName("PK__AptStatu__3214EC07F1A82223");
 
             entity.ToTable("AptStatus");
+
+            entity.HasIndex(e => e.StatusName, "UQ__AptStatu__05E7698A5FA10BF9").IsUnique();
 
             entity.Property(e => e.CreatedAt).HasColumnType("datetime");
             entity.Property(e => e.DeletedAt).HasColumnType("datetime");
@@ -247,7 +251,7 @@ public partial class RentEaseContext : DbContext
 
         modelBuilder.Entity<AptUtility>(entity =>
         {
-            entity.HasKey(e => e.Id).HasName("PK__AptUtili__3214EC07C1A30303");
+            entity.HasKey(e => e.Id).HasName("PK__AptUtili__3214EC075180B79B");
 
             entity.ToTable("AptUtility");
 
@@ -274,7 +278,7 @@ public partial class RentEaseContext : DbContext
 
         modelBuilder.Entity<Contract>(entity =>
         {
-            entity.HasKey(e => e.Id).HasName("PK__Contract__3214EC07F9D66402");
+            entity.HasKey(e => e.Id).HasName("PK__Contract__3214EC07557A5B9D");
 
             entity.ToTable("Contract");
 
@@ -320,7 +324,7 @@ public partial class RentEaseContext : DbContext
 
         modelBuilder.Entity<CurrentResident>(entity =>
         {
-            entity.HasKey(e => e.Id).HasName("PK__CurrentR__3214EC07FF4767B9");
+            entity.HasKey(e => e.Id).HasName("PK__CurrentR__3214EC071F0013CD");
 
             entity.ToTable("CurrentResident");
 
@@ -348,7 +352,7 @@ public partial class RentEaseContext : DbContext
 
         modelBuilder.Entity<MaintenanceRequest>(entity =>
         {
-            entity.HasKey(e => e.Id).HasName("PK__Maintena__3214EC07CDAF9235");
+            entity.HasKey(e => e.Id).HasName("PK__Maintena__3214EC07D1E936BB");
 
             entity.ToTable("MaintenanceRequest");
 
@@ -379,9 +383,37 @@ public partial class RentEaseContext : DbContext
                 .HasConstraintName("FK_MaintenanceRequest_Lessee");
         });
 
+        modelBuilder.Entity<Order>(entity =>
+        {
+            entity.HasKey(e => e.Id).HasName("PK__Orders__3214EC07D2858C2C");
+
+            entity.Property(e => e.Id).HasMaxLength(100);
+            entity.Property(e => e.Amount).HasColumnType("decimal(18, 2)");
+            entity.Property(e => e.CreatedAt).HasColumnType("datetime");
+            entity.Property(e => e.DueDate).HasColumnType("datetime");
+
+            entity.HasOne(d => d.Contract).WithMany(p => p.Orders)
+                .HasForeignKey(d => d.ContractId)
+                .HasConstraintName("FK_Order_Contract");
+
+            entity.HasOne(d => d.Lessee).WithMany(p => p.OrderLessees)
+                .HasForeignKey(d => d.LesseeId)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK_Order_Lessee");
+
+            entity.HasOne(d => d.Lessor).WithMany(p => p.OrderLessors)
+                .HasForeignKey(d => d.LessorId)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK_Order_Lessor");
+
+            entity.HasOne(d => d.TransactionType).WithMany(p => p.Orders)
+                .HasForeignKey(d => d.TransactionTypeId)
+                .HasConstraintName("FK_Order_TransactionType");
+        });
+
         modelBuilder.Entity<Review>(entity =>
         {
-            entity.HasKey(e => e.Id).HasName("PK__Review__3214EC07E13FB91C");
+            entity.HasKey(e => e.Id).HasName("PK__Review__3214EC0731184032");
 
             entity.ToTable("Review");
 
@@ -409,11 +441,11 @@ public partial class RentEaseContext : DbContext
 
         modelBuilder.Entity<Role>(entity =>
         {
-            entity.HasKey(e => e.Id).HasName("PK__Role__3214EC073B0B480A");
+            entity.HasKey(e => e.Id).HasName("PK__Role__3214EC0733657BC1");
 
             entity.ToTable("Role");
 
-            entity.HasIndex(e => e.RoleName, "UQ__Role__8A2B616094AF70F7").IsUnique();
+            entity.HasIndex(e => e.RoleName, "UQ__Role__8A2B616030A40C7F").IsUnique();
 
             entity.Property(e => e.CreatedAt).HasColumnType("datetime");
             entity.Property(e => e.DeletedAt).HasColumnType("datetime");
@@ -427,39 +459,41 @@ public partial class RentEaseContext : DbContext
 
         modelBuilder.Entity<TransactionType>(entity =>
         {
-            entity.HasKey(e => e.Id).HasName("PK__Transact__3214EC07E15E3D29");
+            entity.HasKey(e => e.Id).HasName("PK__Transact__3214EC07D88D5DD0");
 
             entity.ToTable("TransactionType");
 
             entity.Property(e => e.CreatedAt).HasColumnType("datetime");
             entity.Property(e => e.DeletedAt).HasColumnType("datetime");
             entity.Property(e => e.Description).HasMaxLength(255);
-            entity.Property(e => e.Name)
+            entity.Property(e => e.Status).HasDefaultValue(true);
+            entity.Property(e => e.TypeName)
                 .IsRequired()
                 .HasMaxLength(100);
-            entity.Property(e => e.Status).HasDefaultValue(true);
             entity.Property(e => e.UpdatedAt).HasColumnType("datetime");
         });
 
         modelBuilder.Entity<Utility>(entity =>
         {
-            entity.HasKey(e => e.Id).HasName("PK__Utility__3214EC07760491FF");
+            entity.HasKey(e => e.Id).HasName("PK__Utility__3214EC076B0595FA");
 
             entity.ToTable("Utility");
+
+            entity.HasIndex(e => e.UtilityName, "UQ__Utility__E8B225D69443F694").IsUnique();
 
             entity.Property(e => e.CreatedAt).HasColumnType("datetime");
             entity.Property(e => e.DeletedAt).HasColumnType("datetime");
             entity.Property(e => e.Description).HasMaxLength(255);
-            entity.Property(e => e.Name)
-                .IsRequired()
-                .HasMaxLength(100);
             entity.Property(e => e.Status).HasDefaultValue(true);
             entity.Property(e => e.UpdatedAt).HasColumnType("datetime");
+            entity.Property(e => e.UtilityName)
+                .IsRequired()
+                .HasMaxLength(100);
         });
 
         modelBuilder.Entity<Wallet>(entity =>
         {
-            entity.HasKey(e => e.AccountId).HasName("PK__Wallet__349DA5A615ED24A0");
+            entity.HasKey(e => e.AccountId).HasName("PK__Wallet__349DA5A6682874AE");
 
             entity.ToTable("Wallet");
 
@@ -479,24 +513,34 @@ public partial class RentEaseContext : DbContext
 
         modelBuilder.Entity<WalletTransaction>(entity =>
         {
-            entity.HasKey(e => e.Id).HasName("PK__WalletTr__3214EC0761861E39");
+            entity.HasKey(e => e.Id).HasName("PK__WalletTr__3214EC0725C77FF7");
 
-            entity.HasIndex(e => e.AccountId, "IDX_WalletTransactions_AccountId");
+            entity.ToTable("WalletTransaction");
 
-            entity.HasIndex(e => e.TransactionTypeId, "IDX_WalletTransactions_TransactionTypeId");
+            entity.HasIndex(e => e.TransactionTypeId, "IDX_WalletTransaction_TransactionTypeId");
+
+            entity.HasIndex(e => e.WalletId, "IDX_WalletTransaction_WalletId");
+
+            entity.HasIndex(e => e.OrderId, "UQ__WalletTr__C3905BCE43657992").IsUnique();
 
             entity.Property(e => e.Amount).HasColumnType("decimal(18, 2)");
             entity.Property(e => e.CreatedAt).HasColumnType("datetime");
             entity.Property(e => e.Description).HasMaxLength(500);
+            entity.Property(e => e.OrderId).HasMaxLength(100);
 
-            entity.HasOne(d => d.Account).WithMany(p => p.WalletTransactions)
-                .HasForeignKey(d => d.AccountId)
-                .HasConstraintName("FK_WalletTransactions_Wallet");
+            entity.HasOne(d => d.Order).WithOne(p => p.WalletTransaction)
+                .HasForeignKey<WalletTransaction>(d => d.OrderId)
+                .OnDelete(DeleteBehavior.Cascade)
+                .HasConstraintName("FK_WalletTransaction_Orders");
 
             entity.HasOne(d => d.TransactionType).WithMany(p => p.WalletTransactions)
                 .HasForeignKey(d => d.TransactionTypeId)
                 .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK_WalletTransactions_TransactionType");
+                .HasConstraintName("FK_WalletTransaction_TransactionType");
+
+            entity.HasOne(d => d.Wallet).WithMany(p => p.WalletTransactions)
+                .HasForeignKey(d => d.WalletId)
+                .HasConstraintName("FK_WalletTransaction_Wallet");
         });
 
         OnModelCreatingPartial(modelBuilder);

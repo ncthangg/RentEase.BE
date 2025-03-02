@@ -14,9 +14,9 @@ public class RequestContractDto
 
     public DateTime EndDate { get; set; }
 
-    public int RentPrice { get; set; }
+    public long RentPrice { get; set; }
 
-    public int? PilePrice { get; set; }
+    public long PilePrice { get; set; }
 
     public string FileUrl { get; set; }
 
@@ -24,7 +24,7 @@ public class RequestContractDto
 
     public int ApproveStatusId { get; set; }
 
-    public DateTime CreatedAt { get; set; }
+    public DateTime CreatedAt { get; set; } = DateTime.Now;
 
     public DateTime? UpdatedAt { get; set; } = null;
 
@@ -48,9 +48,9 @@ public class ResponseContractDto
 
     public DateTime EndDate { get; set; }
 
-    public int RentPrice { get; set; }
+    public long RentPrice { get; set; }
 
-    public int? PilePrice { get; set; }
+    public long PilePrice { get; set; }
 
     public string FileUrl { get; set; }
 

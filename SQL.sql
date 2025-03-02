@@ -3,7 +3,7 @@
 -- Bảng phụ
 CREATE TABLE Utility (
     Id INT IDENTITY(1,1) PRIMARY KEY,
-    Name NVARCHAR(100) NOT NULL,
+    UtilityName NVARCHAR(100) NOT NULL UNIQUE,
     Description NVARCHAR(255) NULL,
     CreatedAt DATETIME NOT NULL,
     UpdatedAt DATETIME NULL,
@@ -12,7 +12,7 @@ CREATE TABLE Utility (
 );
 CREATE TABLE AptCategory (
     Id INT PRIMARY KEY IDENTITY(1,1),
-    CategoryName NVARCHAR(100) NOT NULL,
+    CategoryName NVARCHAR(100) NOT NULL UNIQUE,
     Description NVARCHAR(255) NULL,
     CreatedAt DATETIME NOT NULL,
     UpdatedAt DATETIME NULL,
@@ -21,7 +21,7 @@ CREATE TABLE AptCategory (
 );
 CREATE TABLE AptStatus (
     Id INT PRIMARY KEY IDENTITY(1,1),
-    StatusName NVARCHAR(100) NOT NULL,
+    StatusName NVARCHAR(100) NOT NULL UNIQUE,
     Description NVARCHAR(255) NULL,
     CreatedAt DATETIME NOT NULL,
     UpdatedAt DATETIME NULL,
@@ -39,7 +39,7 @@ CREATE TABLE Role (
 );
 CREATE TABLE TransactionType (
     Id INT IDENTITY(1,1) PRIMARY KEY,
-    Name NVARCHAR(100) NOT NULL,
+    TypeName NVARCHAR(100) NOT NULL,
     Description NVARCHAR(255) NULL,
     CreatedAt DATETIME NOT NULL,
     UpdatedAt DATETIME NULL,
@@ -51,10 +51,10 @@ CREATE TABLE TransactionType (
 CREATE TABLE Account (
     Id INT PRIMARY KEY IDENTITY(1,1),
     FullName NVARCHAR(255) NOT NULL,
-    Email NVARCHAR(255) UNIQUE NOT NULL,
+    Email NVARCHAR(255) UNIQUE NULL,
     PasswordHash NVARCHAR(255) NOT NULL,
-    PhoneNumber NVARCHAR(15) UNIQUE NOT NULL,
-    DateOfBirth DATE,
+    PhoneNumber NVARCHAR(15) UNIQUE NULL,
+    DateOfBirth DATE NULL,
     Gender NVARCHAR(10) NULL,
     AvatarUrl NVARCHAR(MAX) NULL,
     RoleId INT NOT NULL,
@@ -76,8 +76,8 @@ CREATE TABLE Apt (
     Name NVARCHAR(255) NOT NULL,
     Description NVARCHAR(MAX) NULL,
 	Area FLOAT DEFAULT 0,
-    Address NVARCHAR(500),
-	AddressLink NVARCHAR(500),
+    Address NVARCHAR(500) NOT NULL,
+	AddressLink NVARCHAR(500) NULL,
     ProvinceId INT NOT NULL,
     DistrictId INT NOT NULL,
 	WardId INT NOT NULL,
@@ -106,7 +106,7 @@ CREATE TABLE AccountVerification (
     Id INT PRIMARY KEY IDENTITY(1,1),
     AccountId INT NOT NULL,
     VerificationCode NVARCHAR(50) NOT NULL,
-    ExpiresAt DATETIME NULL,
+    ExpiresAt DATETIME NOT NULL,
     IsUsed BIT DEFAULT 0,
     CreatedAt DATETIME NOT NULL,
     CONSTRAINT FK_AccountVerification_Account FOREIGN KEY (AccountId) REFERENCES Account(Id)
@@ -117,7 +117,7 @@ CREATE TABLE AptUtility (
     Id INT IDENTITY(1,1) PRIMARY KEY,
     AptId INT NOT NULL,
     UtilityId INT NOT NULL,
-	Description NVARCHAR(500),
+	Description NVARCHAR(500) NULL,
     CreatedAt DATETIME NOT NULL,
     UpdatedAt DATETIME NULL,
 	DeletedAt DATETIME NULL,
@@ -213,7 +213,7 @@ CREATE TABLE Contract (
     StartDate DATETIME NOT NULL,
     EndDate DATETIME NOT NULL,
     RentPrice BIGINT NOT NULL,
-    PilePrice BIGINT NULL,
+    PilePrice BIGINT NOT NULL,
     FileURL NVARCHAR(MAX) NULL,
     ContractStatusId INT NOT NULL,
     ApproveStatusId INT NOT NULL,
@@ -244,6 +244,22 @@ CREATE TABLE AccountToken (
 );
 CREATE INDEX IX_AccountToken_AccountId ON AccountToken (AccountId);
 
+CREATE TABLE Orders (
+    Id NVARCHAR(100) PRIMARY KEY,
+    ContractId INT NOT NULL,
+    LessorId INT NOT NULL,
+    LesseeId INT NOT NULL,
+	Amount DECIMAL(18,2) NOT NULL,
+    TransactionTypeId INT NOT NULL,
+    TransactionStatusId INT NOT NULL,
+	DueDate DATETIME NOT NULL,
+    CreatedAt DATETIME NOT NULL,
+    CONSTRAINT FK_Order_Contract FOREIGN KEY (ContractId) REFERENCES Contract(Id) ON DELETE CASCADE,
+    CONSTRAINT FK_Order_Lessor FOREIGN KEY (LessorId) REFERENCES Account(Id),
+    CONSTRAINT FK_Order_Lessee FOREIGN KEY (LesseeId) REFERENCES Account(Id),
+    CONSTRAINT FK_Order_TransactionType FOREIGN KEY (TransactionTypeId) REFERENCES TransactionType(Id) ON DELETE CASCADE,
+
+);
 
 CREATE TABLE Wallet (
     AccountId INT NOT NULL PRIMARY KEY,
@@ -257,19 +273,22 @@ CREATE TABLE Wallet (
 CREATE INDEX IDX_Wallet_AccountId ON Wallet (AccountId);
 
 
-CREATE TABLE WalletTransactions (
+CREATE TABLE WalletTransaction (
     Id INT IDENTITY(1,1) PRIMARY KEY,
-    AccountId INT NOT NULL, 
+	OrderId NVARCHAR(100) NULL UNIQUE,
+    WalletId INT NOT NULL, 
     Amount DECIMAL(18,2) NOT NULL,
     TransactionTypeId INT NOT NULL,
     TransactionStatusId INT NOT NULL,
     Description NVARCHAR(500) NULL,
     CreatedAt DATETIME NOT NULL,
-    CONSTRAINT FK_WalletTransactions_Wallet FOREIGN KEY (AccountId) REFERENCES Wallet(AccountId) ON DELETE CASCADE,
-    CONSTRAINT FK_WalletTransactions_TransactionType FOREIGN KEY (TransactionTypeId) REFERENCES TransactionType(Id)
+	CONSTRAINT FK_WalletTransaction_Orders FOREIGN KEY (OrderId) REFERENCES Orders(Id) ON DELETE CASCADE,
+    CONSTRAINT FK_WalletTransaction_Wallet FOREIGN KEY (WalletId) REFERENCES Wallet(AccountId) ON DELETE CASCADE,
+    CONSTRAINT FK_WalletTransaction_TransactionType FOREIGN KEY (TransactionTypeId) REFERENCES TransactionType(Id)
 );
-CREATE INDEX IDX_WalletTransactions_AccountId ON WalletTransactions (AccountId);
-CREATE INDEX IDX_WalletTransactions_TransactionTypeId ON WalletTransactions (TransactionTypeId);
+CREATE INDEX IDX_WalletTransaction_WalletId ON WalletTransaction (WalletId);
+CREATE INDEX IDX_WalletTransaction_TransactionTypeId ON WalletTransaction (TransactionTypeId);
+
 
 
 -- Xóa các bảng có khóa ngoại trước
@@ -278,6 +297,8 @@ DROP TABLE IF EXISTS Utility;
 DROP TABLE IF EXISTS AptCategory;
 DROP TABLE IF EXISTS AptStatus;
 DROP TABLE IF EXISTS TransactionType;
+
+DROP TABLE IF EXISTS Orders;
 
 DROP TABLE IF EXISTS AccountVerification;
 DROP TABLE IF EXISTS AccountToken;

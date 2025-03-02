@@ -1,4 +1,5 @@
-﻿using RentEase.Service.Service;
+﻿using RentEase.Service.Service.Main;
+using RentEase.Service.Service.Sub;
 
 namespace RentEase.Service
 {
@@ -37,7 +38,6 @@ namespace RentEase.Service
              ITransactionTypeService transactionTypeService,
              IWalletService walletService,
              IWalletTransactionService walletTransactionService
-
              )
         {
             AccountService = accountService;
@@ -55,8 +55,6 @@ namespace RentEase.Service
             TransactionTypeService = transactionTypeService;
             WalletService = walletService;
             WalletTransactionService = walletTransactionService;
-
-
         }
     }
 }

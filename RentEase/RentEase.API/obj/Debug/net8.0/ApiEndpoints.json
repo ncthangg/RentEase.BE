@@ -188,6 +188,11 @@
     "Order": 0,
     "Parameters": [
       {
+        "Name": "status",
+        "Type": "System.Boolean",
+        "IsRequired": false
+      },
+      {
         "Name": "page",
         "Type": "System.Int32",
         "IsRequired": false
@@ -270,6 +275,37 @@
     "ReturnTypes": []
   },
   {
+    "ContainingType": "RentEase.API.Controllers.Sub.AptCategoryController",
+    "Method": "Search",
+    "RelativePath": "api/AptCategory/search",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "name",
+        "Type": "System.String",
+        "IsRequired": false
+      },
+      {
+        "Name": "status",
+        "Type": "System.Boolean",
+        "IsRequired": false
+      },
+      {
+        "Name": "page",
+        "Type": "System.Int32",
+        "IsRequired": false
+      },
+      {
+        "Name": "pageSize",
+        "Type": "System.Int32",
+        "IsRequired": false
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
     "ContainingType": "RentEase.API.Controllers.Main.AptImageController",
     "Method": "Get",
     "RelativePath": "api/AptImage",
@@ -368,6 +404,11 @@
     "Order": 0,
     "Parameters": [
       {
+        "Name": "status",
+        "Type": "System.Boolean",
+        "IsRequired": false
+      },
+      {
         "Name": "page",
         "Type": "System.Int32",
         "IsRequired": false
@@ -445,6 +486,37 @@
         "Name": "id",
         "Type": "System.Int32",
         "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "RentEase.API.Controllers.Sub.AptStatusController",
+    "Method": "Search",
+    "RelativePath": "api/AptStatus/search",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "name",
+        "Type": "System.String",
+        "IsRequired": false
+      },
+      {
+        "Name": "status",
+        "Type": "System.Boolean",
+        "IsRequired": false
+      },
+      {
+        "Name": "page",
+        "Type": "System.Int32",
+        "IsRequired": false
+      },
+      {
+        "Name": "pageSize",
+        "Type": "System.Int32",
+        "IsRequired": false
       }
     ],
     "ReturnTypes": []
@@ -876,6 +948,11 @@
     "Order": 0,
     "Parameters": [
       {
+        "Name": "status",
+        "Type": "System.Boolean",
+        "IsRequired": false
+      },
+      {
         "Name": "page",
         "Type": "System.Int32",
         "IsRequired": false
@@ -958,6 +1035,37 @@
     "ReturnTypes": []
   },
   {
+    "ContainingType": "RentEase.API.Controllers.Sub.RoleController",
+    "Method": "Search",
+    "RelativePath": "api/Role/search",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "name",
+        "Type": "System.String",
+        "IsRequired": false
+      },
+      {
+        "Name": "status",
+        "Type": "System.Boolean",
+        "IsRequired": false
+      },
+      {
+        "Name": "page",
+        "Type": "System.Int32",
+        "IsRequired": false
+      },
+      {
+        "Name": "pageSize",
+        "Type": "System.Int32",
+        "IsRequired": false
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
     "ContainingType": "RentEase.API.Controllers.Sub.TransactionTypeController",
     "Method": "Get",
     "RelativePath": "api/TransactionType",
@@ -965,6 +1073,11 @@
     "IsController": true,
     "Order": 0,
     "Parameters": [
+      {
+        "Name": "status",
+        "Type": "System.Boolean",
+        "IsRequired": false
+      },
       {
         "Name": "page",
         "Type": "System.Int32",
@@ -1048,6 +1161,37 @@
     "ReturnTypes": []
   },
   {
+    "ContainingType": "RentEase.API.Controllers.Sub.TransactionTypeController",
+    "Method": "Search",
+    "RelativePath": "api/TransactionType/search",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "name",
+        "Type": "System.String",
+        "IsRequired": false
+      },
+      {
+        "Name": "status",
+        "Type": "System.Boolean",
+        "IsRequired": false
+      },
+      {
+        "Name": "page",
+        "Type": "System.Int32",
+        "IsRequired": false
+      },
+      {
+        "Name": "pageSize",
+        "Type": "System.Int32",
+        "IsRequired": false
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
     "ContainingType": "RentEase.API.Controllers.Sub.UtilityController",
     "Method": "Get",
     "RelativePath": "api/Utility",
@@ -1055,6 +1199,11 @@
     "IsController": true,
     "Order": 0,
     "Parameters": [
+      {
+        "Name": "status",
+        "Type": "System.Boolean",
+        "IsRequired": false
+      },
       {
         "Name": "page",
         "Type": "System.Int32",
@@ -1133,6 +1282,37 @@
         "Name": "id",
         "Type": "System.Int32",
         "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "RentEase.API.Controllers.Sub.UtilityController",
+    "Method": "Search",
+    "RelativePath": "api/Utility/search",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "name",
+        "Type": "System.String",
+        "IsRequired": false
+      },
+      {
+        "Name": "status",
+        "Type": "System.Boolean",
+        "IsRequired": false
+      },
+      {
+        "Name": "page",
+        "Type": "System.Int32",
+        "IsRequired": false
+      },
+      {
+        "Name": "pageSize",
+        "Type": "System.Int32",
+        "IsRequired": false
       }
     ],
     "ReturnTypes": []

@@ -269,4 +269,3 @@ E:\MyProject\RentEase.BE\RentEase\RentEase.API\obj\Debug\net8.0\refint\RentEase.
 E:\MyProject\RentEase.BE\RentEase\RentEase.API\obj\Debug\net8.0\RentEase.API.pdb
 E:\MyProject\RentEase.BE\RentEase\RentEase.API\obj\Debug\net8.0\RentEase.API.genruntimeconfig.cache
 E:\MyProject\RentEase.BE\RentEase\RentEase.API\obj\Debug\net8.0\ref\RentEase.API.dll
-E:\MyProject\RentEase.BE\RentEase\RentEase.API\obj\Debug\net8.0\RentEase.API.MvcApplicationPartsAssemblyInfo.cs

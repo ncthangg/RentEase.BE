@@ -3,6 +3,14 @@
   "WorkspaceRootPath": "E:\\MyProject\\RentEase.BE\\RentEase\\",
   "Documents": [
     {
+      "AbsoluteMoniker": "D:0:0:{CB347382-57DB-451D-AF20-D8D2B51A7B17}|RentEase.Service\\RentEase.Service.csproj|e:\\myproject\\rentease.be\\rentease\\rentease.service\\helper\\tokenhelper.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{CB347382-57DB-451D-AF20-D8D2B51A7B17}|RentEase.Service\\RentEase.Service.csproj|solutionrelative:rentease.service\\helper\\tokenhelper.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{17B22115-21F2-4783-9335-4E8C107D1AFE}|RentEase.Common\\RentEase.Common.csproj|e:\\myproject\\rentease.be\\rentease\\rentease.common\\dtos\\dto\\accountdto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{17B22115-21F2-4783-9335-4E8C107D1AFE}|RentEase.Common\\RentEase.Common.csproj|solutionrelative:rentease.common\\dtos\\dto\\accountdto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
       "AbsoluteMoniker": "D:0:0:{81264B50-3581-4B37-9CD2-1ED21CB21BAC}|RentEase.API\\RentEase.API.csproj|e:\\myproject\\rentease.be\\rentease\\rentease.api\\controllers\\authenticate\\authcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{81264B50-3581-4B37-9CD2-1ED21CB21BAC}|RentEase.API\\RentEase.API.csproj|solutionrelative:rentease.api\\controllers\\authenticate\\authcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
@@ -11,20 +19,52 @@
       "RelativeMoniker": "D:0:0:{CB347382-57DB-451D-AF20-D8D2B51A7B17}|RentEase.Service\\RentEase.Service.csproj|solutionrelative:rentease.service\\service\\authenticate\\authenticateservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{CB347382-57DB-451D-AF20-D8D2B51A7B17}|RentEase.Service\\RentEase.Service.csproj|e:\\myproject\\rentease.be\\rentease\\rentease.service\\helper\\tokenhelper.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{CB347382-57DB-451D-AF20-D8D2B51A7B17}|RentEase.Service\\RentEase.Service.csproj|solutionrelative:rentease.service\\helper\\tokenhelper.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{CB347382-57DB-451D-AF20-D8D2B51A7B17}|RentEase.Service\\RentEase.Service.csproj|e:\\myproject\\rentease.be\\rentease\\rentease.service\\helper\\paymenthelper.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{CB347382-57DB-451D-AF20-D8D2B51A7B17}|RentEase.Service\\RentEase.Service.csproj|solutionrelative:rentease.service\\helper\\paymenthelper.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{CB347382-57DB-451D-AF20-D8D2B51A7B17}|RentEase.Service\\RentEase.Service.csproj|e:\\myproject\\rentease.be\\rentease\\rentease.service\\automapper\\mappingprofile.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{CB347382-57DB-451D-AF20-D8D2B51A7B17}|RentEase.Service\\RentEase.Service.csproj|solutionrelative:rentease.service\\automapper\\mappingprofile.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{CB347382-57DB-451D-AF20-D8D2B51A7B17}|RentEase.Service\\RentEase.Service.csproj|e:\\myproject\\rentease.be\\rentease\\rentease.service\\service\\main\\walletservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{CB347382-57DB-451D-AF20-D8D2B51A7B17}|RentEase.Service\\RentEase.Service.csproj|solutionrelative:rentease.service\\service\\main\\walletservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{CB347382-57DB-451D-AF20-D8D2B51A7B17}|RentEase.Service\\RentEase.Service.csproj|e:\\myproject\\rentease.be\\rentease\\rentease.service\\service\\authenticate\\accountverificationservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{CB347382-57DB-451D-AF20-D8D2B51A7B17}|RentEase.Service\\RentEase.Service.csproj|solutionrelative:rentease.service\\service\\authenticate\\accountverificationservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{CB347382-57DB-451D-AF20-D8D2B51A7B17}|RentEase.Service\\RentEase.Service.csproj|e:\\myproject\\rentease.be\\rentease\\rentease.service\\service\\main\\wallettransactionservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{CB347382-57DB-451D-AF20-D8D2B51A7B17}|RentEase.Service\\RentEase.Service.csproj|solutionrelative:rentease.service\\service\\main\\wallettransactionservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{81264B50-3581-4B37-9CD2-1ED21CB21BAC}|RentEase.API\\RentEase.API.csproj|e:\\myproject\\rentease.be\\rentease\\rentease.api\\controllers\\main\\accountscontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{81264B50-3581-4B37-9CD2-1ED21CB21BAC}|RentEase.API\\RentEase.API.csproj|solutionrelative:rentease.api\\controllers\\main\\accountscontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{CB347382-57DB-451D-AF20-D8D2B51A7B17}|RentEase.Service\\RentEase.Service.csproj|e:\\myproject\\rentease.be\\rentease\\rentease.service\\service\\sub\\aptcategoryservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{CB347382-57DB-451D-AF20-D8D2B51A7B17}|RentEase.Service\\RentEase.Service.csproj|solutionrelative:rentease.service\\service\\sub\\aptcategoryservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{CB347382-57DB-451D-AF20-D8D2B51A7B17}|RentEase.Service\\RentEase.Service.csproj|e:\\myproject\\rentease.be\\rentease\\rentease.service\\service\\sub\\aptstatusservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{CB347382-57DB-451D-AF20-D8D2B51A7B17}|RentEase.Service\\RentEase.Service.csproj|solutionrelative:rentease.service\\service\\sub\\aptstatusservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{CB347382-57DB-451D-AF20-D8D2B51A7B17}|RentEase.Service\\RentEase.Service.csproj|e:\\myproject\\rentease.be\\rentease\\rentease.service\\service\\sub\\roleservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{CB347382-57DB-451D-AF20-D8D2B51A7B17}|RentEase.Service\\RentEase.Service.csproj|solutionrelative:rentease.service\\service\\sub\\roleservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{CB347382-57DB-451D-AF20-D8D2B51A7B17}|RentEase.Service\\RentEase.Service.csproj|e:\\myproject\\rentease.be\\rentease\\rentease.service\\service\\sub\\transactiontypeservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{CB347382-57DB-451D-AF20-D8D2B51A7B17}|RentEase.Service\\RentEase.Service.csproj|solutionrelative:rentease.service\\service\\sub\\transactiontypeservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{CB347382-57DB-451D-AF20-D8D2B51A7B17}|RentEase.Service\\RentEase.Service.csproj|e:\\myproject\\rentease.be\\rentease\\rentease.service\\service\\sub\\utilityservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{CB347382-57DB-451D-AF20-D8D2B51A7B17}|RentEase.Service\\RentEase.Service.csproj|solutionrelative:rentease.service\\service\\sub\\utilityservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{79F55FCA-24BA-4E11-A642-A9CC8C418927}|RentEase.Data\\RentEase.Data.csproj|e:\\myproject\\rentease.be\\rentease\\rentease.data\\models\\role.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{79F55FCA-24BA-4E11-A642-A9CC8C418927}|RentEase.Data\\RentEase.Data.csproj|solutionrelative:rentease.data\\models\\role.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{CB347382-57DB-451D-AF20-D8D2B51A7B17}|RentEase.Service\\RentEase.Service.csproj|e:\\myproject\\rentease.be\\rentease\\rentease.service\\service\\authenticate\\accounttokenservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{CB347382-57DB-451D-AF20-D8D2B51A7B17}|RentEase.Service\\RentEase.Service.csproj|solutionrelative:rentease.service\\service\\authenticate\\accounttokenservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{79F55FCA-24BA-4E11-A642-A9CC8C418927}|RentEase.Data\\RentEase.Data.csproj|e:\\myproject\\rentease.be\\rentease\\rentease.data\\repository\\sub\\utilityrepository.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{79F55FCA-24BA-4E11-A642-A9CC8C418927}|RentEase.Data\\RentEase.Data.csproj|solutionrelative:rentease.data\\repository\\sub\\utilityrepository.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{79F55FCA-24BA-4E11-A642-A9CC8C418927}|RentEase.Data\\RentEase.Data.csproj|e:\\myproject\\rentease.be\\rentease\\rentease.data\\repository\\sub\\transactiontyperepository.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{79F55FCA-24BA-4E11-A642-A9CC8C418927}|RentEase.Data\\RentEase.Data.csproj|solutionrelative:rentease.data\\repository\\sub\\transactiontyperepository.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{17B22115-21F2-4783-9335-4E8C107D1AFE}|RentEase.Common\\RentEase.Common.csproj|e:\\myproject\\rentease.be\\rentease\\rentease.common\\dtos\\authenticate\\signindto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
@@ -35,128 +75,56 @@
       "RelativeMoniker": "D:0:0:{17B22115-21F2-4783-9335-4E8C107D1AFE}|RentEase.Common\\RentEase.Common.csproj|solutionrelative:rentease.common\\dtos\\authenticate\\signupdto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{CB347382-57DB-451D-AF20-D8D2B51A7B17}|RentEase.Service\\RentEase.Service.csproj|e:\\myproject\\rentease.be\\rentease\\rentease.service\\service\\authenticate\\accounttokenservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{CB347382-57DB-451D-AF20-D8D2B51A7B17}|RentEase.Service\\RentEase.Service.csproj|solutionrelative:rentease.service\\service\\authenticate\\accounttokenservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{17B22115-21F2-4783-9335-4E8C107D1AFE}|RentEase.Common\\RentEase.Common.csproj|e:\\myproject\\rentease.be\\rentease\\rentease.common\\dtos\\dto\\orderdto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{17B22115-21F2-4783-9335-4E8C107D1AFE}|RentEase.Common\\RentEase.Common.csproj|solutionrelative:rentease.common\\dtos\\dto\\orderdto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{81264B50-3581-4B37-9CD2-1ED21CB21BAC}|RentEase.API\\RentEase.API.csproj|e:\\myproject\\rentease.be\\rentease\\rentease.api\\controllers\\main\\wallettransactioncontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{81264B50-3581-4B37-9CD2-1ED21CB21BAC}|RentEase.API\\RentEase.API.csproj|solutionrelative:rentease.api\\controllers\\main\\wallettransactioncontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{17B22115-21F2-4783-9335-4E8C107D1AFE}|RentEase.Common\\RentEase.Common.csproj|e:\\myproject\\rentease.be\\rentease\\rentease.common\\dtos\\dto\\reviewdto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{17B22115-21F2-4783-9335-4E8C107D1AFE}|RentEase.Common\\RentEase.Common.csproj|solutionrelative:rentease.common\\dtos\\dto\\reviewdto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{81264B50-3581-4B37-9CD2-1ED21CB21BAC}|RentEase.API\\RentEase.API.csproj|e:\\myproject\\rentease.be\\rentease\\rentease.api\\controllers\\main\\walletcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{81264B50-3581-4B37-9CD2-1ED21CB21BAC}|RentEase.API\\RentEase.API.csproj|solutionrelative:rentease.api\\controllers\\main\\walletcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{17B22115-21F2-4783-9335-4E8C107D1AFE}|RentEase.Common\\RentEase.Common.csproj|e:\\myproject\\rentease.be\\rentease\\rentease.common\\dtos\\dto\\transactiontypedto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{17B22115-21F2-4783-9335-4E8C107D1AFE}|RentEase.Common\\RentEase.Common.csproj|solutionrelative:rentease.common\\dtos\\dto\\transactiontypedto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{81264B50-3581-4B37-9CD2-1ED21CB21BAC}|RentEase.API\\RentEase.API.csproj|e:\\myproject\\rentease.be\\rentease\\rentease.api\\controllers\\main\\reviewcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{81264B50-3581-4B37-9CD2-1ED21CB21BAC}|RentEase.API\\RentEase.API.csproj|solutionrelative:rentease.api\\controllers\\main\\reviewcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{17B22115-21F2-4783-9335-4E8C107D1AFE}|RentEase.Common\\RentEase.Common.csproj|e:\\myproject\\rentease.be\\rentease\\rentease.common\\dtos\\dto\\utilitydto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{17B22115-21F2-4783-9335-4E8C107D1AFE}|RentEase.Common\\RentEase.Common.csproj|solutionrelative:rentease.common\\dtos\\dto\\utilitydto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{81264B50-3581-4B37-9CD2-1ED21CB21BAC}|RentEase.API\\RentEase.API.csproj|e:\\myproject\\rentease.be\\rentease\\rentease.api\\controllers\\main\\maintenancerequestcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{81264B50-3581-4B37-9CD2-1ED21CB21BAC}|RentEase.API\\RentEase.API.csproj|solutionrelative:rentease.api\\controllers\\main\\maintenancerequestcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{17B22115-21F2-4783-9335-4E8C107D1AFE}|RentEase.Common\\RentEase.Common.csproj|e:\\myproject\\rentease.be\\rentease\\rentease.common\\dtos\\dto\\walletdto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{17B22115-21F2-4783-9335-4E8C107D1AFE}|RentEase.Common\\RentEase.Common.csproj|solutionrelative:rentease.common\\dtos\\dto\\walletdto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{81264B50-3581-4B37-9CD2-1ED21CB21BAC}|RentEase.API\\RentEase.API.csproj|e:\\myproject\\rentease.be\\rentease\\rentease.api\\controllers\\main\\currentresidentcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{81264B50-3581-4B37-9CD2-1ED21CB21BAC}|RentEase.API\\RentEase.API.csproj|solutionrelative:rentease.api\\controllers\\main\\currentresidentcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{17B22115-21F2-4783-9335-4E8C107D1AFE}|RentEase.Common\\RentEase.Common.csproj|e:\\myproject\\rentease.be\\rentease\\rentease.common\\dtos\\dto\\wallettransactiondto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{17B22115-21F2-4783-9335-4E8C107D1AFE}|RentEase.Common\\RentEase.Common.csproj|solutionrelative:rentease.common\\dtos\\dto\\wallettransactiondto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{81264B50-3581-4B37-9CD2-1ED21CB21BAC}|RentEase.API\\RentEase.API.csproj|e:\\myproject\\rentease.be\\rentease\\rentease.api\\controllers\\main\\contractcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{81264B50-3581-4B37-9CD2-1ED21CB21BAC}|RentEase.API\\RentEase.API.csproj|solutionrelative:rentease.api\\controllers\\main\\contractcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{17B22115-21F2-4783-9335-4E8C107D1AFE}|RentEase.Common\\RentEase.Common.csproj|e:\\myproject\\rentease.be\\rentease\\rentease.common\\dtos\\dto\\maintenancerequestdto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{17B22115-21F2-4783-9335-4E8C107D1AFE}|RentEase.Common\\RentEase.Common.csproj|solutionrelative:rentease.common\\dtos\\dto\\maintenancerequestdto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{81264B50-3581-4B37-9CD2-1ED21CB21BAC}|RentEase.API\\RentEase.API.csproj|e:\\myproject\\rentease.be\\rentease\\rentease.api\\controllers\\main\\aptutilitycontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{81264B50-3581-4B37-9CD2-1ED21CB21BAC}|RentEase.API\\RentEase.API.csproj|solutionrelative:rentease.api\\controllers\\main\\aptutilitycontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{17B22115-21F2-4783-9335-4E8C107D1AFE}|RentEase.Common\\RentEase.Common.csproj|e:\\myproject\\rentease.be\\rentease\\rentease.common\\dtos\\dto\\currentresidentdto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{17B22115-21F2-4783-9335-4E8C107D1AFE}|RentEase.Common\\RentEase.Common.csproj|solutionrelative:rentease.common\\dtos\\dto\\currentresidentdto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{81264B50-3581-4B37-9CD2-1ED21CB21BAC}|RentEase.API\\RentEase.API.csproj|e:\\myproject\\rentease.be\\rentease\\rentease.api\\controllers\\main\\aptimagecontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{81264B50-3581-4B37-9CD2-1ED21CB21BAC}|RentEase.API\\RentEase.API.csproj|solutionrelative:rentease.api\\controllers\\main\\aptimagecontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{17B22115-21F2-4783-9335-4E8C107D1AFE}|RentEase.Common\\RentEase.Common.csproj|e:\\myproject\\rentease.be\\rentease\\rentease.common\\dtos\\dto\\contractdto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{17B22115-21F2-4783-9335-4E8C107D1AFE}|RentEase.Common\\RentEase.Common.csproj|solutionrelative:rentease.common\\dtos\\dto\\contractdto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{81264B50-3581-4B37-9CD2-1ED21CB21BAC}|RentEase.API\\RentEase.API.csproj|e:\\myproject\\rentease.be\\rentease\\rentease.api\\controllers\\main\\aptcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{81264B50-3581-4B37-9CD2-1ED21CB21BAC}|RentEase.API\\RentEase.API.csproj|solutionrelative:rentease.api\\controllers\\main\\aptcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{17B22115-21F2-4783-9335-4E8C107D1AFE}|RentEase.Common\\RentEase.Common.csproj|e:\\myproject\\rentease.be\\rentease\\rentease.common\\dtos\\dto\\aptutility.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{17B22115-21F2-4783-9335-4E8C107D1AFE}|RentEase.Common\\RentEase.Common.csproj|solutionrelative:rentease.common\\dtos\\dto\\aptutility.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{81264B50-3581-4B37-9CD2-1ED21CB21BAC}|RentEase.API\\RentEase.API.csproj|e:\\myproject\\rentease.be\\rentease\\rentease.api\\configure.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{81264B50-3581-4B37-9CD2-1ED21CB21BAC}|RentEase.API\\RentEase.API.csproj|solutionrelative:rentease.api\\configure.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{17B22115-21F2-4783-9335-4E8C107D1AFE}|RentEase.Common\\RentEase.Common.csproj|e:\\myproject\\rentease.be\\rentease\\rentease.common\\dtos\\dto\\aptstatusdto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{17B22115-21F2-4783-9335-4E8C107D1AFE}|RentEase.Common\\RentEase.Common.csproj|solutionrelative:rentease.common\\dtos\\dto\\aptstatusdto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{CB347382-57DB-451D-AF20-D8D2B51A7B17}|RentEase.Service\\RentEase.Service.csproj|e:\\myproject\\rentease.be\\rentease\\rentease.service\\service\\utilityservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{CB347382-57DB-451D-AF20-D8D2B51A7B17}|RentEase.Service\\RentEase.Service.csproj|solutionrelative:rentease.service\\service\\utilityservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{17B22115-21F2-4783-9335-4E8C107D1AFE}|RentEase.Common\\RentEase.Common.csproj|e:\\myproject\\rentease.be\\rentease\\rentease.common\\dtos\\dto\\aptimagedto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{17B22115-21F2-4783-9335-4E8C107D1AFE}|RentEase.Common\\RentEase.Common.csproj|solutionrelative:rentease.common\\dtos\\dto\\aptimagedto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{CB347382-57DB-451D-AF20-D8D2B51A7B17}|RentEase.Service\\RentEase.Service.csproj|e:\\myproject\\rentease.be\\rentease\\rentease.service\\service\\currentresidentservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{CB347382-57DB-451D-AF20-D8D2B51A7B17}|RentEase.Service\\RentEase.Service.csproj|solutionrelative:rentease.service\\service\\currentresidentservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{17B22115-21F2-4783-9335-4E8C107D1AFE}|RentEase.Common\\RentEase.Common.csproj|e:\\myproject\\rentease.be\\rentease\\rentease.common\\dtos\\response\\responseaccounttoken.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{17B22115-21F2-4783-9335-4E8C107D1AFE}|RentEase.Common\\RentEase.Common.csproj|solutionrelative:rentease.common\\dtos\\response\\responseaccounttoken.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{17B22115-21F2-4783-9335-4E8C107D1AFE}|RentEase.Common\\RentEase.Common.csproj|e:\\myproject\\rentease.be\\rentease\\rentease.common\\dtos\\dto\\aptcategorydto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{17B22115-21F2-4783-9335-4E8C107D1AFE}|RentEase.Common\\RentEase.Common.csproj|solutionrelative:rentease.common\\dtos\\dto\\aptcategorydto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{CB347382-57DB-451D-AF20-D8D2B51A7B17}|RentEase.Service\\RentEase.Service.csproj|e:\\myproject\\rentease.be\\rentease\\rentease.service\\service\\transactiontypeservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{CB347382-57DB-451D-AF20-D8D2B51A7B17}|RentEase.Service\\RentEase.Service.csproj|solutionrelative:rentease.service\\service\\transactiontypeservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{CB347382-57DB-451D-AF20-D8D2B51A7B17}|RentEase.Service\\RentEase.Service.csproj|e:\\myproject\\rentease.be\\rentease\\rentease.service\\service\\roleservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{CB347382-57DB-451D-AF20-D8D2B51A7B17}|RentEase.Service\\RentEase.Service.csproj|solutionrelative:rentease.service\\service\\roleservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{CB347382-57DB-451D-AF20-D8D2B51A7B17}|RentEase.Service\\RentEase.Service.csproj|e:\\myproject\\rentease.be\\rentease\\rentease.service\\service\\reviewservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{CB347382-57DB-451D-AF20-D8D2B51A7B17}|RentEase.Service\\RentEase.Service.csproj|solutionrelative:rentease.service\\service\\reviewservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{CB347382-57DB-451D-AF20-D8D2B51A7B17}|RentEase.Service\\RentEase.Service.csproj|e:\\myproject\\rentease.be\\rentease\\rentease.service\\service\\aptutilityservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{CB347382-57DB-451D-AF20-D8D2B51A7B17}|RentEase.Service\\RentEase.Service.csproj|solutionrelative:rentease.service\\service\\aptutilityservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{CB347382-57DB-451D-AF20-D8D2B51A7B17}|RentEase.Service\\RentEase.Service.csproj|e:\\myproject\\rentease.be\\rentease\\rentease.service\\service\\contractservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{CB347382-57DB-451D-AF20-D8D2B51A7B17}|RentEase.Service\\RentEase.Service.csproj|solutionrelative:rentease.service\\service\\contractservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{CB347382-57DB-451D-AF20-D8D2B51A7B17}|RentEase.Service\\RentEase.Service.csproj|e:\\myproject\\rentease.be\\rentease\\rentease.service\\service\\maintenancerequestservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{CB347382-57DB-451D-AF20-D8D2B51A7B17}|RentEase.Service\\RentEase.Service.csproj|solutionrelative:rentease.service\\service\\maintenancerequestservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{CB347382-57DB-451D-AF20-D8D2B51A7B17}|RentEase.Service\\RentEase.Service.csproj|e:\\myproject\\rentease.be\\rentease\\rentease.service\\service\\aptstatusservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{CB347382-57DB-451D-AF20-D8D2B51A7B17}|RentEase.Service\\RentEase.Service.csproj|solutionrelative:rentease.service\\service\\aptstatusservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{CB347382-57DB-451D-AF20-D8D2B51A7B17}|RentEase.Service\\RentEase.Service.csproj|e:\\myproject\\rentease.be\\rentease\\rentease.service\\service\\aptservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{CB347382-57DB-451D-AF20-D8D2B51A7B17}|RentEase.Service\\RentEase.Service.csproj|solutionrelative:rentease.service\\service\\aptservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{CB347382-57DB-451D-AF20-D8D2B51A7B17}|RentEase.Service\\RentEase.Service.csproj|e:\\myproject\\rentease.be\\rentease\\rentease.service\\service\\aptimageservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{CB347382-57DB-451D-AF20-D8D2B51A7B17}|RentEase.Service\\RentEase.Service.csproj|solutionrelative:rentease.service\\service\\aptimageservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{CB347382-57DB-451D-AF20-D8D2B51A7B17}|RentEase.Service\\RentEase.Service.csproj|e:\\myproject\\rentease.be\\rentease\\rentease.service\\service\\aptcategoryservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{CB347382-57DB-451D-AF20-D8D2B51A7B17}|RentEase.Service\\RentEase.Service.csproj|solutionrelative:rentease.service\\service\\aptcategoryservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{CB347382-57DB-451D-AF20-D8D2B51A7B17}|RentEase.Service\\RentEase.Service.csproj|e:\\myproject\\rentease.be\\rentease\\rentease.service\\service\\wallettransactionservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{CB347382-57DB-451D-AF20-D8D2B51A7B17}|RentEase.Service\\RentEase.Service.csproj|solutionrelative:rentease.service\\service\\wallettransactionservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{81264B50-3581-4B37-9CD2-1ED21CB21BAC}|RentEase.API\\RentEase.API.csproj|e:\\myproject\\rentease.be\\rentease\\rentease.api\\controllers\\sub\\utilitycontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{81264B50-3581-4B37-9CD2-1ED21CB21BAC}|RentEase.API\\RentEase.API.csproj|solutionrelative:rentease.api\\controllers\\sub\\utilitycontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{81264B50-3581-4B37-9CD2-1ED21CB21BAC}|RentEase.API\\RentEase.API.csproj|e:\\myproject\\rentease.be\\rentease\\rentease.api\\controllers\\sub\\transactiontypecontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{81264B50-3581-4B37-9CD2-1ED21CB21BAC}|RentEase.API\\RentEase.API.csproj|solutionrelative:rentease.api\\controllers\\sub\\transactiontypecontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{81264B50-3581-4B37-9CD2-1ED21CB21BAC}|RentEase.API\\RentEase.API.csproj|e:\\myproject\\rentease.be\\rentease\\rentease.api\\controllers\\sub\\rolecontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{81264B50-3581-4B37-9CD2-1ED21CB21BAC}|RentEase.API\\RentEase.API.csproj|solutionrelative:rentease.api\\controllers\\sub\\rolecontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{81264B50-3581-4B37-9CD2-1ED21CB21BAC}|RentEase.API\\RentEase.API.csproj|e:\\myproject\\rentease.be\\rentease\\rentease.api\\controllers\\sub\\aptcategorycontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{81264B50-3581-4B37-9CD2-1ED21CB21BAC}|RentEase.API\\RentEase.API.csproj|solutionrelative:rentease.api\\controllers\\sub\\aptcategorycontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{81264B50-3581-4B37-9CD2-1ED21CB21BAC}|RentEase.API\\RentEase.API.csproj|e:\\myproject\\rentease.be\\rentease\\rentease.api\\controllers\\sub\\apartmentstatuscontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{81264B50-3581-4B37-9CD2-1ED21CB21BAC}|RentEase.API\\RentEase.API.csproj|solutionrelative:rentease.api\\controllers\\sub\\apartmentstatuscontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{17B22115-21F2-4783-9335-4E8C107D1AFE}|RentEase.Common\\RentEase.Common.csproj|e:\\myproject\\rentease.be\\rentease\\rentease.common\\dtos\\dto\\aptdto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{17B22115-21F2-4783-9335-4E8C107D1AFE}|RentEase.Common\\RentEase.Common.csproj|solutionrelative:rentease.common\\dtos\\dto\\aptdto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     }
   ],
   "DocumentGroupContainers": [
@@ -166,7 +134,7 @@
       "DocumentGroups": [
         {
           "DockedWidth": 492,
-          "SelectedChildIndex": 3,
+          "SelectedChildIndex": 5,
           "Children": [
             {
               "$type": "Bookmark",
@@ -182,124 +150,228 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 0,
+              "DocumentIndex": 2,
               "Title": "AuthController.cs",
               "DocumentMoniker": "E:\\MyProject\\RentEase.BE\\RentEase\\RentEase.API\\Controllers\\Authenticate\\AuthController.cs",
               "RelativeDocumentMoniker": "RentEase.API\\Controllers\\Authenticate\\AuthController.cs",
               "ToolTip": "E:\\MyProject\\RentEase.BE\\RentEase\\RentEase.API\\Controllers\\Authenticate\\AuthController.cs",
               "RelativeToolTip": "RentEase.API\\Controllers\\Authenticate\\AuthController.cs",
-              "ViewState": "AgIAAJAAAAAAAAAAAAAkwAAAAAAAAAAAAAAAAA==",
+              "ViewState": "AgIAAIcAAAAAAAAAAAAkwKQAAAA4AAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-02-28T18:52:38.025Z",
+              "WhenOpened": "2025-03-02T11:43:26.126Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 1,
+              "DocumentIndex": 3,
               "Title": "AuthenticateService.cs",
               "DocumentMoniker": "E:\\MyProject\\RentEase.BE\\RentEase\\RentEase.Service\\Service\\Authenticate\\AuthenticateService.cs",
               "RelativeDocumentMoniker": "RentEase.Service\\Service\\Authenticate\\AuthenticateService.cs",
               "ToolTip": "E:\\MyProject\\RentEase.BE\\RentEase\\RentEase.Service\\Service\\Authenticate\\AuthenticateService.cs",
               "RelativeToolTip": "RentEase.Service\\Service\\Authenticate\\AuthenticateService.cs",
-              "ViewState": "AgIAAJcAAAAAAAAAAAAAAL0AAAAIAAAAAAAAAA==",
+              "ViewState": "AgIAAJsAAAAAAAAAAAAMwL0AAAAIAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-02-28T18:27:32.741Z",
+              "WhenOpened": "2025-03-02T11:02:51.683Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 5,
-              "Title": "AccountsController.cs",
-              "DocumentMoniker": "E:\\MyProject\\RentEase.BE\\RentEase\\RentEase.API\\Controllers\\Main\\AccountsController.cs",
-              "RelativeDocumentMoniker": "RentEase.API\\Controllers\\Main\\AccountsController.cs",
-              "ToolTip": "E:\\MyProject\\RentEase.BE\\RentEase\\RentEase.API\\Controllers\\Main\\AccountsController.cs",
-              "RelativeToolTip": "RentEase.API\\Controllers\\Main\\AccountsController.cs",
-              "ViewState": "AgIAAAYAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-02-28T18:03:01.049Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 8,
-              "Title": "AccountTokenService.cs",
-              "DocumentMoniker": "E:\\MyProject\\RentEase.BE\\RentEase\\RentEase.Service\\Service\\Authenticate\\AccountTokenService.cs",
-              "RelativeDocumentMoniker": "RentEase.Service\\Service\\Authenticate\\AccountTokenService.cs",
-              "ToolTip": "E:\\MyProject\\RentEase.BE\\RentEase\\RentEase.Service\\Service\\Authenticate\\AccountTokenService.cs",
-              "RelativeToolTip": "RentEase.Service\\Service\\Authenticate\\AccountTokenService.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-02-28T17:56:02.172Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 2,
+              "DocumentIndex": 0,
               "Title": "TokenHelper.cs",
               "DocumentMoniker": "E:\\MyProject\\RentEase.BE\\RentEase\\RentEase.Service\\Helper\\TokenHelper.cs",
               "RelativeDocumentMoniker": "RentEase.Service\\Helper\\TokenHelper.cs",
               "ToolTip": "E:\\MyProject\\RentEase.BE\\RentEase\\RentEase.Service\\Helper\\TokenHelper.cs",
               "RelativeToolTip": "RentEase.Service\\Helper\\TokenHelper.cs",
-              "ViewState": "AgIAAGAAAAAAAAAAAIAwwHsAAAAIAAAAAAAAAA==",
+              "ViewState": "AgIAAEIAAAAAAAAAAAAawHQAAAAMAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-02-28T09:12:34.615Z",
+              "WhenOpened": "2025-03-02T11:02:51.692Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 4,
-              "Title": "AccountVerificationService.cs",
-              "DocumentMoniker": "E:\\MyProject\\RentEase.BE\\RentEase\\RentEase.Service\\Service\\Authenticate\\AccountVerificationService.cs",
-              "RelativeDocumentMoniker": "RentEase.Service\\Service\\Authenticate\\AccountVerificationService.cs",
-              "ToolTip": "E:\\MyProject\\RentEase.BE\\RentEase\\RentEase.Service\\Service\\Authenticate\\AccountVerificationService.cs",
-              "RelativeToolTip": "RentEase.Service\\Service\\Authenticate\\AccountVerificationService.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAHoAAAA6AAAAAAAAAA==",
+              "DocumentIndex": 5,
+              "Title": "WalletService.cs",
+              "DocumentMoniker": "E:\\MyProject\\RentEase.BE\\RentEase\\RentEase.Service\\Service\\Main\\WalletService.cs",
+              "RelativeDocumentMoniker": "RentEase.Service\\Service\\Main\\WalletService.cs",
+              "ToolTip": "E:\\MyProject\\RentEase.BE\\RentEase\\RentEase.Service\\Service\\Main\\WalletService.cs",
+              "RelativeToolTip": "RentEase.Service\\Service\\Main\\WalletService.cs",
+              "ViewState": "AgIAAAwAAAAAAAAAAAA1wAAAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-02-28T17:56:00.379Z",
+              "WhenOpened": "2025-03-02T11:12:17.468Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 14,
-              "Title": "ContractController.cs",
-              "DocumentMoniker": "E:\\MyProject\\RentEase.BE\\RentEase\\RentEase.API\\Controllers\\Main\\ContractController.cs",
-              "RelativeDocumentMoniker": "RentEase.API\\Controllers\\Main\\ContractController.cs",
-              "ToolTip": "E:\\MyProject\\RentEase.BE\\RentEase\\RentEase.API\\Controllers\\Main\\ContractController.cs",
-              "RelativeToolTip": "RentEase.API\\Controllers\\Main\\ContractController.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAA8AAAAXAAAAAAAAAA==",
+              "DocumentIndex": 12,
+              "Title": "Role.cs",
+              "DocumentMoniker": "E:\\MyProject\\RentEase.BE\\RentEase\\RentEase.Data\\Models\\Role.cs",
+              "RelativeDocumentMoniker": "RentEase.Data\\Models\\Role.cs",
+              "ToolTip": "E:\\MyProject\\RentEase.BE\\RentEase\\RentEase.Data\\Models\\Role.cs",
+              "RelativeToolTip": "RentEase.Data\\Models\\Role.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABIAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-02-28T15:44:52.181Z",
+              "WhenOpened": "2025-03-02T11:09:27.075Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 9,
-              "Title": "WalletTransactionController.cs",
-              "DocumentMoniker": "E:\\MyProject\\RentEase.BE\\RentEase\\RentEase.API\\Controllers\\Main\\WalletTransactionController.cs",
-              "RelativeDocumentMoniker": "RentEase.API\\Controllers\\Main\\WalletTransactionController.cs",
-              "ToolTip": "E:\\MyProject\\RentEase.BE\\RentEase\\RentEase.API\\Controllers\\Main\\WalletTransactionController.cs",
-              "RelativeToolTip": "RentEase.API\\Controllers\\Main\\WalletTransactionController.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAoAAAAAAAAAAAAAAA==",
+              "DocumentIndex": 8,
+              "Title": "AptStatusService.cs",
+              "DocumentMoniker": "E:\\MyProject\\RentEase.BE\\RentEase\\RentEase.Service\\Service\\Sub\\AptStatusService.cs",
+              "RelativeDocumentMoniker": "RentEase.Service\\Service\\Sub\\AptStatusService.cs",
+              "ToolTip": "E:\\MyProject\\RentEase.BE\\RentEase\\RentEase.Service\\Service\\Sub\\AptStatusService.cs",
+              "RelativeToolTip": "RentEase.Service\\Service\\Sub\\AptStatusService.cs",
+              "ViewState": "AgIAACMAAAAAAAAAAAA0wHUAAAAtAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-02-28T15:46:07.685Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 6,
-              "Title": "SignInDto.cs",
-              "DocumentMoniker": "E:\\MyProject\\RentEase.BE\\RentEase\\RentEase.Common\\DTOs\\Authenticate\\SignInDto.cs",
-              "RelativeDocumentMoniker": "RentEase.Common\\DTOs\\Authenticate\\SignInDto.cs",
-              "ToolTip": "E:\\MyProject\\RentEase.BE\\RentEase\\RentEase.Common\\DTOs\\Authenticate\\SignInDto.cs",
-              "RelativeToolTip": "RentEase.Common\\DTOs\\Authenticate\\SignInDto.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAwAAABCAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-02-28T18:35:28.943Z",
+              "WhenOpened": "2025-03-02T10:58:44.18Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
               "DocumentIndex": 7,
+              "Title": "AptCategoryService.cs",
+              "DocumentMoniker": "E:\\MyProject\\RentEase.BE\\RentEase\\RentEase.Service\\Service\\Sub\\AptCategoryService.cs",
+              "RelativeDocumentMoniker": "RentEase.Service\\Service\\Sub\\AptCategoryService.cs",
+              "ToolTip": "E:\\MyProject\\RentEase.BE\\RentEase\\RentEase.Service\\Service\\Sub\\AptCategoryService.cs",
+              "RelativeToolTip": "RentEase.Service\\Service\\Sub\\AptCategoryService.cs",
+              "ViewState": "AgIAAEYAAAAAAAAAAAAcwHgAAAAtAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-03-02T10:54:31.34Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "AccountDto.cs",
+              "DocumentMoniker": "E:\\MyProject\\RentEase.BE\\RentEase\\RentEase.Common\\DTOs\\Dto\\AccountDto.cs",
+              "RelativeDocumentMoniker": "RentEase.Common\\DTOs\\Dto\\AccountDto.cs",
+              "ToolTip": "E:\\MyProject\\RentEase.BE\\RentEase\\RentEase.Common\\DTOs\\Dto\\AccountDto.cs",
+              "RelativeToolTip": "RentEase.Common\\DTOs\\Dto\\AccountDto.cs",
+              "ViewState": "AgIAACYAAAAAAAAAAAAWwCMAAAAlAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-03-02T10:48:19.604Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 4,
+              "Title": "PaymentHelper.cs",
+              "DocumentMoniker": "E:\\MyProject\\RentEase.BE\\RentEase\\RentEase.Service\\Helper\\PaymentHelper.cs",
+              "RelativeDocumentMoniker": "RentEase.Service\\Helper\\PaymentHelper.cs",
+              "ToolTip": "E:\\MyProject\\RentEase.BE\\RentEase\\RentEase.Service\\Helper\\PaymentHelper.cs",
+              "RelativeToolTip": "RentEase.Service\\Helper\\PaymentHelper.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-03-02T11:17:13.527Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 9,
+              "Title": "RoleService.cs",
+              "DocumentMoniker": "E:\\MyProject\\RentEase.BE\\RentEase\\RentEase.Service\\Service\\Sub\\RoleService.cs",
+              "RelativeDocumentMoniker": "RentEase.Service\\Service\\Sub\\RoleService.cs",
+              "ToolTip": "E:\\MyProject\\RentEase.BE\\RentEase\\RentEase.Service\\Service\\Sub\\RoleService.cs",
+              "RelativeToolTip": "RentEase.Service\\Service\\Sub\\RoleService.cs",
+              "ViewState": "AgIAAEYAAAAAAAAAAAAcwHYAAAAsAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-03-02T10:59:50.688Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 10,
+              "Title": "TransactionTypeService.cs",
+              "DocumentMoniker": "E:\\MyProject\\RentEase.BE\\RentEase\\RentEase.Service\\Service\\Sub\\TransactionTypeService.cs",
+              "RelativeDocumentMoniker": "RentEase.Service\\Service\\Sub\\TransactionTypeService.cs",
+              "ToolTip": "E:\\MyProject\\RentEase.BE\\RentEase\\RentEase.Service\\Service\\Sub\\TransactionTypeService.cs",
+              "RelativeToolTip": "RentEase.Service\\Service\\Sub\\TransactionTypeService.cs",
+              "ViewState": "AgIAACEAAAAAAAAAAAAiwHEAAAA2AAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-03-02T10:53:09.131Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 11,
+              "Title": "UtilityService.cs",
+              "DocumentMoniker": "E:\\MyProject\\RentEase.BE\\RentEase\\RentEase.Service\\Service\\Sub\\UtilityService.cs",
+              "RelativeDocumentMoniker": "RentEase.Service\\Service\\Sub\\UtilityService.cs",
+              "ToolTip": "E:\\MyProject\\RentEase.BE\\RentEase\\RentEase.Service\\Service\\Sub\\UtilityService.cs",
+              "RelativeToolTip": "RentEase.Service\\Service\\Sub\\UtilityService.cs",
+              "ViewState": "AgIAAF4AAAAAAAAAAAAqwHEAAAA8AAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-03-02T10:53:30.384Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 6,
+              "Title": "WalletTransactionService.cs",
+              "DocumentMoniker": "E:\\MyProject\\RentEase.BE\\RentEase\\RentEase.Service\\Service\\Main\\WalletTransactionService.cs",
+              "RelativeDocumentMoniker": "RentEase.Service\\Service\\Main\\WalletTransactionService.cs",
+              "ToolTip": "E:\\MyProject\\RentEase.BE\\RentEase\\RentEase.Service\\Service\\Main\\WalletTransactionService.cs",
+              "RelativeToolTip": "RentEase.Service\\Service\\Main\\WalletTransactionService.cs",
+              "ViewState": "AgIAAA4AAAAAAAAAAAAiwCIAAAAsAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-03-02T10:53:00.32Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 13,
+              "Title": "AccountTokenService.cs",
+              "DocumentMoniker": "E:\\MyProject\\RentEase.BE\\RentEase\\RentEase.Service\\Service\\Authenticate\\AccountTokenService.cs",
+              "RelativeDocumentMoniker": "RentEase.Service\\Service\\Authenticate\\AccountTokenService.cs",
+              "ToolTip": "E:\\MyProject\\RentEase.BE\\RentEase\\RentEase.Service\\Service\\Authenticate\\AccountTokenService.cs",
+              "RelativeToolTip": "RentEase.Service\\Service\\Authenticate\\AccountTokenService.cs",
+              "ViewState": "AgIAABUAAAAAAAAAAAA3wEAAAAAQAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-03-02T11:00:57.18Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 14,
+              "Title": "UtilityRepository.cs",
+              "DocumentMoniker": "E:\\MyProject\\RentEase.BE\\RentEase\\RentEase.Data\\Repository\\Sub\\UtilityRepository.cs",
+              "RelativeDocumentMoniker": "RentEase.Data\\Repository\\Sub\\UtilityRepository.cs",
+              "ToolTip": "E:\\MyProject\\RentEase.BE\\RentEase\\RentEase.Data\\Repository\\Sub\\UtilityRepository.cs",
+              "RelativeToolTip": "RentEase.Data\\Repository\\Sub\\UtilityRepository.cs",
+              "ViewState": "AgIAAAcAAAAAAAAAAAAuwB4AAABDAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-03-02T10:52:55.63Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 15,
+              "Title": "TransactionTypeRepository.cs",
+              "DocumentMoniker": "E:\\MyProject\\RentEase.BE\\RentEase\\RentEase.Data\\Repository\\Sub\\TransactionTypeRepository.cs",
+              "RelativeDocumentMoniker": "RentEase.Data\\Repository\\Sub\\TransactionTypeRepository.cs",
+              "ToolTip": "E:\\MyProject\\RentEase.BE\\RentEase\\RentEase.Data\\Repository\\Sub\\TransactionTypeRepository.cs",
+              "RelativeToolTip": "RentEase.Data\\Repository\\Sub\\TransactionTypeRepository.cs",
+              "ViewState": "AgIAAAsAAAAAAAAAAAA4wB8AAABEAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-03-02T10:52:36.933Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 16,
+              "Title": "SignInDto.cs",
+              "DocumentMoniker": "E:\\MyProject\\RentEase.BE\\RentEase\\RentEase.Common\\DTOs\\Authenticate\\SignInDto.cs",
+              "RelativeDocumentMoniker": "RentEase.Common\\DTOs\\Authenticate\\SignInDto.cs",
+              "ToolTip": "E:\\MyProject\\RentEase.BE\\RentEase\\RentEase.Common\\DTOs\\Authenticate\\SignInDto.cs",
+              "RelativeToolTip": "RentEase.Common\\DTOs\\Authenticate\\SignInDto.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-03-02T10:52:28.121Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 17,
               "Title": "SignUpDto.cs",
               "DocumentMoniker": "E:\\MyProject\\RentEase.BE\\RentEase\\RentEase.Common\\DTOs\\Authenticate\\SignUpDto.cs",
               "RelativeDocumentMoniker": "RentEase.Common\\DTOs\\Authenticate\\SignUpDto.cs",
@@ -307,390 +379,176 @@
               "RelativeToolTip": "RentEase.Common\\DTOs\\Authenticate\\SignUpDto.cs",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-02-28T18:30:03.15Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 10,
-              "Title": "WalletController.cs",
-              "DocumentMoniker": "E:\\MyProject\\RentEase.BE\\RentEase\\RentEase.API\\Controllers\\Main\\WalletController.cs",
-              "RelativeDocumentMoniker": "RentEase.API\\Controllers\\Main\\WalletController.cs",
-              "ToolTip": "E:\\MyProject\\RentEase.BE\\RentEase\\RentEase.API\\Controllers\\Main\\WalletController.cs",
-              "RelativeToolTip": "RentEase.API\\Controllers\\Main\\WalletController.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAoAAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-02-28T15:45:57.017Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 11,
-              "Title": "ReviewController.cs",
-              "DocumentMoniker": "E:\\MyProject\\RentEase.BE\\RentEase\\RentEase.API\\Controllers\\Main\\ReviewController.cs",
-              "RelativeDocumentMoniker": "RentEase.API\\Controllers\\Main\\ReviewController.cs",
-              "ToolTip": "E:\\MyProject\\RentEase.BE\\RentEase\\RentEase.API\\Controllers\\Main\\ReviewController.cs",
-              "RelativeToolTip": "RentEase.API\\Controllers\\Main\\ReviewController.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAA8AAAAVAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-02-28T15:45:34.774Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 12,
-              "Title": "MaintenanceRequestController.cs",
-              "DocumentMoniker": "E:\\MyProject\\RentEase.BE\\RentEase\\RentEase.API\\Controllers\\Main\\MaintenanceRequestController.cs",
-              "RelativeDocumentMoniker": "RentEase.API\\Controllers\\Main\\MaintenanceRequestController.cs",
-              "ToolTip": "E:\\MyProject\\RentEase.BE\\RentEase\\RentEase.API\\Controllers\\Main\\MaintenanceRequestController.cs",
-              "RelativeToolTip": "RentEase.API\\Controllers\\Main\\MaintenanceRequestController.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAABQAAAARAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-02-28T15:45:23.838Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 13,
-              "Title": "CurrentResidentController.cs",
-              "DocumentMoniker": "E:\\MyProject\\RentEase.BE\\RentEase\\RentEase.API\\Controllers\\Main\\CurrentResidentController.cs",
-              "RelativeDocumentMoniker": "RentEase.API\\Controllers\\Main\\CurrentResidentController.cs",
-              "ToolTip": "E:\\MyProject\\RentEase.BE\\RentEase\\RentEase.API\\Controllers\\Main\\CurrentResidentController.cs",
-              "RelativeToolTip": "RentEase.API\\Controllers\\Main\\CurrentResidentController.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAA8AAAAeAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-02-28T15:44:40.036Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 15,
-              "Title": "AptUtilityController.cs",
-              "DocumentMoniker": "E:\\MyProject\\RentEase.BE\\RentEase\\RentEase.API\\Controllers\\Main\\AptUtilityController.cs",
-              "RelativeDocumentMoniker": "RentEase.API\\Controllers\\Main\\AptUtilityController.cs",
-              "ToolTip": "E:\\MyProject\\RentEase.BE\\RentEase\\RentEase.API\\Controllers\\Main\\AptUtilityController.cs",
-              "RelativeToolTip": "RentEase.API\\Controllers\\Main\\AptUtilityController.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAkAAAAFAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-02-28T15:44:05.065Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 16,
-              "Title": "AptImageController.cs",
-              "DocumentMoniker": "E:\\MyProject\\RentEase.BE\\RentEase\\RentEase.API\\Controllers\\Main\\AptImageController.cs",
-              "RelativeDocumentMoniker": "RentEase.API\\Controllers\\Main\\AptImageController.cs",
-              "ToolTip": "E:\\MyProject\\RentEase.BE\\RentEase\\RentEase.API\\Controllers\\Main\\AptImageController.cs",
-              "RelativeToolTip": "RentEase.API\\Controllers\\Main\\AptImageController.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAABQAAAARAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-02-28T15:43:41.49Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 17,
-              "Title": "AptController.cs",
-              "DocumentMoniker": "E:\\MyProject\\RentEase.BE\\RentEase\\RentEase.API\\Controllers\\Main\\AptController.cs",
-              "RelativeDocumentMoniker": "RentEase.API\\Controllers\\Main\\AptController.cs",
-              "ToolTip": "E:\\MyProject\\RentEase.BE\\RentEase\\RentEase.API\\Controllers\\Main\\AptController.cs",
-              "RelativeToolTip": "RentEase.API\\Controllers\\Main\\AptController.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAkAAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-02-28T18:03:32.848Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 20,
-              "Title": "CurrentResidentService.cs",
-              "DocumentMoniker": "E:\\MyProject\\RentEase.BE\\RentEase\\RentEase.Service\\Service\\CurrentResidentService.cs",
-              "RelativeDocumentMoniker": "RentEase.Service\\Service\\CurrentResidentService.cs",
-              "ToolTip": "E:\\MyProject\\RentEase.BE\\RentEase\\RentEase.Service\\Service\\CurrentResidentService.cs",
-              "RelativeToolTip": "RentEase.Service\\Service\\CurrentResidentService.cs",
-              "ViewState": "AgIAADEAAAAAAAAAAAAAAEwAAAAoAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-02-28T16:51:30.124Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 18,
-              "Title": "Configure.cs",
-              "DocumentMoniker": "E:\\MyProject\\RentEase.BE\\RentEase\\RentEase.API\\Configure.cs",
-              "RelativeDocumentMoniker": "RentEase.API\\Configure.cs",
-              "ToolTip": "E:\\MyProject\\RentEase.BE\\RentEase\\RentEase.API\\Configure.cs",
-              "RelativeToolTip": "RentEase.API\\Configure.cs",
-              "ViewState": "AgIAAA8AAAAAAAAAAAAAABEAAABhAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-02-28T18:01:34.877Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 19,
-              "Title": "UtilityService.cs",
-              "DocumentMoniker": "E:\\MyProject\\RentEase.BE\\RentEase\\RentEase.Service\\Service\\UtilityService.cs",
-              "RelativeDocumentMoniker": "RentEase.Service\\Service\\UtilityService.cs",
-              "ToolTip": "E:\\MyProject\\RentEase.BE\\RentEase\\RentEase.Service\\Service\\UtilityService.cs",
-              "RelativeToolTip": "RentEase.Service\\Service\\UtilityService.cs",
-              "ViewState": "AgIAAAMAAAAAAAAAAAAAAGkAAAAJAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-02-28T16:52:08.219Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 21,
-              "Title": "ResponseAccountToken.cs",
-              "DocumentMoniker": "E:\\MyProject\\RentEase.BE\\RentEase\\RentEase.Common\\DTOs\\Response\\ResponseAccountToken.cs",
-              "RelativeDocumentMoniker": "RentEase.Common\\DTOs\\Response\\ResponseAccountToken.cs",
-              "ToolTip": "E:\\MyProject\\RentEase.BE\\RentEase\\RentEase.Common\\DTOs\\Response\\ResponseAccountToken.cs",
-              "RelativeToolTip": "RentEase.Common\\DTOs\\Response\\ResponseAccountToken.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-02-28T17:29:01.956Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 22,
-              "Title": "AptCategoryDto.cs",
-              "DocumentMoniker": "E:\\MyProject\\RentEase.BE\\RentEase\\RentEase.Common\\DTOs\\Dto\\AptCategoryDto.cs",
-              "RelativeDocumentMoniker": "RentEase.Common\\DTOs\\Dto\\AptCategoryDto.cs",
-              "ToolTip": "E:\\MyProject\\RentEase.BE\\RentEase\\RentEase.Common\\DTOs\\Dto\\AptCategoryDto.cs",
-              "RelativeToolTip": "RentEase.Common\\DTOs\\Dto\\AptCategoryDto.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-02-28T17:28:38.881Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 23,
-              "Title": "TransactionTypeService.cs",
-              "DocumentMoniker": "E:\\MyProject\\RentEase.BE\\RentEase\\RentEase.Service\\Service\\TransactionTypeService.cs",
-              "RelativeDocumentMoniker": "RentEase.Service\\Service\\TransactionTypeService.cs",
-              "ToolTip": "E:\\MyProject\\RentEase.BE\\RentEase\\RentEase.Service\\Service\\TransactionTypeService.cs",
-              "RelativeToolTip": "RentEase.Service\\Service\\TransactionTypeService.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAEoAAAAYAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-02-28T16:52:00.791Z",
+              "WhenOpened": "2025-03-02T10:52:25.773Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
               "DocumentIndex": 24,
-              "Title": "RoleService.cs",
-              "DocumentMoniker": "E:\\MyProject\\RentEase.BE\\RentEase\\RentEase.Service\\Service\\RoleService.cs",
-              "RelativeDocumentMoniker": "RentEase.Service\\Service\\RoleService.cs",
-              "ToolTip": "E:\\MyProject\\RentEase.BE\\RentEase\\RentEase.Service\\Service\\RoleService.cs",
-              "RelativeToolTip": "RentEase.Service\\Service\\RoleService.cs",
-              "ViewState": "AgIAAAcAAAAAAAAAAAAwwAAAAAAAAAAAAAAAAA==",
+              "Title": "MaintenanceRequestDto.cs",
+              "DocumentMoniker": "E:\\MyProject\\RentEase.BE\\RentEase\\RentEase.Common\\DTOs\\Dto\\MaintenanceRequestDto.cs",
+              "RelativeDocumentMoniker": "RentEase.Common\\DTOs\\Dto\\MaintenanceRequestDto.cs",
+              "ToolTip": "E:\\MyProject\\RentEase.BE\\RentEase\\RentEase.Common\\DTOs\\Dto\\MaintenanceRequestDto.cs",
+              "RelativeToolTip": "RentEase.Common\\DTOs\\Dto\\MaintenanceRequestDto.cs",
+              "ViewState": "AgIAAAMAAAAAAAAAAAAuwBUAAAA7AAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-02-28T16:51:50.093Z",
+              "WhenOpened": "2025-03-02T10:49:08.714Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 18,
+              "Title": "OrderDto.cs",
+              "DocumentMoniker": "E:\\MyProject\\RentEase.BE\\RentEase\\RentEase.Common\\DTOs\\Dto\\OrderDto.cs",
+              "RelativeDocumentMoniker": "RentEase.Common\\DTOs\\Dto\\OrderDto.cs",
+              "ToolTip": "E:\\MyProject\\RentEase.BE\\RentEase\\RentEase.Common\\DTOs\\Dto\\OrderDto.cs",
+              "RelativeToolTip": "RentEase.Common\\DTOs\\Dto\\OrderDto.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABYAAAAtAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-03-02T10:49:10.002Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 19,
+              "Title": "ReviewDto.cs",
+              "DocumentMoniker": "E:\\MyProject\\RentEase.BE\\RentEase\\RentEase.Common\\DTOs\\Dto\\ReviewDto.cs",
+              "RelativeDocumentMoniker": "RentEase.Common\\DTOs\\Dto\\ReviewDto.cs",
+              "ToolTip": "E:\\MyProject\\RentEase.BE\\RentEase\\RentEase.Common\\DTOs\\Dto\\ReviewDto.cs",
+              "RelativeToolTip": "RentEase.Common\\DTOs\\Dto\\ReviewDto.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAwAAAA7AAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-03-02T10:49:13.275Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 20,
+              "Title": "TransactionTypeDto.cs",
+              "DocumentMoniker": "E:\\MyProject\\RentEase.BE\\RentEase\\RentEase.Common\\DTOs\\Dto\\TransactionTypeDto.cs",
+              "RelativeDocumentMoniker": "RentEase.Common\\DTOs\\Dto\\TransactionTypeDto.cs",
+              "ToolTip": "E:\\MyProject\\RentEase.BE\\RentEase\\RentEase.Common\\DTOs\\Dto\\TransactionTypeDto.cs",
+              "RelativeToolTip": "RentEase.Common\\DTOs\\Dto\\TransactionTypeDto.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAgAAAA7AAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-03-02T10:49:19.795Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 21,
+              "Title": "UtilityDto.cs",
+              "DocumentMoniker": "E:\\MyProject\\RentEase.BE\\RentEase\\RentEase.Common\\DTOs\\Dto\\UtilityDto.cs",
+              "RelativeDocumentMoniker": "RentEase.Common\\DTOs\\Dto\\UtilityDto.cs",
+              "ToolTip": "E:\\MyProject\\RentEase.BE\\RentEase\\RentEase.Common\\DTOs\\Dto\\UtilityDto.cs",
+              "RelativeToolTip": "RentEase.Common\\DTOs\\Dto\\UtilityDto.cs",
+              "ViewState": "AgIAAAQAAAAAAAAAAAAzwAgAAAA/AAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-03-02T10:49:43.945Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 22,
+              "Title": "WalletDto.cs",
+              "DocumentMoniker": "E:\\MyProject\\RentEase.BE\\RentEase\\RentEase.Common\\DTOs\\Dto\\WalletDto.cs",
+              "RelativeDocumentMoniker": "RentEase.Common\\DTOs\\Dto\\WalletDto.cs",
+              "ToolTip": "E:\\MyProject\\RentEase.BE\\RentEase\\RentEase.Common\\DTOs\\Dto\\WalletDto.cs",
+              "RelativeToolTip": "RentEase.Common\\DTOs\\Dto\\WalletDto.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAgAAAA7AAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-03-02T10:49:46.793Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 23,
+              "Title": "WalletTransactionDto.cs",
+              "DocumentMoniker": "E:\\MyProject\\RentEase.BE\\RentEase\\RentEase.Common\\DTOs\\Dto\\WalletTransactionDto.cs",
+              "RelativeDocumentMoniker": "RentEase.Common\\DTOs\\Dto\\WalletTransactionDto.cs",
+              "ToolTip": "E:\\MyProject\\RentEase.BE\\RentEase\\RentEase.Common\\DTOs\\Dto\\WalletTransactionDto.cs",
+              "RelativeToolTip": "RentEase.Common\\DTOs\\Dto\\WalletTransactionDto.cs",
+              "ViewState": "AgIAAAoAAAAAAAAAAAAkwA8AAAAsAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-03-02T10:49:49.255Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
               "DocumentIndex": 25,
-              "Title": "ReviewService.cs",
-              "DocumentMoniker": "E:\\MyProject\\RentEase.BE\\RentEase\\RentEase.Service\\Service\\ReviewService.cs",
-              "RelativeDocumentMoniker": "RentEase.Service\\Service\\ReviewService.cs",
-              "ToolTip": "E:\\MyProject\\RentEase.BE\\RentEase\\RentEase.Service\\Service\\ReviewService.cs",
-              "RelativeToolTip": "RentEase.Service\\Service\\ReviewService.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAABYAAAApAAAAAAAAAA==",
+              "Title": "CurrentResidentDto.cs",
+              "DocumentMoniker": "E:\\MyProject\\RentEase.BE\\RentEase\\RentEase.Common\\DTOs\\Dto\\CurrentResidentDto.cs",
+              "RelativeDocumentMoniker": "RentEase.Common\\DTOs\\Dto\\CurrentResidentDto.cs",
+              "ToolTip": "E:\\MyProject\\RentEase.BE\\RentEase\\RentEase.Common\\DTOs\\Dto\\CurrentResidentDto.cs",
+              "RelativeToolTip": "RentEase.Common\\DTOs\\Dto\\CurrentResidentDto.cs",
+              "ViewState": "AgIAAAIAAAAAAAAAAAA6wA4AAAA7AAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-02-28T16:51:43.101Z",
+              "WhenOpened": "2025-03-02T10:49:06.292Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
               "DocumentIndex": 26,
-              "Title": "AptUtilityService.cs",
-              "DocumentMoniker": "E:\\MyProject\\RentEase.BE\\RentEase\\RentEase.Service\\Service\\AptUtilityService.cs",
-              "RelativeDocumentMoniker": "RentEase.Service\\Service\\AptUtilityService.cs",
-              "ToolTip": "E:\\MyProject\\RentEase.BE\\RentEase\\RentEase.Service\\Service\\AptUtilityService.cs",
-              "RelativeToolTip": "RentEase.Service\\Service\\AptUtilityService.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAEEAAAAYAAAAAAAAAA==",
+              "Title": "ContractDto.cs",
+              "DocumentMoniker": "E:\\MyProject\\RentEase.BE\\RentEase\\RentEase.Common\\DTOs\\Dto\\ContractDto.cs",
+              "RelativeDocumentMoniker": "RentEase.Common\\DTOs\\Dto\\ContractDto.cs",
+              "ToolTip": "E:\\MyProject\\RentEase.BE\\RentEase\\RentEase.Common\\DTOs\\Dto\\ContractDto.cs",
+              "RelativeToolTip": "RentEase.Common\\DTOs\\Dto\\ContractDto.cs",
+              "ViewState": "AgIAAAoAAAAAAAAAAAA5wBoAAAA7AAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-02-28T16:51:16.957Z",
+              "WhenOpened": "2025-03-02T10:49:03.647Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
               "DocumentIndex": 27,
-              "Title": "ContractService.cs",
-              "DocumentMoniker": "E:\\MyProject\\RentEase.BE\\RentEase\\RentEase.Service\\Service\\ContractService.cs",
-              "RelativeDocumentMoniker": "RentEase.Service\\Service\\ContractService.cs",
-              "ToolTip": "E:\\MyProject\\RentEase.BE\\RentEase\\RentEase.Service\\Service\\ContractService.cs",
-              "RelativeToolTip": "RentEase.Service\\Service\\ContractService.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAEkAAAAYAAAAAAAAAA==",
+              "Title": "AptUtility.cs",
+              "DocumentMoniker": "E:\\MyProject\\RentEase.BE\\RentEase\\RentEase.Common\\DTOs\\Dto\\AptUtility.cs",
+              "RelativeDocumentMoniker": "RentEase.Common\\DTOs\\Dto\\AptUtility.cs",
+              "ToolTip": "E:\\MyProject\\RentEase.BE\\RentEase\\RentEase.Common\\DTOs\\Dto\\AptUtility.cs",
+              "RelativeToolTip": "RentEase.Common\\DTOs\\Dto\\AptUtility.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAoAAAA/AAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-02-28T16:51:25.112Z",
+              "WhenOpened": "2025-03-02T10:48:59.438Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
               "DocumentIndex": 28,
-              "Title": "MaintenanceRequestService.cs",
-              "DocumentMoniker": "E:\\MyProject\\RentEase.BE\\RentEase\\RentEase.Service\\Service\\MaintenanceRequestService.cs",
-              "RelativeDocumentMoniker": "RentEase.Service\\Service\\MaintenanceRequestService.cs",
-              "ToolTip": "E:\\MyProject\\RentEase.BE\\RentEase\\RentEase.Service\\Service\\MaintenanceRequestService.cs",
-              "RelativeToolTip": "RentEase.Service\\Service\\MaintenanceRequestService.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAABEAAAAiAAAAAAAAAA==",
+              "Title": "AptStatusDto.cs",
+              "DocumentMoniker": "E:\\MyProject\\RentEase.BE\\RentEase\\RentEase.Common\\DTOs\\Dto\\AptStatusDto.cs",
+              "RelativeDocumentMoniker": "RentEase.Common\\DTOs\\Dto\\AptStatusDto.cs",
+              "ToolTip": "E:\\MyProject\\RentEase.BE\\RentEase\\RentEase.Common\\DTOs\\Dto\\AptStatusDto.cs",
+              "RelativeToolTip": "RentEase.Common\\DTOs\\Dto\\AptStatusDto.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAgAAAA7AAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-02-28T16:51:37.16Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 29,
-              "Title": "AptStatusService.cs",
-              "DocumentMoniker": "E:\\MyProject\\RentEase.BE\\RentEase\\RentEase.Service\\Service\\AptStatusService.cs",
-              "RelativeDocumentMoniker": "RentEase.Service\\Service\\AptStatusService.cs",
-              "ToolTip": "E:\\MyProject\\RentEase.BE\\RentEase\\RentEase.Service\\Service\\AptStatusService.cs",
-              "RelativeToolTip": "RentEase.Service\\Service\\AptStatusService.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAEoAAAAYAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-02-28T16:51:12.177Z",
+              "WhenOpened": "2025-03-02T10:51:28.822Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
               "DocumentIndex": 30,
-              "Title": "AptService.cs",
-              "DocumentMoniker": "E:\\MyProject\\RentEase.BE\\RentEase\\RentEase.Service\\Service\\AptService.cs",
-              "RelativeDocumentMoniker": "RentEase.Service\\Service\\AptService.cs",
-              "ToolTip": "E:\\MyProject\\RentEase.BE\\RentEase\\RentEase.Service\\Service\\AptService.cs",
-              "RelativeToolTip": "RentEase.Service\\Service\\AptService.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAF0AAAAYAAAAAAAAAA==",
+              "Title": "AptDto.cs",
+              "DocumentMoniker": "E:\\MyProject\\RentEase.BE\\RentEase\\RentEase.Common\\DTOs\\Dto\\AptDto.cs",
+              "RelativeDocumentMoniker": "RentEase.Common\\DTOs\\Dto\\AptDto.cs",
+              "ToolTip": "E:\\MyProject\\RentEase.BE\\RentEase\\RentEase.Common\\DTOs\\Dto\\AptDto.cs",
+              "RelativeToolTip": "RentEase.Common\\DTOs\\Dto\\AptDto.cs",
+              "ViewState": "AgIAABkAAAAAAAAAAAAcwCoAAAA7AAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-02-28T16:51:03.46Z",
+              "WhenOpened": "2025-03-02T10:48:44.243Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 31,
-              "Title": "AptImageService.cs",
-              "DocumentMoniker": "E:\\MyProject\\RentEase.BE\\RentEase\\RentEase.Service\\Service\\AptImageService.cs",
-              "RelativeDocumentMoniker": "RentEase.Service\\Service\\AptImageService.cs",
-              "ToolTip": "E:\\MyProject\\RentEase.BE\\RentEase\\RentEase.Service\\Service\\AptImageService.cs",
-              "RelativeToolTip": "RentEase.Service\\Service\\AptImageService.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAEkAAAAYAAAAAAAAAA==",
+              "DocumentIndex": 29,
+              "Title": "AptImageDto.cs",
+              "DocumentMoniker": "E:\\MyProject\\RentEase.BE\\RentEase\\RentEase.Common\\DTOs\\Dto\\AptImageDto.cs",
+              "RelativeDocumentMoniker": "RentEase.Common\\DTOs\\Dto\\AptImageDto.cs",
+              "ToolTip": "E:\\MyProject\\RentEase.BE\\RentEase\\RentEase.Common\\DTOs\\Dto\\AptImageDto.cs",
+              "RelativeToolTip": "RentEase.Common\\DTOs\\Dto\\AptImageDto.cs",
+              "ViewState": "AgIAAAQAAAAAAAAAAAAzwBIAAAA7AAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-02-28T16:49:42.38Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 32,
-              "Title": "AptCategoryService.cs",
-              "DocumentMoniker": "E:\\MyProject\\RentEase.BE\\RentEase\\RentEase.Service\\Service\\AptCategoryService.cs",
-              "RelativeDocumentMoniker": "RentEase.Service\\Service\\AptCategoryService.cs",
-              "ToolTip": "E:\\MyProject\\RentEase.BE\\RentEase\\RentEase.Service\\Service\\AptCategoryService.cs",
-              "RelativeToolTip": "RentEase.Service\\Service\\AptCategoryService.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAFkAAAAYAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-02-28T16:49:35.561Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 33,
-              "Title": "WalletTransactionService.cs",
-              "DocumentMoniker": "E:\\MyProject\\RentEase.BE\\RentEase\\RentEase.Service\\Service\\WalletTransactionService.cs",
-              "RelativeDocumentMoniker": "RentEase.Service\\Service\\WalletTransactionService.cs",
-              "ToolTip": "E:\\MyProject\\RentEase.BE\\RentEase\\RentEase.Service\\Service\\WalletTransactionService.cs",
-              "RelativeToolTip": "RentEase.Service\\Service\\WalletTransactionService.cs",
-              "ViewState": "AgIAAA4AAAAAAAAAAAA3wCEAAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-02-28T16:52:27.914Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 34,
-              "Title": "UtilityController.cs",
-              "DocumentMoniker": "E:\\MyProject\\RentEase.BE\\RentEase\\RentEase.API\\Controllers\\Sub\\UtilityController.cs",
-              "RelativeDocumentMoniker": "RentEase.API\\Controllers\\Sub\\UtilityController.cs",
-              "ToolTip": "E:\\MyProject\\RentEase.BE\\RentEase\\RentEase.API\\Controllers\\Sub\\UtilityController.cs",
-              "RelativeToolTip": "RentEase.API\\Controllers\\Sub\\UtilityController.cs",
-              "ViewState": "AgIAAFMAAAAAAAAAAAAgwJcAAAAcAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-02-28T15:33:54.038Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 35,
-              "Title": "TransactionTypeController.cs",
-              "DocumentMoniker": "E:\\MyProject\\RentEase.BE\\RentEase\\RentEase.API\\Controllers\\Sub\\TransactionTypeController.cs",
-              "RelativeDocumentMoniker": "RentEase.API\\Controllers\\Sub\\TransactionTypeController.cs",
-              "ToolTip": "E:\\MyProject\\RentEase.BE\\RentEase\\RentEase.API\\Controllers\\Sub\\TransactionTypeController.cs",
-              "RelativeToolTip": "RentEase.API\\Controllers\\Sub\\TransactionTypeController.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAJcAAAAcAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-02-28T15:33:43.571Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 36,
-              "Title": "RoleController.cs",
-              "DocumentMoniker": "E:\\MyProject\\RentEase.BE\\RentEase\\RentEase.API\\Controllers\\Sub\\RoleController.cs",
-              "RelativeDocumentMoniker": "RentEase.API\\Controllers\\Sub\\RoleController.cs",
-              "ToolTip": "E:\\MyProject\\RentEase.BE\\RentEase\\RentEase.API\\Controllers\\Sub\\RoleController.cs",
-              "RelativeToolTip": "RentEase.API\\Controllers\\Sub\\RoleController.cs",
-              "ViewState": "AgIAAAIAAAAAAAAAAAAAABMAAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-02-28T15:33:27.65Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 37,
-              "Title": "AptCategoryController.cs",
-              "DocumentMoniker": "E:\\MyProject\\RentEase.BE\\RentEase\\RentEase.API\\Controllers\\Sub\\AptCategoryController.cs",
-              "RelativeDocumentMoniker": "RentEase.API\\Controllers\\Sub\\AptCategoryController.cs",
-              "ToolTip": "E:\\MyProject\\RentEase.BE\\RentEase\\RentEase.API\\Controllers\\Sub\\AptCategoryController.cs",
-              "RelativeToolTip": "RentEase.API\\Controllers\\Sub\\AptCategoryController.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAEoAAAA+AAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-02-28T15:33:10.389Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 38,
-              "Title": "ApartmentStatusController.cs",
-              "DocumentMoniker": "E:\\MyProject\\RentEase.BE\\RentEase\\RentEase.API\\Controllers\\Sub\\ApartmentStatusController.cs",
-              "RelativeDocumentMoniker": "RentEase.API\\Controllers\\Sub\\ApartmentStatusController.cs",
-              "ToolTip": "E:\\MyProject\\RentEase.BE\\RentEase\\RentEase.API\\Controllers\\Sub\\ApartmentStatusController.cs",
-              "RelativeToolTip": "RentEase.API\\Controllers\\Sub\\ApartmentStatusController.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAsAAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-02-28T15:32:52.067Z",
-              "EditorCaption": ""
-            }
-          ]
-        },
-        {
-          "DockedWidth": 174,
-          "SelectedChildIndex": 0,
-          "Children": [
-            {
-              "$type": "Document",
-              "DocumentIndex": 3,
-              "Title": "MappingProfile.cs",
-              "DocumentMoniker": "E:\\MyProject\\RentEase.BE\\RentEase\\RentEase.Service\\AutoMapper\\MappingProfile.cs",
-              "RelativeDocumentMoniker": "RentEase.Service\\AutoMapper\\MappingProfile.cs",
-              "ToolTip": "E:\\MyProject\\RentEase.BE\\RentEase\\RentEase.Service\\AutoMapper\\MappingProfile.cs",
-              "RelativeToolTip": "RentEase.Service\\AutoMapper\\MappingProfile.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-02-28T18:14:23.686Z",
+              "WhenOpened": "2025-03-02T10:48:48.376Z",
               "EditorCaption": ""
             }
           ]

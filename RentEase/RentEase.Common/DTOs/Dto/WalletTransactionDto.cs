@@ -1,7 +1,9 @@
 ﻿namespace RentEase.Common.DTOs.Dto;
 public class RequestWalletTransactionDto
 {
-    public int AccountId { get; set; }
+    public string OrderId { get; set; }
+
+    public int WalletId { get; set; }
 
     public decimal Amount { get; set; }
 
@@ -17,7 +19,9 @@ public class ResponseWalletTransactionDto
 {
     public int Id { get; set; }
 
-    public int AccountId { get; set; }
+    public string OrderId { get; set; }
+
+    public int WalletId { get; set; }
 
     public decimal Amount { get; set; }
 
@@ -28,4 +32,5 @@ public class ResponseWalletTransactionDto
     public string Description { get; set; }
 
     public DateTime CreatedAt { get; set; }
+
 }

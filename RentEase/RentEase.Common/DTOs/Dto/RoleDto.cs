@@ -4,9 +4,14 @@ public class RequestRoleDto
 {
     public string RoleName { get; set; }
 
-    public DateTime CreatedAt { get; set; }
+    public string Description { get; set; }
+
+    public DateTime CreatedAt { get; set; } = DateTime.Now;
 
     public DateTime? UpdatedAt { get; set; } = null;
+
+    public DateTime? DeletedAt { get; set; } = null;
+    public bool? Status { get; set; }
 }
 public class ResponseRoleDto
 {
@@ -14,7 +19,10 @@ public class ResponseRoleDto
 
     public string RoleName { get; set; }
 
-    public DateTime CreatedAt { get; set; }
+    public string Description { get; set; }
 
-    public DateTime UpdatedAt { get; set; }
+    public DateTime CreatedAt { get; set; }
+    public DateTime? UpdatedAt { get; set; }
+    public DateTime? DeletedAt { get; set; }
+    public bool? Status { get; set; }
 }

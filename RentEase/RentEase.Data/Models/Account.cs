@@ -51,6 +51,10 @@ public partial class Account
 
     public virtual ICollection<MaintenanceRequest> MaintenanceRequestLessees { get; set; } = new List<MaintenanceRequest>();
 
+    public virtual ICollection<Order> OrderLessees { get; set; } = new List<Order>();
+
+    public virtual ICollection<Order> OrderLessors { get; set; } = new List<Order>();
+
     public virtual ICollection<Review> Reviews { get; set; } = new List<Review>();
 
     public virtual Role Role { get; set; }

@@ -12,7 +12,9 @@ namespace RentEase.Service.Helper
     {
         Task<ResponseToken> GenerateTokens(int userId, int roleId);
         string GenerateVerificationCode();
+        string GenerateAptCode(string categoryName);
         string GetUserIdFromHttpContextAccessor(IHttpContextAccessor httpContextAccessor);
+        string GetRoleIdFromHttpContextAccessor(IHttpContextAccessor httpContextAccessor);
         bool IsTokenExpired(string token);
 
     }
@@ -25,7 +27,7 @@ namespace RentEase.Service.Helper
             _configuration = configuration;
         }
 
-        //GENERATE
+        //GENERATE JWT TOKEN
         public async Task<ResponseToken> GenerateTokens(int userId, int roleId)
         {
             var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["JwtSettings:Key"]));
@@ -95,6 +97,19 @@ namespace RentEase.Service.Helper
                                         .ToArray());
         }
 
+        //GENERATE APT CODE
+        public string GenerateAptCode(string categoryName)
+        {
+            string prefix = string.Concat(categoryName.Split(' '))
+                                  .ToUpper()
+                                  .Substring(0, Math.Min(3, categoryName.Length));
+
+            Random random = new Random();
+            int randomNumber = random.Next(100000, 999999);  // 6 số ngẫu nhiên
+
+            return $"{prefix}{randomNumber}";
+        }
+
 
         //CHECK
         public string GetUserIdFromHttpContextAccessor(IHttpContextAccessor httpContextAccessor)
@@ -121,6 +136,31 @@ namespace RentEase.Service.Helper
             var idClaim = principal.Claims.FirstOrDefault(claim => claim.Type == "id");
 
             return idClaim?.Value ?? throw new UnauthorizedAccessException("User ID claim not found in token!");
+        }
+        public string GetRoleIdFromHttpContextAccessor(IHttpContextAccessor httpContextAccessor)
+        {
+            if (httpContextAccessor.HttpContext == null || !httpContextAccessor.HttpContext.Request.Headers.ContainsKey("Authorization"))
+            {
+                throw new UnauthorizedAccessException("Authorization header is required!");
+            }
+
+            string? authorizationHeader = httpContextAccessor.HttpContext.Request.Headers["Authorization"];
+
+            if (string.IsNullOrWhiteSpace(authorizationHeader) || !authorizationHeader.StartsWith("Bearer ", StringComparison.OrdinalIgnoreCase))
+            {
+                throw new UnauthorizedAccessException($"Invalid authorization header: {authorizationHeader}");
+            }
+
+            string jwtToken = authorizationHeader["Bearer ".Length..].Trim();
+
+            if (!ValidateToken(jwtToken, out ClaimsPrincipal principal))
+            {
+                throw new UnauthorizedAccessException("Token validation failed!");
+            }
+
+            var idClaim = principal.Claims.FirstOrDefault(claim => claim.Type == ClaimTypes.Role);
+
+            return idClaim?.Value ?? throw new UnauthorizedAccessException("Role ID claim not found in token!");
         }
 
         private bool ValidateToken(string token, out ClaimsPrincipal principal)

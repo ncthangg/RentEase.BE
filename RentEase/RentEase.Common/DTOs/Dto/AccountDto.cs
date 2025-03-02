@@ -11,15 +11,15 @@ public class RequestAccountDto
 
     public DateOnly? DateOfBirth { get; set; }
 
-    public string? Gender { get; set; }
+    public string Gender { get; set; }
 
-    public string? AvatarUrl { get; set; }
+    public string AvatarUrl { get; set; }
 
     public int RoleId { get; set; }
 
     public bool? IsActive { get; set; } = false;
 
-    public DateTime CreatedAt { get; set; }
+    public DateTime CreatedAt { get; set; } = DateTime.Now;
 
     public DateTime? UpdatedAt { get; set; } = null;
 
@@ -41,9 +41,9 @@ public class ResponseAccountDto
 
     public DateOnly? DateOfBirth { get; set; }
 
-    public string? Gender { get; set; }
+    public string Gender { get; set; }
 
-    public string? AvatarUrl { get; set; }
+    public string AvatarUrl { get; set; }
 
     public int RoleId { get; set; }
 

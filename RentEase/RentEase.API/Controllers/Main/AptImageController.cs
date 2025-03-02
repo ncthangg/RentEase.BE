@@ -2,7 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using RentEase.Common.DTOs.Dto;
 using RentEase.Common.DTOs.Response;
-using RentEase.Service.Service;
+using RentEase.Service.Service.Main;
 using System.Net;
 
 namespace RentEase.API.Controllers.Main

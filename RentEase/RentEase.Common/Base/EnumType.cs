@@ -25,8 +25,8 @@
 
         public enum TransactionStatus
         {
-            Pending = 1,      // Đang xét duyệt
-            Completed = 2,    // Hoàn thành
+            Pending = 1,      // Đang xử lý
+            Success = 2,      // Thành công
             Failed = 3        // Thất bại
         }
 
@@ -46,7 +46,7 @@
             High = 3          // Cao
         }
 
-        public enum Status
+        public enum LiveStatus
         {
             Active = 1,       // Đang hoạt động
             MoveOut = 2       // Rời đi

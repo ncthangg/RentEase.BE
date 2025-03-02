@@ -173,7 +173,7 @@ namespace RentEase.Service.Service.Authenticate
                 var walletExist = await _serviceWrapper.WalletService.GetByIdAsync(accountIdInt);
                 if (walletExist.Data == null)
                 {
-                    return new ServiceResult(Const.ERROR_EXCEPTION, "Tài khoản không tồn tại ");
+                    return new ServiceResult(Const.ERROR_EXCEPTION, "Ví không tồn tại ");
                 }
 
                 var responseAccountData = (ResponseAccountDto)accountExist.Data;

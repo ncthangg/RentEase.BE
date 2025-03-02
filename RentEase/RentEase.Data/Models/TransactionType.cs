@@ -9,7 +9,7 @@ public partial class TransactionType
 {
     public int Id { get; set; }
 
-    public string Name { get; set; }
+    public string TypeName { get; set; }
 
     public string Description { get; set; }
 
@@ -20,6 +20,8 @@ public partial class TransactionType
     public DateTime? DeletedAt { get; set; }
 
     public bool? Status { get; set; }
+
+    public virtual ICollection<Order> Orders { get; set; } = new List<Order>();
 
     public virtual ICollection<WalletTransaction> WalletTransactions { get; set; } = new List<WalletTransaction>();
 }

@@ -23,7 +23,7 @@ public partial class Contract
 
     public long RentPrice { get; set; }
 
-    public long? PilePrice { get; set; }
+    public long PilePrice { get; set; }
 
     public string FileUrl { get; set; }
 
@@ -46,4 +46,6 @@ public partial class Contract
     public virtual Account Lessee { get; set; }
 
     public virtual Account Lessor { get; set; }
+
+    public virtual ICollection<Order> Orders { get; set; } = new List<Order>();
 }

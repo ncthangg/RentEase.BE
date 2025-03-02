@@ -1,5 +1,4 @@
 ﻿using RentEase.Common.DTOs.Dto;
-using RentEase.Common.DTOs.Response;
 
 namespace RentEase.Common.DTOs.Authenticate
 {

@@ -1,6 +1,5 @@
 ﻿using AutoMapper;
 using Microsoft.Extensions.Configuration;
-using Org.BouncyCastle.Asn1.Ocsp;
 using RentEase.Common.Base;
 using RentEase.Common.DTOs.Authenticate;
 using RentEase.Common.DTOs.Dto;

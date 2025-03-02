@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace RentEase.Service.Helper
+﻿namespace RentEase.Service.Helper
 {
     internal class PaymentHelper
     {

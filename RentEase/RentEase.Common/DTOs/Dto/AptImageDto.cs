@@ -16,7 +16,7 @@ public class RequestAptImageDto
 
     public string? ImageUrl6 { get; set; }
 
-    public DateTime CreatedAt { get; set; }
+    public DateTime CreatedAt { get; set; } = DateTime.Now;
 
     public DateTime? UpdatedAt { get; set; } = null;
 

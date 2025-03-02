@@ -2,7 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using RentEase.Common.DTOs.Dto;
 using RentEase.Common.DTOs.Response;
-using RentEase.Service.Service;
+using RentEase.Service.Service.Sub;
 using System.Net;
 
 namespace RentEase.API.Controllers.Sub
@@ -12,18 +12,18 @@ namespace RentEase.API.Controllers.Sub
     [Authorize(Roles = "1")]
     public class RoleController : ControllerBase
     {
-        private readonly IRoleService _RoleService;
-        public RoleController(IRoleService RoleService)
+        private readonly IRoleService _roleService;
+        public RoleController(IRoleService roleService)
         {
-            _RoleService = RoleService;
+            _roleService = roleService;
         }
 
         [HttpGet]
-        public async Task<IActionResult> Get([FromQuery] int page = 1, [FromQuery] int pageSize = 10)
+        public async Task<IActionResult> Get([FromQuery] bool status = true, [FromQuery] int page = 1, [FromQuery] int pageSize = 10)
         {
             try
             {
-                var result = await _RoleService.GetAllAsync(page, pageSize);
+                var result = await _roleService.GetAllAsync(status, page, pageSize);
                 if (result.Data == null)
                 {
                     return Ok(new ApiResponse<ResponseRoleDto>
@@ -58,7 +58,7 @@ namespace RentEase.API.Controllers.Sub
         {
             try
             {
-                var result = await _RoleService.GetByIdAsync(id);
+                var result = await _roleService.GetByIdAsync(id);
                 if (result.Data == null)
                 {
                     return Ok(new ApiResponse<ResponseRoleDto>
@@ -85,12 +85,49 @@ namespace RentEase.API.Controllers.Sub
             }
         }
 
+        [HttpGet("search")]
+        public async Task<IActionResult> Search([FromQuery] string name, [FromQuery] bool status = true, [FromQuery] int page = 1, [FromQuery] int pageSize = 10)
+        {
+            try
+            {
+                if (string.IsNullOrWhiteSpace(name))
+                {
+                    return BadRequest(new { message = "Name is required" });
+                }
+
+                var result = await _roleService.Search(name, status, page, pageSize);
+
+                if (result.Data == null)
+                {
+                    return Ok(new ApiResponse<ResponseRoleDto>
+                    {
+                        StatusCode = HttpStatusCode.OK,
+                        Message = "No Data",
+                        Data = null
+                    });
+                }
+                return Ok(new ApiResponse<IEnumerable<ResponseRoleDto>>
+                {
+                    StatusCode = HttpStatusCode.OK,
+                    Message = result.Message,
+                    Data = (IEnumerable<ResponseRoleDto>)result.Data
+                });
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new ApiResponse<string>
+                {
+                    StatusCode = HttpStatusCode.InternalServerError,
+                    Message = $"Lỗi hệ thống: {ex.Message}"
+                });
+            }
+        }
         [HttpPost]
         public async Task<IActionResult> Post(RequestRoleDto request)
         {
             try
             {
-                var result = await _RoleService.Create(request);
+                var result = await _roleService.Create(request);
                 if (result.Data == null)
                 {
                     return Ok(new ApiResponse<ResponseRoleDto>
@@ -122,7 +159,7 @@ namespace RentEase.API.Controllers.Sub
         {
             try
             {
-                var result = await _RoleService.Update(id, request);
+                var result = await _roleService.Update(id, request);
                 if (result.Data == null)
                 {
                     return Ok(new ApiResponse<ResponseRoleDto>
@@ -154,7 +191,7 @@ namespace RentEase.API.Controllers.Sub
         {
             try
             {
-                var result = await _RoleService.DeleteByIdAsync(id);
+                var result = await _roleService.DeleteByIdAsync(id);
                 if (result.Data == null)
                 {
                     return Ok(new ApiResponse<ResponseRoleDto>

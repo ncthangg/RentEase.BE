@@ -19,31 +19,15 @@ namespace RentEase.Data.Repository.Base
             _context = context;
         }
 
-        public List<T> GetAll()
-        {
-            return _context.Set<T>().ToList();
-        }
         public async Task<List<T>> GetAllAsync()
         {
             return await _context.Set<T>().ToListAsync();
-        }
-        public void Create(T entity)
-        {
-            _context.Add(entity);
-            _context.SaveChanges();
         }
 
         public async Task<int> CreateAsync(T entity)
         {
             _context.Add(entity);
             return await _context.SaveChangesAsync();
-        }
-
-        public void Update(T entity)
-        {
-            var tracker = _context.Attach(entity);
-            tracker.State = EntityState.Modified;
-            _context.SaveChanges();
         }
 
         public async Task<int> UpdateAsync(T entity)
@@ -53,13 +37,6 @@ namespace RentEase.Data.Repository.Base
             return await _context.SaveChangesAsync();
         }
 
-        public bool Remove(T entity)
-        {
-            _context.Remove(entity);
-            _context.SaveChanges();
-            return true;
-        }
-
         public async Task<bool> RemoveAsync(T entity)
         {
             _context.Remove(entity);
@@ -67,18 +44,6 @@ namespace RentEase.Data.Repository.Base
             return true;
         }
 
-        public T GetById(int id)
-        {
-            var entity = _context.Set<T>().Find(id);
-            if (entity != null)
-            {
-                _context.Entry(entity).State = EntityState.Detached;
-            }
-
-            return entity;
-
-            //return _context.Set<T>().Find(id);
-        }
         public async Task<T> GetByIdAsync(int id)
         {
             var entity = await _context.Set<T>().FindAsync(id);
@@ -92,19 +57,6 @@ namespace RentEase.Data.Repository.Base
             //return await _context.Set<T>().FindAsync(id);
         }
 
-        public T GetById(string code)
-        {
-            var entity = _context.Set<T>().Find(code);
-            if (entity != null)
-            {
-                _context.Entry(entity).State = EntityState.Detached;
-            }
-
-            return entity;
-
-            //return _context.Set<T>().Find(code);
-        }
-
         public async Task<T> GetByIdAsync(string code)
         {
             var entity = await _context.Set<T>().FindAsync(code);
@@ -115,19 +67,6 @@ namespace RentEase.Data.Repository.Base
             return entity;
 
             //return await _context.Set<T>().FindAsync(code);
-        }
-
-        public T GetById(Guid code)
-        {
-            var entity = _context.Set<T>().Find(code);
-            if (entity != null)
-            {
-                _context.Entry(entity).State = EntityState.Detached;
-            }
-
-            return entity;
-
-            //return _context.Set<T>().Find(code);
         }
 
         public async Task<T> GetByIdAsync(Guid code)
@@ -190,9 +129,18 @@ namespace RentEase.Data.Repository.Base
         public async Task<PagedResult<T>> GetPagedAsync(
                Expression<Func<T, bool>>? filter = null,
                Func<IQueryable<T>, IOrderedQueryable<T>>? orderBy = null,
-               int page = 1, int pageSize = 10)
+               int page = 1, int pageSize = 10,
+               params Expression<Func<T, object>>[]? includes)
         {
             IQueryable<T> query = _context.Set<T>();
+            
+            if (includes != null)
+            {
+                foreach (var include in includes)
+                {
+                    query = query.Include(include);
+                }
+            }
 
             if (filter != null)
             {

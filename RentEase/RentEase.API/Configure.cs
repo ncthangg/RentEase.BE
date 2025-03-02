@@ -7,9 +7,11 @@ using Microsoft.OpenApi.Models;
 using RentEase.Service;
 using RentEase.Service.AutoMapper;
 using RentEase.Service.Helper;
-using RentEase.Service.Service;
 using RentEase.Service.Service.Authenticate;
+using RentEase.Service.Service.Main;
+using RentEase.Service.Service.Sub;
 using System.Text;
+
 
 namespace RentEase.API
 {

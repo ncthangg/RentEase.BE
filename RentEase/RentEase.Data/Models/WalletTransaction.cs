@@ -9,7 +9,9 @@ public partial class WalletTransaction
 {
     public int Id { get; set; }
 
-    public int AccountId { get; set; }
+    public string OrderId { get; set; }
+
+    public int WalletId { get; set; }
 
     public decimal Amount { get; set; }
 
@@ -21,7 +23,9 @@ public partial class WalletTransaction
 
     public DateTime CreatedAt { get; set; }
 
-    public virtual Wallet Account { get; set; }
+    public virtual Order Order { get; set; }
 
     public virtual TransactionType TransactionType { get; set; }
+
+    public virtual Wallet Wallet { get; set; }
 }

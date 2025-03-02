@@ -62,7 +62,7 @@ namespace RentEase.Service.Service.Authenticate
             }
 
             // Kiểm tra thời gian hết hạn của RefreshToken
-            if (accountToken.ExpiresAt.HasValue && accountToken.ExpiresAt.Value < DateTime.Now)
+            if (accountToken.ExpiresAt < DateTime.Now)
             {
                 return new ServiceResult(Const.ERROR_EXCEPTION, "Refresh token has expired");
             }

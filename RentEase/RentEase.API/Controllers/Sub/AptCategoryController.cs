@@ -2,7 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using RentEase.Common.DTOs.Dto;
 using RentEase.Common.DTOs.Response;
-using RentEase.Service.Service;
+using RentEase.Service.Service.Sub;
 using System.Net;
 
 namespace RentEase.API.Controllers.Sub
@@ -12,18 +12,18 @@ namespace RentEase.API.Controllers.Sub
     [Authorize(Roles = "1")]
     public class AptCategoryController : ControllerBase
     {
-        private readonly IAptCategoryService _AptCategoryService;
-        public AptCategoryController(IAptCategoryService AptCategoryService)
+        private readonly IAptCategoryService _aptCategoryService;
+        public AptCategoryController(IAptCategoryService aptCategoryService)
         {
-            _AptCategoryService = AptCategoryService;
+            _aptCategoryService = aptCategoryService;
         }
 
         [HttpGet]
-        public async Task<IActionResult> Get([FromQuery] int page = 1, [FromQuery] int pageSize = 10)
+        public async Task<IActionResult> Get([FromQuery] bool status = true, [FromQuery] int page = 1,  [FromQuery] int pageSize = 10)
         {
             try
             {
-                var result = await _AptCategoryService.GetAllAsync(page, pageSize);
+                var result = await _aptCategoryService.GetAllAsync(status, page, pageSize);
                 if (result.Data == null)
                 {
                     return Ok(new ApiResponse<ResponseAptCategoryDto>
@@ -58,7 +58,7 @@ namespace RentEase.API.Controllers.Sub
         {
             try
             {
-                var result = await _AptCategoryService.GetByIdAsync(id);
+                var result = await _aptCategoryService.GetByIdAsync(id);
                 if (result.Data == null)
                 {
                     return Ok(new ApiResponse<ResponseAptCategoryDto>
@@ -85,12 +85,50 @@ namespace RentEase.API.Controllers.Sub
             }
         }
 
+        [HttpGet("search")]
+        public async Task<IActionResult> Search([FromQuery] string name, [FromQuery] bool status = true, [FromQuery] int page = 1, [FromQuery] int pageSize = 10)
+        {
+            try
+            {
+                if (string.IsNullOrWhiteSpace(name))
+                {
+                    return BadRequest(new { message = "Name is required" });
+                }
+
+                var result = await _aptCategoryService.Search(name, true, page, pageSize);
+
+                if (result.Data == null)
+                {
+                    return Ok(new ApiResponse<ResponseAptCategoryDto>
+                    {
+                        StatusCode = HttpStatusCode.OK,
+                        Message = "No Data",
+                        Data = null
+                    });
+                }
+                return Ok(new ApiResponse<IEnumerable<ResponseAptCategoryDto>>
+                {
+                    StatusCode = HttpStatusCode.OK,
+                    Message = result.Message,
+                    Data = (IEnumerable<ResponseAptCategoryDto>)result.Data
+                });
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new ApiResponse<string>
+                {
+                    StatusCode = HttpStatusCode.InternalServerError,
+                    Message = $"Lỗi hệ thống: {ex.Message}"
+                });
+            }
+        }
+
         [HttpPost]
         public async Task<IActionResult> Post(RequestAptCategoryDto request)
         {
             try
             {
-                var result = await _AptCategoryService.Create(request);
+                var result = await _aptCategoryService.Create(request);
                 if (result.Data == null)
                 {
                     return Ok(new ApiResponse<ResponseAptCategoryDto>
@@ -122,7 +160,7 @@ namespace RentEase.API.Controllers.Sub
         {
             try
             {
-                var result = await _AptCategoryService.Update(id, request);
+                var result = await _aptCategoryService.Update(id, request);
                 if (result.Data == null)
                 {
                     return Ok(new ApiResponse<ResponseAptCategoryDto>
@@ -154,7 +192,7 @@ namespace RentEase.API.Controllers.Sub
         {
             try
             {
-                var result = await _AptCategoryService.DeleteByIdAsync(id);
+                var result = await _aptCategoryService.DeleteByIdAsync(id);
                 if (result.Data == null)
                 {
                     return Ok(new ApiResponse<ResponseAptCategoryDto>
