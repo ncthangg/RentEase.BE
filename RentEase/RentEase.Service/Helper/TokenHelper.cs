@@ -15,7 +15,6 @@ namespace RentEase.Service.Helper
         string GenerateAptCode(string categoryName);
         string GetUserIdFromHttpContextAccessor(IHttpContextAccessor httpContextAccessor);
         string GetRoleIdFromHttpContextAccessor(IHttpContextAccessor httpContextAccessor);
-        bool IsTokenExpired(string token);
 
     }
     public class TokenHelper : ITokenHelper
@@ -64,12 +63,10 @@ namespace RentEase.Service.Helper
 
             return tokenString;
         }
-
         private string GenerateRefreshToken()
         {
             return Guid.NewGuid().ToString(); // Tạo refresh token ngẫu nhiên
         }
-
         //private string GenerateRefreshToken(SigningCredentials credentials, List<Claim> claims)
         //{
         //    var refreshToken = new JwtSecurityToken(
@@ -82,7 +79,9 @@ namespace RentEase.Service.Helper
         //    );
         //    return new JwtSecurityTokenHandler().WriteToken(refreshToken);
         //}
+        
 
+        //GENERATE VERIFICATION CODE
         public string GenerateVerificationCode()
         {
             // Chuỗi chứa các ký tự chữ cái và số
@@ -163,6 +162,8 @@ namespace RentEase.Service.Helper
             return idClaim?.Value ?? throw new UnauthorizedAccessException("Role ID claim not found in token!");
         }
 
+
+
         private bool ValidateToken(string token, out ClaimsPrincipal principal)
         {
             principal = null!;
@@ -192,8 +193,7 @@ namespace RentEase.Service.Helper
                 return false;
             }
         }
-
-        public bool IsTokenExpired(string token)
+        private bool IsTokenExpired(string token)
         {
             var jwtToken = new JwtSecurityTokenHandler().ReadJwtToken(token);
             return jwtToken.ValidTo < DateTime.Now;

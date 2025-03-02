@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using RentEase.Common.Base;
+using RentEase.Common.DTOs.Authenticate;
 using RentEase.Common.DTOs.Dto;
 using RentEase.Data;
 using RentEase.Data.Models;
@@ -16,6 +17,7 @@ namespace RentEase.Service.Service.Main
         Task<ServiceResult> GetByEmailOrPhoneAsync(string email);
         Task<ServiceResult> Search(string? fullName, string? email, string? phoneNumber, bool? isActive, bool? status, int page, int pageSize);
         Task<ServiceResult> Create(RequestAccountDto request);
+        Task<ServiceResult> CreateByGuest(RequestRegisterDto request);
         Task<ServiceResult> Update(int id, RequestAccountDto request);
         Task<ServiceResult> Delete(int id);
         Task<bool> AccountExist(int id);
@@ -45,15 +47,15 @@ namespace RentEase.Service.Service.Main
                 var item = await _unitOfWork.AccountRepository.GetByEmailAsync(email);
                 if (item == null)
                 {
-                    return new ServiceResult(Const.FAIL_READ_CODE, Const.FAIL_READ_MSG);
+                    return new ServiceResult(Const.ERROR_EXCEPTION, Const.ERROR_EXCEPTION_MSG);
                 }
 
                 var responseData = _mapper.Map<ResponseAccountDto>(item);
-                return new ServiceResult(Const.SUCCESS_READ_CODE, Const.SUCCESS_READ_MSG, responseData);
+                return new ServiceResult(Const.SUCCESS_ACTION, Const.SUCCESS_ACTION_MSG, responseData);
             }
             catch (Exception ex)
             {
-                return new ServiceResult(Const.FAIL_READ_CODE, "Lỗi khi lấy dữ liệu theo Email: " + ex.Message);
+                return new ServiceResult(Const.ERROR_EXCEPTION, "Lỗi khi lấy dữ liệu theo Email: " + ex.Message);
             }
         }
         public async Task<ServiceResult> GetByPhoneAsync(string phoneNumber)
@@ -63,15 +65,15 @@ namespace RentEase.Service.Service.Main
                 var item = await _unitOfWork.AccountRepository.GetByPhoneAsync(phoneNumber);
                 if (item == null)
                 {
-                    return new ServiceResult(Const.FAIL_READ_CODE, Const.FAIL_READ_MSG);
+                    return new ServiceResult(Const.ERROR_EXCEPTION, Const.ERROR_EXCEPTION_MSG);
                 }
 
                 var responseData = _mapper.Map<ResponseAccountDto>(item);
-                return new ServiceResult(Const.SUCCESS_READ_CODE, Const.SUCCESS_READ_MSG, responseData);
+                return new ServiceResult(Const.SUCCESS_ACTION, Const.SUCCESS_ACTION_MSG, responseData);
             }
             catch (Exception ex)
             {
-                return new ServiceResult(Const.FAIL_READ_CODE, "Lỗi khi lấy dữ liệu theo Email: " + ex.Message);
+                return new ServiceResult(Const.ERROR_EXCEPTION, "Lỗi khi lấy dữ liệu theo Email: " + ex.Message);
             }
         }
         public async Task<ServiceResult> GetByEmailOrPhoneAsync(string username)
@@ -80,21 +82,21 @@ namespace RentEase.Service.Service.Main
             {
                 if (string.IsNullOrWhiteSpace(username))
                 {
-                    return new ServiceResult(Const.FAIL_READ_CODE, Const.FAIL_READ_MSG);
+                    return new ServiceResult(Const.ERROR_EXCEPTION, Const.ERROR_EXCEPTION_MSG);
                 }
 
                 var item = await _unitOfWork.AccountRepository.GetByEmailOrPhoneAsync(username);
                 if (item == null)
                 {
-                    return new ServiceResult(Const.FAIL_READ_CODE, Const.FAIL_READ_MSG);
+                    return new ServiceResult(Const.ERROR_EXCEPTION, Const.ERROR_EXCEPTION_MSG);
                 }
 
                 var responseData = _mapper.Map<ResponseAccountDto>(item);
-                return new ServiceResult(Const.SUCCESS_READ_CODE, Const.SUCCESS_READ_MSG, responseData);
+                return new ServiceResult(Const.SUCCESS_ACTION, Const.SUCCESS_ACTION_MSG, responseData);
             }
             catch (Exception ex)
             {
-                return new ServiceResult(Const.FAIL_READ_CODE, "Lỗi khi lấy dữ liệu theo Email: " + ex.Message);
+                return new ServiceResult(Const.ERROR_EXCEPTION, "Lỗi khi lấy dữ liệu theo Email: " + ex.Message);
             }
         }
 
@@ -103,12 +105,12 @@ namespace RentEase.Service.Service.Main
             var items = await _unitOfWork.AccountRepository.GetBySearchAsync(fullName, email, phoneNumber, isActive, status, page, pageSize);
             if (!items.Data.Any())
             {
-                return new ServiceResult(Const.FAIL_READ_CODE, Const.FAIL_READ_MSG);
+                return new ServiceResult(Const.ERROR_EXCEPTION, Const.ERROR_EXCEPTION_MSG);
             }
             else
             {
                 var responseData = _mapper.Map<IEnumerable<ResponseAccountDto>>(items.Data);
-                return new ServiceResult(Const.SUCCESS_READ_CODE, Const.SUCCESS_READ_MSG, items.TotalCount, items.TotalPages, items.CurrentPage, responseData);
+                return new ServiceResult(Const.SUCCESS_ACTION, Const.SUCCESS_ACTION_MSG, items.TotalCount, items.TotalPages, items.CurrentPage, responseData);
             }
         }
 
@@ -116,7 +118,7 @@ namespace RentEase.Service.Service.Main
         {
             if (await AccountExistByMail(request.Email) || await AccountExistByPhoneNumber(request.PhoneNumber))
             {
-                return new ServiceResult(Const.FAIL_CREATE_CODE, Const.FAIL_CREATE_MSG);
+                return new ServiceResult(Const.ERROR_EXCEPTION, Const.ERROR_EXCEPTION_MSG);
             }
 
             var createItem = new Account()
@@ -129,7 +131,7 @@ namespace RentEase.Service.Service.Main
                 Gender = request.Gender,
                 AvatarUrl = request.AvatarUrl,
                 RoleId = request.RoleId,
-                IsActive = request.IsActive,
+                IsActive = false,
                 CreatedAt = DateTime.Now,
                 UpdatedAt = null,
                 DeletedAt = null,
@@ -154,26 +156,87 @@ namespace RentEase.Service.Service.Main
                 {
                     var responseWalletData = _mapper.Map<ResponseWalletDto>(createItemWallet);
                     responseData1.ResponseWalletDto = responseWalletData;
-                    return new ServiceResult(Const.SUCCESS_CREATE_CODE, Const.SUCCESS_CREATE_MSG, responseData1);
+                    return new ServiceResult(Const.SUCCESS_ACTION, Const.SUCCESS_ACTION_MSG, responseData1);
                 }
 
-                return new ServiceResult(Const.SUCCESS_CREATE_CODE, "Tạo tài khoản thành công Nhưng Tạo ví thất bại");
+                return new ServiceResult(Const.SUCCESS_ACTION, "Tạo tài khoản thành công Nhưng Tạo ví thất bại");
             }
 
-            return new ServiceResult(Const.FAIL_CREATE_CODE, Const.FAIL_CREATE_MSG);
+            return new ServiceResult(Const.ERROR_EXCEPTION, Const.ERROR_EXCEPTION_MSG);
         }
+        public async Task<ServiceResult> CreateByGuest(RequestRegisterDto request)
+        {
+            if (request.Password.Equals(request.ConfirmPassword))
+            {
+                //var hashedPassword = _helperWrapper.PasswordHelper.HashPassword(requestRegisterDto.Password);
 
+                var isEmail = IsEmail(request.Username);
+                var createItem = new Account();
+
+                if (isEmail)
+                {
+                    createItem = new Account()
+                    {
+                        Email = request.Username,
+                        FullName = null,
+                        PasswordHash = request.Password,
+                        PhoneNumber = null,
+                        DateOfBirth = null,
+                        Gender = null,
+                        AvatarUrl = null,
+                        RoleId = request.RoleId,
+                        IsActive = false,
+                        CreatedAt = DateTime.Now,
+                        UpdatedAt = null,
+                        DeletedAt = null,
+                        Status = true,
+                    };
+                }
+                else
+                {
+                    createItem = new Account()
+                    {
+                        Email = null,
+                        FullName = null,
+                        PasswordHash = request.Password,
+                        PhoneNumber = request.Username,
+                        DateOfBirth = null,
+                        Gender = null,
+                        AvatarUrl = null,
+                        RoleId = request.RoleId,
+                        IsActive = false,
+                        CreatedAt = DateTime.Now,
+                        UpdatedAt = null,
+                        DeletedAt = null,
+                        Status = true,
+                    };
+                }
+
+                var result = await _unitOfWork.AccountRepository.CreateAsync(createItem);
+                if (result > 0)
+                {
+                    var responseData = _mapper.Map<ResponseAccountDto>(createItem);
+
+                    return new ServiceResult(Const.SUCCESS_ACTION, Const.SUCCESS_ACTION_MSG, responseData);
+                }
+
+                return new ServiceResult(Const.ERROR_EXCEPTION, Const.ERROR_EXCEPTION_MSG);
+            }
+
+            return new ServiceResult(Const.ERROR_EXCEPTION, Const.ERROR_EXCEPTION_MSG);
+        }
         public async Task<ServiceResult> Update(int id, RequestAccountDto request)
         {
             if (!await AccountExist(id))
             {
-                return new ServiceResult(Const.FAIL_UPDATE_CODE, Const.FAIL_UPDATE_MSG);
+                return new ServiceResult(Const.ERROR_EXCEPTION, Const.ERROR_EXCEPTION_MSG);
             }
+            var item = (Account)(await GetByIdAsync(id)).Data;
 
             var updateItem = new Account()
             {
                 Id = id,
-                Email = request.Email,
+                Email = item.Email,
                 FullName = request.FullName,
                 PasswordHash = request.PasswordHash,
                 PhoneNumber = request.PhoneNumber,
@@ -181,11 +244,11 @@ namespace RentEase.Service.Service.Main
                 Gender = request.Gender,
                 AvatarUrl = request.AvatarUrl,
                 RoleId = request.RoleId,
-                IsActive = request.IsActive,
-                CreatedAt = request.CreatedAt,
+                IsActive = item.IsActive,
+                CreatedAt = item.CreatedAt,
                 UpdatedAt = DateTime.Now,
                 DeletedAt = null,
-                Status = request.Status,
+                Status = item.Status,
             };
 
             var result = await _unitOfWork.AccountRepository.UpdateAsync(updateItem);
@@ -193,17 +256,17 @@ namespace RentEase.Service.Service.Main
             {
                 var responseData = _mapper.Map<ResponseAccountDto>(updateItem);
 
-                return new ServiceResult(Const.SUCCESS_UPDATE_CODE, Const.SUCCESS_UPDATE_MSG, responseData);
+                return new ServiceResult(Const.SUCCESS_ACTION, Const.SUCCESS_ACTION_MSG, responseData);
             }
 
-            return new ServiceResult(Const.FAIL_UPDATE_CODE, Const.FAIL_UPDATE_MSG);
+            return new ServiceResult(Const.ERROR_EXCEPTION, Const.ERROR_EXCEPTION_MSG);
         }
 
         public async Task<ServiceResult> Delete(int id)
         {
             if (!await EntityExistsAsync("Id", id))
             {
-                return new ServiceResult(Const.FAIL_DELETE_CODE, Const.FAIL_DELETE_MSG);
+                return new ServiceResult(Const.ERROR_EXCEPTION, Const.ERROR_EXCEPTION_MSG);
             }
             var itemAccount = (Account)(await GetByIdAsync(id)).Data;
 
@@ -220,13 +283,13 @@ namespace RentEase.Service.Service.Main
 
                 if (itemWallet.Status < 0)
                 {
-                    return new ServiceResult(Const.FAIL_DELETE_CODE, Const.FAIL_DELETE_MSG);
+                    return new ServiceResult(Const.ERROR_EXCEPTION, Const.ERROR_EXCEPTION_MSG);
                 }
 
-                return new ServiceResult(Const.SUCCESS_DELETE_CODE, Const.SUCCESS_DELETE_MSG);
+                return new ServiceResult(Const.SUCCESS_ACTION, Const.SUCCESS_ACTION_MSG);
             }
 
-            return new ServiceResult(Const.FAIL_DELETE_CODE, Const.FAIL_DELETE_MSG);
+            return new ServiceResult(Const.ERROR_EXCEPTION, Const.ERROR_EXCEPTION_MSG);
         }
 
         public async Task<bool> AccountExist(int id)

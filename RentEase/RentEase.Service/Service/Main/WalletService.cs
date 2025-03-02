@@ -11,8 +11,7 @@ namespace RentEase.Service.Service.Main
     {
         Task<ServiceResult> GetAllAsync(int page, int pageSize);
         Task<ServiceResult> GetByIdAsync(int id);
-        Task<ServiceResult> Create(RequestWalletDto request);
-        Task<ServiceResult> Update(int id, RequestWalletDto request);
+        Task<ServiceResult> Update(int id, decimal balance);
         Task<ServiceResult> Delete(int id);
 
     }
@@ -29,50 +28,24 @@ namespace RentEase.Service.Service.Main
             _helperWrapper = helperWrapper;
         }
 
-        public async Task<ServiceResult> Create(RequestWalletDto request)
-        {
-            if (await EntityExistsAsync("AccountId", request.AccountId))
-            {
-                return new ServiceResult(Const.FAIL_CREATE_CODE, Const.FAIL_CREATE_MSG);
-            }
-
-            var createItem = new Wallet()
-            {
-                AccountId = request.AccountId,
-                Balance = request.Balance,
-                CreatedAt = DateTime.Now,
-                UpdatedAt = null,
-                DeletedAt = null,
-                Status = true,
-            };
-
-            var result = await _unitOfWork.WalletRepository.CreateAsync(createItem);
-            if (result > 0)
-            {
-                var responseData = _mapper.Map<ResponseWalletDto>(result);
-
-                return new ServiceResult(Const.SUCCESS_CREATE_CODE, Const.SUCCESS_CREATE_MSG, responseData);
-            }
-
-            return new ServiceResult(Const.FAIL_CREATE_CODE, Const.FAIL_CREATE_MSG);
-        }
-
-        public async Task<ServiceResult> Update(int id, RequestWalletDto request)
+        public async Task<ServiceResult> Update(int id, decimal balance)
         {
 
-            if (!await EntityExistsAsync("AccountId", request.AccountId))
+            if (!await EntityExistsAsync("AccountId", id))
             {
-                return new ServiceResult(Const.FAIL_UPDATE_CODE, Const.FAIL_UPDATE_MSG);
+                return new ServiceResult(Const.ERROR_EXCEPTION, Const.ERROR_EXCEPTION_MSG);
             }
+
+            var item = (Wallet)(await GetByIdAsync(id)).Data;
 
             var updateItem = new Wallet()
             {
-                AccountId = request.AccountId,
-                Balance = request.Balance,
-                CreatedAt = request.CreatedAt,
+                AccountId = item.AccountId,
+                Balance = item.Balance + balance,
+                CreatedAt = item.CreatedAt,
                 UpdatedAt = DateTime.Now,
-                DeletedAt = request.DeletedAt,
-                Status = request.Status,
+                DeletedAt = item.DeletedAt,
+                Status = item.Status,
             };
 
             var result = await _unitOfWork.WalletRepository.UpdateAsync(updateItem);
@@ -80,17 +53,17 @@ namespace RentEase.Service.Service.Main
             {
                 var responseData = _mapper.Map<ResponseWalletDto>(result);
 
-                return new ServiceResult(Const.SUCCESS_UPDATE_CODE, Const.SUCCESS_UPDATE_MSG, responseData);
+                return new ServiceResult(Const.SUCCESS_ACTION, Const.SUCCESS_ACTION_MSG, responseData);
             }
 
-            return new ServiceResult(Const.FAIL_UPDATE_CODE, Const.FAIL_UPDATE_MSG);
+            return new ServiceResult(Const.ERROR_EXCEPTION, Const.ERROR_EXCEPTION_MSG);
         }
 
         public async Task<ServiceResult> Delete(int id)
         {
             if (!await EntityExistsAsync("AccountId", id))
             {
-                return new ServiceResult(Const.FAIL_UPDATE_CODE, Const.FAIL_UPDATE_MSG);
+                return new ServiceResult(Const.ERROR_EXCEPTION, Const.ERROR_EXCEPTION_MSG);
             }
             var item = (Wallet)(await GetByIdAsync(id)).Data;
 
@@ -105,10 +78,10 @@ namespace RentEase.Service.Service.Main
             {
                 var responseData = _mapper.Map<ResponseWalletDto>(item);
 
-                return new ServiceResult(Const.SUCCESS_UPDATE_CODE, Const.SUCCESS_UPDATE_MSG, responseData);
+                return new ServiceResult(Const.SUCCESS_ACTION, Const.SUCCESS_ACTION_MSG, responseData);
             }
 
-            return new ServiceResult(Const.FAIL_UPDATE_CODE, Const.FAIL_UPDATE_MSG);
+            return new ServiceResult(Const.ERROR_EXCEPTION, Const.ERROR_EXCEPTION_MSG);
         }
     }
 }

@@ -3,11 +3,11 @@ public class RequestAccountDto
 {
     public string FullName { get; set; }
 
-    public string Email { get; set; }
+    public string? Email { get; set; }
+
+    public string? PhoneNumber { get; set; }
 
     public string PasswordHash { get; set; }
-
-    public string PhoneNumber { get; set; }
 
     public DateOnly? DateOfBirth { get; set; }
 
@@ -16,16 +16,6 @@ public class RequestAccountDto
     public string AvatarUrl { get; set; }
 
     public int RoleId { get; set; }
-
-    public bool? IsActive { get; set; } = false;
-
-    public DateTime CreatedAt { get; set; } = DateTime.Now;
-
-    public DateTime? UpdatedAt { get; set; } = null;
-
-    public DateTime? DeletedAt { get; set; } = null;
-
-    public bool? Status { get; set; } = true;
 }
 public class ResponseAccountDto
 {

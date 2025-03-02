@@ -4,6 +4,7 @@ using RentEase.Common.DTOs.Dto;
 using RentEase.Data;
 using RentEase.Data.Models;
 using RentEase.Service.Service.Base;
+using static RentEase.Common.Base.EnumType;
 
 namespace RentEase.Service.Service.Main
 {
@@ -12,7 +13,7 @@ namespace RentEase.Service.Service.Main
         Task<ServiceResult> GetAllAsync(int page, int pageSize);
         Task<ServiceResult> GetByIdAsync(int id);
         Task<ServiceResult> Create(RequestContractDto request);
-        Task<ServiceResult> Update(int id, RequestContractDto request);
+        Task<ServiceResult> Update(int id, RequestContractDto request, int? contractStatus, int? approveStatus);
         Task<ServiceResult> Delete(int id);
 
     }
@@ -42,8 +43,8 @@ namespace RentEase.Service.Service.Main
                 RentPrice = request.RentPrice,
                 PilePrice = request.PilePrice,
                 FileUrl = request.FileUrl,
-                ContractStatusId = request.ContractStatusId,
-                ApproveStatusId = request.ApproveStatusId,
+                ContractStatusId = (int)EnumType.ContractStatus.Pending,
+                ApproveStatusId = (int)EnumType.ApproveStatus.Pending,
                 CreatedAt = DateTime.Now,
                 UpdatedAt = null,
                 DeletedAt = null,
@@ -55,37 +56,55 @@ namespace RentEase.Service.Service.Main
             {
                 var responseData = _mapper.Map<ResponseContractDto>(createContract);
 
-                return new ServiceResult(Const.SUCCESS_CREATE_CODE, Const.SUCCESS_CREATE_MSG, responseData);
+                return new ServiceResult(Const.SUCCESS_ACTION, Const.SUCCESS_ACTION_MSG, responseData);
             }
 
-            return new ServiceResult(Const.FAIL_CREATE_CODE, Const.FAIL_CREATE_MSG);
+            return new ServiceResult(Const.ERROR_EXCEPTION, Const.ERROR_EXCEPTION_MSG);
         }
 
-        public async Task<ServiceResult> Update(int id, RequestContractDto request)
+        public async Task<ServiceResult> Update(int id, RequestContractDto request, int? contractStatus, int? approveStatus)
         {
             if (!await EntityExistsAsync("Id", id))
             {
-                return new ServiceResult(Const.FAIL_UPDATE_CODE, Const.FAIL_UPDATE_MSG);
+                return new ServiceResult(Const.ERROR_EXCEPTION, Const.ERROR_EXCEPTION_MSG);
+            }
+
+            var item = (Contract)(await GetByIdAsync(id)).Data;
+
+            if (approveStatus != (int)EnumType.ApproveStatus.Pending &&
+                    approveStatus != (int)EnumType.ApproveStatus.Approved &&
+                        approveStatus != (int)EnumType.ApproveStatus.Rejected)
+            {
+                return new ServiceResult(Const.ERROR_EXCEPTION, "ApproveStatus không hợp lệ.");
+            }
+
+            if (contractStatus != (int)EnumType.ContractStatus.Pending &&
+                    contractStatus != (int)EnumType.ContractStatus.Active &&
+                         contractStatus != (int)EnumType.ContractStatus.ExpiringSoon &&
+                              contractStatus != (int)EnumType.ContractStatus.Completed &&
+                                     contractStatus != (int)EnumType.ContractStatus.Cancelled)
+            {
+                return new ServiceResult(Const.ERROR_EXCEPTION, "ContractStatus không hợp lệ.");
             }
 
             var updateItem = new Contract()
             {
                 Id = id,
-                AptId = request.AptId,
-                LessorId = request.LessorId,
-                LesseeId = request.LesseeId,
-                AgentId = request.AgentId,
-                StartDate = request.StartDate,
-                EndDate = request.EndDate,
-                RentPrice = request.RentPrice,
-                PilePrice = request.PilePrice,
-                FileUrl = request.FileUrl,
-                ContractStatusId = request.ContractStatusId,
-                ApproveStatusId = request.ApproveStatusId,
-                CreatedAt = request.CreatedAt,
+                AptId = item.AptId,
+                LessorId = item.LessorId,
+                LesseeId = item.LesseeId,
+                AgentId = item.AgentId,
+                StartDate = item.StartDate,
+                EndDate = item.EndDate,
+                RentPrice = item.RentPrice,
+                PilePrice = item.PilePrice,
+                FileUrl = item.FileUrl,
+                ContractStatusId = (int)contractStatus,
+                ApproveStatusId = (int)approveStatus,
+                CreatedAt = item.CreatedAt,
                 UpdatedAt = DateTime.Now,
-                DeletedAt = request.DeletedAt,
-                Status = request.Status,
+                DeletedAt = item.DeletedAt,
+                Status = item.Status,
             };
 
             var result = await _unitOfWork.ContractRepository.UpdateAsync(updateItem);
@@ -93,17 +112,17 @@ namespace RentEase.Service.Service.Main
             {
                 var responseData = _mapper.Map<ResponseContractDto>(updateItem);
 
-                return new ServiceResult(Const.SUCCESS_UPDATE_CODE, Const.SUCCESS_UPDATE_MSG, responseData);
+                return new ServiceResult(Const.SUCCESS_ACTION, Const.SUCCESS_ACTION_MSG, responseData);
             }
 
-            return new ServiceResult(Const.FAIL_UPDATE_CODE, Const.FAIL_UPDATE_MSG);
+            return new ServiceResult(Const.ERROR_EXCEPTION, Const.ERROR_EXCEPTION_MSG);
         }
 
         public async Task<ServiceResult> Delete(int id)
         {
             if (!await EntityExistsAsync("Id", id))
             {
-                return new ServiceResult(Const.FAIL_DELETE_CODE, Const.FAIL_DELETE_MSG);
+                return new ServiceResult(Const.ERROR_EXCEPTION, Const.ERROR_EXCEPTION_MSG);
             }
             var item = (Contract)(await GetByIdAsync(id)).Data;
 
@@ -118,10 +137,10 @@ namespace RentEase.Service.Service.Main
             {
                 var responseData = _mapper.Map<ResponseContractDto>(item);
 
-                return new ServiceResult(Const.SUCCESS_DELETE_CODE, Const.SUCCESS_DELETE_MSG, responseData);
+                return new ServiceResult(Const.SUCCESS_ACTION, Const.SUCCESS_ACTION_MSG, responseData);
             }
 
-            return new ServiceResult(Const.FAIL_DELETE_CODE, Const.FAIL_DELETE_MSG);
+            return new ServiceResult(Const.ERROR_EXCEPTION, Const.ERROR_EXCEPTION_MSG);
         }
     }
 }

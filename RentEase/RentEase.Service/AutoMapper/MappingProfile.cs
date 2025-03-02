@@ -31,6 +31,7 @@ namespace RentEase.Service.AutoMapper
             CreateMap<Role, ResponseRoleDto>();
             CreateMap<TransactionType, ResponseTransactionTypeDto>();
             CreateMap<Utility, ResponseUtilityDto>();
+            CreateMap<Order, ResponseOrderDto>();
             CreateMap<Wallet, ResponseWalletDto>();
             CreateMap<WalletTransaction, ResponseWalletTransactionDto>();
         }

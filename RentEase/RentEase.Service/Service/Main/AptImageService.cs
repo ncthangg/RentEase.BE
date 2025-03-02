@@ -33,7 +33,7 @@ namespace RentEase.Service.Service.Main
         {
             if (await EntityExistsAsync("AptId", request.AptId))
             {
-                return new ServiceResult(Const.FAIL_CREATE_CODE, Const.FAIL_CREATE_MSG);
+                return new ServiceResult(Const.ERROR_EXCEPTION, Const.ERROR_EXCEPTION_MSG);
             }
 
             var createItem = new AptImage()
@@ -56,33 +56,35 @@ namespace RentEase.Service.Service.Main
             {
                 var responseData = _mapper.Map<ResponseAptImageDto>(createItem);
 
-                return new ServiceResult(Const.SUCCESS_CREATE_CODE, Const.SUCCESS_CREATE_MSG, responseData);
+                return new ServiceResult(Const.SUCCESS_ACTION, Const.SUCCESS_ACTION_MSG, responseData);
             }
 
-            return new ServiceResult(Const.FAIL_CREATE_CODE, Const.FAIL_CREATE_MSG);
+            return new ServiceResult(Const.ERROR_EXCEPTION, Const.ERROR_EXCEPTION_MSG);
         }
 
         public async Task<ServiceResult> Update(int id, RequestAptImageDto request)
         {
             if (!await EntityExistsAsync("Id", id))
             {
-                return new ServiceResult(Const.FAIL_UPDATE_CODE, Const.FAIL_UPDATE_MSG);
+                return new ServiceResult(Const.ERROR_EXCEPTION, Const.ERROR_EXCEPTION_MSG);
             }
+
+            var item = (AptImage)(await GetByIdAsync(id)).Data;
 
             var updateItem = new AptImage()
             {
-                Id = id,
-                AptId = request.AptId,
+                Id = item.Id,
+                AptId = item.AptId,
                 ImageUrl1 = request.ImageUrl1,
                 ImageUrl2 = request.ImageUrl2,
                 ImageUrl3 = request.ImageUrl3,
                 ImageUrl4 = request.ImageUrl4,
                 ImageUrl5 = request.ImageUrl5,
                 ImageUrl6 = request.ImageUrl6,
-                CreatedAt = request.CreatedAt,
+                CreatedAt = item.CreatedAt,
                 UpdatedAt = DateTime.Now,
                 DeletedAt = null,
-                Status = request.Status,
+                Status = item.Status,
             };
 
             var result = await _unitOfWork.AptImageRepository.UpdateAsync(updateItem);
@@ -90,17 +92,17 @@ namespace RentEase.Service.Service.Main
             {
                 var responseData = _mapper.Map<ResponseAptImageDto>(updateItem);
 
-                return new ServiceResult(Const.SUCCESS_UPDATE_CODE, Const.SUCCESS_UPDATE_MSG, responseData);
+                return new ServiceResult(Const.SUCCESS_ACTION, Const.SUCCESS_ACTION_MSG, responseData);
             }
 
-            return new ServiceResult(Const.FAIL_UPDATE_CODE, Const.FAIL_UPDATE_MSG);
+            return new ServiceResult(Const.ERROR_EXCEPTION, Const.ERROR_EXCEPTION_MSG);
         }
 
         public async Task<ServiceResult> Delete(int id)
         {
             if (!await EntityExistsAsync("Id", id))
             {
-                return new ServiceResult(Const.FAIL_DELETE_CODE, Const.FAIL_DELETE_MSG);
+                return new ServiceResult(Const.ERROR_EXCEPTION, Const.ERROR_EXCEPTION_MSG);
             }
             var item = (AptImage)(await GetByIdAsync(id)).Data;
 
@@ -116,10 +118,10 @@ namespace RentEase.Service.Service.Main
             {
                 var responseData = _mapper.Map<ResponseAptImageDto>(item);
 
-                return new ServiceResult(Const.SUCCESS_DELETE_CODE, Const.SUCCESS_DELETE_MSG, responseData);
+                return new ServiceResult(Const.SUCCESS_ACTION, Const.SUCCESS_ACTION_MSG, responseData);
             }
 
-            return new ServiceResult(Const.FAIL_DELETE_CODE, Const.FAIL_DELETE_MSG);
+            return new ServiceResult(Const.ERROR_EXCEPTION, Const.ERROR_EXCEPTION_MSG);
         }
     }
 }

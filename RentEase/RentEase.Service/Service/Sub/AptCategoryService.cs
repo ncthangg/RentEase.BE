@@ -46,12 +46,12 @@ namespace RentEase.Service.Service.Sub
             var items = await _unitOfWork.AptCategoryRepository.GetAllAsync(status, page, pageSize);
             if (!items.Data.Any())
             {
-                return new ServiceResult(Const.FAIL_READ_CODE, Const.FAIL_READ_MSG);
+                return new ServiceResult(Const.ERROR_EXCEPTION, Const.ERROR_EXCEPTION_MSG);
             }
             else
             {
                 var responseData = _mapper.Map<IEnumerable<ResponseAptCategoryDto>>(items.Data);
-                return new ServiceResult(Const.SUCCESS_READ_CODE, Const.SUCCESS_READ_MSG, items.TotalCount, items.TotalPages, items.CurrentPage, responseData);
+                return new ServiceResult(Const.SUCCESS_ACTION, Const.SUCCESS_ACTION_MSG, items.TotalCount, items.TotalPages, items.CurrentPage, responseData);
             }
         }
         public async Task<ServiceResult> Search(string? categoryName, bool? status, int page, int pageSize)
@@ -66,12 +66,12 @@ namespace RentEase.Service.Service.Sub
             var items = await _unitOfWork.AptCategoryRepository.GetBySearchAsync(categoryName, status, page, pageSize);
             if (!items.Data.Any())
             {
-                return new ServiceResult(Const.FAIL_READ_CODE, Const.FAIL_READ_MSG);
+                return new ServiceResult(Const.ERROR_EXCEPTION, Const.ERROR_EXCEPTION_MSG);
             }
             else
             {
                 var responseData = _mapper.Map<IEnumerable<ResponseAptCategoryDto>>(items.Data);
-                return new ServiceResult(Const.SUCCESS_READ_CODE, Const.SUCCESS_READ_MSG, items.TotalCount, items.TotalPages, items.CurrentPage, responseData);
+                return new ServiceResult(Const.SUCCESS_ACTION, Const.SUCCESS_ACTION_MSG, items.TotalCount, items.TotalPages, items.CurrentPage, responseData);
             }
         }
 
@@ -79,7 +79,7 @@ namespace RentEase.Service.Service.Sub
         {
             if (await EntityExistsAsync("CategoryName", request.CategoryName))
             {
-                return new ServiceResult(Const.FAIL_CREATE_CODE, Const.FAIL_CREATE_MSG);
+                return new ServiceResult(Const.ERROR_EXCEPTION, Const.ERROR_EXCEPTION_MSG);
             }
 
             var createItem = new AptCategory()
@@ -98,28 +98,29 @@ namespace RentEase.Service.Service.Sub
             {
                 var responseData = _mapper.Map<ResponseAptCategoryDto>(createItem);
 
-                return new ServiceResult(Const.SUCCESS_CREATE_CODE, Const.SUCCESS_CREATE_MSG, responseData);
+                return new ServiceResult(Const.SUCCESS_ACTION, Const.SUCCESS_ACTION_MSG, responseData);
             }
 
-            return new ServiceResult(Const.FAIL_CREATE_CODE, Const.FAIL_CREATE_MSG);
+            return new ServiceResult(Const.ERROR_EXCEPTION, Const.ERROR_EXCEPTION_MSG);
         }
 
         public async Task<ServiceResult> Update(int id, RequestAptCategoryDto request)
         {
             if (!await EntityExistsAsync("Id", id))
             {
-                return new ServiceResult(Const.FAIL_UPDATE_CODE, Const.FAIL_UPDATE_MSG);
+                return new ServiceResult(Const.ERROR_EXCEPTION, Const.ERROR_EXCEPTION_MSG);
             }
+            var item = (AptCategory)(await GetByIdAsync(id)).Data;
 
             var updateItem = new AptCategory()
             {
                 Id = id,
                 CategoryName = request.CategoryName.ToLower(),
                 Description = request.Description,
-                CreatedAt = request.CreatedAt,
+                CreatedAt = item.CreatedAt,
                 UpdatedAt = DateTime.Now,
-                DeletedAt = request.DeletedAt,
-                Status = request.Status,
+                DeletedAt = item.DeletedAt,
+                Status = item.Status,
             };
 
             var result = await _unitOfWork.AptCategoryRepository.UpdateAsync(updateItem);
@@ -127,10 +128,10 @@ namespace RentEase.Service.Service.Sub
             {
                 var responseData = _mapper.Map<ResponseAptCategoryDto>(updateItem);
 
-                return new ServiceResult(Const.SUCCESS_UPDATE_CODE, Const.SUCCESS_UPDATE_MSG, responseData);
+                return new ServiceResult(Const.SUCCESS_ACTION, Const.SUCCESS_ACTION_MSG, responseData);
             }
 
-            return new ServiceResult(Const.FAIL_UPDATE_CODE, Const.FAIL_UPDATE_MSG);
+            return new ServiceResult(Const.ERROR_EXCEPTION, Const.ERROR_EXCEPTION_MSG);
 
         }
 

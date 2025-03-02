@@ -4,6 +4,7 @@ using RentEase.Common.DTOs.Dto;
 using RentEase.Data;
 using RentEase.Data.Models;
 using RentEase.Service.Service.Base;
+using static RentEase.Common.Base.EnumType;
 
 namespace RentEase.Service.Service.Main
 {
@@ -13,7 +14,7 @@ namespace RentEase.Service.Service.Main
         Task<ServiceResult> GetAllAsync(int page, int pageSize);
         Task<ServiceResult> GetByIdAsync(int id);
         Task<ServiceResult> Create(RequestCurrentResidentDto request);
-        Task<ServiceResult> Update(int id, RequestCurrentResidentDto request);
+        Task<ServiceResult> Update(int id, int? liveStatus);
         Task<ServiceResult> Delete(int id);
 
     }
@@ -38,7 +39,7 @@ namespace RentEase.Service.Service.Main
                 AccountId = request.AccountId,
                 MoveInDate = request.MoveInDate,
                 MoveOutDate = request.MoveOutDate,
-                StatusId = request.StatusId,
+                StatusId = (int)EnumType.LiveStatus.Active,
                 CreatedAt = DateTime.Now,
                 UpdatedAt = null,
                 DeletedAt = null,
@@ -50,30 +51,37 @@ namespace RentEase.Service.Service.Main
             {
                 var responseData = _mapper.Map<ResponseCurrentResidentDto>(createItem);
 
-                return new ServiceResult(Const.SUCCESS_CREATE_CODE, Const.SUCCESS_CREATE_MSG, responseData);
+                return new ServiceResult(Const.SUCCESS_ACTION, Const.SUCCESS_ACTION_MSG, responseData);
             }
 
-            return new ServiceResult(Const.FAIL_CREATE_CODE, Const.FAIL_CREATE_MSG);
+            return new ServiceResult(Const.ERROR_EXCEPTION, Const.ERROR_EXCEPTION_MSG);
         }
 
-        public async Task<ServiceResult> Update(int id, RequestCurrentResidentDto request)
+        public async Task<ServiceResult> Update(int id, int? liveStatus)
         {
             if (!await EntityExistsAsync("Id", id))
             {
-                return new ServiceResult(Const.FAIL_UPDATE_CODE, Const.FAIL_UPDATE_MSG);
+                return new ServiceResult(Const.ERROR_EXCEPTION, Const.ERROR_EXCEPTION_MSG);
+            }
+            var item = (CurrentResident)(await GetByIdAsync(id)).Data;
+
+            if (liveStatus != (int)EnumType.LiveStatus.Active &&
+                    liveStatus != (int)EnumType.LiveStatus.MoveOut)
+            {
+                return new ServiceResult(Const.ERROR_EXCEPTION, "LiveStatus không hợp lệ.");
             }
 
             var updateItem = new CurrentResident()
             {
-                Id = id,
-                AptId = request.AptId,
-                AccountId = request.AccountId,
-                MoveInDate = request.MoveInDate,
-                MoveOutDate = request.MoveOutDate,
-                StatusId = request.StatusId,
-                CreatedAt = request.CreatedAt,
+                Id = item.Id,
+                AptId = item.AptId,
+                AccountId = item.AccountId,
+                MoveInDate = item.MoveInDate,
+                MoveOutDate = item.MoveOutDate,
+                StatusId = (int)liveStatus,
+                CreatedAt = item.CreatedAt,
                 UpdatedAt = DateTime.Now,
-                Status = request.Status,
+                Status = item.Status,
             };
 
             var result = await _unitOfWork.CurrentResidentRepository.UpdateAsync(updateItem);
@@ -81,17 +89,17 @@ namespace RentEase.Service.Service.Main
             {
                 var responseData = _mapper.Map<ResponseCurrentResidentDto>(updateItem);
 
-                return new ServiceResult(Const.SUCCESS_UPDATE_CODE, Const.SUCCESS_UPDATE_MSG, responseData);
+                return new ServiceResult(Const.SUCCESS_ACTION, Const.SUCCESS_ACTION_MSG, responseData);
             }
 
-            return new ServiceResult(Const.FAIL_UPDATE_CODE, Const.FAIL_UPDATE_MSG);
+            return new ServiceResult(Const.ERROR_EXCEPTION, Const.ERROR_EXCEPTION_MSG);
         }
 
         public async Task<ServiceResult> Delete(int id)
         {
             if (!await EntityExistsAsync("Id", id))
             {
-                return new ServiceResult(Const.FAIL_DELETE_CODE, Const.FAIL_DELETE_MSG);
+                return new ServiceResult(Const.ERROR_EXCEPTION, Const.ERROR_EXCEPTION_MSG);
             }
             var item = (CurrentResident)(await GetByIdAsync(id)).Data;
 
@@ -106,10 +114,10 @@ namespace RentEase.Service.Service.Main
             {
                 var responseData = _mapper.Map<ResponseCurrentResidentDto>(item);
 
-                return new ServiceResult(Const.SUCCESS_DELETE_CODE, Const.SUCCESS_DELETE_MSG, responseData);
+                return new ServiceResult(Const.SUCCESS_ACTION, Const.SUCCESS_ACTION_MSG, responseData);
             }
 
-            return new ServiceResult(Const.FAIL_DELETE_CODE, Const.FAIL_DELETE_MSG);
+            return new ServiceResult(Const.ERROR_EXCEPTION, Const.ERROR_EXCEPTION_MSG);
         }
     }
 }

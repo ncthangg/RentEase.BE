@@ -5,27 +5,11 @@ public class RequestMaintenanceRequestDto
 {
     public int AptId { get; set; }
 
-    public int LesseeId { get; set; }
-
     public string Description { get; set; }
 
     public int Priority { get; set; }
 
-    public int AgentId { get; set; }
-
-    public int ApproveStatusId { get; set; }
-
-    public int ProgressStatusId { get; set; }
-
     public string? Note { get; set; }
-
-    public DateTime CreatedAt { get; set; } = DateTime.Now;
-
-    public DateTime? UpdatedAt { get; set; } = null;
-
-    public DateTime? DeletedAt { get; set; } = null;
-
-    public bool? Status { get; set; } = true;
 }
 
 public class ResponseMaintenanceRequestDto

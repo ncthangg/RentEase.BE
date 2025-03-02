@@ -24,6 +24,7 @@ namespace RentEase.Data
         private ReviewRepository _reviewRepository;
         private RoleRepository _roleRepository;
         private TransactionTypeRepository _transactionTypeRepository;
+        private OrderRepository _orderRepository;
         private WalletRepository _walletRepository;
         private WalletTransactionRepository _walletTransactionRepository;
 
@@ -48,6 +49,7 @@ namespace RentEase.Data
         public ReviewRepository ReviewRepository => _reviewRepository ??= new Repository.Main.ReviewRepository(_dbContext);
         public RoleRepository RoleRepository => _roleRepository ??= new Repository.Sub.RoleRepository(_dbContext);
         public TransactionTypeRepository TransactionTypeRepository => _transactionTypeRepository ??= new Repository.Sub.TransactionTypeRepository(_dbContext);
+        public OrderRepository OrderRepository => _orderRepository ??= new Repository.Main.OrderRepository(_dbContext);
         public WalletRepository WalletRepository => _walletRepository ??= new Repository.Main.WalletRepository(_dbContext);
         public WalletTransactionRepository WalletTransactionRepository => _walletTransactionRepository ??= new Repository.Main.WalletTransactionRepository(_dbContext);
 

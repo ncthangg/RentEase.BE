@@ -38,6 +38,7 @@ namespace RentEase.API
             services.AddScoped<IReviewService, ReviewService>();
             services.AddScoped<IRoleService, RoleService>();
             services.AddScoped<ITransactionTypeService, TransactionTypeService>();
+            services.AddScoped<IOrderService, OrderService>();
             services.AddScoped<IWalletService, WalletService>();
             services.AddScoped<IWalletTransactionService, WalletTransactionService>();
 

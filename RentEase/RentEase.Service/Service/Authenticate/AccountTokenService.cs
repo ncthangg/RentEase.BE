@@ -42,11 +42,11 @@ namespace RentEase.Service.Service.Authenticate
                     CreatedAt = DateTime.Now
                 };
                 await _unitOfWork.AccountTokenRepository.CreateAsync(newToken);
-                return new ServiceResult(Const.SUCCESS_CREATE_CODE, Const.SUCCESS_CREATE_MSG, newToken);
+                return new ServiceResult(Const.SUCCESS_ACTION, Const.SUCCESS_ACTION_MSG, newToken);
             }
             else
             {
-                return new ServiceResult(Const.FAIL_CREATE_CODE, Const.FAIL_CREATE_MSG);
+                return new ServiceResult(Const.ERROR_EXCEPTION, Const.ERROR_EXCEPTION_MSG);
             }
         }
 
@@ -68,7 +68,7 @@ namespace RentEase.Service.Service.Authenticate
             }
 
             // Nếu token còn hạn
-            return new ServiceResult(Const.SUCCESS_READ_CODE, "Refresh token is valid", accountToken);
+            return new ServiceResult(Const.SUCCESS_ACTION, "Refresh token is valid", accountToken);
         }
     }
 }

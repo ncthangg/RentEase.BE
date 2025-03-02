@@ -46,12 +46,12 @@ namespace RentEase.Service.Service.Sub
             var items = await _unitOfWork.RoleRepository.GetAllAsync(status, page, pageSize);
             if (!items.Data.Any())
             {
-                return new ServiceResult(Const.FAIL_READ_CODE, Const.FAIL_READ_MSG);
+                return new ServiceResult(Const.ERROR_EXCEPTION, Const.ERROR_EXCEPTION_MSG);
             }
             else
             {
                 var responseData = _mapper.Map<IEnumerable<ResponseRoleDto>>(items.Data);
-                return new ServiceResult(Const.SUCCESS_READ_CODE, Const.SUCCESS_READ_MSG, items.TotalCount, items.TotalPages, items.CurrentPage, responseData);
+                return new ServiceResult(Const.SUCCESS_ACTION, Const.SUCCESS_ACTION_MSG, items.TotalCount, items.TotalPages, items.CurrentPage, responseData);
             }
         }
         public async Task<ServiceResult> Search(string? roleName, bool? status, int page, int pageSize)
@@ -66,19 +66,19 @@ namespace RentEase.Service.Service.Sub
             var items = await _unitOfWork.RoleRepository.GetBySearchAsync(roleName, status, page, pageSize);
             if (!items.Data.Any())
             {
-                return new ServiceResult(Const.FAIL_READ_CODE, Const.FAIL_READ_MSG);
+                return new ServiceResult(Const.ERROR_EXCEPTION, Const.ERROR_EXCEPTION_MSG);
             }
             else
             {
                 var responseData = _mapper.Map<IEnumerable<ResponseRoleDto>>(items.Data);
-                return new ServiceResult(Const.SUCCESS_READ_CODE, Const.SUCCESS_READ_MSG, items.TotalCount, items.TotalPages, items.CurrentPage, responseData);
+                return new ServiceResult(Const.SUCCESS_ACTION, Const.SUCCESS_ACTION_MSG, items.TotalCount, items.TotalPages, items.CurrentPage, responseData);
             }
         }
         public async Task<ServiceResult> Create(RequestRoleDto request)
         {
             if (await EntityExistsAsync("RoleName", request.RoleName))
             {
-                return new ServiceResult(Const.FAIL_CREATE_CODE, Const.FAIL_CREATE_MSG);
+                return new ServiceResult(Const.ERROR_EXCEPTION, Const.ERROR_EXCEPTION_MSG);
             }
 
             var createItem = new Role()
@@ -96,28 +96,30 @@ namespace RentEase.Service.Service.Sub
             {
                 var responseData = _mapper.Map<ResponseRoleDto>(createItem);
 
-                return new ServiceResult(Const.SUCCESS_CREATE_CODE, Const.SUCCESS_CREATE_MSG, responseData);
+                return new ServiceResult(Const.SUCCESS_ACTION, Const.SUCCESS_ACTION_MSG, responseData);
             }
 
-            return new ServiceResult(Const.FAIL_CREATE_CODE, Const.FAIL_CREATE_MSG);
+            return new ServiceResult(Const.ERROR_EXCEPTION, Const.ERROR_EXCEPTION_MSG);
         }
 
         public async Task<ServiceResult> Update(int id, RequestRoleDto request)
         {
             if (!await EntityExistsAsync("Id", id))
             {
-                return new ServiceResult(Const.FAIL_UPDATE_CODE, Const.FAIL_UPDATE_MSG);
+                return new ServiceResult(Const.ERROR_EXCEPTION, Const.ERROR_EXCEPTION_MSG);
             }
+
+            var item = (Role)(await GetByIdAsync(id)).Data;
 
             var updateItem = new Role()
             {
                 Id = id,
                 RoleName = request.RoleName.ToLower(),
                 Description = request.Description,
-                CreatedAt = request.CreatedAt,
+                CreatedAt = item.CreatedAt,
                 UpdatedAt = DateTime.Now,
-                DeletedAt= request.DeletedAt,
-                Status = request.Status,
+                DeletedAt= item.DeletedAt,
+                Status = item.Status,
             };
 
             var result = await _unitOfWork.RoleRepository.UpdateAsync(updateItem);
@@ -125,10 +127,10 @@ namespace RentEase.Service.Service.Sub
             {
                 var responseData = _mapper.Map<ResponseRoleDto>(updateItem);
 
-                return new ServiceResult(Const.SUCCESS_UPDATE_CODE, Const.SUCCESS_UPDATE_MSG, responseData);
+                return new ServiceResult(Const.SUCCESS_ACTION, Const.SUCCESS_ACTION_MSG, responseData);
             }
 
-            return new ServiceResult(Const.FAIL_UPDATE_CODE, Const.FAIL_UPDATE_MSG);
+            return new ServiceResult(Const.ERROR_EXCEPTION, Const.ERROR_EXCEPTION_MSG);
         }
     }
 }

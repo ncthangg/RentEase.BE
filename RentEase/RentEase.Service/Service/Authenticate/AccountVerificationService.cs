@@ -36,11 +36,11 @@ namespace RentEase.Service.Service.Authenticate
             var account = await _unitOfWork.AccountVerificationRepository.GetByAccountId(accountId);
             if (account == null)
             {
-                return new ServiceResult(Const.FAIL_READ_CODE, Const.FAIL_READ_MSG);
+                return new ServiceResult(Const.ERROR_EXCEPTION, Const.ERROR_EXCEPTION_MSG);
             }
             else
             {
-                return new ServiceResult(Const.SUCCESS_READ_CODE, Const.SUCCESS_READ_MSG, account);
+                return new ServiceResult(Const.SUCCESS_ACTION, Const.SUCCESS_ACTION_MSG, account);
             }
         }
         public async Task<ServiceResult> Save(int accountId, string verificationCode)
@@ -61,19 +61,18 @@ namespace RentEase.Service.Service.Authenticate
                         IsUsed = false,
                     };
                     await _unitOfWork.AccountVerificationRepository.CreateAsync(newCode);
-                    return new ServiceResult(Const.SUCCESS_CREATE_CODE, "Verification code created successfully", newCode);
+                    return new ServiceResult(Const.SUCCESS_ACTION, "Verification code created successfully", newCode);
                 }
                 else
                 {
                     item.IsUsed = true;
                     await _unitOfWork.AccountVerificationRepository.UpdateAsync(item);
-                    return new ServiceResult(Const.SUCCESS_UPDATE_CODE, "Verification code is valid");
+                    return new ServiceResult(Const.SUCCESS_ACTION, "Verification code is valid");
                 }
-
             }
             else
             {
-                return new ServiceResult(Const.FAIL_CREATE_CODE, Const.FAIL_CREATE_MSG);
+                return new ServiceResult(Const.ERROR_EXCEPTION, Const.ERROR_EXCEPTION_MSG);
             }
         }
         public async Task<ServiceResult> Verification(int accountId, string verificationCode)
@@ -124,9 +123,9 @@ namespace RentEase.Service.Service.Authenticate
                     ResponseAccountDto = responseAccount,
                     ResponseWalletDto = responseWallet
                 };
-                return new ServiceResult(Const.SUCCESS_UPDATE_CODE, "Account verified successfully!", responseData);
+                return new ServiceResult(Const.SUCCESS_ACTION, "Account verified successfully!", responseData);
             }
-            return new ServiceResult(Const.SUCCESS_UPDATE_CODE, "Account verified successfully!");
+            return new ServiceResult(Const.ERROR_EXCEPTION, "Account verified fail!");
         }
 
         private async Task<bool> IsVerificationCodeValid(int accountId, string verificationCode)
@@ -162,7 +161,7 @@ namespace RentEase.Service.Service.Authenticate
             var verificationLink = $"https://yourdomain.com/verify?code={newVerificationCode}";
             //await _helperWrapper.EmailHelper.SendVerificationEmailAsync(account.Email, newVerificationCode, verificationLink);
 
-            return new ServiceResult(Const.SUCCESS_CREATE_CODE, "Verification code sent", saveResult.Data);
+            return new ServiceResult(Const.SUCCESS_ACTION, "Verification code sent", saveResult.Data);
         }
 
 

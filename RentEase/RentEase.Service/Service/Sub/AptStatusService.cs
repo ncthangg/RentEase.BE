@@ -45,12 +45,12 @@ namespace RentEase.Service.Service.Sub
             var items = await _unitOfWork.AptStatusRepository.GetAllAsync(status, page, pageSize);
             if (!items.Data.Any())
             {
-                return new ServiceResult(Const.FAIL_READ_CODE, Const.FAIL_READ_MSG);
+                return new ServiceResult(Const.ERROR_EXCEPTION, Const.ERROR_EXCEPTION_MSG);
             }
             else
             {
                 var responseData = _mapper.Map<IEnumerable<ResponseAptStatusDto>>(items.Data);
-                return new ServiceResult(Const.SUCCESS_READ_CODE, Const.SUCCESS_READ_MSG, items.TotalCount, items.TotalPages, items.CurrentPage, responseData);
+                return new ServiceResult(Const.SUCCESS_ACTION, Const.SUCCESS_ACTION_MSG, items.TotalCount, items.TotalPages, items.CurrentPage, responseData);
             }
         }
         public async Task<ServiceResult> Search(string? statusName, bool? status, int page, int pageSize)
@@ -65,19 +65,19 @@ namespace RentEase.Service.Service.Sub
             var items = await _unitOfWork.AptStatusRepository.GetBySearchAsync(statusName, status, page, pageSize);
             if (!items.Data.Any())
             {
-                return new ServiceResult(Const.FAIL_READ_CODE, Const.FAIL_READ_MSG);
+                return new ServiceResult(Const.ERROR_EXCEPTION, Const.ERROR_EXCEPTION_MSG);
             }
             else
             {
                 var responseData = _mapper.Map<IEnumerable<ResponseAptStatusDto>>(items.Data);
-                return new ServiceResult(Const.SUCCESS_READ_CODE, Const.SUCCESS_READ_MSG, items.TotalCount, items.TotalPages, items.CurrentPage, responseData);
+                return new ServiceResult(Const.SUCCESS_ACTION, Const.SUCCESS_ACTION_MSG, items.TotalCount, items.TotalPages, items.CurrentPage, responseData);
             }
         }
         public async Task<ServiceResult> Create(RequestAptStatusDto request)
         {
             if (await EntityExistsAsync("StatusName", request.StatusName))
             {
-                return new ServiceResult(Const.FAIL_CREATE_CODE, Const.FAIL_CREATE_MSG);
+                return new ServiceResult(Const.ERROR_EXCEPTION, Const.ERROR_EXCEPTION_MSG);
             }
 
             var createItem = new AptStatus()
@@ -95,28 +95,30 @@ namespace RentEase.Service.Service.Sub
             {
                 var responseData = _mapper.Map<ResponseAptStatusDto>(createItem);
 
-                return new ServiceResult(Const.SUCCESS_CREATE_CODE, Const.SUCCESS_CREATE_MSG, responseData);
+                return new ServiceResult(Const.SUCCESS_ACTION, Const.SUCCESS_ACTION_MSG, responseData);
             }
 
-            return new ServiceResult(Const.FAIL_CREATE_CODE, Const.FAIL_CREATE_MSG);
+            return new ServiceResult(Const.ERROR_EXCEPTION, Const.ERROR_EXCEPTION_MSG);
         }
 
         public async Task<ServiceResult> Update(int id, RequestAptStatusDto request)
         {
             if (!await EntityExistsAsync("Id", id))
             {
-                return new ServiceResult(Const.FAIL_UPDATE_CODE, Const.FAIL_UPDATE_MSG);
+                return new ServiceResult(Const.ERROR_EXCEPTION, Const.ERROR_EXCEPTION_MSG);
             }
+
+            var item = (AptStatus)(await GetByIdAsync(id)).Data;
 
             var updateItem = new AptStatus()
             {
                 Id = id,
                 StatusName = request.StatusName.ToLower(),
                 Description = request.Description,
-                CreatedAt = request.CreatedAt,
+                CreatedAt = item.CreatedAt,
                 UpdatedAt = DateTime.Now,
-                DeletedAt = request.DeletedAt,
-                Status = request.Status,
+                DeletedAt = item.DeletedAt,
+                Status = item.Status,
             };
 
             var result = await _unitOfWork.AptStatusRepository.UpdateAsync(updateItem);
@@ -124,10 +126,10 @@ namespace RentEase.Service.Service.Sub
             {
                 var responseData = _mapper.Map<ResponseAptStatusDto>(updateItem);
 
-                return new ServiceResult(Const.SUCCESS_UPDATE_CODE, Const.SUCCESS_UPDATE_MSG, responseData);
+                return new ServiceResult(Const.SUCCESS_ACTION, Const.SUCCESS_ACTION_MSG, responseData);
             }
 
-            return new ServiceResult(Const.FAIL_UPDATE_CODE, Const.FAIL_UPDATE_MSG);
+            return new ServiceResult(Const.ERROR_EXCEPTION, Const.ERROR_EXCEPTION_MSG);
         }
 
     }

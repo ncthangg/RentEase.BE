@@ -18,11 +18,7 @@ namespace RentEase.Common.DTOs.Dto
 
         public int TransactionTypeId { get; set; }
 
-        public int TransactionStatusId { get; set; }
-
         public DateTime DueDate { get; set; }
-
-        public DateTime CreatedAt { get; set; } = DateTime.Now;
     }
     public class ResponseOrderDto
     {

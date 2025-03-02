@@ -12,7 +12,7 @@ namespace RentEase.Service.Service.Main
         Task<ServiceResult> GetAllAsync(int page, int pageSize);
         Task<ServiceResult> GetByIdAsync(int id);
         Task<ServiceResult> Create(RequestAptUtilityDto request);
-        Task<ServiceResult> Update(int id, RequestAptUtilityDto request);
+        Task<ServiceResult> Update(int id, string? description);
         Task<ServiceResult> Delete(int id);
 
     }
@@ -48,29 +48,31 @@ namespace RentEase.Service.Service.Main
             {
                 var responseData = _mapper.Map<ResponseAptUtilityDto>(createItem);
 
-                return new ServiceResult(Const.SUCCESS_CREATE_CODE, Const.SUCCESS_CREATE_MSG, responseData);
+                return new ServiceResult(Const.SUCCESS_ACTION, Const.SUCCESS_ACTION_MSG, responseData);
             }
 
-            return new ServiceResult(Const.FAIL_CREATE_CODE, Const.FAIL_CREATE_MSG);
+            return new ServiceResult(Const.ERROR_EXCEPTION, Const.ERROR_EXCEPTION_MSG);
         }
 
-        public async Task<ServiceResult> Update(int id, RequestAptUtilityDto request)
+        public async Task<ServiceResult> Update(int id, string? description)
         {
             if (!await EntityExistsAsync("Id", id))
             {
-                return new ServiceResult(Const.FAIL_UPDATE_CODE, Const.FAIL_UPDATE_MSG);
+                return new ServiceResult(Const.ERROR_EXCEPTION, Const.ERROR_EXCEPTION_MSG);
             }
+
+            var item = (AptUtility)(await GetByIdAsync(id)).Data;
 
             var updateItem = new AptUtility()
             {
-                Id = id,
-                AptId = request.AptId,
-                UtilityId = request.UtilityId,
-                Description = request.Description,
-                CreatedAt = request.CreatedAt,
+                Id = item.Id,
+                AptId = item.AptId,
+                UtilityId = item.UtilityId,
+                Description = description,
+                CreatedAt = item.CreatedAt,
                 UpdatedAt = DateTime.Now,
                 DeletedAt = null,
-                Status = request.Status,
+                Status = item.Status,
             };
 
             var result = await _unitOfWork.AptUtilityRepository.UpdateAsync(updateItem);
@@ -78,10 +80,10 @@ namespace RentEase.Service.Service.Main
             {
                 var responseData = _mapper.Map<ResponseAptUtilityDto>(updateItem);
 
-                return new ServiceResult(Const.SUCCESS_UPDATE_CODE, Const.SUCCESS_UPDATE_MSG, responseData);
+                return new ServiceResult(Const.SUCCESS_ACTION, Const.SUCCESS_ACTION_MSG, responseData);
             }
 
-            return new ServiceResult(Const.FAIL_UPDATE_CODE, Const.FAIL_UPDATE_MSG);
+            return new ServiceResult(Const.ERROR_EXCEPTION, Const.ERROR_EXCEPTION_MSG);
 
         }
 
@@ -89,7 +91,7 @@ namespace RentEase.Service.Service.Main
         {
             if (!await EntityExistsAsync("Id", id))
             {
-                return new ServiceResult(Const.FAIL_UPDATE_CODE, Const.FAIL_UPDATE_MSG);
+                return new ServiceResult(Const.ERROR_EXCEPTION, Const.ERROR_EXCEPTION_MSG);
             }
             var item = (AptUtility)(await GetByIdAsync(id)).Data;
 
@@ -105,10 +107,10 @@ namespace RentEase.Service.Service.Main
             {
                 var responseData = _mapper.Map<ResponseAptUtilityDto>(item);
 
-                return new ServiceResult(Const.SUCCESS_UPDATE_CODE, Const.SUCCESS_UPDATE_MSG, responseData);
+                return new ServiceResult(Const.SUCCESS_ACTION, Const.SUCCESS_ACTION_MSG, responseData);
             }
 
-            return new ServiceResult(Const.FAIL_UPDATE_CODE, Const.FAIL_UPDATE_MSG);
+            return new ServiceResult(Const.ERROR_EXCEPTION, Const.ERROR_EXCEPTION_MSG);
         }
     }
 }

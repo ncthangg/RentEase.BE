@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Http;
+using Microsoft.IdentityModel.Tokens;
 using RentEase.Common.Base;
 using RentEase.Common.DTOs.Authenticate;
 using RentEase.Common.DTOs.Dto;
@@ -88,7 +89,7 @@ namespace RentEase.Service.Service.Authenticate
                     ResponseAccountToken = responseAccountTokenDto,
                 };
 
-                return new ServiceResult(Const.SUCCESS_READ_CODE, "Login thành công", response);
+                return new ServiceResult(Const.SUCCESS_ACTION, "Login thành công", response);
             }
             catch (Exception ex)
             {
@@ -114,7 +115,7 @@ namespace RentEase.Service.Service.Authenticate
                     ResponseAccountDto = null,
                 };
 
-                var createItemResult = await SaveAccount(request);
+                var createItemResult = await _serviceWrapper.AccountService.CreateByGuest(request);
                 if (createItemResult.Status < 0)
                 {
                     return new ServiceResult(Const.ERROR_EXCEPTION, "Register thất bại");
@@ -140,7 +141,7 @@ namespace RentEase.Service.Service.Authenticate
 
                 response.ResponseAccountDto = _mapper.Map<ResponseAccountDto>(itemData);
 
-                return new ServiceResult(Const.SUCCESS_CREATE_CODE, "Register thành công, Verification Code đã được gửi.", response);
+                return new ServiceResult(Const.SUCCESS_ACTION, "Register thành công, Verification Code đã được gửi.", response);
             }
             catch (Exception ex)
             {
@@ -180,7 +181,7 @@ namespace RentEase.Service.Service.Authenticate
                 var responseWalletData = (ResponseWalletDto)walletExist.Data;
                 responseAccountData.ResponseWalletDto = responseWalletData;
 
-                return new ServiceResult(Const.SUCCESS_READ_CODE, Const.SUCCESS_READ_MSG, responseAccountData);
+                return new ServiceResult(Const.SUCCESS_ACTION, "Lấy thông tin tài khoản thành công", responseAccountData);
 
             }
             catch (Exception ex)
@@ -189,94 +190,45 @@ namespace RentEase.Service.Service.Authenticate
             }
         }
 
-        //public async Task<ServiceResult> ChangePassword(RequestChangePasswordDto request)
-        //{
-        //    try
-        //    {
-        //        string idUser = _helperWrapper.AuthenticateHelper.GetUserIdFromHttpContextAccessor(_httpContextAccessor);
-
-        //        var response = new ResponseRegisterDto
-        //        {
-        //            ResponseAccountDto = null,
-        //            ResponseAccountVerificationDto = null,
-        //        };
-
-        //        // Kiểm tra người dùng đã tồn tại chưa
-        //        var itemExist = await _serviceWrapper.AccountService.GetByEmailOrPhoneAsync(request.Username);
-
-
-        //        // Xử lí DTO trả về
-        //        response.ResponseAccountDto = _mapper.Map<ResponseAccountDto>(itemData);
-        //        response.ResponseAccountVerificationDto = _mapper.Map<ResponseAccountVerificationDto>(verificationResult.Data);
-
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        return new ServiceResult(Const.ERROR_EXCEPTION, ex.ToString());
-        //    }
-        //}
-
-        private async Task<ServiceResult> SaveAccount(RequestRegisterDto request)
+        public async Task<ServiceResult> ChangePassword(RequestChangePasswordDto request)
         {
-            if (request.Password.Equals(request.ConfirmPassword))
+            try
             {
-                //var hashedPassword = _helperWrapper.PasswordHelper.HashPassword(requestRegisterDto.Password);
+                string accountId = _helperWrapper.TokenHelper.GetUserIdFromHttpContextAccessor(_httpContextAccessor);
 
-                var isEmail = _serviceWrapper.AccountService.IsEmail(request.Username);
-                var createItem = new Account();
-
-                if (isEmail)
+                if (string.IsNullOrEmpty(accountId))
                 {
-                    createItem = new Account()
+                    return new ServiceResult(Const.ERROR_EXCEPTION, "Lỗi khi lấy info");
+                }
+
+                if (!int.TryParse(accountId, out int accountIdInt))
+                {
+                    return new ServiceResult(Const.ERROR_EXCEPTION, "ID tài khoản không hợp lệ");
+                }
+
+                // Kiểm tra người dùng đã tồn tại chưa
+                var item = await _unitOfWork.AccountRepository.GetByIdAsync(accountIdInt);
+                if (item.PasswordHash.Equals(request.OldPassword) && request.NewPassword.Equals(request.ConfirmPassword))
+                {
+                    var updateItem = _mapper.Map<RequestAccountDto>(item);
+                    updateItem.PasswordHash = request.NewPassword;
+                    var result = await _serviceWrapper.AccountService.Update(accountIdInt, updateItem);
+                    if(result.Status > 0)
                     {
-                        Email = request.Username,
-                        FullName = null,
-                        PasswordHash = request.Password,
-                        PhoneNumber = null,
-                        DateOfBirth = null,
-                        Gender = null,
-                        AvatarUrl = null,
-                        RoleId = request.RoleId,
-                        IsActive = false,
-                        CreatedAt = DateTime.Now,
-                        UpdatedAt = null,
-                        DeletedAt = null,
-                        Status = true,
-                    };
-                }
-                else
-                {
-                    createItem = new Account()
-                    {
-                        Email = null,
-                        FullName = null,
-                        PasswordHash = request.Password,
-                        PhoneNumber = request.Username,
-                        DateOfBirth = null,
-                        Gender = null,
-                        AvatarUrl = null,
-                        RoleId = request.RoleId,
-                        IsActive = false,
-                        CreatedAt = DateTime.Now,
-                        UpdatedAt = null,
-                        DeletedAt = null,
-                        Status = true,
-                    };
+
+                        return new ServiceResult(Const.SUCCESS_ACTION, "Thay đổi mật khẩu thành công");
+                    }
                 }
 
-                var result = await _unitOfWork.AccountRepository.CreateAsync(createItem);
-                if (result > 0)
-                {
-                    var responseData = _mapper.Map<ResponseAccountDto>(createItem);
+                return new ServiceResult(Const.ERROR_EXCEPTION, "Thay đổi mật khẩu thất bại");
 
-                    return new ServiceResult(Const.SUCCESS_CREATE_CODE, Const.SUCCESS_CREATE_MSG, responseData);
-                }
-
-                return new ServiceResult(Const.FAIL_CREATE_CODE, Const.FAIL_CREATE_MSG);
             }
-
-            return new ServiceResult(Const.FAIL_CREATE_CODE, Const.FAIL_CREATE_MSG);
+            catch (Exception ex)
+            {
+                return new ServiceResult(Const.ERROR_EXCEPTION, ex.ToString());
+            }
         }
+
 
         public Task<ServiceResult> Logout()
         {
@@ -284,7 +236,7 @@ namespace RentEase.Service.Service.Authenticate
             session.Clear(); // Xóa toàn bộ session
 
             // Trả về một thông báo khi đăng xuất thành công
-            return Task.FromResult(new ServiceResult(Const.SUCCESS_READ_CODE, "Xóa Session thành công."));
+            return Task.FromResult(new ServiceResult(Const.SUCCESS_ACTION, "Xóa Session thành công."));
         }
 
     }

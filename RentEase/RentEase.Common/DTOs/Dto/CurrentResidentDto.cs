@@ -9,16 +9,6 @@ public class RequestCurrentResidentDto
     public DateTime MoveInDate { get; set; }
 
     public DateTime? MoveOutDate { get; set; }
-
-    public int StatusId { get; set; }
-
-    public DateTime CreatedAt { get; set; } = DateTime.Now;
-
-    public DateTime? UpdatedAt { get; set; } = null;
-
-    public DateTime? DeletedAt { get; set; } = null;
-
-    public bool? Status { get; set; } = true;
 }
 public class ResponseCurrentResidentDto
 {
