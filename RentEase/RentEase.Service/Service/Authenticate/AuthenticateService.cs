@@ -14,7 +14,7 @@ namespace RentEase.Service.Service.Authenticate
     {
         Task<ServiceResult> SignIn(RequestLoginDto request);
         Task<ServiceResult> SignUp(RequestRegisterDto request);
-        //Task<ServiceResult> ChangePassword(RequestChangePasswordDto request);
+        Task<ServiceResult> ChangePassword(RequestChangePasswordDto request);
         Task<ServiceResult> GetInfo();
         Task<ServiceResult> Logout();
     }
@@ -207,7 +207,7 @@ namespace RentEase.Service.Service.Authenticate
                 }
 
                 // Kiểm tra người dùng đã tồn tại chưa
-                var item = await _unitOfWork.AccountRepository.GetByIdAsync(accountIdInt);
+                 var item = await _unitOfWork.AccountRepository.GetByIdAsync(accountIdInt);
                 if (item.PasswordHash.Equals(request.OldPassword) && request.NewPassword.Equals(request.ConfirmPassword))
                 {
                     var updateItem = _mapper.Map<RequestAccountDto>(item);

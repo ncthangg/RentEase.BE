@@ -24,13 +24,12 @@ namespace RentEase.API.Controllers.Sub
             try
             {
                 var result = await _aptCategoryService.GetAllAsync(status, page, pageSize);
-                if (result.Data == null)
+                if (result.Status < 0 && result.Data == null)
                 {
-                    return Ok(new ApiResponse<ResponseAptCategoryDto>
+                    return NotFound(new ApiResponse<string>
                     {
-                        StatusCode = HttpStatusCode.OK,
-                        Message = "No Data",
-                        Data = null
+                        StatusCode = HttpStatusCode.NotFound,
+                        Message = result.Message
                     });
                 }
                 return Ok(new ApiResponse<IEnumerable<ResponseAptCategoryDto>>
@@ -59,13 +58,12 @@ namespace RentEase.API.Controllers.Sub
             try
             {
                 var result = await _aptCategoryService.GetByIdAsync(id);
-                if (result.Data == null)
+                if (result.Status < 0 && result.Data == null)
                 {
-                    return Ok(new ApiResponse<ResponseAptCategoryDto>
+                    return NotFound(new ApiResponse<string>
                     {
-                        StatusCode = HttpStatusCode.OK,
-                        Message = "No Data",
-                        Data = null
+                        StatusCode = HttpStatusCode.NotFound,
+                        Message = result.Message
                     });
                 }
                 return Ok(new ApiResponse<ResponseAptCategoryDto>
@@ -95,15 +93,14 @@ namespace RentEase.API.Controllers.Sub
                     return BadRequest(new { message = "Name is required" });
                 }
 
-                var result = await _aptCategoryService.Search(name, true, page, pageSize);
+                var result = await _aptCategoryService.Search(name, status, page, pageSize);
 
-                if (result.Data == null)
+                if (result.Status < 0 && result.Data == null)
                 {
-                    return Ok(new ApiResponse<ResponseAptCategoryDto>
+                    return NotFound(new ApiResponse<string>
                     {
-                        StatusCode = HttpStatusCode.OK,
-                        Message = "No Data",
-                        Data = null
+                        StatusCode = HttpStatusCode.NotFound,
+                        Message = result.Message
                     });
                 }
                 return Ok(new ApiResponse<IEnumerable<ResponseAptCategoryDto>>
@@ -129,13 +126,12 @@ namespace RentEase.API.Controllers.Sub
             try
             {
                 var result = await _aptCategoryService.Create(request);
-                if (result.Data == null)
+                if (result.Status < 0 && result.Data == null)
                 {
-                    return Ok(new ApiResponse<ResponseAptCategoryDto>
+                    return NotFound(new ApiResponse<string>
                     {
-                        StatusCode = HttpStatusCode.OK,
-                        Message = "No Data",
-                        Data = null
+                        StatusCode = HttpStatusCode.NotFound,
+                        Message = result.Message
                     });
                 }
                 return Ok(new ApiResponse<ResponseAptCategoryDto>
@@ -161,13 +157,12 @@ namespace RentEase.API.Controllers.Sub
             try
             {
                 var result = await _aptCategoryService.Update(id, request);
-                if (result.Data == null)
+                if (result.Status < 0 && result.Data == null)
                 {
-                    return Ok(new ApiResponse<ResponseAptCategoryDto>
+                    return NotFound(new ApiResponse<string>
                     {
-                        StatusCode = HttpStatusCode.OK,
-                        Message = "No Data",
-                        Data = null
+                        StatusCode = HttpStatusCode.NotFound,
+                        Message = result.Message
                     });
                 }
                 return Ok(new ApiResponse<ResponseAptCategoryDto>
@@ -193,13 +188,12 @@ namespace RentEase.API.Controllers.Sub
             try
             {
                 var result = await _aptCategoryService.DeleteByIdAsync(id);
-                if (result.Data == null)
+                if (result.Status < 0 && result.Data == null)
                 {
-                    return Ok(new ApiResponse<ResponseAptCategoryDto>
+                    return NotFound(new ApiResponse<string>
                     {
-                        StatusCode = HttpStatusCode.OK,
-                        Message = "No Data",
-                        Data = null
+                        StatusCode = HttpStatusCode.NotFound,
+                        Message = result.Message
                     });
                 }
                 return Ok(new ApiResponse<ResponseAptCategoryDto>

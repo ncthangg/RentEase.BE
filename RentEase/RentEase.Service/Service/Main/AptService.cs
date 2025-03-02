@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using MailKit.Search;
 using Microsoft.AspNetCore.Http;
 using RentEase.Common.Base;
 using RentEase.Common.DTOs.Dto;
@@ -95,12 +96,24 @@ namespace RentEase.Service.Service.Main
 
         public async Task<ServiceResult> Update(int id, RequestAptDto request, int? aptStatus, int? approveStatus)
         {
+            string accountId = _helperWrapper.TokenHelper.GetUserIdFromHttpContextAccessor(_httpContextAccessor);
+
+            if (string.IsNullOrEmpty(accountId))
+            {
+                return new ServiceResult(Const.ERROR_EXCEPTION, "Lỗi khi lấy info");
+            }
+
+            if (!int.TryParse(accountId, out int accountIdInt))
+            {
+                return new ServiceResult(Const.ERROR_EXCEPTION, "ID tài khoản không hợp lệ");
+            }
+
             if (!await EntityExistsAsync("Id", id))
             {
                 return new ServiceResult(Const.ERROR_EXCEPTION, Const.ERROR_EXCEPTION_MSG);
             }
 
-            var item = (Apt)(await GetByIdAsync(id)).Data;
+            var item = _mapper.Map<Apt>((ResponseAptDto)(await GetByIdAsync(id)).Data);
 
             if (approveStatus != (int)EnumType.ApproveStatus.Pending &&
                     approveStatus != (int)EnumType.ApproveStatus.Approved &&
@@ -112,6 +125,21 @@ namespace RentEase.Service.Service.Main
             if (aptStatus != 1 && aptStatus != 2 && aptStatus != 3 && aptStatus != 4 && aptStatus != 5)
             {
                 return new ServiceResult(Const.ERROR_EXCEPTION, "AptStatus không hợp lệ.");
+            }
+
+            if (accountIdInt == 1)
+            {
+                item.StatusId = (int)aptStatus;
+                item.ApproveStatusId = (int)approveStatus;
+                item.UpdatedAt = DateTime.Now;
+
+                var result1 = await _unitOfWork.AptRepository.UpdateAsync(item);
+                if (result1 > 0)
+                {
+                    var responseData = _mapper.Map<ResponseAptDto>(item);
+
+                    return new ServiceResult(Const.SUCCESS_ACTION, Const.SUCCESS_ACTION_MSG, responseData);
+                }
             }
 
             var updateItem = new Apt()
@@ -189,7 +217,7 @@ namespace RentEase.Service.Service.Main
                 aptCode = _helperWrapper.TokenHelper.GenerateAptCode(categoryName);
 
                 // Kiểm tra xem mã đã tồn tại trong DB chưa
-                isDuplicate = !await EntityExistsAsync("AptCode", aptCode);
+                isDuplicate = await EntityExistsAsync("AptCode", aptCode);
 
             } while (isDuplicate);
 

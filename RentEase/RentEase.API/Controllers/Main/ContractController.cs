@@ -9,7 +9,7 @@ namespace RentEase.API.Controllers.Main
 {
     [Route("api/[controller]")]
     [ApiController]
-    [Authorize(Roles = "1")]
+    [Authorize(Roles = "1,2,3,4")]
     public class ContractController : Controller
     {
         private readonly IContractService _ContractService;
@@ -24,13 +24,12 @@ namespace RentEase.API.Controllers.Main
             try
             {
                 var result = await _ContractService.GetAllAsync(page, pageSize);
-                if (result.Data == null)
+                if (result.Status < 0 && result.Data == null)
                 {
-                    return Ok(new ApiResponse<ResponseContractDto>
+                    return NotFound(new ApiResponse<string>
                     {
-                        StatusCode = HttpStatusCode.OK,
-                        Message = "No Data",
-                        Data = null
+                        StatusCode = HttpStatusCode.NotFound,
+                        Message = result.Message
                     });
                 }
                 return Ok(new ApiResponse<IEnumerable<ResponseContractDto>>
@@ -59,13 +58,12 @@ namespace RentEase.API.Controllers.Main
             try
             {
                 var result = await _ContractService.GetByIdAsync(id);
-                if (result.Data == null)
+                if (result.Status < 0 && result.Data == null)
                 {
-                    return Ok(new ApiResponse<ResponseContractDto>
+                    return NotFound(new ApiResponse<string>
                     {
-                        StatusCode = HttpStatusCode.OK,
-                        Message = "No Data",
-                        Data = null
+                        StatusCode = HttpStatusCode.NotFound,
+                        Message = result.Message
                     });
                 }
                 return Ok(new ApiResponse<ResponseContractDto>
@@ -86,18 +84,17 @@ namespace RentEase.API.Controllers.Main
         }
 
         [HttpPost]
-        public async Task<IActionResult> Post(RequestContractDto request)
+        public async Task<IActionResult> Post([FromBody] RequestContractDto request)
         {
             try
             {
                 var result = await _ContractService.Create(request);
-                if (result.Data == null)
+                if (result.Status < 0 && result.Data == null)
                 {
-                    return Ok(new ApiResponse<ResponseContractDto>
+                    return NotFound(new ApiResponse<string>
                     {
-                        StatusCode = HttpStatusCode.OK,
-                        Message = "No Data",
-                        Data = null
+                        StatusCode = HttpStatusCode.NotFound,
+                        Message = result.Message
                     });
                 }
                 return Ok(new ApiResponse<ResponseContractDto>
@@ -118,18 +115,17 @@ namespace RentEase.API.Controllers.Main
         }
 
         [HttpPut("{id}")]
-        public async Task<IActionResult> Put(int id, RequestContractDto request)
+        public async Task<IActionResult> Put(int id, [FromBody] RequestContractDto request, int? contractStatus, int? approveStatus)
         {
             try
             {
-                var result = await _ContractService.Update(id, request);
-                if (result.Data == null)
+                var result = await _ContractService.Update(id, request, contractStatus, approveStatus);
+                if (result.Status < 0 && result.Data == null)
                 {
-                    return Ok(new ApiResponse<ResponseContractDto>
+                    return NotFound(new ApiResponse<string>
                     {
-                        StatusCode = HttpStatusCode.OK,
-                        Message = "No Data",
-                        Data = null
+                        StatusCode = HttpStatusCode.NotFound,
+                        Message = result.Message
                     });
                 }
                 return Ok(new ApiResponse<ResponseContractDto>
@@ -155,13 +151,12 @@ namespace RentEase.API.Controllers.Main
             try
             {
                 var result = await _ContractService.Delete(id);
-                if (result.Data == null)
+                if (result.Status < 0 && result.Data == null)
                 {
-                    return Ok(new ApiResponse<ResponseContractDto>
+                    return NotFound(new ApiResponse<string>
                     {
-                        StatusCode = HttpStatusCode.OK,
-                        Message = "No Data",
-                        Data = null
+                        StatusCode = HttpStatusCode.NotFound,
+                        Message = result.Message
                     });
                 }
                 return Ok(new ApiResponse<ResponseContractDto>

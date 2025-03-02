@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using RentEase.Common.DTOs.Authenticate;
 using RentEase.Common.DTOs.Dto;
 using RentEase.Common.DTOs.Response;
 using RentEase.Service.Service.Main;
@@ -25,13 +26,12 @@ namespace RentEase.API.Controllers.Main
             try
             {
                 var result = await _accountService.GetAllAsync(page, pageSize);
-                if (result.Data == null)
+                if (result.Status < 0 && result.Data == null)
                 {
-                    return Ok(new ApiResponse<ResponseAccountDto>
+                    return NotFound(new ApiResponse<string>
                     {
-                        StatusCode = HttpStatusCode.OK,
-                        Message = "No Data",
-                        Data = null
+                        StatusCode = HttpStatusCode.NotFound,
+                        Message = result.Message
                     });
                 }
                 return Ok(new ApiResponse<IEnumerable<ResponseAccountDto>>
@@ -57,13 +57,12 @@ namespace RentEase.API.Controllers.Main
             try
             {
                 var result = await _accountService.GetByIdAsync(id);
-                if (result.Data == null)
+                if (result.Status < 0 && result.Data == null)
                 {
-                    return Ok(new ApiResponse<ResponseAccountDto>
+                    return NotFound(new ApiResponse<string>
                     {
-                        StatusCode = HttpStatusCode.OK,
-                        Message = "No Data",
-                        Data = null
+                        StatusCode = HttpStatusCode.NotFound,
+                        Message = result.Message
                     });
                 }
                 return Ok(new ApiResponse<ResponseAccountDto>
@@ -84,18 +83,17 @@ namespace RentEase.API.Controllers.Main
         }
 
         [HttpPost]
-        public async Task<IActionResult> Post(RequestAccountDto request)
+        public async Task<IActionResult> Post([FromBody] RequestAccountDto request)
         {
             try
             {
                 var result = await _accountService.Create(request);
-                if (result.Data == null)
+                if (result.Status < 0 && result.Data == null)
                 {
-                    return Ok(new ApiResponse<ResponseAccountDto>
+                    return NotFound(new ApiResponse<string>
                     {
-                        StatusCode = HttpStatusCode.OK,
-                        Message = "No Data",
-                        Data = null
+                        StatusCode = HttpStatusCode.NotFound,
+                        Message = result.Message
                     });
                 }
                 return Ok(new ApiResponse<ResponseAccountDto>
@@ -116,18 +114,17 @@ namespace RentEase.API.Controllers.Main
         }
 
         [HttpPut("{id}")]
-        public async Task<IActionResult> Put(int id, RequestAccountDto request)
+        public async Task<IActionResult> Put(int id, [FromBody] RequestAccountDto request)
         {
             try
             {
                 var result = await _accountService.Update(id, request);
-                if (result.Data == null)
+                if (result.Status < 0 && result.Data == null)
                 {
-                    return Ok(new ApiResponse<ResponseAccountDto>
+                    return NotFound(new ApiResponse<string>
                     {
-                        StatusCode = HttpStatusCode.OK,
-                        Message = "No Data",
-                        Data = null
+                        StatusCode = HttpStatusCode.NotFound,
+                        Message = result.Message
                     });
                 }
                 return Ok(new ApiResponse<ResponseAccountDto>
@@ -153,13 +150,12 @@ namespace RentEase.API.Controllers.Main
             try
             {
                 var result = await _accountService.Delete(id);
-                if (result.Data == null)
+                if (result.Status < 0 && result.Data == null)
                 {
-                    return Ok(new ApiResponse<ResponseAccountDto>
+                    return NotFound(new ApiResponse<string>
                     {
-                        StatusCode = HttpStatusCode.OK,
-                        Message = "No Data",
-                        Data = null
+                        StatusCode = HttpStatusCode.NotFound,
+                        Message = result.Message
                     });
                 }
                 return Ok(new ApiResponse<ResponseAccountDto>

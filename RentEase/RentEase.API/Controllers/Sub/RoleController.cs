@@ -24,13 +24,12 @@ namespace RentEase.API.Controllers.Sub
             try
             {
                 var result = await _roleService.GetAllAsync(status, page, pageSize);
-                if (result.Data == null)
+                if (result.Status < 0 && result.Data == null)
                 {
-                    return Ok(new ApiResponse<ResponseRoleDto>
+                    return NotFound(new ApiResponse<string>
                     {
-                        StatusCode = HttpStatusCode.OK,
-                        Message = "No Data",
-                        Data = null
+                        StatusCode = HttpStatusCode.NotFound,
+                        Message = result.Message
                     });
                 }
                 return Ok(new ApiResponse<IEnumerable<ResponseRoleDto>>
@@ -59,13 +58,12 @@ namespace RentEase.API.Controllers.Sub
             try
             {
                 var result = await _roleService.GetByIdAsync(id);
-                if (result.Data == null)
+                if (result.Status < 0 && result.Data == null)
                 {
-                    return Ok(new ApiResponse<ResponseRoleDto>
+                    return NotFound(new ApiResponse<string>
                     {
-                        StatusCode = HttpStatusCode.OK,
-                        Message = "No Data",
-                        Data = null
+                        StatusCode = HttpStatusCode.NotFound,
+                        Message = result.Message
                     });
                 }
                 return Ok(new ApiResponse<ResponseRoleDto>
@@ -97,13 +95,12 @@ namespace RentEase.API.Controllers.Sub
 
                 var result = await _roleService.Search(name, status, page, pageSize);
 
-                if (result.Data == null)
+                if (result.Status < 0 && result.Data == null)
                 {
-                    return Ok(new ApiResponse<ResponseRoleDto>
+                    return NotFound(new ApiResponse<string>
                     {
-                        StatusCode = HttpStatusCode.OK,
-                        Message = "No Data",
-                        Data = null
+                        StatusCode = HttpStatusCode.NotFound,
+                        Message = result.Message
                     });
                 }
                 return Ok(new ApiResponse<IEnumerable<ResponseRoleDto>>
@@ -128,13 +125,12 @@ namespace RentEase.API.Controllers.Sub
             try
             {
                 var result = await _roleService.Create(request);
-                if (result.Data == null)
+                if (result.Status < 0 && result.Data == null)
                 {
-                    return Ok(new ApiResponse<ResponseRoleDto>
+                    return NotFound(new ApiResponse<string>
                     {
-                        StatusCode = HttpStatusCode.OK,
-                        Message = "No Data",
-                        Data = null
+                        StatusCode = HttpStatusCode.NotFound,
+                        Message = result.Message
                     });
                 }
                 return Ok(new ApiResponse<ResponseRoleDto>
@@ -160,13 +156,12 @@ namespace RentEase.API.Controllers.Sub
             try
             {
                 var result = await _roleService.Update(id, request);
-                if (result.Data == null)
+                if (result.Status < 0 && result.Data == null)
                 {
-                    return Ok(new ApiResponse<ResponseRoleDto>
+                    return NotFound(new ApiResponse<string>
                     {
-                        StatusCode = HttpStatusCode.OK,
-                        Message = "No Data",
-                        Data = null
+                        StatusCode = HttpStatusCode.NotFound,
+                        Message = result.Message
                     });
                 }
                 return Ok(new ApiResponse<ResponseRoleDto>
@@ -192,13 +187,12 @@ namespace RentEase.API.Controllers.Sub
             try
             {
                 var result = await _roleService.DeleteByIdAsync(id);
-                if (result.Data == null)
+                if (result.Status < 0 && result.Data == null)
                 {
-                    return Ok(new ApiResponse<ResponseRoleDto>
+                    return NotFound(new ApiResponse<string>
                     {
-                        StatusCode = HttpStatusCode.OK,
-                        Message = "No Data",
-                        Data = null
+                        StatusCode = HttpStatusCode.NotFound,
+                        Message = result.Message
                     });
                 }
                 return Ok(new ApiResponse<ResponseRoleDto>

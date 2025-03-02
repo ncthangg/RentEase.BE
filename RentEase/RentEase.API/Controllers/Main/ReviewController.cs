@@ -9,7 +9,7 @@ namespace RentEase.API.Controllers.Main
 {
     [Route("api/[controller]")]
     [ApiController]
-    [Authorize(Roles = "1")]
+    [Authorize(Roles = "1,2,3,4")]
     public class ReviewController : Controller
     {
         private readonly IReviewService _ReviewService;
@@ -24,13 +24,12 @@ namespace RentEase.API.Controllers.Main
             try
             {
                 var result = await _ReviewService.GetAllAsync(page, pageSize);
-                if (result.Data == null)
+                if (result.Status < 0 && result.Data == null)
                 {
-                    return Ok(new ApiResponse<ResponseReviewDto>
+                    return NotFound(new ApiResponse<string>
                     {
-                        StatusCode = HttpStatusCode.OK,
-                        Message = "No Data",
-                        Data = null
+                        StatusCode = HttpStatusCode.NotFound,
+                        Message = result.Message
                     });
                 }
                 return Ok(new ApiResponse<IEnumerable<ResponseReviewDto>>
@@ -59,13 +58,12 @@ namespace RentEase.API.Controllers.Main
             try
             {
                 var result = await _ReviewService.GetByIdAsync(id);
-                if (result.Data == null)
+                if (result.Status < 0 && result.Data == null)
                 {
-                    return Ok(new ApiResponse<ResponseReviewDto>
+                    return NotFound(new ApiResponse<string>
                     {
-                        StatusCode = HttpStatusCode.OK,
-                        Message = "No Data",
-                        Data = null
+                        StatusCode = HttpStatusCode.NotFound,
+                        Message = result.Message
                     });
                 }
                 return Ok(new ApiResponse<ResponseReviewDto>
@@ -86,18 +84,17 @@ namespace RentEase.API.Controllers.Main
         }
 
         [HttpPost]
-        public async Task<IActionResult> Post(RequestReviewDto request)
+        public async Task<IActionResult> Post([FromBody] RequestReviewDto request)
         {
             try
             {
                 var result = await _ReviewService.Create(request);
-                if (result.Data == null)
+                if (result.Status < 0 && result.Data == null)
                 {
-                    return Ok(new ApiResponse<ResponseReviewDto>
+                    return NotFound(new ApiResponse<string>
                     {
-                        StatusCode = HttpStatusCode.OK,
-                        Message = "No Data",
-                        Data = null
+                        StatusCode = HttpStatusCode.NotFound,
+                        Message = result.Message
                     });
                 }
                 return Ok(new ApiResponse<ResponseReviewDto>
@@ -118,18 +115,17 @@ namespace RentEase.API.Controllers.Main
         }
 
         [HttpPut("{id}")]
-        public async Task<IActionResult> Put(int id, RequestReviewDto request)
+        public async Task<IActionResult> Put(int id, [FromBody] string comment)
         {
             try
             {
-                var result = await _ReviewService.Update(id, request);
-                if (result.Data == null)
+                var result = await _ReviewService.Update(id, comment);
+                if (result.Status < 0 && result.Data == null)
                 {
-                    return Ok(new ApiResponse<ResponseReviewDto>
+                    return NotFound(new ApiResponse<string>
                     {
-                        StatusCode = HttpStatusCode.OK,
-                        Message = "No Data",
-                        Data = null
+                        StatusCode = HttpStatusCode.NotFound,
+                        Message = result.Message
                     });
                 }
                 return Ok(new ApiResponse<ResponseReviewDto>
@@ -155,13 +151,12 @@ namespace RentEase.API.Controllers.Main
             try
             {
                 var result = await _ReviewService.Delete(id);
-                if (result.Data == null)
+                if (result.Status < 0 && result.Data == null)
                 {
-                    return Ok(new ApiResponse<ResponseReviewDto>
+                    return NotFound(new ApiResponse<string>
                     {
-                        StatusCode = HttpStatusCode.OK,
-                        Message = "No Data",
-                        Data = null
+                        StatusCode = HttpStatusCode.NotFound,
+                        Message = result.Message
                     });
                 }
                 return Ok(new ApiResponse<ResponseReviewDto>

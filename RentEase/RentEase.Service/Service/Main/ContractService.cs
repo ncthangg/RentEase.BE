@@ -1,9 +1,12 @@
 ﻿using AutoMapper;
+using MailKit.Search;
+using Microsoft.AspNetCore.Http;
 using RentEase.Common.Base;
 using RentEase.Common.DTOs.Dto;
 using RentEase.Data;
 using RentEase.Data.Models;
 using RentEase.Service.Service.Base;
+using System.Net.NetworkInformation;
 using static RentEase.Common.Base.EnumType;
 
 namespace RentEase.Service.Service.Main
@@ -19,6 +22,7 @@ namespace RentEase.Service.Service.Main
     }
     public class ContractService : BaseService<Contract, ResponseContractDto>, IContractService
     {
+        private readonly IHttpContextAccessor _httpContextAccessor;
         private readonly UnitOfWork _unitOfWork;
         private readonly IMapper _mapper;
         private readonly HelperWrapper _helperWrapper;
@@ -64,12 +68,25 @@ namespace RentEase.Service.Service.Main
 
         public async Task<ServiceResult> Update(int id, RequestContractDto request, int? contractStatus, int? approveStatus)
         {
+            string accountId = _helperWrapper.TokenHelper.GetUserIdFromHttpContextAccessor(_httpContextAccessor);
+
+            if (string.IsNullOrEmpty(accountId))
+            {
+                return new ServiceResult(Const.ERROR_EXCEPTION, "Lỗi khi lấy info");
+            }
+
+            if (!int.TryParse(accountId, out int accountIdInt))
+            {
+                return new ServiceResult(Const.ERROR_EXCEPTION, "ID tài khoản không hợp lệ");
+            }
+
+
             if (!await EntityExistsAsync("Id", id))
             {
                 return new ServiceResult(Const.ERROR_EXCEPTION, Const.ERROR_EXCEPTION_MSG);
             }
 
-            var item = (Contract)(await GetByIdAsync(id)).Data;
+            var item = _mapper.Map<Contract>((ResponseContractDto)(await GetByIdAsync(id)).Data);
 
             if (approveStatus != (int)EnumType.ApproveStatus.Pending &&
                     approveStatus != (int)EnumType.ApproveStatus.Approved &&
@@ -85,6 +102,21 @@ namespace RentEase.Service.Service.Main
                                      contractStatus != (int)EnumType.ContractStatus.Cancelled)
             {
                 return new ServiceResult(Const.ERROR_EXCEPTION, "ContractStatus không hợp lệ.");
+            }
+
+            if (accountIdInt == 1)
+            {
+                item.ContractStatusId = (int)contractStatus;
+                item.ApproveStatusId = (int)approveStatus;
+                item.UpdatedAt = DateTime.Now;
+
+                var result1 = await _unitOfWork.ContractRepository.UpdateAsync(item);
+                if (result1 > 0)
+                {
+                    var responseData = _mapper.Map<ResponseAptDto>(item);
+
+                    return new ServiceResult(Const.SUCCESS_ACTION, Const.SUCCESS_ACTION_MSG, responseData);
+                }
             }
 
             var updateItem = new Contract()

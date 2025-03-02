@@ -1,4 +1,6 @@
 ﻿using AutoMapper;
+using MailKit.Search;
+using Microsoft.AspNetCore.Http;
 using RentEase.Common.Base;
 using RentEase.Common.DTOs.Dto;
 using RentEase.Data;
@@ -20,6 +22,7 @@ namespace RentEase.Service.Service.Main
     }
     public class CurrentResidentService : BaseService<CurrentResident, ResponseCurrentResidentDto>, ICurrentResidentService
     {
+        private readonly IHttpContextAccessor _httpContextAccessor;
         private readonly UnitOfWork _unitOfWork;
         private readonly IMapper _mapper;
         private readonly HelperWrapper _helperWrapper;
@@ -59,11 +62,24 @@ namespace RentEase.Service.Service.Main
 
         public async Task<ServiceResult> Update(int id, int? liveStatus)
         {
+            string accountId = _helperWrapper.TokenHelper.GetUserIdFromHttpContextAccessor(_httpContextAccessor);
+
+            if (string.IsNullOrEmpty(accountId))
+            {
+                return new ServiceResult(Const.ERROR_EXCEPTION, "Lỗi khi lấy info");
+            }
+
+            if (!int.TryParse(accountId, out int accountIdInt))
+            {
+                return new ServiceResult(Const.ERROR_EXCEPTION, "ID tài khoản không hợp lệ");
+            }
+
+
             if (!await EntityExistsAsync("Id", id))
             {
                 return new ServiceResult(Const.ERROR_EXCEPTION, Const.ERROR_EXCEPTION_MSG);
             }
-            var item = (CurrentResident)(await GetByIdAsync(id)).Data;
+            var item = _mapper.Map<CurrentResident>((ResponseCurrentResidentDto)(await GetByIdAsync(id)).Data);
 
             if (liveStatus != (int)EnumType.LiveStatus.Active &&
                     liveStatus != (int)EnumType.LiveStatus.MoveOut)

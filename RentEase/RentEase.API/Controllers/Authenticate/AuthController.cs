@@ -44,12 +44,11 @@ namespace RentEase.API.Controllers.Authenticate
 
             var result = await _authenticateService.SignIn(request);
 
-            if (result.Status != 1)
-                return NotFound(new ApiResponse<ResponseLoginDto>
+            if (result.Status < 0)
+                return NotFound(new ApiResponse<string>
                 {
                     StatusCode = HttpStatusCode.NotFound,
-                    Message = result.Message,
-                    Data = null
+                    Message = result.Message
                 });
 
             return Ok(new ApiResponse<ResponseLoginDto>
@@ -76,12 +75,11 @@ namespace RentEase.API.Controllers.Authenticate
 
             var result = await _authenticateService.SignUp(request);
 
-            if (result.Status != 1)
-                return NotFound(new ApiResponse<ResponseRegisterDto>
+            if (result.Status < 0)
+                return NotFound(new ApiResponse<string>
                 {
                     StatusCode = HttpStatusCode.NotFound,
-                    Message = result.Message,
-                    Data = null
+                    Message = result.Message
                 });
 
             return Ok(new ApiResponse<ResponseRegisterDto>
@@ -93,36 +91,35 @@ namespace RentEase.API.Controllers.Authenticate
         }
 
 
-        //[HttpPost("ChangePassword")]
-        //[AllowAnonymous]
-        //public async Task<IActionResult> ChangePassword(RequestChangePasswordDto request)
-        //{
-        //    if (!ModelState.IsValid)
-        //    {
-        //        return BadRequest(new ApiResponse<string>
-        //        {
-        //            StatusCode = HttpStatusCode.BadRequest,
-        //            Message = "Invalid input data"
-        //        });
-        //    }
+        [HttpPost("ChangePassword")]
+        [AllowAnonymous]
+        public async Task<IActionResult> ChangePassword(RequestChangePasswordDto request)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(new ApiResponse<string>
+                {
+                    StatusCode = HttpStatusCode.BadRequest,
+                    Message = "Invalid input data"
+                });
+            }
 
-        //    var result = await _authenticateService.ChangePassword(request);
+            var result = await _authenticateService.ChangePassword(request);
 
-        //    if (result.Status != 1)
-        //        return NotFound(new ApiResponse<IEnumerable<ResponseRegisterDto>>
-        //        {
-        //            StatusCode = HttpStatusCode.NotFound,
-        //            Message = result.Message,
-        //            Data = null
-        //        });
+            if (result.Status < 0)
+                return NotFound(new ApiResponse<string>
+                {
+                    StatusCode = HttpStatusCode.NotFound,
+                    Message = result.Message
+                });
 
-        //    return Ok(new ApiResponse<ResponseRegisterDto>
-        //    {
-        //        StatusCode = HttpStatusCode.OK,
-        //        Message = result.Message,
-        //        Data = (ResponseRegisterDto)result.Data
-        //    });
-        //}
+            return Ok(new ApiResponse<ResponseRegisterDto>
+            {
+                StatusCode = HttpStatusCode.OK,
+                Message = result.Message,
+                Data = (ResponseRegisterDto)result.Data
+            });
+        }
 
         [HttpPost("Verification")]
         [AllowAnonymous]
@@ -131,12 +128,11 @@ namespace RentEase.API.Controllers.Authenticate
 
             var result = await _accountVerificationService.Verification(request.AccountId, request.VerificationCode);
 
-            if (result.Status != 1)
-                return NotFound(new ApiResponse<ResponseRegisterDto>
+            if (result.Status < 0)
+                return NotFound(new ApiResponse<string>
                 {
                     StatusCode = HttpStatusCode.NotFound,
-                    Message = result.Message,
-                    Data = null
+                    Message = result.Message
                 });
 
             return Ok(new ApiResponse<ResponseRegisterDto>
@@ -154,12 +150,11 @@ namespace RentEase.API.Controllers.Authenticate
 
             var result = await _authenticateService.GetInfo();
 
-            if (result.Status != 1)
-                return NotFound(new ApiResponse<ResponseAccountDto>
+            if (result.Status < 0)
+                return NotFound(new ApiResponse<string>
                 {
                     StatusCode = HttpStatusCode.NotFound,
-                    Message = result.Message,
-                    Data = null
+                    Message = result.Message
                 });
 
             return Ok(new ApiResponse<ResponseAccountDto>

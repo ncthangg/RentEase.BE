@@ -19,21 +19,21 @@ namespace RentEase.Service.AutoMapper
                     .ForMember(dest => dest.AvatarUrl, opt => opt.MapFrom(src => src.AvatarUrl ?? null));
 
 
-            CreateMap<Apt, ResponseAptDto>();
-            CreateMap<AptCategory, ResponseAptCategoryDto>();
-            CreateMap<AptImage, ResponseAptImageDto>();
-            CreateMap<AptStatus, ResponseAptStatusDto>();
-            CreateMap<AptUtility, ResponseAptUtilityDto>();
-            CreateMap<Contract, ResponseContractDto>();
-            CreateMap<CurrentResident, ResponseCurrentResidentDto>();
-            CreateMap<MaintenanceRequest, ResponseMaintenanceRequestDto>();
-            CreateMap<Review, ResponseReviewDto>();
-            CreateMap<Role, ResponseRoleDto>();
-            CreateMap<TransactionType, ResponseTransactionTypeDto>();
-            CreateMap<Utility, ResponseUtilityDto>();
-            CreateMap<Order, ResponseOrderDto>();
-            CreateMap<Wallet, ResponseWalletDto>();
-            CreateMap<WalletTransaction, ResponseWalletTransactionDto>();
+            CreateMap<Apt, ResponseAptDto>().ReverseMap();
+            CreateMap<AptCategory, ResponseAptCategoryDto>().ReverseMap();
+            CreateMap<AptImage, ResponseAptImageDto>().ReverseMap();
+            CreateMap<AptStatus, ResponseAptStatusDto>().ReverseMap();
+            CreateMap<AptUtility, ResponseAptUtilityDto>().ReverseMap();
+            CreateMap<Contract, ResponseContractDto>().ReverseMap();
+            CreateMap<CurrentResident, ResponseCurrentResidentDto>().ReverseMap();
+            CreateMap<MaintenanceRequest, ResponseMaintenanceRequestDto>().ReverseMap();
+            CreateMap<Review, ResponseReviewDto>().ReverseMap();
+            CreateMap<Role, ResponseRoleDto>().ReverseMap();
+            CreateMap<TransactionType, ResponseTransactionTypeDto>().ReverseMap();
+            CreateMap<Utility, ResponseUtilityDto>().ReverseMap();
+            CreateMap<Order, ResponseOrderDto>().ReverseMap();
+            CreateMap<Wallet, ResponseWalletDto>().ReverseMap();
+            CreateMap<WalletTransaction, ResponseWalletTransactionDto>().ReverseMap();
         }
     }
 }

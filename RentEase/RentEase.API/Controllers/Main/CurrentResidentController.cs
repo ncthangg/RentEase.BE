@@ -9,7 +9,7 @@ namespace RentEase.API.Controllers.Main
 {
     [Route("api/[controller]")]
     [ApiController]
-    [Authorize(Roles = "1")]
+    [Authorize(Roles = "1,2,3,4")]
     public class CurrentResidentController : Controller
     {
         private readonly ICurrentResidentService _CurrentResidentService;
@@ -24,13 +24,12 @@ namespace RentEase.API.Controllers.Main
             try
             {
                 var result = await _CurrentResidentService.GetAllAsync(page, pageSize);
-                if (result.Data == null)
+                if (result.Status < 0 && result.Data == null)
                 {
-                    return Ok(new ApiResponse<ResponseCurrentResidentDto>
+                    return NotFound(new ApiResponse<string>
                     {
-                        StatusCode = HttpStatusCode.OK,
-                        Message = "No Data",
-                        Data = null
+                        StatusCode = HttpStatusCode.NotFound,
+                        Message = result.Message
                     });
                 }
                 return Ok(new ApiResponse<IEnumerable<ResponseCurrentResidentDto>>
@@ -59,13 +58,12 @@ namespace RentEase.API.Controllers.Main
             try
             {
                 var result = await _CurrentResidentService.GetByIdAsync(id);
-                if (result.Data == null)
+                if (result.Status < 0 && result.Data == null)
                 {
-                    return Ok(new ApiResponse<ResponseCurrentResidentDto>
+                    return NotFound(new ApiResponse<string>
                     {
-                        StatusCode = HttpStatusCode.OK,
-                        Message = "No Data",
-                        Data = null
+                        StatusCode = HttpStatusCode.NotFound,
+                        Message = result.Message
                     });
                 }
                 return Ok(new ApiResponse<ResponseCurrentResidentDto>
@@ -86,18 +84,17 @@ namespace RentEase.API.Controllers.Main
         }
 
         [HttpPost]
-        public async Task<IActionResult> Post(RequestCurrentResidentDto request)
+        public async Task<IActionResult> Post([FromBody] RequestCurrentResidentDto request)
         {
             try
             {
                 var result = await _CurrentResidentService.Create(request);
-                if (result.Data == null)
+                if (result.Status < 0 && result.Data == null)
                 {
-                    return Ok(new ApiResponse<ResponseCurrentResidentDto>
+                    return NotFound(new ApiResponse<string>
                     {
-                        StatusCode = HttpStatusCode.OK,
-                        Message = "No Data",
-                        Data = null
+                        StatusCode = HttpStatusCode.NotFound,
+                        Message = result.Message
                     });
                 }
                 return Ok(new ApiResponse<ResponseCurrentResidentDto>
@@ -118,18 +115,17 @@ namespace RentEase.API.Controllers.Main
         }
 
         [HttpPut("{id}")]
-        public async Task<IActionResult> Put(int id, RequestCurrentResidentDto request)
+        public async Task<IActionResult> Put(int id, [FromBody] int liveStatus)
         {
             try
             {
-                var result = await _CurrentResidentService.Update(id, request);
-                if (result.Data == null)
+                var result = await _CurrentResidentService.Update(id, liveStatus);
+                if (result.Status < 0 && result.Data == null)
                 {
-                    return Ok(new ApiResponse<ResponseCurrentResidentDto>
+                    return NotFound(new ApiResponse<string>
                     {
-                        StatusCode = HttpStatusCode.OK,
-                        Message = "No Data",
-                        Data = null
+                        StatusCode = HttpStatusCode.NotFound,
+                        Message = result.Message
                     });
                 }
                 return Ok(new ApiResponse<ResponseCurrentResidentDto>
@@ -155,13 +151,12 @@ namespace RentEase.API.Controllers.Main
             try
             {
                 var result = await _CurrentResidentService.Delete(id);
-                if (result.Data == null)
+                if (result.Status < 0 && result.Data == null)
                 {
-                    return Ok(new ApiResponse<ResponseCurrentResidentDto>
+                    return NotFound(new ApiResponse<string>
                     {
-                        StatusCode = HttpStatusCode.OK,
-                        Message = "No Data",
-                        Data = null
+                        StatusCode = HttpStatusCode.NotFound,
+                        Message = result.Message
                     });
                 }
                 return Ok(new ApiResponse<ResponseCurrentResidentDto>

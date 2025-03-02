@@ -9,7 +9,6 @@ namespace RentEase.API.Controllers.Main
 {
     [Route("api/[controller]")]
     [ApiController]
-    [Authorize(Roles = "1")]
     public class AptController : ControllerBase
     {
         private readonly IAptService _AptService;
@@ -19,18 +18,18 @@ namespace RentEase.API.Controllers.Main
         }
 
         [HttpGet]
+        [Authorize(Roles = "1,2,3,4")]
         public async Task<IActionResult> Get([FromQuery] int page = 1, [FromQuery] int pageSize = 10)
         {
             try
             {
                 var result = await _AptService.GetAllAsync(page, pageSize);
-                if (result.Data == null)
+                if (result.Status < 0 && result.Data == null)
                 {
-                    return Ok(new ApiResponse<ResponseAptDto>
+                    return NotFound(new ApiResponse<string>
                     {
-                        StatusCode = HttpStatusCode.OK,
-                        Message = "No Data",
-                        Data = null
+                        StatusCode = HttpStatusCode.NotFound,
+                        Message = result.Message
                     });
                 }
                 return Ok(new ApiResponse<IEnumerable<ResponseAptDto>>
@@ -54,18 +53,18 @@ namespace RentEase.API.Controllers.Main
         }
 
         [HttpGet("{id}")]
+        [Authorize(Roles = "1,2,3,4")]
         public async Task<IActionResult> Get(int id)
         {
             try
             {
                 var result = await _AptService.GetByIdAsync(id);
-                if (result.Data == null)
+                if (result.Status < 0 && result.Data == null)
                 {
-                    return Ok(new ApiResponse<ResponseAptDto>
+                    return NotFound(new ApiResponse<ResponseAptDto>
                     {
-                        StatusCode = HttpStatusCode.OK,
-                        Message = "No Data",
-                        Data = null
+                        StatusCode = HttpStatusCode.NotFound,
+                        Message = result.Message
                     });
                 }
                 return Ok(new ApiResponse<ResponseAptDto>
@@ -86,18 +85,18 @@ namespace RentEase.API.Controllers.Main
         }
 
         [HttpPost]
-        public async Task<IActionResult> Post(RequestAptDto request)
+        [Authorize(Roles = "1,3")]
+        public async Task<IActionResult> Post([FromBody] RequestAptDto request)
         {
             try
             {
                 var result = await _AptService.Create(request);
-                if (result.Data == null)
+                if (result.Status < 0 && result.Data == null)
                 {
-                    return Ok(new ApiResponse<ResponseAptDto>
+                    return NotFound(new ApiResponse<ResponseAptDto>
                     {
-                        StatusCode = HttpStatusCode.OK,
-                        Message = "No Data",
-                        Data = null
+                        StatusCode = HttpStatusCode.NotFound,
+                        Message = result.Message
                     });
                 }
                 return Ok(new ApiResponse<ResponseAptDto>
@@ -118,18 +117,18 @@ namespace RentEase.API.Controllers.Main
         }
 
         [HttpPut("{id}")]
-        public async Task<IActionResult> Put(int id, RequestAptDto request)
+        [Authorize(Roles = "1,2,3")]
+        public async Task<IActionResult> Put(int id, [FromBody] RequestAptDto request, int? aptStatus,  int? approveStatus)
         {
             try
             {
-                var result = await _AptService.Update(id, request);
-                if (result.Data == null)
+                var result = await _AptService.Update(id, request, aptStatus, approveStatus);
+                if (result.Status < 0 && result.Data == null)
                 {
-                    return Ok(new ApiResponse<ResponseAptDto>
+                    return NotFound(new ApiResponse<ResponseAptDto>
                     {
-                        StatusCode = HttpStatusCode.OK,
-                        Message = "No Data",
-                        Data = null
+                        StatusCode = HttpStatusCode.NotFound,
+                        Message = result.Message
                     });
                 }
                 return Ok(new ApiResponse<ResponseAptDto>
@@ -150,18 +149,18 @@ namespace RentEase.API.Controllers.Main
         }
 
         [HttpDelete("{id}")]
+        [Authorize(Roles = "1,3")]
         public async Task<IActionResult> Delete(int id)
         {
             try
             {
                 var result = await _AptService.Delete(id);
-                if (result.Data == null)
+                if (result.Status < 0 && result.Data == null)
                 {
-                    return Ok(new ApiResponse<ResponseAptDto>
+                    return NotFound(new ApiResponse<ResponseAptDto>
                     {
-                        StatusCode = HttpStatusCode.OK,
-                        Message = "No Data",
-                        Data = null
+                        StatusCode = HttpStatusCode.NotFound,
+                        Message = result.Message
                     });
                 }
                 return Ok(new ApiResponse<ResponseAptDto>

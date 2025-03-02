@@ -159,6 +159,16 @@
         "Name": "request",
         "Type": "RentEase.Common.DTOs.Dto.RequestAptDto",
         "IsRequired": true
+      },
+      {
+        "Name": "aptStatus",
+        "Type": "System.Nullable\u00601[[System.Int32, System.Private.CoreLib, Version=8.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]]",
+        "IsRequired": false
+      },
+      {
+        "Name": "approveStatus",
+        "Type": "System.Nullable\u00601[[System.Int32, System.Private.CoreLib, Version=8.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]]",
+        "IsRequired": false
       }
     ],
     "ReturnTypes": []
@@ -523,6 +533,22 @@
   },
   {
     "ContainingType": "RentEase.API.Controllers.Authenticate.AuthController",
+    "Method": "ChangePassword",
+    "RelativePath": "api/Auth/ChangePassword",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "request",
+        "Type": "RentEase.Common.DTOs.Authenticate.RequestChangePasswordDto",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "RentEase.API.Controllers.Authenticate.AuthController",
     "Method": "GetInfo",
     "RelativePath": "api/Auth/GetInfo",
     "HttpMethod": "GET",
@@ -649,6 +675,16 @@
         "Name": "request",
         "Type": "RentEase.Common.DTOs.Dto.RequestContractDto",
         "IsRequired": true
+      },
+      {
+        "Name": "contractStatus",
+        "Type": "System.Nullable\u00601[[System.Int32, System.Private.CoreLib, Version=8.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]]",
+        "IsRequired": false
+      },
+      {
+        "Name": "approveStatus",
+        "Type": "System.Nullable\u00601[[System.Int32, System.Private.CoreLib, Version=8.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]]",
+        "IsRequired": false
       }
     ],
     "ReturnTypes": []
@@ -736,8 +772,8 @@
         "IsRequired": true
       },
       {
-        "Name": "request",
-        "Type": "RentEase.Common.DTOs.Dto.RequestCurrentResidentDto",
+        "Name": "liveStatus",
+        "Type": "System.Int32",
         "IsRequired": true
       }
     ],
@@ -829,6 +865,16 @@
         "Name": "request",
         "Type": "RentEase.Common.DTOs.Dto.RequestMaintenanceRequestDto",
         "IsRequired": true
+      },
+      {
+        "Name": "approveStatus",
+        "Type": "System.Nullable\u00601[[System.Int32, System.Private.CoreLib, Version=8.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]]",
+        "IsRequired": false
+      },
+      {
+        "Name": "progressStatus",
+        "Type": "System.Nullable\u00601[[System.Int32, System.Private.CoreLib, Version=8.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]]",
+        "IsRequired": false
       }
     ],
     "ReturnTypes": []
@@ -916,8 +962,8 @@
         "IsRequired": true
       },
       {
-        "Name": "request",
-        "Type": "RentEase.Common.DTOs.Dto.RequestReviewDto",
+        "Name": "comment",
+        "Type": "System.String",
         "IsRequired": true
       }
     ],

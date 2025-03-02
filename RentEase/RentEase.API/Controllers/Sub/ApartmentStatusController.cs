@@ -24,13 +24,12 @@ namespace RentEase.API.Controllers.Sub
             try
             {
                 var result = await _aptStatusService.GetAllAsync(status, page, pageSize);
-                if (result.Data == null)
+                if (result.Status < 0 && result.Data == null)
                 {
-                    return Ok(new ApiResponse<ResponseAptStatusDto>
+                    return NotFound(new ApiResponse<string>
                     {
-                        StatusCode = HttpStatusCode.OK,
-                        Message = "No Data",
-                        Data = null
+                        StatusCode = HttpStatusCode.NotFound,
+                        Message = result.Message
                     });
                 }
                 return Ok(new ApiResponse<IEnumerable<ResponseAptStatusDto>>
@@ -59,13 +58,12 @@ namespace RentEase.API.Controllers.Sub
             try
             {
                 var result = await _aptStatusService.GetByIdAsync(id);
-                if (result.Data == null)
+                if (result.Status < 0 && result.Data == null)
                 {
-                    return Ok(new ApiResponse<ResponseAptStatusDto>
+                    return NotFound(new ApiResponse<string>
                     {
-                        StatusCode = HttpStatusCode.OK,
-                        Message = "No Data",
-                        Data = null
+                        StatusCode = HttpStatusCode.NotFound,
+                        Message = result.Message
                     });
                 }
                 return Ok(new ApiResponse<ResponseAptStatusDto>
@@ -86,7 +84,7 @@ namespace RentEase.API.Controllers.Sub
         }
 
         [HttpGet("search")]
-        public async Task<IActionResult> Search([FromQuery] string name, [FromQuery] bool status = true,[FromQuery] int page = 1, [FromQuery] int pageSize = 10)
+        public async Task<IActionResult> Search([FromQuery] string name, [FromQuery] bool status = true, [FromQuery] int page = 1, [FromQuery] int pageSize = 10)
         {
             try
             {
@@ -97,13 +95,12 @@ namespace RentEase.API.Controllers.Sub
 
                 var result = await _aptStatusService.Search(name, status, page, pageSize);
 
-                if (result.Data == null)
+                if (result.Status < 0 && result.Data == null)
                 {
-                    return Ok(new ApiResponse<ResponseAptStatusDto>
+                    return NotFound(new ApiResponse<string>
                     {
-                        StatusCode = HttpStatusCode.OK,
-                        Message = "No Data",
-                        Data = null
+                        StatusCode = HttpStatusCode.NotFound,
+                        Message = result.Message
                     });
                 }
                 return Ok(new ApiResponse<IEnumerable<ResponseAptStatusDto>>
@@ -129,13 +126,12 @@ namespace RentEase.API.Controllers.Sub
             try
             {
                 var result = await _aptStatusService.Create(request);
-                if (result.Data == null)
+                if (result.Status < 0 && result.Data == null)
                 {
-                    return Ok(new ApiResponse<ResponseAptStatusDto>
+                    return NotFound(new ApiResponse<string>
                     {
-                        StatusCode = HttpStatusCode.OK,
-                        Message = "No Data",
-                        Data = null
+                        StatusCode = HttpStatusCode.NotFound,
+                        Message = result.Message
                     });
                 }
                 return Ok(new ApiResponse<ResponseAptStatusDto>
@@ -161,13 +157,12 @@ namespace RentEase.API.Controllers.Sub
             try
             {
                 var result = await _aptStatusService.Update(id, request);
-                if (result.Data == null)
+                if (result.Status < 0 && result.Data == null)
                 {
-                    return Ok(new ApiResponse<ResponseAptStatusDto>
+                    return NotFound(new ApiResponse<string>
                     {
-                        StatusCode = HttpStatusCode.OK,
-                        Message = "No Data",
-                        Data = null
+                        StatusCode = HttpStatusCode.NotFound,
+                        Message = result.Message
                     });
                 }
                 return Ok(new ApiResponse<ResponseAptStatusDto>
@@ -193,13 +188,12 @@ namespace RentEase.API.Controllers.Sub
             try
             {
                 var result = await _aptStatusService.DeleteByIdAsync(id);
-                if (result.Data == null)
+                if (result.Status < 0 && result.Data == null)
                 {
-                    return Ok(new ApiResponse<ResponseAptStatusDto>
+                    return NotFound(new ApiResponse<string>
                     {
-                        StatusCode = HttpStatusCode.OK,
-                        Message = "No Data",
-                        Data = null
+                        StatusCode = HttpStatusCode.NotFound,
+                        Message = result.Message
                     });
                 }
                 return Ok(new ApiResponse<ResponseAptStatusDto>

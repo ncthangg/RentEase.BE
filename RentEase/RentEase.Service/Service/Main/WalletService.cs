@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using MailKit.Search;
 using RentEase.Common.Base;
 using RentEase.Common.DTOs.Dto;
 using RentEase.Data;
@@ -65,7 +66,7 @@ namespace RentEase.Service.Service.Main
             {
                 return new ServiceResult(Const.ERROR_EXCEPTION, Const.ERROR_EXCEPTION_MSG);
             }
-            var item = (Wallet)(await GetByIdAsync(id)).Data;
+            var item = _mapper.Map<Wallet>((ResponseWalletDto)(await GetByIdAsync(id)).Data);
 
             if (item != null)
             {

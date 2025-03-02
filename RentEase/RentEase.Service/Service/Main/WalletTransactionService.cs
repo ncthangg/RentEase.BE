@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using MailKit.Search;
 using Microsoft.AspNetCore.Http;
 using RentEase.Common.Base;
 using RentEase.Common.DTOs.Dto;
@@ -71,7 +72,8 @@ namespace RentEase.Service.Service.Main
                 return new ServiceResult(Const.ERROR_EXCEPTION, Const.ERROR_EXCEPTION_MSG);
             }
 
-            var item = (WalletTransaction)(await GetByIdAsync(id)).Data;
+            var item = _mapper.Map<WalletTransaction>((ResponseWalletTransactionDto)(await GetByIdAsync(id)).Data);
+
             if (transactionStatus != (int)EnumType.TransactionStatus.Pending &&
                     transactionStatus != (int)EnumType.TransactionStatus.Success &&
                         transactionStatus != (int)EnumType.TransactionStatus.Failed)

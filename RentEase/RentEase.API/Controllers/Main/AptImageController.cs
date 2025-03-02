@@ -9,7 +9,7 @@ namespace RentEase.API.Controllers.Main
 {
     [Route("api/[controller]")]
     [ApiController]
-    [Authorize(Roles = "1")]
+    [Authorize(Roles = "1,2,3,4")]
     public class AptImageController : Controller
     {
         private readonly IAptImageService _AptImageService;
@@ -19,18 +19,18 @@ namespace RentEase.API.Controllers.Main
         }
 
         [HttpGet]
+        [Authorize(Roles = "1,2,3,4")]
         public async Task<IActionResult> Get([FromQuery] int page = 1, [FromQuery] int pageSize = 10)
         {
             try
             {
                 var result = await _AptImageService.GetAllAsync(page, pageSize);
-                if (result.Data == null)
+                if (result.Status < 0 && result.Data == null)
                 {
-                    return Ok(new ApiResponse<ResponseAptImageDto>
+                    return NotFound(new ApiResponse<string>
                     {
-                        StatusCode = HttpStatusCode.OK,
-                        Message = "No Data",
-                        Data = null
+                        StatusCode = HttpStatusCode.NotFound,
+                        Message = result.Message
                     });
                 }
                 return Ok(new ApiResponse<IEnumerable<ResponseAptImageDto>>
@@ -54,18 +54,18 @@ namespace RentEase.API.Controllers.Main
         }
 
         [HttpGet("{id}")]
+        [Authorize(Roles = "1,2,3,4")]
         public async Task<IActionResult> Get(int id)
         {
             try
             {
                 var result = await _AptImageService.GetByIdAsync(id);
-                if (result.Data == null)
+                if (result.Status < 0 && result.Data == null)
                 {
-                    return Ok(new ApiResponse<ResponseAptImageDto>
+                    return NotFound(new ApiResponse<string>
                     {
-                        StatusCode = HttpStatusCode.OK,
-                        Message = "No Data",
-                        Data = null
+                        StatusCode = HttpStatusCode.NotFound,
+                        Message = result.Message
                     });
                 }
                 return Ok(new ApiResponse<ResponseAptImageDto>
@@ -86,18 +86,18 @@ namespace RentEase.API.Controllers.Main
         }
 
         [HttpPost]
-        public async Task<IActionResult> Post(RequestAptImageDto request)
+        [Authorize(Roles = "1,3")]
+        public async Task<IActionResult> Post([FromBody] RequestAptImageDto request)
         {
             try
             {
                 var result = await _AptImageService.Create(request);
-                if (result.Data == null)
+                if (result.Status < 0 && result.Data == null)
                 {
-                    return Ok(new ApiResponse<ResponseAptImageDto>
+                    return NotFound(new ApiResponse<string>
                     {
-                        StatusCode = HttpStatusCode.OK,
-                        Message = "No Data",
-                        Data = null
+                        StatusCode = HttpStatusCode.NotFound,
+                        Message = result.Message
                     });
                 }
                 return Ok(new ApiResponse<ResponseAptImageDto>
@@ -118,18 +118,18 @@ namespace RentEase.API.Controllers.Main
         }
 
         [HttpPut("{id}")]
-        public async Task<IActionResult> Put(int id, RequestAptImageDto request)
+        [Authorize(Roles = "1,3")]
+        public async Task<IActionResult> Put(int id, [FromBody] RequestAptImageDto request)
         {
             try
             {
                 var result = await _AptImageService.Update(id, request);
-                if (result.Data == null)
+                if (result.Status < 0 && result.Data == null)
                 {
-                    return Ok(new ApiResponse<ResponseAptImageDto>
+                    return NotFound(new ApiResponse<string>
                     {
-                        StatusCode = HttpStatusCode.OK,
-                        Message = "No Data",
-                        Data = null
+                        StatusCode = HttpStatusCode.NotFound,
+                        Message = result.Message
                     });
                 }
                 return Ok(new ApiResponse<ResponseAptImageDto>
@@ -150,18 +150,18 @@ namespace RentEase.API.Controllers.Main
         }
 
         [HttpDelete("{id}")]
+        [Authorize(Roles = "1,3")]
         public async Task<IActionResult> Delete(int id)
         {
             try
             {
                 var result = await _AptImageService.Delete(id);
-                if (result.Data == null)
+                if (result.Status < 0 && result.Data == null)
                 {
-                    return Ok(new ApiResponse<ResponseAptImageDto>
+                    return NotFound(new ApiResponse<string>
                     {
-                        StatusCode = HttpStatusCode.OK,
-                        Message = "No Data",
-                        Data = null
+                        StatusCode = HttpStatusCode.NotFound,
+                        Message = result.Message
                     });
                 }
                 return Ok(new ApiResponse<ResponseAptImageDto>

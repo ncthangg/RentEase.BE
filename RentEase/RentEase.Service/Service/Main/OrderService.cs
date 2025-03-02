@@ -11,6 +11,7 @@ using System.Text;
 using System.Threading.Tasks;
 using MailKit.Search;
 using Org.BouncyCastle.Asn1.X509;
+using Microsoft.AspNetCore.Http;
 
 namespace RentEase.Service.Service.Main
 {
@@ -26,6 +27,7 @@ namespace RentEase.Service.Service.Main
     }
     public class OrderService : BaseService<Order, ResponseOrderDto>, IOrderService
     {
+        private readonly IHttpContextAccessor _httpContextAccessor;
         private readonly UnitOfWork _unitOfWork;
         private readonly IMapper _mapper;
         private readonly HelperWrapper _helperWrapper;
@@ -66,12 +68,25 @@ namespace RentEase.Service.Service.Main
 
         public async Task<ServiceResult> Update(string orderId, int? newStatus)
         {
+            string accountId = _helperWrapper.TokenHelper.GetUserIdFromHttpContextAccessor(_httpContextAccessor);
+
+            if (string.IsNullOrEmpty(accountId))
+            {
+                return new ServiceResult(Const.ERROR_EXCEPTION, "Lỗi khi lấy info");
+            }
+
+            if (!int.TryParse(accountId, out int accountIdInt))
+            {
+                return new ServiceResult(Const.ERROR_EXCEPTION, "ID tài khoản không hợp lệ");
+            }
+
+
             if (!await EntityExistsAsync("Id", orderId))
             {
                 return new ServiceResult(Const.ERROR_EXCEPTION, Const.ERROR_EXCEPTION_MSG);
             }
 
-            var item = (Order)(await GetByIdAsync(orderId)).Data;
+            var item = _mapper.Map<Order>((ResponseOrderDto)(await GetByIdAsync(orderId)).Data);
 
             if (newStatus != (int)EnumType.TransactionStatus.Pending &&
                      newStatus != (int)EnumType.TransactionStatus.Success &&

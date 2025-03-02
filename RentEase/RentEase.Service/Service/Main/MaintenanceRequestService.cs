@@ -74,12 +74,25 @@ namespace RentEase.Service.Service.Main
 
         public async Task<ServiceResult> Update(int id, RequestMaintenanceRequestDto request, int? approveStatus, int? progressStatus)
         {
+            string accountId = _helperWrapper.TokenHelper.GetUserIdFromHttpContextAccessor(_httpContextAccessor);
+
+            if (string.IsNullOrEmpty(accountId))
+            {
+                return new ServiceResult(Const.ERROR_EXCEPTION, "Lỗi khi lấy info");
+            }
+
+            if (!int.TryParse(accountId, out int accountIdInt))
+            {
+                return new ServiceResult(Const.ERROR_EXCEPTION, "ID tài khoản không hợp lệ");
+            }
+
+
             if (!await EntityExistsAsync("Id", id))
             {
                 return new ServiceResult(Const.ERROR_EXCEPTION, Const.ERROR_EXCEPTION_MSG);
             }
 
-            var item = (MaintenanceRequest)(await GetByIdAsync(id)).Data;
+            var item = _mapper.Map<MaintenanceRequest>((ResponseMaintenanceRequestDto)(await GetByIdAsync(id)).Data);
 
             if (approveStatus != (int)EnumType.ApproveStatus.Pending &&
                         approveStatus != (int)EnumType.ApproveStatus.Approved &&

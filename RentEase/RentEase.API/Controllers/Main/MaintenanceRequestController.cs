@@ -9,7 +9,7 @@ namespace RentEase.API.Controllers.Main
 {
     [Route("api/[controller]")]
     [ApiController]
-    [Authorize(Roles = "1")]
+    [Authorize(Roles = "1,2,3,4")]
     public class MaintenanceRequestController : Controller
     {
         private readonly IMaintenanceRequestService _MaintenanceRequestService;
@@ -24,13 +24,12 @@ namespace RentEase.API.Controllers.Main
             try
             {
                 var result = await _MaintenanceRequestService.GetAllAsync(page, pageSize);
-                if (result.Data == null)
+                if (result.Status < 0 && result.Data == null)
                 {
-                    return Ok(new ApiResponse<ResponseMaintenanceRequestDto>
+                    return NotFound(new ApiResponse<string>
                     {
-                        StatusCode = HttpStatusCode.OK,
-                        Message = "No Data",
-                        Data = null
+                        StatusCode = HttpStatusCode.NotFound,
+                        Message = result.Message
                     });
                 }
                 return Ok(new ApiResponse<IEnumerable<ResponseMaintenanceRequestDto>>
@@ -59,13 +58,12 @@ namespace RentEase.API.Controllers.Main
             try
             {
                 var result = await _MaintenanceRequestService.GetByIdAsync(id);
-                if (result.Data == null)
+                if (result.Status < 0 && result.Data == null)
                 {
-                    return Ok(new ApiResponse<ResponseMaintenanceRequestDto>
+                    return NotFound(new ApiResponse<string>
                     {
-                        StatusCode = HttpStatusCode.OK,
-                        Message = "No Data",
-                        Data = null
+                        StatusCode = HttpStatusCode.NotFound,
+                        Message = result.Message
                     });
                 }
                 return Ok(new ApiResponse<ResponseMaintenanceRequestDto>
@@ -86,18 +84,17 @@ namespace RentEase.API.Controllers.Main
         }
 
         [HttpPost]
-        public async Task<IActionResult> Post(RequestMaintenanceRequestDto request)
+        public async Task<IActionResult> Post([FromBody] RequestMaintenanceRequestDto request)
         {
             try
             {
                 var result = await _MaintenanceRequestService.Create(request);
-                if (result.Data == null)
+                if (result.Status < 0 && result.Data == null)
                 {
-                    return Ok(new ApiResponse<ResponseMaintenanceRequestDto>
+                    return NotFound(new ApiResponse<string>
                     {
-                        StatusCode = HttpStatusCode.OK,
-                        Message = "No Data",
-                        Data = null
+                        StatusCode = HttpStatusCode.NotFound,
+                        Message = result.Message
                     });
                 }
                 return Ok(new ApiResponse<ResponseMaintenanceRequestDto>
@@ -118,18 +115,17 @@ namespace RentEase.API.Controllers.Main
         }
 
         [HttpPut("{id}")]
-        public async Task<IActionResult> Put(int id, RequestMaintenanceRequestDto request)
+        public async Task<IActionResult> Put(int id, [FromBody] RequestMaintenanceRequestDto request, int? approveStatus, int? progressStatus)
         {
             try
             {
-                var result = await _MaintenanceRequestService.Update(id, request);
-                if (result.Data == null)
+                var result = await _MaintenanceRequestService.Update(id, request, approveStatus, progressStatus);
+                if (result.Status < 0 && result.Data == null)
                 {
-                    return Ok(new ApiResponse<ResponseMaintenanceRequestDto>
+                    return NotFound(new ApiResponse<string>
                     {
-                        StatusCode = HttpStatusCode.OK,
-                        Message = "No Data",
-                        Data = null
+                        StatusCode = HttpStatusCode.NotFound,
+                        Message = result.Message
                     });
                 }
                 return Ok(new ApiResponse<ResponseMaintenanceRequestDto>
@@ -155,13 +151,12 @@ namespace RentEase.API.Controllers.Main
             try
             {
                 var result = await _MaintenanceRequestService.Delete(id);
-                if (result.Data == null)
+                if (result.Status < 0 && result.Data == null)
                 {
-                    return Ok(new ApiResponse<ResponseMaintenanceRequestDto>
+                    return NotFound(new ApiResponse<string>
                     {
-                        StatusCode = HttpStatusCode.OK,
-                        Message = "No Data",
-                        Data = null
+                        StatusCode = HttpStatusCode.NotFound,
+                        Message = result.Message
                     });
                 }
                 return Ok(new ApiResponse<ResponseMaintenanceRequestDto>
