@@ -19,12 +19,11 @@ namespace RentEase.API.Controllers.Main
         }
 
         [HttpGet]
-        [Authorize(Roles = "1,2,3,4")]
-        public async Task<IActionResult> Get([FromQuery] int page = 1, [FromQuery] int pageSize = 10)
+        public async Task<IActionResult> Get([FromQuery] bool status = true, [FromQuery] int page = 1, [FromQuery] int pageSize = 10)
         {
             try
             {
-                var result = await _AptImageService.GetAllAsync(page, pageSize);
+                var result = await _AptImageService.GetAllAsync(page, pageSize, status);
                 if (result.Status < 0 && result.Data == null)
                 {
                     return NotFound(new ApiResponse<string>
@@ -54,7 +53,6 @@ namespace RentEase.API.Controllers.Main
         }
 
         [HttpGet("{id}")]
-        [Authorize(Roles = "1,2,3,4")]
         public async Task<IActionResult> Get(int id)
         {
             try
@@ -86,7 +84,6 @@ namespace RentEase.API.Controllers.Main
         }
 
         [HttpPost]
-        [Authorize(Roles = "1,3")]
         public async Task<IActionResult> Post([FromBody] RequestAptImageDto request)
         {
             try
@@ -118,7 +115,6 @@ namespace RentEase.API.Controllers.Main
         }
 
         [HttpPut("{id}")]
-        [Authorize(Roles = "1,3")]
         public async Task<IActionResult> Put(int id, [FromBody] RequestAptImageDto request)
         {
             try
@@ -150,7 +146,6 @@ namespace RentEase.API.Controllers.Main
         }
 
         [HttpDelete("{id}")]
-        [Authorize(Roles = "1,3")]
         public async Task<IActionResult> Delete(int id)
         {
             try

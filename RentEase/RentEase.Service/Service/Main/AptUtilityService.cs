@@ -11,8 +11,9 @@ namespace RentEase.Service.Service.Main
 {
     public interface IAptUtilityService
     {
-        Task<ServiceResult> GetAllAsync(int page, int pageSize);
+        Task<ServiceResult> GetAllAsync(int page, int pageSize, bool? statuss);
         Task<ServiceResult> GetByIdAsync(int id);
+        Task<ServiceResult> GetAllForAptAsync(int aptId, bool? status, int page, int pageSize);
         Task<ServiceResult> Create(RequestAptUtilityDto request);
         Task<ServiceResult> Update(int id, string? description);
         Task<ServiceResult> Delete(int id);
@@ -31,7 +32,26 @@ namespace RentEase.Service.Service.Main
             _mapper = mapper;
             _helperWrapper = helperWrapper;
         }
+        public async Task<ServiceResult> GetAllForAptAsync(int aptId, bool? status, int page, int pageSize)
+        {
+            var accountRole = _helperWrapper.TokenHelper.GetRoleIdFromHttpContextAccessor(_httpContextAccessor);
 
+            if (accountRole != "1")
+            {
+                status = true;
+            }
+
+            var items = await _unitOfWork.AptUtilityRepository.GetAllForAptAsync(aptId, status, page, pageSize);
+            if (!items.Data.Any())
+            {
+                return new ServiceResult(Const.ERROR_EXCEPTION, Const.ERROR_EXCEPTION_MSG);
+            }
+            else
+            {
+                var responseData = _mapper.Map<IEnumerable<ResponseAptUtilityDto>>(items.Data);
+                return new ServiceResult(Const.SUCCESS_ACTION, Const.SUCCESS_ACTION_MSG, items.TotalCount, items.TotalPages, items.CurrentPage, responseData);
+            }
+        }
         public async Task<ServiceResult> Create(RequestAptUtilityDto request)
         {
             var createItem = new AptUtility()
@@ -56,7 +76,6 @@ namespace RentEase.Service.Service.Main
 
             return new ServiceResult(Const.ERROR_EXCEPTION, Const.ERROR_EXCEPTION_MSG);
         }
-
         public async Task<ServiceResult> Update(int id, string? description)
         {
             string accountId = _helperWrapper.TokenHelper.GetUserIdFromHttpContextAccessor(_httpContextAccessor);
@@ -102,7 +121,6 @@ namespace RentEase.Service.Service.Main
             return new ServiceResult(Const.ERROR_EXCEPTION, Const.ERROR_EXCEPTION_MSG);
 
         }
-
         public async Task<ServiceResult> Delete(int id)
         {
             if (!await EntityExistsAsync("Id", id))

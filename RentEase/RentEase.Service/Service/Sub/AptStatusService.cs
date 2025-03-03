@@ -10,7 +10,6 @@ namespace RentEase.Service.Service.Sub
 {
     public interface IAptStatusService
     {
-        Task<ServiceResult> GetAllAsync(int page, int pageSize);
         Task<ServiceResult> GetAllAsync(bool? status, int page, int pageSize);
         Task<ServiceResult> GetByIdAsync(int id);
         Task<ServiceResult> Search(string? statusName, bool? status, int page, int pageSize);
@@ -35,9 +34,9 @@ namespace RentEase.Service.Service.Sub
         }
         public async Task<ServiceResult> GetAllAsync(bool? status, int page, int pageSize)
         {
-            var accountAptStatus = _helperWrapper.TokenHelper.GetRoleIdFromHttpContextAccessor(_httpContextAccessor);
+            var accountRole = _helperWrapper.TokenHelper.GetRoleIdFromHttpContextAccessor(_httpContextAccessor);
 
-            if (accountAptStatus != "1")
+            if (accountRole != "1")
             {
                 status = true;
             }
@@ -100,7 +99,6 @@ namespace RentEase.Service.Service.Sub
 
             return new ServiceResult(Const.ERROR_EXCEPTION, Const.ERROR_EXCEPTION_MSG);
         }
-
         public async Task<ServiceResult> Update(int id, RequestAptStatusDto request)
         {
             if (!await EntityExistsAsync("Id", id))

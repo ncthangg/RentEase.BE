@@ -21,14 +21,14 @@ namespace RentEase.Data.Repository.Main
 
             return await GetPagedAsync(filter, null, page, pageSize);
         }
-        //public async Task<PagedResult<AptImage>> GetBySearchAsync(bool? status, int page, int pageSize)
+        //public async Task<PagedResult<Order>> GetOrdersForUserAsync(
+        //       int userId, int page = 1, int pageSize = 10)
         //{
-        //    IQueryable<AptImage> query = _context.Set<AptImage>();
-
-        //    Expression<Func<AptImage, bool>> filter = a =>
-        //        (!status.HasValue || a.Status == status.Value);
-
-        //    return await GetPagedAsync(filter, null, page, pageSize);
+        //    return await GetPagedAsync(
+        //        filter: o => o.UserId == userId,
+        //        orderBy: q => q.OrderByDescending(o => o.CreatedAt),
+        //        page: page,
+        //        pageSize: pageSize);
         //}
     }
 }

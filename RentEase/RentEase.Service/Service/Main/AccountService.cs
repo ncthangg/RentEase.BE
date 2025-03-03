@@ -12,7 +12,7 @@ namespace RentEase.Service.Service.Main
 {
     public interface IAccountService
     {
-        Task<ServiceResult> GetAllAsync(int page, int pageSize);
+        Task<ServiceResult> GetAllAsync(int page, int pageSize, bool? status);
         Task<ServiceResult> GetByIdAsync(int id);
         Task<ServiceResult> GetByEmailAsync(string email);
         Task<ServiceResult> GetByPhoneAsync(string phoneNumber);
@@ -102,7 +102,6 @@ namespace RentEase.Service.Service.Main
                 return new ServiceResult(Const.ERROR_EXCEPTION, "Lỗi khi lấy dữ liệu theo Email: " + ex.Message);
             }
         }
-
         public async Task<ServiceResult> Search(string? fullName, string? email, string? phoneNumber, bool? isActive, bool? status, int page, int pageSize)
         {
             var items = await _unitOfWork.AccountRepository.GetBySearchAsync(fullName, email, phoneNumber, isActive, status, page, pageSize);
@@ -116,7 +115,6 @@ namespace RentEase.Service.Service.Main
                 return new ServiceResult(Const.SUCCESS_ACTION, Const.SUCCESS_ACTION_MSG, items.TotalCount, items.TotalPages, items.CurrentPage, responseData);
             }
         }
-
         public async Task<ServiceResult> Create(RequestAccountDto request)
         {
             if (await AccountExistByMail(request.Email) || await AccountExistByPhoneNumber(request.PhoneNumber))
@@ -276,7 +274,6 @@ namespace RentEase.Service.Service.Main
 
             return new ServiceResult(Const.ERROR_EXCEPTION, Const.ERROR_EXCEPTION_MSG);
         }
-
         public async Task<ServiceResult> Delete(int id)
         {
             if (!await EntityExistsAsync("Id", id))
@@ -307,6 +304,7 @@ namespace RentEase.Service.Service.Main
             return new ServiceResult(Const.ERROR_EXCEPTION, Const.ERROR_EXCEPTION_MSG);
         }
 
+        //CHECK
         public async Task<bool> AccountExist(int id)
         {
             return await _unitOfWork.AccountRepository.EntityExistsByPropertyAsync("Id", id);
@@ -319,7 +317,6 @@ namespace RentEase.Service.Service.Main
         {
             return await _unitOfWork.AccountRepository.EntityExistsByPropertyAsync("PhoneNumber", phoneNumber);
         }
-
         public bool IsEmail(string input)
         {
             return input.Contains("@");

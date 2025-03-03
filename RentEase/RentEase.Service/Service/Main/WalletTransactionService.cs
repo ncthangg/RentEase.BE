@@ -12,7 +12,7 @@ namespace RentEase.Service.Service.Main
 {
     public interface IWalletTransactionService
     {
-        Task<ServiceResult> GetAllAsync(int page, int pageSize);
+        Task<ServiceResult> GetAllAsync(int page, int pageSize, bool? status);
         Task<ServiceResult> GetByIdAsync(int id);
         Task<ServiceResult> Create(RequestWalletTransactionDto request);
         Task<ServiceResult> Update(int id, int? transactionStatus);
@@ -63,7 +63,6 @@ namespace RentEase.Service.Service.Main
 
             return new ServiceResult(Const.SUCCESS_ACTION, Const.SUCCESS_ACTION_MSG, response);
         }
-
         public async Task<ServiceResult> Update(int id, int? transactionStatus)
         {
 

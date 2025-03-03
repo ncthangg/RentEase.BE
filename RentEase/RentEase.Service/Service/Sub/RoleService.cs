@@ -11,7 +11,6 @@ namespace RentEase.Service.Service.Sub
 
     public interface IRoleService
     {
-        Task<ServiceResult> GetAllAsync(int page, int pageSize);
         Task<ServiceResult> GetAllAsync(bool? status, int page, int pageSize);
         Task<ServiceResult> GetByIdAsync(int id);
         Task<ServiceResult> Search(string? roleName, bool? status, int page, int pageSize);
@@ -101,7 +100,6 @@ namespace RentEase.Service.Service.Sub
 
             return new ServiceResult(Const.ERROR_EXCEPTION, Const.ERROR_EXCEPTION_MSG);
         }
-
         public async Task<ServiceResult> Update(int id, RequestRoleDto request)
         {
             if (!await EntityExistsAsync("Id", id))

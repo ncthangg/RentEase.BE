@@ -18,15 +18,16 @@ namespace RentEase.Data.Repository.Main
         {
         }
         public OrderRepository(RentEaseContext context) => _context = context;
-        //public async Task<PagedResult<Order>> GetAllAsync(bool? status, int page, int pageSize)
-        //{
-        //    IQueryable<Order> query = _context.Set<Order>();
+        public async Task<PagedResult<Order>> GetAllForAccountAsync(
+                  int accountId, int page = 1, int pageSize = 10)
+        {
+            return await GetPagedAsync(
+                filter: o => o.LessorId == accountId,
+                orderBy: q => q.OrderByDescending(o => o.CreatedAt),
+                page: page,
+                pageSize: pageSize);
+        }
 
-        //    Expression<Func<Order, bool>> filter = a =>
-        //        (!status.HasValue || a.Status == status.Value);
-
-        //    return await GetPagedAsync(filter, null, page, pageSize);
-        //}
         //public async Task<PagedResult<Account>> GetBySearchAsync(string? fullName, string? email, string? phoneNumber, int page, int pageSize)
         //{
         //    IQueryable<Account> query = _context.Set<Account>();

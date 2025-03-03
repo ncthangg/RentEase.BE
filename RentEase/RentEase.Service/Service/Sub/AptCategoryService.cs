@@ -11,7 +11,6 @@ namespace RentEase.Service.Service.Sub
 {
     public interface IAptCategoryService
     {
-        Task<ServiceResult> GetAllAsync(int page, int pageSize);
         Task<ServiceResult> GetAllAsync(bool? status, int page, int pageSize);
         Task<ServiceResult> GetByIdAsync(int id);
         Task<ServiceResult> Search(string? categoryName, bool? status, int page, int pageSize);
@@ -36,9 +35,9 @@ namespace RentEase.Service.Service.Sub
         }
         public async Task<ServiceResult> GetAllAsync(bool? status, int page, int pageSize)
         {
-            var accountAptCategory = _helperWrapper.TokenHelper.GetRoleIdFromHttpContextAccessor(_httpContextAccessor);
+            var accountRole = _helperWrapper.TokenHelper.GetRoleIdFromHttpContextAccessor(_httpContextAccessor);
 
-            if (accountAptCategory != "1")
+            if (accountRole != "1")
             {
                 status = true;
             }
@@ -56,9 +55,9 @@ namespace RentEase.Service.Service.Sub
         }
         public async Task<ServiceResult> Search(string? categoryName, bool? status, int page, int pageSize)
         {
-            var accountAptCategory = _helperWrapper.TokenHelper.GetRoleIdFromHttpContextAccessor(_httpContextAccessor);
+            var accountRole = _helperWrapper.TokenHelper.GetRoleIdFromHttpContextAccessor(_httpContextAccessor);
 
-            if (accountAptCategory != "1")
+            if (accountRole != "1")
             {
                 status = true;
             }
@@ -74,7 +73,6 @@ namespace RentEase.Service.Service.Sub
                 return new ServiceResult(Const.SUCCESS_ACTION, Const.SUCCESS_ACTION_MSG, items.TotalCount, items.TotalPages, items.CurrentPage, responseData);
             }
         }
-
         public async Task<ServiceResult> Create(RequestAptCategoryDto request)
         {
             if (await EntityExistsAsync("CategoryName", request.CategoryName))
@@ -103,7 +101,6 @@ namespace RentEase.Service.Service.Sub
 
             return new ServiceResult(Const.ERROR_EXCEPTION, Const.ERROR_EXCEPTION_MSG);
         }
-
         public async Task<ServiceResult> Update(int id, RequestAptCategoryDto request)
         {
             if (!await EntityExistsAsync("Id", id))
@@ -134,7 +131,6 @@ namespace RentEase.Service.Service.Sub
             return new ServiceResult(Const.ERROR_EXCEPTION, Const.ERROR_EXCEPTION_MSG);
 
         }
-
 
     }
 }

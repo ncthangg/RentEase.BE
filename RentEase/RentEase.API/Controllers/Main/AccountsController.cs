@@ -21,11 +21,11 @@ namespace RentEase.API.Controllers.Main
         }
 
         [HttpGet]
-        public async Task<IActionResult> Get([FromQuery] int page = 1, [FromQuery] int pageSize = 10)
+        public async Task<IActionResult> Get([FromQuery] bool status = true, [FromQuery] int page = 1, [FromQuery] int pageSize = 10)
         {
             try
             {
-                var result = await _accountService.GetAllAsync(page, pageSize);
+                var result = await _accountService.GetAllAsync(page, pageSize, status);
                 if (result.Status < 0 && result.Data == null)
                 {
                     return NotFound(new ApiResponse<string>

@@ -21,6 +21,16 @@ namespace RentEase.Data.Repository.Main
 
             return await GetPagedAsync(filter, null, page, pageSize);
         }
+        public async Task<PagedResult<Review>> GetAllForAptAsync(
+                  int aptId, bool? status, int page = 1, int pageSize = 10)
+        {
+            return await GetPagedAsync(
+                filter: (o => o.AptId == aptId && (status == null || o.Status == status)),
+                orderBy: q => q.OrderByDescending(o => o.CreatedAt),
+                page: page,
+                pageSize: pageSize);
+        }
+
         //public async Task<PagedResult<Account>> GetBySearchAsync(string? fullName, string? email, string? phoneNumber, int page, int pageSize)
         //{
         //    IQueryable<Account> query = _context.Set<Account>();

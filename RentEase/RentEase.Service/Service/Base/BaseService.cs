@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using RentEase.Common.Base;
 using RentEase.Data;
+using System.Linq.Expressions;
 
 namespace RentEase.Service.Service.Base
 {
@@ -15,12 +16,24 @@ namespace RentEase.Service.Service.Base
             _mapper = mapper;
         }
 
-        public async Task<ServiceResult> GetAllAsync(int page, int pageSize)
+        public async Task<ServiceResult> GetAllAsync(int page, int pageSize, bool? status = null)
         {
             try
             {
+                Expression<Func<T, bool>>? filter = null;
+                var entityType = typeof(T);
+
+                if (status.HasValue && entityType.GetProperty("Status") != null)
+                {
+                    var parameter = Expression.Parameter(typeof(T), "o");
+                    var property = Expression.Property(parameter, "Status");
+                    var value = Expression.Constant(status.Value);
+                    var equalExpression = Expression.Equal(property, value);
+                    filter = Expression.Lambda<Func<T, bool>>(equalExpression, parameter);
+                }
+
                 var pagedResult = await _unitOfWork.GetRepository<T>().GetPagedAsync(
-                    filter: null,
+                    filter: filter,
                     orderBy: null,
                     page: page,
                     pageSize: pageSize

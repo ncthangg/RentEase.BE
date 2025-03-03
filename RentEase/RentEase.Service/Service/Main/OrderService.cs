@@ -18,8 +18,9 @@ namespace RentEase.Service.Service.Main
 
     public interface IOrderService
     {
-        Task<ServiceResult> GetAllAsync(int page, int pageSize);
+        Task<ServiceResult> GetAllAsync(int page, int pageSize, bool? status);
         Task<ServiceResult> GetByIdAsync(string id);
+        Task<ServiceResult> GetAllForAccountAsync(int accountId, int page, int pageSize);
         Task<ServiceResult> Create(RequestOrderDto request);
         Task<ServiceResult> Update(string orderId, int? newStatus);
         Task<ServiceResult> DeleteByIdAsync(string id);
@@ -37,6 +38,20 @@ namespace RentEase.Service.Service.Main
             _unitOfWork ??= new UnitOfWork();
             _mapper = mapper;
             _helperWrapper = helperWrapper;
+        }
+        public async Task<ServiceResult> GetAllForAccountAsync(int accountId, int page, int pageSize)
+        {
+
+            var items = await _unitOfWork.OrderRepository.GetAllForAccountAsync(accountId, page, pageSize);
+            if (!items.Data.Any())
+            {
+                return new ServiceResult(Const.ERROR_EXCEPTION, Const.ERROR_EXCEPTION_MSG);
+            }
+            else
+            {
+                var responseData = _mapper.Map<IEnumerable<ResponseOrderDto>>(items.Data);
+                return new ServiceResult(Const.SUCCESS_ACTION, Const.SUCCESS_ACTION_MSG, items.TotalCount, items.TotalPages, items.CurrentPage, responseData);
+            }
         }
         public async Task<ServiceResult> Create(RequestOrderDto request)
         {
@@ -65,7 +80,6 @@ namespace RentEase.Service.Service.Main
 
             return new ServiceResult(Const.ERROR_EXCEPTION, Const.ERROR_EXCEPTION_MSG);
         }
-
         public async Task<ServiceResult> Update(string orderId, int? newStatus)
         {
             string accountId = _helperWrapper.TokenHelper.GetUserIdFromHttpContextAccessor(_httpContextAccessor);

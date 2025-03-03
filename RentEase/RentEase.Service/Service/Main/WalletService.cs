@@ -10,7 +10,7 @@ namespace RentEase.Service.Service.Main
 {
     public interface IWalletService
     {
-        Task<ServiceResult> GetAllAsync(int page, int pageSize);
+        Task<ServiceResult> GetAllAsync(int page, int pageSize, bool? status);
         Task<ServiceResult> GetByIdAsync(int id);
         Task<ServiceResult> Update(int id, decimal balance);
         Task<ServiceResult> Delete(int id);
@@ -31,7 +31,6 @@ namespace RentEase.Service.Service.Main
 
         public async Task<ServiceResult> Update(int id, decimal balance)
         {
-
             if (!await EntityExistsAsync("AccountId", id))
             {
                 return new ServiceResult(Const.ERROR_EXCEPTION, Const.ERROR_EXCEPTION_MSG);
@@ -59,7 +58,6 @@ namespace RentEase.Service.Service.Main
 
             return new ServiceResult(Const.ERROR_EXCEPTION, Const.ERROR_EXCEPTION_MSG);
         }
-
         public async Task<ServiceResult> Delete(int id)
         {
             if (!await EntityExistsAsync("AccountId", id))

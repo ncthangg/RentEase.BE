@@ -10,7 +10,6 @@ namespace RentEase.Service.Service.Sub
 {
     public interface IUtilityService
     {
-        Task<ServiceResult> GetAllAsync(int page, int pageSize);
         Task<ServiceResult> GetAllAsync(bool? status, int page, int pageSize);
         Task<ServiceResult> GetByIdAsync(int id);
         Task<ServiceResult> Search(string? utilityName, bool? status, int page, int pageSize);
@@ -34,9 +33,9 @@ namespace RentEase.Service.Service.Sub
         }
         public async Task<ServiceResult> GetAllAsync(bool? status, int page, int pageSize)
         {
-            var accountUtility = _helperWrapper.TokenHelper.GetRoleIdFromHttpContextAccessor(_httpContextAccessor);
+            var accountRole = _helperWrapper.TokenHelper.GetRoleIdFromHttpContextAccessor(_httpContextAccessor);
 
-            if (accountUtility != "1")
+            if (accountRole != "1")
             {
                 status = true;
             }
@@ -72,7 +71,6 @@ namespace RentEase.Service.Service.Sub
                 return new ServiceResult(Const.SUCCESS_ACTION, Const.SUCCESS_ACTION_MSG, items.TotalCount, items.TotalPages, items.CurrentPage, responseData);
             }
         }
-
         public async Task<ServiceResult> Create(RequestUtilityDto request)
         {
             if (await EntityExistsAsync("UtilityName", request.UtilityName))
@@ -100,7 +98,6 @@ namespace RentEase.Service.Service.Sub
 
             return new ServiceResult(Const.ERROR_EXCEPTION, Const.ERROR_EXCEPTION_MSG);
         }
-
         public async Task<ServiceResult> Update(int id, RequestUtilityDto request)
         {
             if (!await EntityExistsAsync("Id", id))

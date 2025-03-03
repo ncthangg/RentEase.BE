@@ -11,7 +11,7 @@ namespace RentEase.Service.Service.Main
 {
     public interface IAptImageService
     {
-        Task<ServiceResult> GetAllAsync(int page, int pageSize);
+        Task<ServiceResult> GetAllAsync(int page, int pageSize, bool? status);
         Task<ServiceResult> GetByIdAsync(int id);
         Task<ServiceResult> Create(RequestAptImageDto request);
         Task<ServiceResult> Update(int id, RequestAptImageDto request);
@@ -64,7 +64,6 @@ namespace RentEase.Service.Service.Main
 
             return new ServiceResult(Const.ERROR_EXCEPTION, Const.ERROR_EXCEPTION_MSG);
         }
-
         public async Task<ServiceResult> Update(int id, RequestAptImageDto request)
         {
             string accountId = _helperWrapper.TokenHelper.GetUserIdFromHttpContextAccessor(_httpContextAccessor);
@@ -112,7 +111,6 @@ namespace RentEase.Service.Service.Main
 
             return new ServiceResult(Const.ERROR_EXCEPTION, Const.ERROR_EXCEPTION_MSG);
         }
-
         public async Task<ServiceResult> Delete(int id)
         {
             if (!await EntityExistsAsync("Id", id))

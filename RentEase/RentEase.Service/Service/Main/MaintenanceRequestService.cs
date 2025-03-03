@@ -10,8 +10,9 @@ namespace RentEase.Service.Service.Main
 {
     public interface IMaintenanceRequestService
     {
-        Task<ServiceResult> GetAllAsync(int page, int pageSize);
+        Task<ServiceResult> GetAllAsync(int page, int pageSize, bool? status);
         Task<ServiceResult> GetByIdAsync(int id);
+        Task<ServiceResult> GetAllForAptAsync(int aptId, bool? status, int page, int pageSize);
         Task<ServiceResult> Create(RequestMaintenanceRequestDto request);
         Task<ServiceResult> Update(int id, RequestMaintenanceRequestDto request, int? approveStatus, int? progressStatus);
         Task<ServiceResult> Delete(int id);
@@ -30,6 +31,25 @@ namespace RentEase.Service.Service.Main
             _unitOfWork ??= new UnitOfWork();
             _mapper = mapper;
             _helperWrapper = helperWrapper;
+        }
+        public async Task<ServiceResult> GetAllForAptAsync(int aptId, bool? status, int page, int pageSize)
+        {
+            var accountRole = _helperWrapper.TokenHelper.GetRoleIdFromHttpContextAccessor(_httpContextAccessor);
+
+            if (accountRole != "1")
+            {
+                status = true;
+            }
+            var items = await _unitOfWork.MaintenanceRequestRepository.GetAllForAptAsync(aptId, status, page, pageSize);
+            if (!items.Data.Any())
+            {
+                return new ServiceResult(Const.ERROR_EXCEPTION, Const.ERROR_EXCEPTION_MSG);
+            }
+            else
+            {
+                var responseData = _mapper.Map<IEnumerable<ResponseMaintenanceRequestDto>>(items.Data);
+                return new ServiceResult(Const.SUCCESS_ACTION, Const.SUCCESS_ACTION_MSG, items.TotalCount, items.TotalPages, items.CurrentPage, responseData);
+            }
         }
         public async Task<ServiceResult> Create(RequestMaintenanceRequestDto request)
         {
@@ -71,7 +91,6 @@ namespace RentEase.Service.Service.Main
 
             return new ServiceResult(Const.ERROR_EXCEPTION, Const.ERROR_EXCEPTION_MSG);
         }
-
         public async Task<ServiceResult> Update(int id, RequestMaintenanceRequestDto request, int? approveStatus, int? progressStatus)
         {
             string accountId = _helperWrapper.TokenHelper.GetUserIdFromHttpContextAccessor(_httpContextAccessor);
@@ -134,7 +153,6 @@ namespace RentEase.Service.Service.Main
 
             return new ServiceResult(Const.ERROR_EXCEPTION, Const.ERROR_EXCEPTION_MSG);
         }
-
         public async Task<ServiceResult> Delete(int id)
         {
             if (!await EntityExistsAsync("Id", id))
