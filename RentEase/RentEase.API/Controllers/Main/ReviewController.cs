@@ -53,39 +53,39 @@ namespace RentEase.API.Controllers.Main
             }
         }
 
-        [HttpGet]
-        public async Task<IActionResult> GetByAptId([FromQuery] int aptId ,[FromQuery] bool status = true, [FromQuery] int page = 1, [FromQuery] int pageSize = 10)
-        {
-            try
-            {
-                var result = await _ReviewService.GetAllByAptId(aptId, status, page, pageSize);
-                if (result.Status < 0 && result.Data == null)
-                {
-                    return NotFound(new ApiResponse<string>
-                    {
-                        StatusCode = HttpStatusCode.NotFound,
-                        Message = result.Message
-                    });
-                }
-                return Ok(new ApiResponse<IEnumerable<ResponseReviewDto>>
-                {
-                    StatusCode = HttpStatusCode.OK,
-                    Message = result.Message,
-                    Count = result.TotalCount,
-                    TotalPages = result.TotalPage,
-                    CurrentPage = result.CurrentPage,
-                    Data = (IEnumerable<ResponseReviewDto>)result.Data
-                });
-            }
-            catch (Exception ex)
-            {
-                return BadRequest(new ApiResponse<string>
-                {
-                    StatusCode = HttpStatusCode.InternalServerError,
-                    Message = $"Lỗi hệ thống: {ex.Message}"
-                });
-            }
-        }
+        //[HttpGet]
+        //public async Task<IActionResult> GetByAptId([FromQuery] int aptId ,[FromQuery] bool status = true, [FromQuery] int page = 1, [FromQuery] int pageSize = 10)
+        //{
+        //    try
+        //    {
+        //        var result = await _ReviewService.GetAllByAptId(aptId, status, page, pageSize);
+        //        if (result.Status < 0 && result.Data == null)
+        //        {
+        //            return NotFound(new ApiResponse<string>
+        //            {
+        //                StatusCode = HttpStatusCode.NotFound,
+        //                Message = result.Message
+        //            });
+        //        }
+        //        return Ok(new ApiResponse<IEnumerable<ResponseReviewDto>>
+        //        {
+        //            StatusCode = HttpStatusCode.OK,
+        //            Message = result.Message,
+        //            Count = result.TotalCount,
+        //            TotalPages = result.TotalPage,
+        //            CurrentPage = result.CurrentPage,
+        //            Data = (IEnumerable<ResponseReviewDto>)result.Data
+        //        });
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        return BadRequest(new ApiResponse<string>
+        //        {
+        //            StatusCode = HttpStatusCode.InternalServerError,
+        //            Message = $"Lỗi hệ thống: {ex.Message}"
+        //        });
+        //    }
+        //}
 
         [HttpGet("{id}")]
         public async Task<IActionResult> Get(int id)
