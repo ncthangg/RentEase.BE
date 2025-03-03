@@ -4460,19 +4460,24 @@
     ]
   },
   "packageFolders": {
-    "C:\\Users\\ADMIN\\.nuget\\packages\\": {}
+    "C:\\Users\\nobod\\.nuget\\packages\\": {},
+    "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "E:\\MyProject\\RentEase.BE\\RentEase\\RentEase.Data\\RentEase.Data.csproj",
+      "projectUniqueName": "C:\\Users\\nobod\\Documents\\GitHub\\RentEase.BE\\RentEase\\RentEase.Data\\RentEase.Data.csproj",
       "projectName": "RentEase.Data",
-      "projectPath": "E:\\MyProject\\RentEase.BE\\RentEase\\RentEase.Data\\RentEase.Data.csproj",
-      "packagesPath": "C:\\Users\\ADMIN\\.nuget\\packages\\",
-      "outputPath": "E:\\MyProject\\RentEase.BE\\RentEase\\RentEase.Data\\obj\\",
+      "projectPath": "C:\\Users\\nobod\\Documents\\GitHub\\RentEase.BE\\RentEase\\RentEase.Data\\RentEase.Data.csproj",
+      "packagesPath": "C:\\Users\\nobod\\.nuget\\packages\\",
+      "outputPath": "C:\\Users\\nobod\\Documents\\GitHub\\RentEase.BE\\RentEase\\RentEase.Data\\obj\\",
       "projectStyle": "PackageReference",
+      "fallbackFolders": [
+        "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
+      ],
       "configFilePaths": [
-        "C:\\Users\\ADMIN\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Users\\nobod\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
       ],
       "originalTargetFrameworks": [
@@ -4480,15 +4485,15 @@
       ],
       "sources": {
         "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
-        "C:\\Users\\ADMIN\\.nuget\\packages": {},
+        "C:\\Program Files\\dotnet\\library-packs": {},
         "https://api.nuget.org/v3/index.json": {}
       },
       "frameworks": {
         "net8.0": {
           "targetAlias": "net8.0",
           "projectReferences": {
-            "E:\\MyProject\\RentEase.BE\\RentEase\\RentEase.Common\\RentEase.Common.csproj": {
-              "projectPath": "E:\\MyProject\\RentEase.BE\\RentEase\\RentEase.Common\\RentEase.Common.csproj"
+            "C:\\Users\\nobod\\Documents\\GitHub\\RentEase.BE\\RentEase\\RentEase.Common\\RentEase.Common.csproj": {
+              "projectPath": "C:\\Users\\nobod\\Documents\\GitHub\\RentEase.BE\\RentEase\\RentEase.Common\\RentEase.Common.csproj"
             }
           }
         }
@@ -4547,7 +4552,7 @@
             "privateAssets": "all"
           }
         },
-        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.403/PortableRuntimeIdentifierGraph.json"
+        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.401/PortableRuntimeIdentifierGraph.json"
       }
     }
   }

@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("RentEase.Common")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+e7724848b0813c1eec285f76ca3531be9fa02043")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+650c69f607b56d29378ceedfca62edaa3dae6950")]
 [assembly: System.Reflection.AssemblyProductAttribute("RentEase.Common")]
 [assembly: System.Reflection.AssemblyTitleAttribute("RentEase.Common")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
