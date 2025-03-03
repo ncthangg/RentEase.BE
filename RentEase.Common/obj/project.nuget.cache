@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "5Dvf7taj0aY=",
+  "dgSpecHash": "3c0wcPtHYBE=",
   "success": true,
-  "projectFilePath": "C:\\Users\\nobod\\Documents\\GitHub\\RentEase.BE\\RentEase\\RentEase.Common\\RentEase.Common.csproj",
+  "projectFilePath": "C:\\Users\\nobod\\Documents\\GitHub\\RentEase.BE\\RentEase.Common\\RentEase.Common.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\nobod\\.nuget\\packages\\automapper\\14.0.0\\automapper.14.0.0.nupkg.sha512",
     "C:\\Users\\nobod\\.nuget\\packages\\microsoft.extensions.dependencyinjection.abstractions\\8.0.0\\microsoft.extensions.dependencyinjection.abstractions.8.0.0.nupkg.sha512",

@@ -11,3 +11,16 @@ E:\MyProject\RentEase.BE\RentEase\RentEase.Common\obj\Debug\net8.0\RentEase.Comm
 E:\MyProject\RentEase.BE\RentEase\RentEase.Common\obj\Debug\net8.0\refint\RentEase.Common.dll
 E:\MyProject\RentEase.BE\RentEase\RentEase.Common\obj\Debug\net8.0\RentEase.Common.pdb
 E:\MyProject\RentEase.BE\RentEase\RentEase.Common\obj\Debug\net8.0\ref\RentEase.Common.dll
+C:\Users\nobod\Documents\GitHub\RentEase.BE\RentEase.Common\bin\Debug\net8.0\RentEase.Common.deps.json
+C:\Users\nobod\Documents\GitHub\RentEase.BE\RentEase.Common\bin\Debug\net8.0\RentEase.Common.dll
+C:\Users\nobod\Documents\GitHub\RentEase.BE\RentEase.Common\bin\Debug\net8.0\RentEase.Common.pdb
+C:\Users\nobod\Documents\GitHub\RentEase.BE\RentEase.Common\obj\Debug\net8.0\RentEase.Common.csproj.AssemblyReference.cache
+C:\Users\nobod\Documents\GitHub\RentEase.BE\RentEase.Common\obj\Debug\net8.0\RentEase.Common.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\nobod\Documents\GitHub\RentEase.BE\RentEase.Common\obj\Debug\net8.0\RentEase.Common.AssemblyInfoInputs.cache
+C:\Users\nobod\Documents\GitHub\RentEase.BE\RentEase.Common\obj\Debug\net8.0\RentEase.Common.AssemblyInfo.cs
+C:\Users\nobod\Documents\GitHub\RentEase.BE\RentEase.Common\obj\Debug\net8.0\RentEase.Common.csproj.CoreCompileInputs.cache
+C:\Users\nobod\Documents\GitHub\RentEase.BE\RentEase.Common\obj\Debug\net8.0\RentEase.Common.sourcelink.json
+C:\Users\nobod\Documents\GitHub\RentEase.BE\RentEase.Common\obj\Debug\net8.0\RentEase.Common.dll
+C:\Users\nobod\Documents\GitHub\RentEase.BE\RentEase.Common\obj\Debug\net8.0\refint\RentEase.Common.dll
+C:\Users\nobod\Documents\GitHub\RentEase.BE\RentEase.Common\obj\Debug\net8.0\RentEase.Common.pdb
+C:\Users\nobod\Documents\GitHub\RentEase.BE\RentEase.Common\obj\Debug\net8.0\ref\RentEase.Common.dll
