@@ -12,7 +12,7 @@ namespace RentEase.Data.Repository.Main
         }
         public AccountTokenRepository(RentEaseContext context) => _context = context;
 
-        public async Task<AccountToken> GetByAccountIdAndToken(int accountId, string refreshToken)
+        public async Task<AccountToken> GetByAccountIdAndToken(string accountId, string refreshToken)
         {
             return await _context.Set<AccountToken>()
                 .AsNoTracking()

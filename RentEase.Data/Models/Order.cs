@@ -7,31 +7,25 @@ namespace RentEase.Data.Models;
 
 public partial class Order
 {
-    public string Id { get; set; }
-
-    public int ContractId { get; set; }
-
-    public int LessorId { get; set; }
-
-    public int LesseeId { get; set; }
-
-    public decimal Amount { get; set; }
+    public string OrderId { get; set; }
 
     public int TransactionTypeId { get; set; }
 
-    public int TransactionStatusId { get; set; }
+    public string SenderId { get; set; }
 
-    public DateTime DueDate { get; set; }
+    public decimal Amount { get; set; }
+
+    public decimal IncurredCost { get; set; }
 
     public DateTime CreatedAt { get; set; }
 
-    public virtual Contract Contract { get; set; }
+    public DateTime? PaidAt { get; set; }
 
-    public virtual Account Lessee { get; set; }
+    public int StatusId { get; set; }
 
-    public virtual Account Lessor { get; set; }
+    public virtual Account Sender { get; set; }
 
     public virtual TransactionType TransactionType { get; set; }
 
-    public virtual WalletTransaction WalletTransaction { get; set; }
+    public virtual ICollection<Transaction> Transactions { get; set; } = new List<Transaction>();
 }

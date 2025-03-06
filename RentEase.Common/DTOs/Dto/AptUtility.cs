@@ -1,28 +1,21 @@
 ﻿namespace RentEase.Common.DTOs.Dto
 {
-    public class RequestAptUtilityDto
+    public class AptUtilityReq
     {
-        public int AptId { get; set; }
+        public string AptId { get; set; } = string.Empty;
 
         public int UtilityId { get; set; }
 
-        public string Description { get; set; }
+        public string? Note { get; set; }
     }
-    public class ResponseAptUtilityDto
+    public class AptUtilityRes : Base
     {
         public int Id { get; set; }
 
-        public int AptId { get; set; }
+        public string AptId { get; set; } = string.Empty;
 
         public int UtilityId { get; set; }
 
-        public string Description { get; set; }
-
-        public DateTime CreatedAt { get; set; }
-
-        public DateTime? UpdatedAt { get; set; }
-
-        public DateTime? DeletedAt { get; set; }
-        public bool? Status { get; set; }
+        public string? Note { get; set; }
     }
 }

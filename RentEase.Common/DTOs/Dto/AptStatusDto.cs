@@ -1,25 +1,17 @@
 ﻿
 namespace RentEase.Common.DTOs.Dto;
-public class RequestAptStatusDto
+public class AptStatusReq
 {
-    public string StatusName { get; set; }
+    public string StatusName { get; set; } = string.Empty;
 
-    public string? Description { get; set; }
+    public string? Note { get; set; }
 }
 
-public class ResponseAptStatusDto
+public class AptStatusRes : Base
 {
     public int Id { get; set; }
 
-    public string StatusName { get; set; }
+    public string? StatusName { get; set; }
 
-    public string Description { get; set; }
-
-    public DateTime CreatedAt { get; set; }
-
-    public DateTime? UpdatedAt { get; set; }
-
-    public DateTime? DeletedAt { get; set; }
-
-    public bool? Status { get; set; }
+    public string? Note { get; set; }
 }

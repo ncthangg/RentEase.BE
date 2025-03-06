@@ -12,15 +12,12 @@ namespace RentEase.Service
         public IAptStatusService AptStatusService { get; set; }
         public IAptUtilityService AptUtilityService { get; set; }
         public IUtilityService UtilityService { get; set; }
-        public IContractService ContractService { get; set; }
-        public ICurrentResidentService CurrentResidentService { get; set; }
-        public IMaintenanceRequestService MaintenanceRequestService { get; set; }
         public IReviewService ReviewService { get; set; }
         public IRoleService RoleService { get; set; }
         public ITransactionTypeService TransactionTypeService { get; set; }
-        public IWalletService WalletService { get; set; }
-        public IWalletTransactionService WalletTransactionService { get; set; }
-
+        public ITransactionService TransactionService { get; set; }
+        public IPostService PostService { get; set; }
+        public IPostRequireService PostRequireService { get; set; }
 
         public ServiceWrapper(
              IAccountService accountService,
@@ -30,14 +27,12 @@ namespace RentEase.Service
              IAptStatusService aptStatusService,
              IAptUtilityService aptUtilityService,
              IUtilityService utilityService,
-             IContractService contractService,
-             ICurrentResidentService currentResidentService,
-             IMaintenanceRequestService maintenanceRequestService,
              IReviewService reviewService,
              IRoleService roleService,
              ITransactionTypeService transactionTypeService,
-             IWalletService walletService,
-             IWalletTransactionService walletTransactionService
+             ITransactionService walletTransactionService,
+             IPostService postService,
+             IPostRequireService postRequireService
              )
         {
             AccountService = accountService;
@@ -47,14 +42,12 @@ namespace RentEase.Service
             AptStatusService = aptStatusService;
             AptUtilityService = aptUtilityService;
             UtilityService = utilityService;
-            ContractService = contractService;
-            CurrentResidentService = currentResidentService;
-            MaintenanceRequestService = maintenanceRequestService;
             ReviewService = reviewService;
             RoleService = roleService;
             TransactionTypeService = transactionTypeService;
-            WalletService = walletService;
-            WalletTransactionService = walletTransactionService;
+            TransactionService = walletTransactionService;
+            PostService = postService;
+            PostRequireService = postRequireService;
         }
     }
 }

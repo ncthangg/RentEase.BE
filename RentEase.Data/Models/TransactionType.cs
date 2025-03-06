@@ -11,17 +11,13 @@ public partial class TransactionType
 
     public string TypeName { get; set; }
 
-    public string Description { get; set; }
+    public string Note { get; set; }
 
     public DateTime CreatedAt { get; set; }
 
     public DateTime? UpdatedAt { get; set; }
 
-    public DateTime? DeletedAt { get; set; }
-
-    public bool? Status { get; set; }
-
     public virtual ICollection<Order> Orders { get; set; } = new List<Order>();
 
-    public virtual ICollection<WalletTransaction> WalletTransactions { get; set; } = new List<WalletTransaction>();
+    public virtual ICollection<Transaction> Transactions { get; set; } = new List<Transaction>();
 }

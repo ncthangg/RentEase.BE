@@ -1,8 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using RentEase.Common.DTOs.Authenticate;
+using RentEase.Common.DTOs;
 using RentEase.Common.DTOs.Dto;
-using RentEase.Common.DTOs.Response;
 using RentEase.Service.Service.Main;
 using System.Net;
 
@@ -25,25 +24,25 @@ namespace RentEase.API.Controllers.Main
         {
             try
             {
-                var result = await _accountService.GetAllAsync(page, pageSize, status);
+                var result = await _accountService.GetAll(page, pageSize, status);
                 if (result.Status < 0 && result.Data == null)
                 {
-                    return NotFound(new ApiResponse<string>
+                    return NotFound(new ApiRes<string>
                     {
                         StatusCode = HttpStatusCode.NotFound,
                         Message = result.Message
                     });
                 }
-                return Ok(new ApiResponse<IEnumerable<ResponseAccountDto>>
+                return Ok(new ApiRes<IEnumerable<AccountRes>>
                 {
                     StatusCode = HttpStatusCode.OK,
                     Message = result.Message,
-                    Data = (List<ResponseAccountDto>)result.Data
+                    Data = (List<AccountRes>)result.Data
                 });
             }
             catch (Exception ex)
             {
-                return BadRequest(new ApiResponse<string>
+                return BadRequest(new ApiRes<string>
                 {
                     StatusCode = HttpStatusCode.InternalServerError,
                     Message = $"Lỗi hệ thống: {ex.Message}"
@@ -52,29 +51,29 @@ namespace RentEase.API.Controllers.Main
         }
 
         [HttpGet("{id}")]
-        public async Task<IActionResult> Get(int id)
+        public async Task<IActionResult> Get(string id)
         {
             try
             {
-                var result = await _accountService.GetByIdAsync(id);
+                var result = await _accountService.GetById(id);
                 if (result.Status < 0 && result.Data == null)
                 {
-                    return NotFound(new ApiResponse<string>
+                    return NotFound(new ApiRes<string>
                     {
                         StatusCode = HttpStatusCode.NotFound,
                         Message = result.Message
                     });
                 }
-                return Ok(new ApiResponse<ResponseAccountDto>
+                return Ok(new ApiRes<AccountRes>
                 {
                     StatusCode = HttpStatusCode.OK,
                     Message = result.Message,
-                    Data = (ResponseAccountDto)result.Data
+                    Data = (AccountRes)result.Data
                 });
             }
             catch (Exception ex)
             {
-                return BadRequest(new ApiResponse<string>
+                return BadRequest(new ApiRes<string>
                 {
                     StatusCode = HttpStatusCode.InternalServerError,
                     Message = $"Lỗi hệ thống: {ex.Message}"
@@ -83,29 +82,28 @@ namespace RentEase.API.Controllers.Main
         }
 
         [HttpPost]
-        public async Task<IActionResult> Post([FromBody] RequestAccountDto request)
+        public async Task<IActionResult> Post([FromBody] AccountReq request)
         {
             try
             {
                 var result = await _accountService.Create(request);
                 if (result.Status < 0 && result.Data == null)
                 {
-                    return NotFound(new ApiResponse<string>
+                    return NotFound(new ApiRes<string>
                     {
                         StatusCode = HttpStatusCode.NotFound,
                         Message = result.Message
                     });
                 }
-                return Ok(new ApiResponse<ResponseAccountDto>
+                return Ok(new ApiRes<string>
                 {
                     StatusCode = HttpStatusCode.OK,
-                    Message = result.Message,
-                    Data = (ResponseAccountDto)result.Data
+                    Message = result.Message
                 });
             }
             catch (Exception ex)
             {
-                return BadRequest(new ApiResponse<string>
+                return BadRequest(new ApiRes<string>
                 {
                     StatusCode = HttpStatusCode.InternalServerError,
                     Message = $"Lỗi hệ thống: {ex.Message}"
@@ -114,29 +112,28 @@ namespace RentEase.API.Controllers.Main
         }
 
         [HttpPut("{id}")]
-        public async Task<IActionResult> Put(int id, [FromBody] RequestAccountDto request)
+        public async Task<IActionResult> Put(string id, [FromBody] AccountReq request)
         {
             try
             {
                 var result = await _accountService.Update(id, request);
                 if (result.Status < 0 && result.Data == null)
                 {
-                    return NotFound(new ApiResponse<string>
+                    return NotFound(new ApiRes<string>
                     {
                         StatusCode = HttpStatusCode.NotFound,
                         Message = result.Message
                     });
                 }
-                return Ok(new ApiResponse<ResponseAccountDto>
+                return Ok(new ApiRes<string>
                 {
                     StatusCode = HttpStatusCode.OK,
-                    Message = result.Message,
-                    Data = (ResponseAccountDto)result.Data
+                    Message = result.Message
                 });
             }
             catch (Exception ex)
             {
-                return BadRequest(new ApiResponse<string>
+                return BadRequest(new ApiRes<string>
                 {
                     StatusCode = HttpStatusCode.InternalServerError,
                     Message = $"Lỗi hệ thống: {ex.Message}"
@@ -145,29 +142,28 @@ namespace RentEase.API.Controllers.Main
         }
 
         [HttpDelete("{id}")]
-        public async Task<IActionResult> Delete(int id)
+        public async Task<IActionResult> Delete(string id)
         {
             try
             {
                 var result = await _accountService.Delete(id);
                 if (result.Status < 0 && result.Data == null)
                 {
-                    return NotFound(new ApiResponse<string>
+                    return NotFound(new ApiRes<string>
                     {
                         StatusCode = HttpStatusCode.NotFound,
                         Message = result.Message
                     });
                 }
-                return Ok(new ApiResponse<ResponseAccountDto>
+                return Ok(new ApiRes<string>
                 {
                     StatusCode = HttpStatusCode.OK,
-                    Message = result.Message,
-                    Data = (ResponseAccountDto)result.Data
+                    Message = result.Message
                 });
             }
             catch (Exception ex)
             {
-                return BadRequest(new ApiResponse<string>
+                return BadRequest(new ApiRes<string>
                 {
                     StatusCode = HttpStatusCode.InternalServerError,
                     Message = $"Lỗi hệ thống: {ex.Message}"

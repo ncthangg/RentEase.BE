@@ -10,14 +10,13 @@ namespace RentEase.Service.Service.Sub
 {
     public interface IUtilityService
     {
-        Task<ServiceResult> GetAllAsync(bool? status, int page, int pageSize);
-        Task<ServiceResult> GetByIdAsync(int id);
-        Task<ServiceResult> Search(string? utilityName, bool? status, int page, int pageSize);
-        Task<ServiceResult> Create(RequestUtilityDto request);
-        Task<ServiceResult> Update(int id, RequestUtilityDto request);
-        Task<ServiceResult> DeleteByIdAsync(int id);
+        Task<ServiceResult> GetAll(int page, int pageSize, bool? status);
+        Task<ServiceResult> GetById(int id);
+        Task<ServiceResult> Create(UtilityReq request);
+        Task<ServiceResult> Update(int id, UtilityReq request);
+        Task<ServiceResult> Delete(int id);
     }
-    public class UtilityService : BaseService<Utility, ResponseUtilityDto>, IUtilityService
+    public class UtilityService : BaseService<Utility, UtilityRes>, IUtilityService
     {
         private readonly IHttpContextAccessor _httpContextAccessor;
         private readonly UnitOfWork _unitOfWork;
@@ -31,47 +30,7 @@ namespace RentEase.Service.Service.Sub
             _mapper = mapper;
             _helperWrapper = helperWrapper;
         }
-        public async Task<ServiceResult> GetAllAsync(bool? status, int page, int pageSize)
-        {
-            var accountRole = _helperWrapper.TokenHelper.GetRoleIdFromHttpContextAccessor(_httpContextAccessor);
-
-            if (accountRole != "1")
-            {
-                status = true;
-            }
-
-            var items = await _unitOfWork.UtilityRepository.GetAllAsync(status, page, pageSize);
-            if (!items.Data.Any())
-            {
-                return new ServiceResult(Const.ERROR_EXCEPTION, Const.ERROR_EXCEPTION_MSG);
-            }
-            else
-            {
-                var responseData = _mapper.Map<IEnumerable<ResponseUtilityDto>>(items.Data);
-                return new ServiceResult(Const.SUCCESS_ACTION, Const.SUCCESS_ACTION_MSG, items.TotalCount, items.TotalPages, items.CurrentPage, responseData);
-            }
-        }
-        public async Task<ServiceResult> Search(string? utilityName, bool? status, int page, int pageSize)
-        {
-            var accountRole = _helperWrapper.TokenHelper.GetRoleIdFromHttpContextAccessor(_httpContextAccessor);
-
-            if (accountRole != "1")
-            {
-                status = true;
-            }
-
-            var items = await _unitOfWork.UtilityRepository.GetBySearchAsync(utilityName, status, page, pageSize);
-            if (!items.Data.Any())
-            {
-                return new ServiceResult(Const.ERROR_EXCEPTION, Const.ERROR_EXCEPTION_MSG);
-            }
-            else
-            {
-                var responseData = _mapper.Map<IEnumerable<ResponseUtilityDto>>(items.Data);
-                return new ServiceResult(Const.SUCCESS_ACTION, Const.SUCCESS_ACTION_MSG, items.TotalCount, items.TotalPages, items.CurrentPage, responseData);
-            }
-        }
-        public async Task<ServiceResult> Create(RequestUtilityDto request)
+        public async Task<ServiceResult> Create(UtilityReq request)
         {
             if (await EntityExistsAsync("UtilityName", request.UtilityName))
             {
@@ -83,46 +42,38 @@ namespace RentEase.Service.Service.Sub
                 UtilityName = request.UtilityName.ToLower(),
                 CreatedAt = DateTime.Now,
                 UpdatedAt = null,
-                DeletedAt = null,
-                Status = true,
             };
 
             var result = await _unitOfWork.UtilityRepository.CreateAsync(createItem);
 
             if (result > 0)
             {
-                var responseData = _mapper.Map<ResponseUtilityDto>(createItem);
-
-                return new ServiceResult(Const.SUCCESS_ACTION, Const.SUCCESS_ACTION_MSG, responseData);
+                return new ServiceResult(Const.SUCCESS_ACTION, "Tạo thành công");
             }
 
             return new ServiceResult(Const.ERROR_EXCEPTION, Const.ERROR_EXCEPTION_MSG);
         }
-        public async Task<ServiceResult> Update(int id, RequestUtilityDto request)
+        public async Task<ServiceResult> Update(int id, UtilityReq request)
         {
             if (!await EntityExistsAsync("Id", id))
             {
                 return new ServiceResult(Const.ERROR_EXCEPTION, Const.ERROR_EXCEPTION_MSG);
             }
 
-            var item = (Utility)(await GetByIdAsync(id)).Data;
+            var item = await _unitOfWork.UtilityRepository.GetByIdAsync(id);
 
             var updateItem = new Utility()
             {
-                Id = id,
+                Id = item.Id,
                 UtilityName = request.UtilityName.ToLower(),
                 CreatedAt = item.CreatedAt,
                 UpdatedAt = DateTime.Now,
-                DeletedAt = item.DeletedAt,
-                Status = item.Status,
             };
 
             var result = await _unitOfWork.UtilityRepository.UpdateAsync(updateItem);
             if (result > 0)
             {
-                var responseData = _mapper.Map<ResponseUtilityDto>(updateItem);
-
-                return new ServiceResult(Const.SUCCESS_ACTION, Const.SUCCESS_ACTION_MSG, responseData);
+                return new ServiceResult(Const.SUCCESS_ACTION, "Cập nhật thành công");
             }
 
             return new ServiceResult(Const.ERROR_EXCEPTION, Const.ERROR_EXCEPTION_MSG);

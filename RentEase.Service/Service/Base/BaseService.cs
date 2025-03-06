@@ -16,17 +16,18 @@ namespace RentEase.Service.Service.Base
             _mapper = mapper;
         }
 
-        public async Task<ServiceResult> GetAllAsync(int page, int pageSize, bool? status = null)
+        public async Task<ServiceResult> GetAll(int page, int pageSize, bool? status = null)
         {
             try
             {
                 Expression<Func<T, bool>>? filter = null;
                 var entityType = typeof(T);
+                var statusProperty = entityType.GetProperty("Status");
 
-                if (status.HasValue && entityType.GetProperty("Status") != null)
+                if (status.HasValue && statusProperty != null && statusProperty.PropertyType == typeof(bool))
                 {
                     var parameter = Expression.Parameter(typeof(T), "o");
-                    var property = Expression.Property(parameter, "Status");
+                    var property = Expression.Property(parameter, statusProperty);
                     var value = Expression.Constant(status.Value);
                     var equalExpression = Expression.Equal(property, value);
                     filter = Expression.Lambda<Func<T, bool>>(equalExpression, parameter);
@@ -50,18 +51,18 @@ namespace RentEase.Service.Service.Base
             }
             catch (Exception ex)
             {
-                return new ServiceResult(Const.ERROR_EXCEPTION, "Lỗi khi lấy danh sách dữ liệu: " + ex.Message);
+                return new ServiceResult(Const.ERROR_EXCEPTION, "Lỗi khi lấy danh sách: " + ex.Message);
             }
         }
 
-        public async Task<ServiceResult> GetByIdAsync(int id)
+        public async Task<ServiceResult> GetById(int id)
         {
             try
             {
                 var entity = await _unitOfWork.GetRepository<T>().GetByIdAsync(id);
                 if (entity == null)
                 {
-                    return new ServiceResult(Const.ERROR_EXCEPTION, Const.ERROR_EXCEPTION_MSG, null);
+                    return new ServiceResult(Const.ERROR_EXCEPTION, Const.ERROR_EXCEPTION_MSG);
                 }
 
                 var response = _mapper.Map<TDto>(entity);
@@ -72,14 +73,14 @@ namespace RentEase.Service.Service.Base
                 return new ServiceResult(Const.ERROR_EXCEPTION, "Lỗi khi lấy dữ liệu theo ID: " + ex.Message);
             }
         }
-        public async Task<ServiceResult> GetByIdAsync(string id)
+        public async Task<ServiceResult> GetById(string id)
         {
             try
             {
                 var entity = await _unitOfWork.GetRepository<T>().GetByIdAsync(id);
                 if (entity == null)
                 {
-                    return new ServiceResult(Const.ERROR_EXCEPTION, Const.ERROR_EXCEPTION_MSG, null);
+                    return new ServiceResult(Const.ERROR_EXCEPTION, Const.ERROR_EXCEPTION_MSG);
                 }
 
                 var response = _mapper.Map<TDto>(entity);
@@ -91,7 +92,7 @@ namespace RentEase.Service.Service.Base
             }
         }
 
-        public async Task<ServiceResult> DeleteByIdAsync(int id)
+        public async Task<ServiceResult> Delete(int id)
         {
             try
             {
@@ -101,16 +102,20 @@ namespace RentEase.Service.Service.Base
                     return new ServiceResult(Const.ERROR_EXCEPTION, Const.ERROR_EXCEPTION_MSG);
                 }
 
-                await _unitOfWork.GetRepository<T>().RemoveAsync(entity);
-                var response = _mapper.Map<TDto>(entity);
-                return new ServiceResult(Const.SUCCESS_ACTION, Const.SUCCESS_ACTION_MSG, response);
+                var result = await _unitOfWork.GetRepository<T>().RemoveAsync(entity);
+                if (result)
+                {
+                    return new ServiceResult(Const.SUCCESS_ACTION, "Xóa thành công");
+
+                }
+                return new ServiceResult(Const.ERROR_EXCEPTION, "Xóa thất bại");
             }
             catch (Exception ex)
             {
-                return new ServiceResult(Const.ERROR_EXCEPTION, "Lỗi khi xóa dữ liệu: " + ex.Message);
+                return new ServiceResult(Const.ERROR_EXCEPTION, "Lỗi khi xóa: " + ex.Message);
             }
         }
-        public async Task<ServiceResult> DeleteByIdAsync(string id)
+        public async Task<ServiceResult> Delete(string id)
         {
             try
             {
@@ -120,13 +125,17 @@ namespace RentEase.Service.Service.Base
                     return new ServiceResult(Const.ERROR_EXCEPTION, Const.ERROR_EXCEPTION_MSG);
                 }
 
-                await _unitOfWork.GetRepository<T>().RemoveAsync(entity);
-                var response = _mapper.Map<TDto>(entity);
-                return new ServiceResult(Const.SUCCESS_ACTION, Const.SUCCESS_ACTION_MSG, response);
+                var result = await _unitOfWork.GetRepository<T>().RemoveAsync(entity);
+                if (result)
+                {
+                    return new ServiceResult(Const.SUCCESS_ACTION, "Xóa thành công");
+
+                }
+                return new ServiceResult(Const.ERROR_EXCEPTION, "Xóa thất bại");
             }
             catch (Exception ex)
             {
-                return new ServiceResult(Const.ERROR_EXCEPTION, "Lỗi khi xóa dữ liệu: " + ex.Message);
+                return new ServiceResult(Const.ERROR_EXCEPTION, "Lỗi khi xóa: " + ex.Message);
             }
         }
 

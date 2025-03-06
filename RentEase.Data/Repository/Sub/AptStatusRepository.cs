@@ -1,4 +1,4 @@
-﻿using RentEase.Common.DTOs.Response;
+﻿using RentEase.Common.DTOs;
 using RentEase.Data.DBContext;
 using RentEase.Data.Models;
 using RentEase.Data.Repository.Base;
@@ -17,19 +17,7 @@ namespace RentEase.Data.Repository.Sub
         {
             IQueryable<AptStatus> query = _context.Set<AptStatus>();
 
-            Expression<Func<AptStatus, bool>> filter = a =>
-                (!status.HasValue || a.Status == status.Value);
-
-            return await GetPagedAsync(filter, null, page, pageSize);
-        }
-
-        public async Task<PagedResult<AptStatus>> GetBySearchAsync(string? statusName, bool? status, int page, int pageSize)
-        {
-            IQueryable<AptStatus> query = _context.Set<AptStatus>();
-
-            Expression<Func<AptStatus, bool>> filter = a =>
-                (string.IsNullOrEmpty(statusName) || a.StatusName.Contains(statusName)) &&
-                (!status.HasValue || a.Status == status.Value);
+            Expression<Func<AptStatus, bool>> filter = null;
 
             return await GetPagedAsync(filter, null, page, pageSize);
         }

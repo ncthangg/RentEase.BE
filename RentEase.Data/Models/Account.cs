@@ -7,7 +7,7 @@ namespace RentEase.Data.Models;
 
 public partial class Account
 {
-    public int Id { get; set; }
+    public string AccountId { get; set; }
 
     public string FullName { get; set; }
 
@@ -39,25 +39,13 @@ public partial class Account
 
     public virtual ICollection<AccountVerification> AccountVerifications { get; set; } = new List<AccountVerification>();
 
-    public virtual ICollection<Contract> ContractAgents { get; set; } = new List<Contract>();
+    public virtual ICollection<Order> Orders { get; set; } = new List<Order>();
 
-    public virtual ICollection<Contract> ContractLessees { get; set; } = new List<Contract>();
+    public virtual ICollection<PostRequire> PostRequires { get; set; } = new List<PostRequire>();
 
-    public virtual ICollection<Contract> ContractLessors { get; set; } = new List<Contract>();
-
-    public virtual ICollection<CurrentResident> CurrentResidents { get; set; } = new List<CurrentResident>();
-
-    public virtual ICollection<MaintenanceRequest> MaintenanceRequestAgents { get; set; } = new List<MaintenanceRequest>();
-
-    public virtual ICollection<MaintenanceRequest> MaintenanceRequestLessees { get; set; } = new List<MaintenanceRequest>();
-
-    public virtual ICollection<Order> OrderLessees { get; set; } = new List<Order>();
-
-    public virtual ICollection<Order> OrderLessors { get; set; } = new List<Order>();
+    public virtual ICollection<Post> Posts { get; set; } = new List<Post>();
 
     public virtual ICollection<Review> Reviews { get; set; } = new List<Review>();
 
     public virtual Role Role { get; set; }
-
-    public virtual Wallet Wallet { get; set; }
 }

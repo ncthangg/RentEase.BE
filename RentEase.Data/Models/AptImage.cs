@@ -7,9 +7,7 @@ namespace RentEase.Data.Models;
 
 public partial class AptImage
 {
-    public int Id { get; set; }
-
-    public int AptId { get; set; }
+    public string AptId { get; set; }
 
     public string ImageUrl1 { get; set; }
 
@@ -26,10 +24,6 @@ public partial class AptImage
     public DateTime CreatedAt { get; set; }
 
     public DateTime? UpdatedAt { get; set; }
-
-    public DateTime? DeletedAt { get; set; }
-
-    public bool? Status { get; set; }
 
     public virtual Apt Apt { get; set; }
 }

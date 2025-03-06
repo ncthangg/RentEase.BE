@@ -1,5 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using RentEase.Common.DTOs.Response;
+using RentEase.Common.DTOs;
 using RentEase.Data.DBContext;
 using RentEase.Data.Models;
 using RentEase.Data.Repository.Base;

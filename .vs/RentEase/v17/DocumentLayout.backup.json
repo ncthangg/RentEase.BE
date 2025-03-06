@@ -3,10 +3,6 @@
   "WorkspaceRootPath": "E:\\MyProject\\RentEase.BE\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{81264B50-3581-4B37-9CD2-1ED21CB21BAC}|RentEase.API\\RentEase.API.csproj|e:\\myproject\\rentease.be\\rentease.api\\controllers\\main\\currentresidentcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{81264B50-3581-4B37-9CD2-1ED21CB21BAC}|RentEase.API\\RentEase.API.csproj|solutionrelative:rentease.api\\controllers\\main\\currentresidentcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
       "AbsoluteMoniker": "D:0:0:{81264B50-3581-4B37-9CD2-1ED21CB21BAC}|RentEase.API\\RentEase.API.csproj|e:\\myproject\\rentease.be\\rentease.api\\controllers\\main\\aptcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{81264B50-3581-4B37-9CD2-1ED21CB21BAC}|RentEase.API\\RentEase.API.csproj|solutionrelative:rentease.api\\controllers\\main\\aptcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
@@ -15,12 +11,40 @@
       "RelativeMoniker": "D:0:0:{81264B50-3581-4B37-9CD2-1ED21CB21BAC}|RentEase.API\\RentEase.API.csproj|solutionrelative:rentease.api\\controllers\\main\\accountscontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{81264B50-3581-4B37-9CD2-1ED21CB21BAC}|RentEase.API\\RentEase.API.csproj|e:\\myproject\\rentease.be\\rentease.api\\controllers\\authenticate\\authcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{81264B50-3581-4B37-9CD2-1ED21CB21BAC}|RentEase.API\\RentEase.API.csproj|solutionrelative:rentease.api\\controllers\\authenticate\\authcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{81264B50-3581-4B37-9CD2-1ED21CB21BAC}|RentEase.API\\RentEase.API.csproj|e:\\myproject\\rentease.be\\rentease.api\\controllers\\sub\\apartmentstatuscontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{81264B50-3581-4B37-9CD2-1ED21CB21BAC}|RentEase.API\\RentEase.API.csproj|solutionrelative:rentease.api\\controllers\\sub\\apartmentstatuscontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{81264B50-3581-4B37-9CD2-1ED21CB21BAC}|RentEase.API\\RentEase.API.csproj|e:\\myproject\\rentease.be\\rentease.api\\appsettings.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}",
-      "RelativeMoniker": "D:0:0:{81264B50-3581-4B37-9CD2-1ED21CB21BAC}|RentEase.API\\RentEase.API.csproj|solutionrelative:rentease.api\\appsettings.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}"
+      "AbsoluteMoniker": "D:0:0:{81264B50-3581-4B37-9CD2-1ED21CB21BAC}|RentEase.API\\RentEase.API.csproj|e:\\myproject\\rentease.be\\rentease.api\\controllers\\main\\transactioncontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{81264B50-3581-4B37-9CD2-1ED21CB21BAC}|RentEase.API\\RentEase.API.csproj|solutionrelative:rentease.api\\controllers\\main\\transactioncontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{81264B50-3581-4B37-9CD2-1ED21CB21BAC}|RentEase.API\\RentEase.API.csproj|e:\\myproject\\rentease.be\\rentease.api\\controllers\\main\\reviewcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{81264B50-3581-4B37-9CD2-1ED21CB21BAC}|RentEase.API\\RentEase.API.csproj|solutionrelative:rentease.api\\controllers\\main\\reviewcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{81264B50-3581-4B37-9CD2-1ED21CB21BAC}|RentEase.API\\RentEase.API.csproj|e:\\myproject\\rentease.be\\rentease.api\\controllers\\main\\aptutilitycontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{81264B50-3581-4B37-9CD2-1ED21CB21BAC}|RentEase.API\\RentEase.API.csproj|solutionrelative:rentease.api\\controllers\\main\\aptutilitycontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{81264B50-3581-4B37-9CD2-1ED21CB21BAC}|RentEase.API\\RentEase.API.csproj|e:\\myproject\\rentease.be\\rentease.api\\controllers\\main\\aptimagecontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{81264B50-3581-4B37-9CD2-1ED21CB21BAC}|RentEase.API\\RentEase.API.csproj|solutionrelative:rentease.api\\controllers\\main\\aptimagecontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{CB347382-57DB-451D-AF20-D8D2B51A7B17}|RentEase.Service\\RentEase.Service.csproj|e:\\myproject\\rentease.be\\rentease.service\\service\\main\\transactionservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{CB347382-57DB-451D-AF20-D8D2B51A7B17}|RentEase.Service\\RentEase.Service.csproj|solutionrelative:rentease.service\\service\\main\\transactionservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{CB347382-57DB-451D-AF20-D8D2B51A7B17}|RentEase.Service\\RentEase.Service.csproj|e:\\myproject\\rentease.be\\rentease.service\\service\\main\\postservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{CB347382-57DB-451D-AF20-D8D2B51A7B17}|RentEase.Service\\RentEase.Service.csproj|solutionrelative:rentease.service\\service\\main\\postservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{CB347382-57DB-451D-AF20-D8D2B51A7B17}|RentEase.Service\\RentEase.Service.csproj|e:\\myproject\\rentease.be\\rentease.service\\servicewrapper.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{CB347382-57DB-451D-AF20-D8D2B51A7B17}|RentEase.Service\\RentEase.Service.csproj|solutionrelative:rentease.service\\servicewrapper.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{CB347382-57DB-451D-AF20-D8D2B51A7B17}|RentEase.Service\\RentEase.Service.csproj|e:\\myproject\\rentease.be\\rentease.service\\helperwrapper.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{CB347382-57DB-451D-AF20-D8D2B51A7B17}|RentEase.Service\\RentEase.Service.csproj|solutionrelative:rentease.service\\helperwrapper.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     }
   ],
   "DocumentGroupContainers": [
@@ -29,8 +53,8 @@
       "VerticalTabListWidth": 256,
       "DocumentGroups": [
         {
-          "DockedWidth": 1230,
-          "SelectedChildIndex": 3,
+          "DockedWidth": 642,
+          "SelectedChildIndex": 8,
           "Children": [
             {
               "$type": "Bookmark",
@@ -46,67 +70,145 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 0,
-              "Title": "CurrentResidentController.cs",
-              "DocumentMoniker": "E:\\MyProject\\RentEase.BE\\RentEase.API\\Controllers\\Main\\CurrentResidentController.cs",
-              "RelativeDocumentMoniker": "RentEase.API\\Controllers\\Main\\CurrentResidentController.cs",
-              "ToolTip": "E:\\MyProject\\RentEase.BE\\RentEase.API\\Controllers\\Main\\CurrentResidentController.cs",
-              "RelativeToolTip": "RentEase.API\\Controllers\\Main\\CurrentResidentController.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-03-03T12:29:40.787Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 1,
-              "Title": "AptController.cs",
-              "DocumentMoniker": "E:\\MyProject\\RentEase.BE\\RentEase.API\\Controllers\\Main\\AptController.cs",
-              "RelativeDocumentMoniker": "RentEase.API\\Controllers\\Main\\AptController.cs",
-              "ToolTip": "E:\\MyProject\\RentEase.BE\\RentEase.API\\Controllers\\Main\\AptController.cs",
-              "RelativeToolTip": "RentEase.API\\Controllers\\Main\\AptController.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-03-03T12:29:40.188Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
               "DocumentIndex": 2,
-              "Title": "AccountsController.cs",
-              "DocumentMoniker": "E:\\MyProject\\RentEase.BE\\RentEase.API\\Controllers\\Main\\AccountsController.cs",
-              "RelativeDocumentMoniker": "RentEase.API\\Controllers\\Main\\AccountsController.cs",
-              "ToolTip": "E:\\MyProject\\RentEase.BE\\RentEase.API\\Controllers\\Main\\AccountsController.cs",
-              "RelativeToolTip": "RentEase.API\\Controllers\\Main\\AccountsController.cs",
-              "ViewState": "AgIAAE0AAAAAAAAAAAAgwAAAAAAAAAAAAAAAAA==",
+              "Title": "ApartmentStatusController.cs",
+              "DocumentMoniker": "E:\\MyProject\\RentEase.BE\\RentEase.API\\Controllers\\Sub\\ApartmentStatusController.cs",
+              "RelativeDocumentMoniker": "RentEase.API\\Controllers\\Sub\\ApartmentStatusController.cs",
+              "ToolTip": "E:\\MyProject\\RentEase.BE\\RentEase.API\\Controllers\\Sub\\ApartmentStatusController.cs",
+              "RelativeToolTip": "RentEase.API\\Controllers\\Sub\\ApartmentStatusController.cs",
+              "ViewState": "AgIAAIQAAAAAAAAAAAAowAAAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-03-03T12:29:35.612Z",
+              "WhenOpened": "2025-03-06T18:07:50.371Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
               "DocumentIndex": 3,
-              "Title": "AuthController.cs",
-              "DocumentMoniker": "E:\\MyProject\\RentEase.BE\\RentEase.API\\Controllers\\Authenticate\\AuthController.cs",
-              "RelativeDocumentMoniker": "RentEase.API\\Controllers\\Authenticate\\AuthController.cs",
-              "ToolTip": "E:\\MyProject\\RentEase.BE\\RentEase.API\\Controllers\\Authenticate\\AuthController.cs",
-              "RelativeToolTip": "RentEase.API\\Controllers\\Authenticate\\AuthController.cs",
-              "ViewState": "AgIAABwAAAAAAAAAAAAQwAAAAAAAAAAAAAAAAA==",
+              "Title": "TransactionController.cs",
+              "DocumentMoniker": "E:\\MyProject\\RentEase.BE\\RentEase.API\\Controllers\\Main\\TransactionController.cs",
+              "RelativeDocumentMoniker": "RentEase.API\\Controllers\\Main\\TransactionController.cs",
+              "ToolTip": "E:\\MyProject\\RentEase.BE\\RentEase.API\\Controllers\\Main\\TransactionController.cs",
+              "RelativeToolTip": "RentEase.API\\Controllers\\Main\\TransactionController.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-03-03T12:29:30.191Z",
+              "WhenOpened": "2025-03-06T18:07:46.351Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
               "DocumentIndex": 4,
-              "Title": "appsettings.json",
-              "DocumentMoniker": "E:\\MyProject\\RentEase.BE\\RentEase.API\\appsettings.json",
-              "RelativeDocumentMoniker": "RentEase.API\\appsettings.json",
-              "ToolTip": "E:\\MyProject\\RentEase.BE\\RentEase.API\\appsettings.json",
-              "RelativeToolTip": "RentEase.API\\appsettings.json",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAkAAABcAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001642|",
-              "WhenOpened": "2025-03-03T12:12:36.401Z",
+              "Title": "ReviewController.cs",
+              "DocumentMoniker": "E:\\MyProject\\RentEase.BE\\RentEase.API\\Controllers\\Main\\ReviewController.cs",
+              "RelativeDocumentMoniker": "RentEase.API\\Controllers\\Main\\ReviewController.cs",
+              "ToolTip": "E:\\MyProject\\RentEase.BE\\RentEase.API\\Controllers\\Main\\ReviewController.cs",
+              "RelativeToolTip": "RentEase.API\\Controllers\\Main\\ReviewController.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-03-06T18:07:40.387Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 5,
+              "Title": "AptUtilityController.cs",
+              "DocumentMoniker": "E:\\MyProject\\RentEase.BE\\RentEase.API\\Controllers\\Main\\AptUtilityController.cs",
+              "RelativeDocumentMoniker": "RentEase.API\\Controllers\\Main\\AptUtilityController.cs",
+              "ToolTip": "E:\\MyProject\\RentEase.BE\\RentEase.API\\Controllers\\Main\\AptUtilityController.cs",
+              "RelativeToolTip": "RentEase.API\\Controllers\\Main\\AptUtilityController.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-03-06T18:07:38.705Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 6,
+              "Title": "AptImageController.cs",
+              "DocumentMoniker": "E:\\MyProject\\RentEase.BE\\RentEase.API\\Controllers\\Main\\AptImageController.cs",
+              "RelativeDocumentMoniker": "RentEase.API\\Controllers\\Main\\AptImageController.cs",
+              "ToolTip": "E:\\MyProject\\RentEase.BE\\RentEase.API\\Controllers\\Main\\AptImageController.cs",
+              "RelativeToolTip": "RentEase.API\\Controllers\\Main\\AptImageController.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAHQAAAAZAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-03-06T18:06:55.236Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "AptController.cs",
+              "DocumentMoniker": "E:\\MyProject\\RentEase.BE\\RentEase.API\\Controllers\\Main\\AptController.cs",
+              "RelativeDocumentMoniker": "RentEase.API\\Controllers\\Main\\AptController.cs",
+              "ToolTip": "E:\\MyProject\\RentEase.BE\\RentEase.API\\Controllers\\Main\\AptController.cs",
+              "RelativeToolTip": "RentEase.API\\Controllers\\Main\\AptController.cs",
+              "ViewState": "AgIAAAkAAAAAAAAAAAAAAH4AAAAwAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-03-06T18:06:40.474Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "AccountsController.cs",
+              "DocumentMoniker": "E:\\MyProject\\RentEase.BE\\RentEase.API\\Controllers\\Main\\AccountsController.cs",
+              "RelativeDocumentMoniker": "RentEase.API\\Controllers\\Main\\AccountsController.cs",
+              "ToolTip": "E:\\MyProject\\RentEase.BE\\RentEase.API\\Controllers\\Main\\AccountsController.cs",
+              "RelativeToolTip": "RentEase.API\\Controllers\\Main\\AccountsController.cs",
+              "ViewState": "AgIAAA0AAAAAAAAAAAAYwDUAAAA3AAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-03-06T18:06:38.575Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 7,
+              "Title": "TransactionService.cs",
+              "DocumentMoniker": "E:\\MyProject\\RentEase.BE\\RentEase.Service\\Service\\Main\\TransactionService.cs",
+              "RelativeDocumentMoniker": "RentEase.Service\\Service\\Main\\TransactionService.cs",
+              "ToolTip": "E:\\MyProject\\RentEase.BE\\RentEase.Service\\Service\\Main\\TransactionService.cs",
+              "RelativeToolTip": "RentEase.Service\\Service\\Main\\TransactionService.cs",
+              "ViewState": "AgIAABMAAAAAAAAAAAA5wAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-03-06T18:06:23.799Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 8,
+              "Title": "PostService.cs",
+              "DocumentMoniker": "E:\\MyProject\\RentEase.BE\\RentEase.Service\\Service\\Main\\PostService.cs",
+              "RelativeDocumentMoniker": "RentEase.Service\\Service\\Main\\PostService.cs",
+              "ToolTip": "E:\\MyProject\\RentEase.BE\\RentEase.Service\\Service\\Main\\PostService.cs",
+              "RelativeToolTip": "RentEase.Service\\Service\\Main\\PostService.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-03-06T18:06:22.564Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 9,
+              "Title": "ServiceWrapper.cs",
+              "DocumentMoniker": "E:\\MyProject\\RentEase.BE\\RentEase.Service\\ServiceWrapper.cs",
+              "RelativeDocumentMoniker": "RentEase.Service\\ServiceWrapper.cs",
+              "ToolTip": "E:\\MyProject\\RentEase.BE\\RentEase.Service\\ServiceWrapper.cs",
+              "RelativeToolTip": "RentEase.Service\\ServiceWrapper.cs",
+              "ViewState": "AgIAAA0AAAAAAAAAAAA/wCwAAAAqAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-03-06T18:04:29.592Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 10,
+              "Title": "HelperWrapper.cs",
+              "DocumentMoniker": "E:\\MyProject\\RentEase.BE\\RentEase.Service\\HelperWrapper.cs",
+              "RelativeDocumentMoniker": "RentEase.Service\\HelperWrapper.cs",
+              "ToolTip": "E:\\MyProject\\RentEase.BE\\RentEase.Service\\HelperWrapper.cs",
+              "RelativeToolTip": "RentEase.Service\\HelperWrapper.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-03-06T18:04:28.638Z",
               "EditorCaption": ""
             }
           ]

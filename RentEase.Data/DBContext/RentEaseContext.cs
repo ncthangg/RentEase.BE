@@ -35,25 +35,21 @@ public partial class RentEaseContext : DbContext
 
     public virtual DbSet<AptUtility> AptUtilities { get; set; }
 
-    public virtual DbSet<Contract> Contracts { get; set; }
-
-    public virtual DbSet<CurrentResident> CurrentResidents { get; set; }
-
-    public virtual DbSet<MaintenanceRequest> MaintenanceRequests { get; set; }
-
     public virtual DbSet<Order> Orders { get; set; }
+
+    public virtual DbSet<Post> Posts { get; set; }
+
+    public virtual DbSet<PostRequire> PostRequires { get; set; }
 
     public virtual DbSet<Review> Reviews { get; set; }
 
     public virtual DbSet<Role> Roles { get; set; }
 
+    public virtual DbSet<Transaction> Transactions { get; set; }
+
     public virtual DbSet<TransactionType> TransactionTypes { get; set; }
 
     public virtual DbSet<Utility> Utilities { get; set; }
-
-    public virtual DbSet<Wallet> Wallets { get; set; }
-
-    public virtual DbSet<WalletTransaction> WalletTransactions { get; set; }
 
     public static string GetConnectionString(string connectionStringName)
     {
@@ -78,7 +74,7 @@ public partial class RentEaseContext : DbContext
     {
         modelBuilder.Entity<Account>(entity =>
         {
-            entity.HasKey(e => e.Id).HasName("PK__Account__3214EC07B4A3DB91");
+            entity.HasKey(e => e.AccountId).HasName("PK__Account__349DA5A62F5DEB04");
 
             entity.ToTable("Account");
 
@@ -88,10 +84,11 @@ public partial class RentEaseContext : DbContext
 
             entity.HasIndex(e => e.RoleId, "IX_Account_RoleId");
 
-            entity.HasIndex(e => e.PhoneNumber, "UQ__Account__85FB4E38FC8B5A22").IsUnique();
+            entity.HasIndex(e => e.PhoneNumber, "UQ__Account__85FB4E38627969EB").IsUnique();
 
-            entity.HasIndex(e => e.Email, "UQ__Account__A9D10534D12BD081").IsUnique();
+            entity.HasIndex(e => e.Email, "UQ__Account__A9D1053441F530BF").IsUnique();
 
+            entity.Property(e => e.AccountId).HasMaxLength(255);
             entity.Property(e => e.CreatedAt).HasColumnType("datetime");
             entity.Property(e => e.DeletedAt).HasColumnType("datetime");
             entity.Property(e => e.Email).HasMaxLength(255);
@@ -115,12 +112,15 @@ public partial class RentEaseContext : DbContext
 
         modelBuilder.Entity<AccountToken>(entity =>
         {
-            entity.HasKey(e => e.Id).HasName("PK__AccountT__3214EC07A9A4F3EB");
+            entity.HasKey(e => e.Id).HasName("PK__AccountT__3214EC074C2E87F3");
 
             entity.ToTable("AccountToken");
 
             entity.HasIndex(e => e.AccountId, "IX_AccountToken_AccountId");
 
+            entity.Property(e => e.AccountId)
+                .IsRequired()
+                .HasMaxLength(255);
             entity.Property(e => e.CreatedAt).HasColumnType("datetime");
             entity.Property(e => e.ExpiresAt).HasColumnType("datetime");
             entity.Property(e => e.RefreshToken).IsRequired();
@@ -133,10 +133,13 @@ public partial class RentEaseContext : DbContext
 
         modelBuilder.Entity<AccountVerification>(entity =>
         {
-            entity.HasKey(e => e.Id).HasName("PK__AccountV__3214EC078E0D6018");
+            entity.HasKey(e => e.Id).HasName("PK__AccountV__3214EC07812979E0");
 
             entity.ToTable("AccountVerification");
 
+            entity.Property(e => e.AccountId)
+                .IsRequired()
+                .HasMaxLength(255);
             entity.Property(e => e.CreatedAt).HasColumnType("datetime");
             entity.Property(e => e.ExpiresAt).HasColumnType("datetime");
             entity.Property(e => e.IsUsed).HasDefaultValue(false);
@@ -152,97 +155,93 @@ public partial class RentEaseContext : DbContext
 
         modelBuilder.Entity<Apt>(entity =>
         {
-            entity.HasKey(e => e.Id).HasName("PK__Apt__3214EC072568CE4A");
+            entity.HasKey(e => e.AptId).HasName("PK__Apt__8D24E77238D6C477");
 
             entity.ToTable("Apt");
 
-            entity.HasIndex(e => e.CategoryId, "IX_Apt_AptCategory");
+            entity.HasIndex(e => e.AptCategoryId, "IX_Apt_AptCategory");
 
-            entity.HasIndex(e => e.StatusId, "IX_Apt_AptStatus");
+            entity.HasIndex(e => e.AptStatusId, "IX_Apt_AptStatus");
 
             entity.HasIndex(e => e.OwnerId, "IX_Apt_OwnerId");
 
+            entity.Property(e => e.AptId).HasMaxLength(255);
             entity.Property(e => e.Address)
                 .IsRequired()
                 .HasMaxLength(500);
             entity.Property(e => e.AddressLink).HasMaxLength(500);
-            entity.Property(e => e.AptCode)
-                .IsRequired()
-                .HasMaxLength(10);
             entity.Property(e => e.Area).HasDefaultValue(0.0);
             entity.Property(e => e.CreatedAt).HasColumnType("datetime");
             entity.Property(e => e.DeletedAt).HasColumnType("datetime");
             entity.Property(e => e.Name)
                 .IsRequired()
                 .HasMaxLength(255);
+            entity.Property(e => e.OwnerId)
+                .IsRequired()
+                .HasMaxLength(255);
             entity.Property(e => e.Rating).HasDefaultValue(0.0);
-            entity.Property(e => e.Status).HasDefaultValue(true);
+            entity.Property(e => e.Status).HasDefaultValue(false);
             entity.Property(e => e.UpdatedAt).HasColumnType("datetime");
 
-            entity.HasOne(d => d.Category).WithMany(p => p.Apts)
-                .HasForeignKey(d => d.CategoryId)
+            entity.HasOne(d => d.AptCategory).WithMany(p => p.Apts)
+                .HasForeignKey(d => d.AptCategoryId)
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK_Apt_AptCategory");
 
-            entity.HasOne(d => d.StatusNavigation).WithMany(p => p.Apts)
-                .HasForeignKey(d => d.StatusId)
+            entity.HasOne(d => d.AptStatus).WithMany(p => p.Apts)
+                .HasForeignKey(d => d.AptStatusId)
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK_Apt_AptStatus");
         });
 
         modelBuilder.Entity<AptCategory>(entity =>
         {
-            entity.HasKey(e => e.Id).HasName("PK__AptCateg__3214EC07BE01104A");
+            entity.HasKey(e => e.Id).HasName("PK__AptCateg__3214EC07B602F106");
 
             entity.ToTable("AptCategory");
 
-            entity.HasIndex(e => e.CategoryName, "UQ__AptCateg__8517B2E0E376593E").IsUnique();
+            entity.HasIndex(e => e.CategoryName, "UQ__AptCateg__8517B2E008B30AFE").IsUnique();
 
             entity.Property(e => e.CategoryName)
                 .IsRequired()
                 .HasMaxLength(100);
             entity.Property(e => e.CreatedAt).HasColumnType("datetime");
-            entity.Property(e => e.DeletedAt).HasColumnType("datetime");
-            entity.Property(e => e.Description).HasMaxLength(255);
-            entity.Property(e => e.Status).HasDefaultValue(true);
+            entity.Property(e => e.Note).HasMaxLength(255);
             entity.Property(e => e.UpdatedAt).HasColumnType("datetime");
         });
 
         modelBuilder.Entity<AptImage>(entity =>
         {
-            entity.HasKey(e => e.Id).HasName("PK__AptImage__3214EC07261512F6");
+            entity.HasKey(e => e.AptId).HasName("PK__AptImage__8D24E772761F5E0C");
 
             entity.ToTable("AptImage");
 
+            entity.Property(e => e.AptId).HasMaxLength(255);
             entity.Property(e => e.CreatedAt).HasColumnType("datetime");
-            entity.Property(e => e.DeletedAt).HasColumnType("datetime");
             entity.Property(e => e.ImageUrl1).HasColumnName("ImageURL1");
             entity.Property(e => e.ImageUrl2).HasColumnName("ImageURL2");
             entity.Property(e => e.ImageUrl3).HasColumnName("ImageURL3");
             entity.Property(e => e.ImageUrl4).HasColumnName("ImageURL4");
             entity.Property(e => e.ImageUrl5).HasColumnName("ImageURL5");
             entity.Property(e => e.ImageUrl6).HasColumnName("ImageURL6");
-            entity.Property(e => e.Status).HasDefaultValue(true);
             entity.Property(e => e.UpdatedAt).HasColumnType("datetime");
 
-            entity.HasOne(d => d.Apt).WithMany(p => p.AptImages)
-                .HasForeignKey(d => d.AptId)
+            entity.HasOne(d => d.Apt).WithOne(p => p.AptImage)
+                .HasForeignKey<AptImage>(d => d.AptId)
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK_AptImage_Apt");
         });
 
         modelBuilder.Entity<AptStatus>(entity =>
         {
-            entity.HasKey(e => e.Id).HasName("PK__AptStatu__3214EC07F1A82223");
+            entity.HasKey(e => e.Id).HasName("PK__AptStatu__3214EC0701430943");
 
             entity.ToTable("AptStatus");
 
-            entity.HasIndex(e => e.StatusName, "UQ__AptStatu__05E7698A5FA10BF9").IsUnique();
+            entity.HasIndex(e => e.StatusName, "UQ__AptStatu__05E7698A86EA1D6C").IsUnique();
 
             entity.Property(e => e.CreatedAt).HasColumnType("datetime");
-            entity.Property(e => e.DeletedAt).HasColumnType("datetime");
-            entity.Property(e => e.Description).HasMaxLength(255);
-            entity.Property(e => e.Status).HasDefaultValue(true);
+            entity.Property(e => e.Note).HasMaxLength(255);
             entity.Property(e => e.StatusName)
                 .IsRequired()
                 .HasMaxLength(100);
@@ -251,7 +250,7 @@ public partial class RentEaseContext : DbContext
 
         modelBuilder.Entity<AptUtility>(entity =>
         {
-            entity.HasKey(e => e.Id).HasName("PK__AptUtili__3214EC075180B79B");
+            entity.HasKey(e => e.Id).HasName("PK__AptUtili__3214EC07540A0EA3");
 
             entity.ToTable("AptUtility");
 
@@ -261,10 +260,11 @@ public partial class RentEaseContext : DbContext
 
             entity.HasIndex(e => new { e.AptId, e.UtilityId }, "UQ_AptUtility").IsUnique();
 
+            entity.Property(e => e.AptId)
+                .IsRequired()
+                .HasMaxLength(255);
             entity.Property(e => e.CreatedAt).HasColumnType("datetime");
-            entity.Property(e => e.DeletedAt).HasColumnType("datetime");
-            entity.Property(e => e.Description).HasMaxLength(500);
-            entity.Property(e => e.Status).HasDefaultValue(true);
+            entity.Property(e => e.Note).HasMaxLength(500);
             entity.Property(e => e.UpdatedAt).HasColumnType("datetime");
 
             entity.HasOne(d => d.Apt).WithMany(p => p.AptUtilities)
@@ -276,197 +276,170 @@ public partial class RentEaseContext : DbContext
                 .HasConstraintName("FK_AptUtility_Utility");
         });
 
-        modelBuilder.Entity<Contract>(entity =>
-        {
-            entity.HasKey(e => e.Id).HasName("PK__Contract__3214EC07557A5B9D");
-
-            entity.ToTable("Contract");
-
-            entity.HasIndex(e => e.AgentId, "IX_Contract_AgentId");
-
-            entity.HasIndex(e => e.ApproveStatusId, "IX_Contract_ApproveStatusId");
-
-            entity.HasIndex(e => e.AptId, "IX_Contract_AptId");
-
-            entity.HasIndex(e => e.ContractStatusId, "IX_Contract_ContractStatusId");
-
-            entity.HasIndex(e => e.LesseeId, "IX_Contract_LesseeId");
-
-            entity.HasIndex(e => e.LessorId, "IX_Contract_LessorId");
-
-            entity.Property(e => e.CreatedAt).HasColumnType("datetime");
-            entity.Property(e => e.DeletedAt).HasColumnType("datetime");
-            entity.Property(e => e.EndDate).HasColumnType("datetime");
-            entity.Property(e => e.FileUrl).HasColumnName("FileURL");
-            entity.Property(e => e.StartDate).HasColumnType("datetime");
-            entity.Property(e => e.Status).HasDefaultValue(true);
-            entity.Property(e => e.UpdatedAt).HasColumnType("datetime");
-
-            entity.HasOne(d => d.Agent).WithMany(p => p.ContractAgents)
-                .HasForeignKey(d => d.AgentId)
-                .HasConstraintName("FK_Contract_Agent");
-
-            entity.HasOne(d => d.Apt).WithMany(p => p.Contracts)
-                .HasForeignKey(d => d.AptId)
-                .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK_Contract_Apt");
-
-            entity.HasOne(d => d.Lessee).WithMany(p => p.ContractLessees)
-                .HasForeignKey(d => d.LesseeId)
-                .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK_Contract_Lessee");
-
-            entity.HasOne(d => d.Lessor).WithMany(p => p.ContractLessors)
-                .HasForeignKey(d => d.LessorId)
-                .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK_Contract_Lessor");
-        });
-
-        modelBuilder.Entity<CurrentResident>(entity =>
-        {
-            entity.HasKey(e => e.Id).HasName("PK__CurrentR__3214EC071F0013CD");
-
-            entity.ToTable("CurrentResident");
-
-            entity.HasIndex(e => e.AccountId, "IX_CurrentResident_AccountId");
-
-            entity.HasIndex(e => e.AptId, "IX_CurrentResident_AptId");
-
-            entity.Property(e => e.CreatedAt).HasColumnType("datetime");
-            entity.Property(e => e.DeletedAt).HasColumnType("datetime");
-            entity.Property(e => e.MoveInDate).HasColumnType("datetime");
-            entity.Property(e => e.MoveOutDate).HasColumnType("datetime");
-            entity.Property(e => e.Status).HasDefaultValue(true);
-            entity.Property(e => e.UpdatedAt).HasColumnType("datetime");
-
-            entity.HasOne(d => d.Account).WithMany(p => p.CurrentResidents)
-                .HasForeignKey(d => d.AccountId)
-                .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK_CurrentResident_Account");
-
-            entity.HasOne(d => d.Apt).WithMany(p => p.CurrentResidents)
-                .HasForeignKey(d => d.AptId)
-                .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK_CurrentResident_Apt");
-        });
-
-        modelBuilder.Entity<MaintenanceRequest>(entity =>
-        {
-            entity.HasKey(e => e.Id).HasName("PK__Maintena__3214EC07D1E936BB");
-
-            entity.ToTable("MaintenanceRequest");
-
-            entity.HasIndex(e => e.AptId, "IX_MaintenanceRequest_AptId");
-
-            entity.HasIndex(e => e.LesseeId, "IX_MaintenanceRequest_LesseeId");
-
-            entity.Property(e => e.CreatedAt).HasColumnType("datetime");
-            entity.Property(e => e.DeletedAt).HasColumnType("datetime");
-            entity.Property(e => e.Description).HasMaxLength(500);
-            entity.Property(e => e.Note).HasMaxLength(500);
-            entity.Property(e => e.Status).HasDefaultValue(true);
-            entity.Property(e => e.UpdatedAt).HasColumnType("datetime");
-
-            entity.HasOne(d => d.Agent).WithMany(p => p.MaintenanceRequestAgents)
-                .HasForeignKey(d => d.AgentId)
-                .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK_MaintenanceRequest_Agent");
-
-            entity.HasOne(d => d.Apt).WithMany(p => p.MaintenanceRequests)
-                .HasForeignKey(d => d.AptId)
-                .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK_MaintenanceRequest_Apt");
-
-            entity.HasOne(d => d.Lessee).WithMany(p => p.MaintenanceRequestLessees)
-                .HasForeignKey(d => d.LesseeId)
-                .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK_MaintenanceRequest_Lessee");
-        });
-
         modelBuilder.Entity<Order>(entity =>
         {
-            entity.HasKey(e => e.Id).HasName("PK__Orders__3214EC07D2858C2C");
+            entity.HasKey(e => e.OrderId).HasName("PK__Orders__C3905BCF74207269");
 
-            entity.Property(e => e.Id).HasMaxLength(100);
+            entity.Property(e => e.OrderId).HasMaxLength(255);
             entity.Property(e => e.Amount).HasColumnType("decimal(18, 2)");
             entity.Property(e => e.CreatedAt).HasColumnType("datetime");
-            entity.Property(e => e.DueDate).HasColumnType("datetime");
+            entity.Property(e => e.IncurredCost).HasColumnType("decimal(18, 2)");
+            entity.Property(e => e.PaidAt).HasColumnType("datetime");
+            entity.Property(e => e.SenderId)
+                .IsRequired()
+                .HasMaxLength(255);
 
-            entity.HasOne(d => d.Contract).WithMany(p => p.Orders)
-                .HasForeignKey(d => d.ContractId)
-                .HasConstraintName("FK_Order_Contract");
-
-            entity.HasOne(d => d.Lessee).WithMany(p => p.OrderLessees)
-                .HasForeignKey(d => d.LesseeId)
+            entity.HasOne(d => d.Sender).WithMany(p => p.Orders)
+                .HasForeignKey(d => d.SenderId)
                 .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK_Order_Lessee");
-
-            entity.HasOne(d => d.Lessor).WithMany(p => p.OrderLessors)
-                .HasForeignKey(d => d.LessorId)
-                .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK_Order_Lessor");
+                .HasConstraintName("FK_Order_Sender");
 
             entity.HasOne(d => d.TransactionType).WithMany(p => p.Orders)
                 .HasForeignKey(d => d.TransactionTypeId)
                 .HasConstraintName("FK_Order_TransactionType");
         });
 
+        modelBuilder.Entity<Post>(entity =>
+        {
+            entity.HasKey(e => e.PostId).HasName("PK__Post__AA1260182BDDB060");
+
+            entity.ToTable("Post");
+
+            entity.Property(e => e.PostId).HasMaxLength(255);
+            entity.Property(e => e.AccountId)
+                .IsRequired()
+                .HasMaxLength(255);
+            entity.Property(e => e.AptId)
+                .IsRequired()
+                .HasMaxLength(255);
+            entity.Property(e => e.CreatedAt).HasColumnType("datetime");
+            entity.Property(e => e.DeletedAt).HasColumnType("datetime");
+            entity.Property(e => e.Status).HasDefaultValue(true);
+            entity.Property(e => e.Title)
+                .IsRequired()
+                .HasMaxLength(255);
+            entity.Property(e => e.UpdatedAt).HasColumnType("datetime");
+
+            entity.HasOne(d => d.Account).WithMany(p => p.Posts)
+                .HasForeignKey(d => d.AccountId)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK_CPost_Account");
+
+            entity.HasOne(d => d.Apt).WithMany(p => p.Posts)
+                .HasForeignKey(d => d.AptId)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK_Post_Apt");
+        });
+
+        modelBuilder.Entity<PostRequire>(entity =>
+        {
+            entity.HasKey(e => e.Id).HasName("PK__PostRequ__3214EC0721C7FA81");
+
+            entity.ToTable("PostRequire");
+
+            entity.Property(e => e.AccountId)
+                .IsRequired()
+                .HasMaxLength(255);
+            entity.Property(e => e.CreatedAt).HasColumnType("datetime");
+            entity.Property(e => e.PostId)
+                .IsRequired()
+                .HasMaxLength(255);
+            entity.Property(e => e.UpdatedAt).HasColumnType("datetime");
+
+            entity.HasOne(d => d.Account).WithMany(p => p.PostRequires)
+                .HasForeignKey(d => d.AccountId)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK_PostRequire_Account");
+
+            entity.HasOne(d => d.Post).WithMany(p => p.PostRequires)
+                .HasForeignKey(d => d.PostId)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK_PostRequire_Post");
+        });
+
         modelBuilder.Entity<Review>(entity =>
         {
-            entity.HasKey(e => e.Id).HasName("PK__Review__3214EC0731184032");
+            entity.HasKey(e => e.Id).HasName("PK__Review__3214EC071860634A");
 
             entity.ToTable("Review");
 
+            entity.HasIndex(e => e.AccountId, "IX_Review_AccountId");
+
             entity.HasIndex(e => e.AptId, "IX_Review_AptId");
 
-            entity.HasIndex(e => e.ReviewerId, "IX_Review_ReviewerId");
-
+            entity.Property(e => e.AccountId)
+                .IsRequired()
+                .HasMaxLength(255);
+            entity.Property(e => e.AptId)
+                .IsRequired()
+                .HasMaxLength(255);
             entity.Property(e => e.Comment).HasMaxLength(500);
             entity.Property(e => e.CreatedAt).HasColumnType("datetime");
-            entity.Property(e => e.DeletedAt).HasColumnType("datetime");
             entity.Property(e => e.Rating).HasDefaultValue(0.0);
-            entity.Property(e => e.Status).HasDefaultValue(true);
             entity.Property(e => e.UpdatedAt).HasColumnType("datetime");
+
+            entity.HasOne(d => d.Account).WithMany(p => p.Reviews)
+                .HasForeignKey(d => d.AccountId)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK_Review_Account");
 
             entity.HasOne(d => d.Apt).WithMany(p => p.Reviews)
                 .HasForeignKey(d => d.AptId)
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK_Review_Apt");
-
-            entity.HasOne(d => d.Reviewer).WithMany(p => p.Reviews)
-                .HasForeignKey(d => d.ReviewerId)
-                .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK_Review_Reviewer");
         });
 
         modelBuilder.Entity<Role>(entity =>
         {
-            entity.HasKey(e => e.Id).HasName("PK__Role__3214EC0733657BC1");
+            entity.HasKey(e => e.Id).HasName("PK__Role__3214EC074195CB0F");
 
             entity.ToTable("Role");
 
-            entity.HasIndex(e => e.RoleName, "UQ__Role__8A2B616030A40C7F").IsUnique();
+            entity.HasIndex(e => e.RoleName, "UQ__Role__8A2B616060E7C55B").IsUnique();
 
             entity.Property(e => e.CreatedAt).HasColumnType("datetime");
-            entity.Property(e => e.DeletedAt).HasColumnType("datetime");
-            entity.Property(e => e.Description).HasMaxLength(255);
+            entity.Property(e => e.Note).HasMaxLength(255);
             entity.Property(e => e.RoleName)
                 .IsRequired()
                 .HasMaxLength(100);
-            entity.Property(e => e.Status).HasDefaultValue(true);
             entity.Property(e => e.UpdatedAt).HasColumnType("datetime");
+        });
+
+        modelBuilder.Entity<Transaction>(entity =>
+        {
+            entity.HasKey(e => e.Id).HasName("PK__Transact__3214EC07438D024A");
+
+            entity.ToTable("Transaction");
+
+            entity.Property(e => e.CreatedAt).HasColumnType("datetime");
+            entity.Property(e => e.Note).HasMaxLength(500);
+            entity.Property(e => e.OrderId)
+                .IsRequired()
+                .HasMaxLength(255);
+            entity.Property(e => e.PaidAt).HasColumnType("datetime");
+            entity.Property(e => e.PaymentCode).HasMaxLength(255);
+            entity.Property(e => e.TotalAmount).HasColumnType("decimal(18, 2)");
+
+            entity.HasOne(d => d.Order).WithMany(p => p.Transactions)
+                .HasForeignKey(d => d.OrderId)
+                .HasConstraintName("FK_Transaction_Orders");
+
+            entity.HasOne(d => d.TransactionType).WithMany(p => p.Transactions)
+                .HasForeignKey(d => d.TransactionTypeId)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK_Transaction_TransactionType");
         });
 
         modelBuilder.Entity<TransactionType>(entity =>
         {
-            entity.HasKey(e => e.Id).HasName("PK__Transact__3214EC07D88D5DD0");
+            entity.HasKey(e => e.Id).HasName("PK__Transact__3214EC07450B5CD3");
 
             entity.ToTable("TransactionType");
 
+            entity.HasIndex(e => e.TypeName, "UQ__Transact__D4E7DFA8FCA6D65C").IsUnique();
+
             entity.Property(e => e.CreatedAt).HasColumnType("datetime");
-            entity.Property(e => e.DeletedAt).HasColumnType("datetime");
-            entity.Property(e => e.Description).HasMaxLength(255);
-            entity.Property(e => e.Status).HasDefaultValue(true);
+            entity.Property(e => e.Note).HasMaxLength(255);
             entity.Property(e => e.TypeName)
                 .IsRequired()
                 .HasMaxLength(100);
@@ -475,72 +448,18 @@ public partial class RentEaseContext : DbContext
 
         modelBuilder.Entity<Utility>(entity =>
         {
-            entity.HasKey(e => e.Id).HasName("PK__Utility__3214EC076B0595FA");
+            entity.HasKey(e => e.Id).HasName("PK__Utility__3214EC07BD26B4C7");
 
             entity.ToTable("Utility");
 
-            entity.HasIndex(e => e.UtilityName, "UQ__Utility__E8B225D69443F694").IsUnique();
+            entity.HasIndex(e => e.UtilityName, "UQ__Utility__E8B225D6E81AEADB").IsUnique();
 
             entity.Property(e => e.CreatedAt).HasColumnType("datetime");
-            entity.Property(e => e.DeletedAt).HasColumnType("datetime");
-            entity.Property(e => e.Description).HasMaxLength(255);
-            entity.Property(e => e.Status).HasDefaultValue(true);
+            entity.Property(e => e.Note).HasMaxLength(255);
             entity.Property(e => e.UpdatedAt).HasColumnType("datetime");
             entity.Property(e => e.UtilityName)
                 .IsRequired()
                 .HasMaxLength(100);
-        });
-
-        modelBuilder.Entity<Wallet>(entity =>
-        {
-            entity.HasKey(e => e.AccountId).HasName("PK__Wallet__349DA5A6682874AE");
-
-            entity.ToTable("Wallet");
-
-            entity.HasIndex(e => e.AccountId, "IDX_Wallet_AccountId");
-
-            entity.Property(e => e.AccountId).ValueGeneratedNever();
-            entity.Property(e => e.Balance).HasColumnType("decimal(18, 2)");
-            entity.Property(e => e.CreatedAt).HasColumnType("datetime");
-            entity.Property(e => e.DeletedAt).HasColumnType("datetime");
-            entity.Property(e => e.Status).HasDefaultValue(true);
-            entity.Property(e => e.UpdatedAt).HasColumnType("datetime");
-
-            entity.HasOne(d => d.Account).WithOne(p => p.Wallet)
-                .HasForeignKey<Wallet>(d => d.AccountId)
-                .HasConstraintName("FK_Wallet_Account");
-        });
-
-        modelBuilder.Entity<WalletTransaction>(entity =>
-        {
-            entity.HasKey(e => e.Id).HasName("PK__WalletTr__3214EC0725C77FF7");
-
-            entity.ToTable("WalletTransaction");
-
-            entity.HasIndex(e => e.TransactionTypeId, "IDX_WalletTransaction_TransactionTypeId");
-
-            entity.HasIndex(e => e.WalletId, "IDX_WalletTransaction_WalletId");
-
-            entity.HasIndex(e => e.OrderId, "UQ__WalletTr__C3905BCE43657992").IsUnique();
-
-            entity.Property(e => e.Amount).HasColumnType("decimal(18, 2)");
-            entity.Property(e => e.CreatedAt).HasColumnType("datetime");
-            entity.Property(e => e.Description).HasMaxLength(500);
-            entity.Property(e => e.OrderId).HasMaxLength(100);
-
-            entity.HasOne(d => d.Order).WithOne(p => p.WalletTransaction)
-                .HasForeignKey<WalletTransaction>(d => d.OrderId)
-                .OnDelete(DeleteBehavior.Cascade)
-                .HasConstraintName("FK_WalletTransaction_Orders");
-
-            entity.HasOne(d => d.TransactionType).WithMany(p => p.WalletTransactions)
-                .HasForeignKey(d => d.TransactionTypeId)
-                .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK_WalletTransaction_TransactionType");
-
-            entity.HasOne(d => d.Wallet).WithMany(p => p.WalletTransactions)
-                .HasForeignKey(d => d.WalletId)
-                .HasConstraintName("FK_WalletTransaction_Wallet");
         });
 
         OnModelCreatingPartial(modelBuilder);

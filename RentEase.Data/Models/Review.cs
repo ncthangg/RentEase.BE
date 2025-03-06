@@ -9,9 +9,9 @@ public partial class Review
 {
     public int Id { get; set; }
 
-    public int ReviewerId { get; set; }
+    public string AccountId { get; set; }
 
-    public int AptId { get; set; }
+    public string AptId { get; set; }
 
     public double? Rating { get; set; }
 
@@ -21,11 +21,7 @@ public partial class Review
 
     public DateTime? UpdatedAt { get; set; }
 
-    public DateTime? DeletedAt { get; set; }
-
-    public bool? Status { get; set; }
+    public virtual Account Account { get; set; }
 
     public virtual Apt Apt { get; set; }
-
-    public virtual Account Reviewer { get; set; }
 }

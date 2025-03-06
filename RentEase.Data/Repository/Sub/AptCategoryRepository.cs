@@ -1,4 +1,4 @@
-﻿using RentEase.Common.DTOs.Response;
+﻿using RentEase.Common.DTOs;
 using RentEase.Data.DBContext;
 using RentEase.Data.Models;
 using RentEase.Data.Repository.Base;
@@ -11,26 +11,16 @@ namespace RentEase.Data.Repository.Sub
         public AptCategoryRepository()
         {
         }
-        public AptCategoryRepository(RentEaseContext context) => _context = context; 
+        public AptCategoryRepository(RentEaseContext context) => _context = context;
 
         public async Task<PagedResult<AptCategory>> GetAllAsync(bool? status, int page, int pageSize)
         {
             IQueryable<AptCategory> query = _context.Set<AptCategory>();
 
-            Expression<Func<AptCategory, bool>> filter = a =>
-                (!status.HasValue || a.Status == status.Value);
+            Expression<Func<AptCategory, bool>> filter = null;
 
             return await GetPagedAsync(filter, null, page, pageSize);
         }
-        public async Task<PagedResult<AptCategory>> GetBySearchAsync(string? categoryName, bool? status, int page, int pageSize)
-        {
-            IQueryable<AptCategory> query = _context.Set<AptCategory>();
 
-            Expression<Func<AptCategory, bool>> filter = a =>
-                (string.IsNullOrEmpty(categoryName) || a.CategoryName.Contains(categoryName)) &&
-                (!status.HasValue || a.Status == status.Value);
-
-            return await GetPagedAsync(filter, null, page, pageSize);
-        }
     }
 }

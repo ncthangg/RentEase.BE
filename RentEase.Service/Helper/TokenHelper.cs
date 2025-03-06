@@ -10,7 +10,7 @@ namespace RentEase.Service.Helper
 {
     public interface ITokenHelper
     {
-        Task<ResponseToken> GenerateTokens(int userId, int roleId);
+        Task<TokenRes> GenerateTokens(int userId, int roleId);
         string GenerateVerificationCode();
         string GenerateAptCode(string categoryName);
         string GetUserIdFromHttpContextAccessor(IHttpContextAccessor httpContextAccessor);
@@ -27,7 +27,7 @@ namespace RentEase.Service.Helper
         }
 
         //GENERATE JWT TOKEN
-        public async Task<ResponseToken> GenerateTokens(int userId, int roleId)
+        public async Task<TokenRes> GenerateTokens(int userId, int roleId)
         {
             var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["JwtSettings:Key"]));
             var credentials = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
@@ -42,7 +42,7 @@ namespace RentEase.Service.Helper
             //var refreshTokenString = GenerateRefreshToken(credentials, claims);
             var refreshTokenString = GenerateRefreshToken();
 
-            return new ResponseToken()
+            return new TokenRes()
             {
                 AccessToken = accessTokenString,
                 RefreshToken = refreshTokenString
@@ -79,7 +79,7 @@ namespace RentEase.Service.Helper
         //    );
         //    return new JwtSecurityTokenHandler().WriteToken(refreshToken);
         //}
-        
+
 
         //GENERATE VERIFICATION CODE
         public string GenerateVerificationCode()

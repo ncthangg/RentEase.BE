@@ -1,6 +1,5 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Http;
-using Microsoft.IdentityModel.Tokens;
 using RentEase.Common.Base;
 using RentEase.Common.DTOs.Authenticate;
 using RentEase.Common.DTOs.Dto;
@@ -12,9 +11,9 @@ namespace RentEase.Service.Service.Authenticate
 {
     public interface IAuthenticateService
     {
-        Task<ServiceResult> SignIn(RequestLoginDto request);
-        Task<ServiceResult> SignUp(RequestRegisterDto request);
-        Task<ServiceResult> ChangePassword(RequestChangePasswordDto request);
+        Task<ServiceResult> SignIn(LoginReq request);
+        Task<ServiceResult> SignUp(RegisterReq request);
+        Task<ServiceResult> ChangePassword(ChangePasswordReq request);
         Task<ServiceResult> GetInfo();
         Task<ServiceResult> Logout();
     }
@@ -45,7 +44,7 @@ namespace RentEase.Service.Service.Authenticate
             _accountVerificationService = accountVerificationService;
         }
 
-        public async Task<ServiceResult> SignIn(RequestLoginDto request)
+        public async Task<ServiceResult> SignIn(LoginReq request)
         {
             try
             {
@@ -78,15 +77,15 @@ namespace RentEase.Service.Service.Authenticate
                 var tokenData = saveTokenResult.Data as AccountToken;
 
                 // Xử lí DTO trả về
-                var responseAccountDto = _mapper.Map<ResponseAccountDto>(accountData);
-                responseAccountDto.ResponseWalletDto = (ResponseWalletDto)((await _serviceWrapper.WalletService.GetByIdAsync(accountData.Id)).Data);
-                var responseAccountTokenDto = _mapper.Map<ResponseAccountToken>(tokenData);
+                var responseAccountDto = _mapper.Map<AccountRes>(accountData);
+                responseAccountDto.WalletRes = (WalletRes)((await _serviceWrapper.WalletService.GetByIdAsync(accountData.Id)).Data);
+                var responseAccountTokenDto = _mapper.Map<AccountTokenRes>(tokenData);
 
-                var response = new ResponseLoginDto
+                var response = new LoginRes
                 {
-                    ResponseAccountDto = responseAccountDto,
+                    AccountRes = responseAccountDto,
                     AccessToken = token.AccessToken,
-                    ResponseAccountToken = responseAccountTokenDto,
+                    AccountTokenRes = responseAccountTokenDto,
                 };
 
                 return new ServiceResult(Const.SUCCESS_ACTION, "Login thành công", response);
@@ -97,7 +96,7 @@ namespace RentEase.Service.Service.Authenticate
             }
         }
 
-        public async Task<ServiceResult> SignUp(RequestRegisterDto request)
+        public async Task<ServiceResult> SignUp(RegisterReq request)
         {
             try
             {
@@ -110,9 +109,9 @@ namespace RentEase.Service.Service.Authenticate
                     return new ServiceResult(Const.ERROR_EXCEPTION, "Account đã tồn tại");
                 }
 
-                var response = new ResponseRegisterDto
+                var response = new RegisterRes
                 {
-                    ResponseAccountDto = null,
+                    AccountRes = null,
                 };
 
                 var createItemResult = await _serviceWrapper.AccountService.CreateByGuest(request);
@@ -139,7 +138,7 @@ namespace RentEase.Service.Service.Authenticate
                     return new ServiceResult(Const.ERROR_EXCEPTION, "Gửi code thất bại");
                 }
 
-                response.ResponseAccountDto = _mapper.Map<ResponseAccountDto>(itemData);
+                response.AccountRes = _mapper.Map<AccountRes>(itemData);
 
                 return new ServiceResult(Const.SUCCESS_ACTION, "Register thành công, Verification Code đã được gửi.", response);
             }
@@ -160,7 +159,7 @@ namespace RentEase.Service.Service.Authenticate
                     return new ServiceResult(Const.ERROR_EXCEPTION, "Lỗi khi lấy info");
                 }
 
-                if (!int.TryParse(accountId, out int accountIdInt))
+                if (!int.TryParse(accountId, out string accountIdInt))
                 {
                     return new ServiceResult(Const.ERROR_EXCEPTION, "ID tài khoản không hợp lệ");
                 }
@@ -177,9 +176,9 @@ namespace RentEase.Service.Service.Authenticate
                     return new ServiceResult(Const.ERROR_EXCEPTION, "Ví không tồn tại ");
                 }
 
-                var responseAccountData = (ResponseAccountDto)accountExist.Data;
-                var responseWalletData = (ResponseWalletDto)walletExist.Data;
-                responseAccountData.ResponseWalletDto = responseWalletData;
+                var responseAccountData = (AccountRes)accountExist.Data;
+                var responseWalletData = (WalletRes)walletExist.Data;
+                responseAccountData.WalletRes = responseWalletData;
 
                 return new ServiceResult(Const.SUCCESS_ACTION, "Lấy thông tin tài khoản thành công", responseAccountData);
 
@@ -190,7 +189,7 @@ namespace RentEase.Service.Service.Authenticate
             }
         }
 
-        public async Task<ServiceResult> ChangePassword(RequestChangePasswordDto request)
+        public async Task<ServiceResult> ChangePassword(ChangePasswordReq request)
         {
             try
             {
@@ -201,19 +200,19 @@ namespace RentEase.Service.Service.Authenticate
                     return new ServiceResult(Const.ERROR_EXCEPTION, "Lỗi khi lấy info");
                 }
 
-                if (!int.TryParse(accountId, out int accountIdInt))
+                if (!int.TryParse(accountId, out string accountIdInt))
                 {
                     return new ServiceResult(Const.ERROR_EXCEPTION, "ID tài khoản không hợp lệ");
                 }
 
                 // Kiểm tra người dùng đã tồn tại chưa
-                 var item = await _unitOfWork.AccountRepository.GetByIdAsync(accountIdInt);
+                var item = await _unitOfWork.AccountRepository.GetByIdAsync(accountIdInt);
                 if (item.PasswordHash.Equals(request.OldPassword) && request.NewPassword.Equals(request.ConfirmPassword))
                 {
-                    var updateItem = _mapper.Map<RequestAccountDto>(item);
+                    var updateItem = _mapper.Map<AccountReq>(item);
                     updateItem.PasswordHash = request.NewPassword;
                     var result = await _serviceWrapper.AccountService.Update(accountIdInt, updateItem);
-                    if(result.Status > 0)
+                    if (result.Status > 0)
                     {
 
                         return new ServiceResult(Const.SUCCESS_ACTION, "Thay đổi mật khẩu thành công");

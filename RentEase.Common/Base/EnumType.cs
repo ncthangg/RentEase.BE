@@ -5,51 +5,41 @@
         public enum Role
         {
             Admin = 1,
-            Manager = 2,
-            Lessor = 3,
-            Lesses = 4
-        }
-        public enum ApproveStatus
-        {
-            Pending = 1,      // Đang xét duyệt
-            Approved = 2,     // Đã xét duyệt
-            Rejected = 3      // Đã từ chối
+            Lessor = 2,
+            Lesses = 3
         }
 
-        public enum ProgressStatus
+        public enum GenderId
         {
-            NotYet = 1,       // Chưa
-            InProgress = 2,   // Trong quá trình
-            Done = 3          // Hoàn thành
+            Male = 1,
+            Female = 2,
+            Other = 3
+        }
+        public enum OldId
+        {
+            Age18To22 = 1,
+            Age22To26 = 2,
+            Age26To30 = 3,
+            Age30To40 = 4
         }
 
-        public enum TransactionStatus
+        public enum StatusId
         {
             Pending = 1,      // Đang xử lý
             Success = 2,      // Thành công
             Failed = 3        // Thất bại
         }
 
-        public enum ContractStatus
-        {
-            Pending = 1,       // Đang xét duyệt
-            Active = 2,        // Hoạt động
-            ExpiringSoon = 3,  // Sắp hết hạn
-            Completed = 4,     // Hoàn thành
-            Cancelled = 5      // Hủy
-        }
-
-        public enum Priority
-        {
-            Low = 1,          // Thấp
-            Medium = 2,       // Trung bình
-            High = 3          // Cao
-        }
-
-        public enum LiveStatus
+        public enum LiveStatusId
         {
             Active = 1,       // Đang hoạt động
             MoveOut = 2       // Rời đi
+        }
+        public enum AptStatusId
+        {
+            Available = 1,
+            Full = 2,
+            UnAvailable = 3
         }
 
     }

@@ -1,32 +1,23 @@
 ﻿using AutoMapper;
+using Microsoft.AspNetCore.Http;
 using RentEase.Common.Base;
 using RentEase.Common.DTOs.Dto;
-using RentEase.Data.Models;
 using RentEase.Data;
+using RentEase.Data.Models;
 using RentEase.Service.Service.Base;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using MailKit.Search;
-using Org.BouncyCastle.Asn1.X509;
-using Microsoft.AspNetCore.Http;
 
 namespace RentEase.Service.Service.Main
 {
-
     public interface IOrderService
     {
-        Task<ServiceResult> GetAllAsync(int page, int pageSize, bool? status);
-        Task<ServiceResult> GetByIdAsync(string id);
-        Task<ServiceResult> GetAllForAccountAsync(int accountId, int page, int pageSize);
-        Task<ServiceResult> Create(RequestOrderDto request);
-        Task<ServiceResult> Update(string orderId, int? newStatus);
-        Task<ServiceResult> DeleteByIdAsync(string id);
+        Task<ServiceResult> GetAll(int page, int pageSize, bool? status = true);
+        Task<ServiceResult> GetById(string id);
+        Task<ServiceResult> GetAllOwn(int? statusId, int page, int pageSize);
+        Task<ServiceResult> Create(OrderReq request);
+        Task<ServiceResult> Delete(string id);
 
     }
-    public class OrderService : BaseService<Order, ResponseOrderDto>, IOrderService
+    public class OrderService : BaseService<Order, OrderRes>, IOrderService
     {
         private readonly IHttpContextAccessor _httpContextAccessor;
         private readonly UnitOfWork _unitOfWork;
@@ -39,48 +30,7 @@ namespace RentEase.Service.Service.Main
             _mapper = mapper;
             _helperWrapper = helperWrapper;
         }
-        public async Task<ServiceResult> GetAllForAccountAsync(int accountId, int page, int pageSize)
-        {
-
-            var items = await _unitOfWork.OrderRepository.GetAllForAccountAsync(accountId, page, pageSize);
-            if (!items.Data.Any())
-            {
-                return new ServiceResult(Const.ERROR_EXCEPTION, Const.ERROR_EXCEPTION_MSG);
-            }
-            else
-            {
-                var responseData = _mapper.Map<IEnumerable<ResponseOrderDto>>(items.Data);
-                return new ServiceResult(Const.SUCCESS_ACTION, Const.SUCCESS_ACTION_MSG, items.TotalCount, items.TotalPages, items.CurrentPage, responseData);
-            }
-        }
-        public async Task<ServiceResult> Create(RequestOrderDto request)
-        {
-            var transactionType = await _unitOfWork.TransactionTypeRepository.GetByIdAsync(request.TransactionTypeId);
-            var orderId = transactionType.TypeName + DateTime.Now.ToString();
-            var createItem = new Order()
-            {
-                Id = orderId,
-                ContractId = request.ContractId,
-                LessorId = request.LessorId,
-                LesseeId = request.LesseeId,
-                Amount = request.Amount,
-                TransactionTypeId = request.TransactionTypeId,
-                TransactionStatusId = (int)EnumType.TransactionStatus.Pending,
-                DueDate = DateTime.Now.AddDays(7),
-                CreatedAt = DateTime.Now
-            };
-
-            var result = await _unitOfWork.OrderRepository.CreateAsync(createItem);
-            if (result > 0)
-            {
-                var responseData = _mapper.Map<ResponseOrderDto>(createItem);
-
-                return new ServiceResult(Const.SUCCESS_ACTION, Const.SUCCESS_ACTION_MSG, responseData);
-            }
-
-            return new ServiceResult(Const.ERROR_EXCEPTION, Const.ERROR_EXCEPTION_MSG);
-        }
-        public async Task<ServiceResult> Update(string orderId, int? newStatus)
+        public async Task<ServiceResult> GetAllOwn(int? statusId, int page, int pageSize)
         {
             string accountId = _helperWrapper.TokenHelper.GetUserIdFromHttpContextAccessor(_httpContextAccessor);
 
@@ -89,34 +39,42 @@ namespace RentEase.Service.Service.Main
                 return new ServiceResult(Const.ERROR_EXCEPTION, "Lỗi khi lấy info");
             }
 
-            if (!int.TryParse(accountId, out int accountIdInt))
-            {
-                return new ServiceResult(Const.ERROR_EXCEPTION, "ID tài khoản không hợp lệ");
-            }
+            var items = await _unitOfWork.OrderRepository.GetAllOwn(accountId, statusId, page, pageSize);
 
-
-            if (!await EntityExistsAsync("Id", orderId))
+            if (!items.Data.Any())
             {
                 return new ServiceResult(Const.ERROR_EXCEPTION, Const.ERROR_EXCEPTION_MSG);
             }
-
-            var item = _mapper.Map<Order>((ResponseOrderDto)(await GetByIdAsync(orderId)).Data);
-
-            if (newStatus != (int)EnumType.TransactionStatus.Pending &&
-                     newStatus != (int)EnumType.TransactionStatus.Success &&
-                         newStatus != (int)EnumType.TransactionStatus.Failed )
+            else
             {
-                return new ServiceResult(Const.ERROR_EXCEPTION, "TransactionStatus không hợp lệ.");
+                var responseData = _mapper.Map<IEnumerable<OrderRes>>(items.Data);
+                return new ServiceResult(Const.SUCCESS_ACTION, Const.SUCCESS_ACTION_MSG, items.TotalCount, items.TotalPages, items.CurrentPage, responseData);
+            }
+        }
+        public async Task<ServiceResult> Create(OrderReq request)
+        {
+            string accountId = _helperWrapper.TokenHelper.GetUserIdFromHttpContextAccessor(_httpContextAccessor);
+
+            if (string.IsNullOrEmpty(accountId))
+            {
+                return new ServiceResult(Const.ERROR_EXCEPTION, "Lỗi khi lấy info");
             }
 
-            item.TransactionStatusId = (int)newStatus;
+            var transactionType = await _unitOfWork.TransactionTypeRepository.GetByIdAsync(request.TransactionTypeId);
+            var createItem = new Order()
+            {
+                OrderId = transactionType.TypeName + Guid.NewGuid().ToString("N"),
+                SenderId = accountId,
+                Amount = request.Amount,
+                IncurredCost = request.IncurredCost,
+                CreatedAt = DateTime.Now
+            };
 
-            var result = await _unitOfWork.OrderRepository.UpdateAsync(item);
+            var result = await _unitOfWork.OrderRepository.CreateAsync(createItem);
             if (result > 0)
             {
-                var responseData = _mapper.Map<ResponseOrderDto>(item);
-
-                return new ServiceResult(Const.SUCCESS_ACTION, Const.SUCCESS_ACTION_MSG, responseData);
+                var resultData = _mapper.Map<OrderRes>(createItem);
+                return new ServiceResult(Const.SUCCESS_ACTION, "Tạo thành công", resultData);
             }
 
             return new ServiceResult(Const.ERROR_EXCEPTION, Const.ERROR_EXCEPTION_MSG);

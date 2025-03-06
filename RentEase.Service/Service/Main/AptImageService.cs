@@ -1,5 +1,4 @@
 ﻿using AutoMapper;
-using MailKit.Search;
 using Microsoft.AspNetCore.Http;
 using RentEase.Common.Base;
 using RentEase.Common.DTOs.Dto;
@@ -11,28 +10,29 @@ namespace RentEase.Service.Service.Main
 {
     public interface IAptImageService
     {
-        Task<ServiceResult> GetAllAsync(int page, int pageSize, bool? status);
-        Task<ServiceResult> GetByIdAsync(int id);
-        Task<ServiceResult> Create(RequestAptImageDto request);
-        Task<ServiceResult> Update(int id, RequestAptImageDto request);
-        Task<ServiceResult> Delete(int id);
+        Task<ServiceResult> GetAll(int page, int pageSize, bool? status = true);
+        Task<ServiceResult> GetById(string id);
+        Task<ServiceResult> Create(AptImageReq request);
+        Task<ServiceResult> Update(string id, AptImageReq request);
+        Task<ServiceResult> Delete(string id);
 
     }
-    public class AptImageService : BaseService<AptImage, ResponseAptImageDto>, IAptImageService
+    public class AptImageService : BaseService<AptImage, AptImageRes>, IAptImageService
     {
         private readonly IHttpContextAccessor _httpContextAccessor;
         private readonly UnitOfWork _unitOfWork;
         private readonly IMapper _mapper;
         private readonly HelperWrapper _helperWrapper;
-        public AptImageService(IMapper mapper, HelperWrapper helperWrapper)
+        public AptImageService(IHttpContextAccessor httpContextAccessor, IMapper mapper, HelperWrapper helperWrapper)
         : base(mapper)
         {
+            _httpContextAccessor = httpContextAccessor;
             _unitOfWork ??= new UnitOfWork();
             _mapper = mapper;
             _helperWrapper = helperWrapper;
         }
 
-        public async Task<ServiceResult> Create(RequestAptImageDto request)
+        public async Task<ServiceResult> Create(AptImageReq request)
         {
             if (await EntityExistsAsync("AptId", request.AptId))
             {
@@ -50,44 +50,51 @@ namespace RentEase.Service.Service.Main
                 ImageUrl6 = request.ImageUrl6,
                 CreatedAt = DateTime.Now,
                 UpdatedAt = null,
-                DeletedAt = null,
-                Status = true,
             };
 
             var result = await _unitOfWork.AptImageRepository.CreateAsync(createItem);
             if (result > 0)
             {
-                var responseData = _mapper.Map<ResponseAptImageDto>(createItem);
-
-                return new ServiceResult(Const.SUCCESS_ACTION, Const.SUCCESS_ACTION_MSG, responseData);
+                return new ServiceResult(Const.SUCCESS_ACTION, "Tạo thành công");
             }
 
             return new ServiceResult(Const.ERROR_EXCEPTION, Const.ERROR_EXCEPTION_MSG);
         }
-        public async Task<ServiceResult> Update(int id, RequestAptImageDto request)
+
+        public async Task<ServiceResult> Update(string id, AptImageReq request)
         {
             string accountId = _helperWrapper.TokenHelper.GetUserIdFromHttpContextAccessor(_httpContextAccessor);
+            string roleId = _helperWrapper.TokenHelper.GetRoleIdFromHttpContextAccessor(_httpContextAccessor);
 
             if (string.IsNullOrEmpty(accountId))
             {
                 return new ServiceResult(Const.ERROR_EXCEPTION, "Lỗi khi lấy info");
             }
 
-            if (!int.TryParse(accountId, out int accountIdInt))
+            if (!await EntityExistsAsync("AptId", id))
             {
-                return new ServiceResult(Const.ERROR_EXCEPTION, "ID tài khoản không hợp lệ");
+                return new ServiceResult(Const.ERROR_EXCEPTION, "Không tồn tại");
             }
 
-            if (!await EntityExistsAsync("Id", id))
+            var item = await _unitOfWork.AptImageRepository.GetByIdAsync(id);
+
+            if (item == null)
             {
-                return new ServiceResult(Const.ERROR_EXCEPTION, Const.ERROR_EXCEPTION_MSG);
+                return new ServiceResult(Const.ERROR_EXCEPTION, "Không tồn tại");
             }
 
-            var item = _mapper.Map<AptImage>((ResponseAptImageDto)(await GetByIdAsync(id)).Data);
+            if (accountId != item.Apt.OwnerId && roleId != "1")
+            {
+                return new ServiceResult(Const.ERROR_EXCEPTION, "Bạn không có quyền hạn.");
+            }
+
+            if (!(bool)item.Apt.Status)
+            {
+                return new ServiceResult(Const.ERROR_EXCEPTION, "Status == False.");
+            }
 
             var updateItem = new AptImage()
             {
-                Id = item.Id,
                 AptId = item.AptId,
                 ImageUrl1 = request.ImageUrl1,
                 ImageUrl2 = request.ImageUrl2,
@@ -97,44 +104,16 @@ namespace RentEase.Service.Service.Main
                 ImageUrl6 = request.ImageUrl6,
                 CreatedAt = item.CreatedAt,
                 UpdatedAt = DateTime.Now,
-                DeletedAt = null,
-                Status = item.Status,
             };
 
             var result = await _unitOfWork.AptImageRepository.UpdateAsync(updateItem);
             if (result > 0)
             {
-                var responseData = _mapper.Map<ResponseAptImageDto>(updateItem);
-
-                return new ServiceResult(Const.SUCCESS_ACTION, Const.SUCCESS_ACTION_MSG, responseData);
+                return new ServiceResult(Const.SUCCESS_ACTION, "Cập nhật thành công");
             }
 
             return new ServiceResult(Const.ERROR_EXCEPTION, Const.ERROR_EXCEPTION_MSG);
         }
-        public async Task<ServiceResult> Delete(int id)
-        {
-            if (!await EntityExistsAsync("Id", id))
-            {
-                return new ServiceResult(Const.ERROR_EXCEPTION, Const.ERROR_EXCEPTION_MSG);
-            }
-            var item = (AptImage)(await GetByIdAsync(id)).Data;
 
-            if (item != null)
-            {
-                item.DeletedAt = DateTime.Now;
-                item.Status = false;
-            }
-
-            var result = await _unitOfWork.AptImageRepository.UpdateAsync(item);
-
-            if (result > 0)
-            {
-                var responseData = _mapper.Map<ResponseAptImageDto>(item);
-
-                return new ServiceResult(Const.SUCCESS_ACTION, Const.SUCCESS_ACTION_MSG, responseData);
-            }
-
-            return new ServiceResult(Const.ERROR_EXCEPTION, Const.ERROR_EXCEPTION_MSG);
-        }
     }
 }

@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using RentEase.Common.DTOs;
 using RentEase.Common.DTOs.Dto;
-using RentEase.Common.DTOs.Response;
 using RentEase.Service.Service.Main;
 using System.Net;
 
@@ -23,28 +23,28 @@ namespace RentEase.API.Controllers.Main
         {
             try
             {
-                var result = await _AptService.GetAllAsync(page, pageSize, status);
+                var result = await _AptService.GetAll(page, pageSize, status);
                 if (result.Status < 0 && result.Data == null)
                 {
-                    return NotFound(new ApiResponse<string>
+                    return NotFound(new ApiRes<string>
                     {
                         StatusCode = HttpStatusCode.NotFound,
                         Message = result.Message
                     });
                 }
-                return Ok(new ApiResponse<IEnumerable<ResponseAptDto>>
+                return Ok(new ApiRes<IEnumerable<AptRes>>
                 {
                     StatusCode = HttpStatusCode.OK,
                     Message = result.Message,
                     Count = result.TotalCount,
                     TotalPages = result.TotalPage,
                     CurrentPage = result.CurrentPage,
-                    Data = (IEnumerable<ResponseAptDto>)result.Data
+                    Data = (IEnumerable<AptRes>)result.Data
                 });
             }
             catch (Exception ex)
             {
-                return BadRequest(new ApiResponse<string>
+                return BadRequest(new ApiRes<string>
                 {
                     StatusCode = HttpStatusCode.InternalServerError,
                     Message = $"Lỗi hệ thống: {ex.Message}"
@@ -53,29 +53,29 @@ namespace RentEase.API.Controllers.Main
         }
 
         [HttpGet("{id}")]
-        public async Task<IActionResult> Get(int id)
+        public async Task<IActionResult> Get(string id)
         {
             try
             {
-                var result = await _AptService.GetByIdAsync(id);
+                var result = await _AptService.GetById(id);
                 if (result.Status < 0 && result.Data == null)
                 {
-                    return NotFound(new ApiResponse<ResponseAptDto>
+                    return NotFound(new ApiRes<AptRes>
                     {
                         StatusCode = HttpStatusCode.NotFound,
                         Message = result.Message
                     });
                 }
-                return Ok(new ApiResponse<ResponseAptDto>
+                return Ok(new ApiRes<AptRes>
                 {
                     StatusCode = HttpStatusCode.OK,
                     Message = result.Message,
-                    Data = (ResponseAptDto)result.Data
+                    Data = (AptRes)result.Data
                 });
             }
             catch (Exception ex)
             {
-                return BadRequest(new ApiResponse<string>
+                return BadRequest(new ApiRes<string>
                 {
                     StatusCode = HttpStatusCode.InternalServerError,
                     Message = $"Lỗi hệ thống: {ex.Message}"
@@ -84,29 +84,28 @@ namespace RentEase.API.Controllers.Main
         }
 
         [HttpPost]
-        public async Task<IActionResult> Post([FromBody] RequestAptDto request)
+        public async Task<IActionResult> Post([FromBody] AptReq request)
         {
             try
             {
                 var result = await _AptService.Create(request);
                 if (result.Status < 0 && result.Data == null)
                 {
-                    return NotFound(new ApiResponse<ResponseAptDto>
+                    return NotFound(new ApiRes<AptRes>
                     {
                         StatusCode = HttpStatusCode.NotFound,
                         Message = result.Message
                     });
                 }
-                return Ok(new ApiResponse<ResponseAptDto>
+                return Ok(new ApiRes<string>
                 {
                     StatusCode = HttpStatusCode.OK,
-                    Message = result.Message,
-                    Data = (ResponseAptDto)result.Data
+                    Message = result.Message
                 });
             }
             catch (Exception ex)
             {
-                return BadRequest(new ApiResponse<string>
+                return BadRequest(new ApiRes<string>
                 {
                     StatusCode = HttpStatusCode.InternalServerError,
                     Message = $"Lỗi hệ thống: {ex.Message}"
@@ -115,29 +114,28 @@ namespace RentEase.API.Controllers.Main
         }
 
         [HttpPut("{id}")]
-        public async Task<IActionResult> Put(int id, [FromBody] RequestAptDto request, int? aptStatus,  int? approveStatus)
+        public async Task<IActionResult> Put(string id, [FromBody] AptReq request)
         {
             try
             {
-                var result = await _AptService.Update(id, request, aptStatus, approveStatus);
+                var result = await _AptService.Update(id, request);
                 if (result.Status < 0 && result.Data == null)
                 {
-                    return NotFound(new ApiResponse<ResponseAptDto>
+                    return NotFound(new ApiRes<AptRes>
                     {
                         StatusCode = HttpStatusCode.NotFound,
                         Message = result.Message
                     });
                 }
-                return Ok(new ApiResponse<ResponseAptDto>
+                return Ok(new ApiRes<string>
                 {
                     StatusCode = HttpStatusCode.OK,
-                    Message = result.Message,
-                    Data = (ResponseAptDto)result.Data
+                    Message = result.Message
                 });
             }
             catch (Exception ex)
             {
-                return BadRequest(new ApiResponse<string>
+                return BadRequest(new ApiRes<string>
                 {
                     StatusCode = HttpStatusCode.InternalServerError,
                     Message = $"Lỗi hệ thống: {ex.Message}"
@@ -146,29 +144,28 @@ namespace RentEase.API.Controllers.Main
         }
 
         [HttpDelete("{id}")]
-        public async Task<IActionResult> Delete(int id)
+        public async Task<IActionResult> Delete(string id)
         {
             try
             {
                 var result = await _AptService.Delete(id);
                 if (result.Status < 0 && result.Data == null)
                 {
-                    return NotFound(new ApiResponse<ResponseAptDto>
+                    return NotFound(new ApiRes<string>
                     {
                         StatusCode = HttpStatusCode.NotFound,
                         Message = result.Message
                     });
                 }
-                return Ok(new ApiResponse<ResponseAptDto>
+                return Ok(new ApiRes<string>
                 {
                     StatusCode = HttpStatusCode.OK,
-                    Message = result.Message,
-                    Data = (ResponseAptDto)result.Data
+                    Message = result.Message
                 });
             }
             catch (Exception ex)
             {
-                return BadRequest(new ApiResponse<string>
+                return BadRequest(new ApiRes<string>
                 {
                     StatusCode = HttpStatusCode.InternalServerError,
                     Message = $"Lỗi hệ thống: {ex.Message}"

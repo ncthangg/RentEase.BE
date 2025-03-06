@@ -1,8 +1,7 @@
-﻿using RentEase.Common.DTOs.Response;
+﻿using RentEase.Common.DTOs;
 using RentEase.Data.DBContext;
 using RentEase.Data.Models;
 using RentEase.Data.Repository.Base;
-using System.Linq.Expressions;
 
 namespace RentEase.Data.Repository.Main
 {
@@ -12,22 +11,15 @@ namespace RentEase.Data.Repository.Main
         public AptRepository()
         {
         }
-        public AptRepository(RentEaseContext context) => _context = context; 
-        public async Task<PagedResult<Apt>> GetAllAsync(bool? status, int page, int pageSize)
-        {
-            IQueryable<Apt> query = _context.Set<Apt>();
+        public AptRepository(RentEaseContext context) => _context = context;
 
-            Expression<Func<Apt, bool>> filter = a =>
-                (!status.HasValue || a.Status == status.Value);
-
-            return await GetPagedAsync(filter, null, page, pageSize);
-        }
-
-        public async Task<PagedResult<Apt>> GetAllForAccountAsync(
-          int accountId, bool? status, int page = 1, int pageSize = 10)
+        public async Task<PagedResult<Apt>> GetAllOwn(
+          string accountId, int? statusId, int page, int pageSize, bool? status)
         {
             return await GetPagedAsync(
-                filter: (o => o.OwnerId == accountId && (status == null || o.Status == status)),
+                filter: (o => o.OwnerId == accountId &&
+                            (statusId == null || o.StatusId == statusId) &&
+                                 (status == null || o.Status == status)),
                 orderBy: q => q.OrderByDescending(o => o.CreatedAt),
                 page: page,
                 pageSize: pageSize);

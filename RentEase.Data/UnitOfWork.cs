@@ -18,15 +18,14 @@ namespace RentEase.Data
         private AptStatusRepository _aptStatusRepository;
         private AptUtilityRepository _aptUtilityRepository;
         private UtilityRepository _utilityRepository;
-        private ContractRepository _contractRepository;
-        private CurrentResidentRepository _currentResidentRepository;
-        private MaintenanceRequestRepository _maintenanceRequestRepository;
         private ReviewRepository _reviewRepository;
         private RoleRepository _roleRepository;
         private TransactionTypeRepository _transactionTypeRepository;
         private OrderRepository _orderRepository;
-        private WalletRepository _walletRepository;
-        private WalletTransactionRepository _walletTransactionRepository;
+        private TransactionRepository _transactionRepository;
+
+        private PostRepository _postRepository;
+        private PostRequireRepository _postRequireRepository;
 
         private RentEaseContext _dbContext;
         public UnitOfWork()
@@ -43,15 +42,13 @@ namespace RentEase.Data
         public AptStatusRepository AptStatusRepository => _aptStatusRepository ??= new Repository.Sub.AptStatusRepository(_dbContext);
         public AptUtilityRepository AptUtilityRepository => _aptUtilityRepository ??= new Repository.Main.AptUtilityRepository(_dbContext);
         public UtilityRepository UtilityRepository => _utilityRepository ??= new Repository.Sub.UtilityRepository(_dbContext);
-        public ContractRepository ContractRepository => _contractRepository ??= new Repository.Main.ContractRepository(_dbContext);
-        public CurrentResidentRepository CurrentResidentRepository => _currentResidentRepository ??= new Repository.Main.CurrentResidentRepository(_dbContext);
-        public MaintenanceRequestRepository MaintenanceRequestRepository => _maintenanceRequestRepository ??= new Repository.Main.MaintenanceRequestRepository(_dbContext);
         public ReviewRepository ReviewRepository => _reviewRepository ??= new Repository.Main.ReviewRepository(_dbContext);
         public RoleRepository RoleRepository => _roleRepository ??= new Repository.Sub.RoleRepository(_dbContext);
         public TransactionTypeRepository TransactionTypeRepository => _transactionTypeRepository ??= new Repository.Sub.TransactionTypeRepository(_dbContext);
         public OrderRepository OrderRepository => _orderRepository ??= new Repository.Main.OrderRepository(_dbContext);
-        public WalletRepository WalletRepository => _walletRepository ??= new Repository.Main.WalletRepository(_dbContext);
-        public WalletTransactionRepository WalletTransactionRepository => _walletTransactionRepository ??= new Repository.Main.WalletTransactionRepository(_dbContext);
+        public TransactionRepository TransactionRepository => _transactionRepository ??= new Repository.Main.TransactionRepository(_dbContext);
+        public PostRepository PostRepository => _postRepository ??= new Repository.Main.PostRepository(_dbContext);
+        public PostRequireRepository PostRequireRepository => _postRequireRepository ??= new Repository.Main.PostRequireRepository(_dbContext);
 
         public GenericRepository<T> GetRepository<T>() where T : class
         {

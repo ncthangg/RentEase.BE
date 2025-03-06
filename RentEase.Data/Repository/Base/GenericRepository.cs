@@ -1,5 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using RentEase.Common.DTOs.Response;
+using RentEase.Common.DTOs;
 using RentEase.Data.DBContext;
 using System.Linq.Expressions;
 
@@ -133,7 +133,7 @@ namespace RentEase.Data.Repository.Base
                params Expression<Func<T, object>>[]? includes)
         {
             IQueryable<T> query = _context.Set<T>();
-            
+
             if (includes != null)
             {
                 foreach (var include in includes)

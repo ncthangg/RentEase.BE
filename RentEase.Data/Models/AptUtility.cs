@@ -9,19 +9,15 @@ public partial class AptUtility
 {
     public int Id { get; set; }
 
-    public int AptId { get; set; }
+    public string AptId { get; set; }
 
     public int UtilityId { get; set; }
 
-    public string Description { get; set; }
+    public string Note { get; set; }
 
     public DateTime CreatedAt { get; set; }
 
     public DateTime? UpdatedAt { get; set; }
-
-    public DateTime? DeletedAt { get; set; }
-
-    public bool? Status { get; set; }
 
     public virtual Apt Apt { get; set; }
 

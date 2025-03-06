@@ -11,15 +11,11 @@ public partial class Utility
 
     public string UtilityName { get; set; }
 
-    public string Description { get; set; }
+    public string Note { get; set; }
 
     public DateTime CreatedAt { get; set; }
 
     public DateTime? UpdatedAt { get; set; }
-
-    public DateTime? DeletedAt { get; set; }
-
-    public bool? Status { get; set; }
 
     public virtual ICollection<AptUtility> AptUtilities { get; set; } = new List<AptUtility>();
 }

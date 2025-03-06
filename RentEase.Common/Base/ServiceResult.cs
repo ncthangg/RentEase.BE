@@ -13,8 +13,8 @@
     public class ServiceResult : IServiceResult
     {
         public int Status { get; set; }
-        public string? Message { get; set; }
-        public object? Data { get; set; }
+        public string Message { get; set; } = string.Empty;
+        public object? Data { get; set; } = null;
         public int? TotalCount { get; set; }
         public int? TotalPage { get; set; }
         public int? CurrentPage { get; set; }
@@ -30,14 +30,14 @@
             Status = status;
             Message = message;
         }
-        public ServiceResult(int status, string message, object data)
+        public ServiceResult(int status, string message, object? data)
         {
             Status = status;
             Message = message;
             Data = data;
         }
 
-        public ServiceResult(int status, string message, int totalCount, int totalPage, int currentPage, object data)
+        public ServiceResult(int status, string message, int? totalCount, int? totalPage, int? currentPage, object? data)
         {
             Status = status;
             Message = message;

@@ -1,24 +1,16 @@
 ﻿
 namespace RentEase.Common.DTOs.Dto;
-public class RequestTransactionTypeDto
+public class TransactionTypeReq
 {
-    public string TypeName { get; set; }
+    public string TypeName { get; set; } = string.Empty;
 
-    public string Description { get; set; }
+    public string? Note { get; set; }
 }
-public class ResponseTransactionTypeDto
+public class TransactionTypeRes : Base
 {
     public int Id { get; set; }
 
-    public string TypeName { get; set; }
+    public string? TypeName { get; set; }
 
-    public string Description { get; set; }
-
-    public DateTime CreatedAt { get; set; }
-
-    public DateTime? UpdatedAt { get; set; }
-
-    public DateTime? DeletedAt { get; set; }
-
-    public bool? Status { get; set; }
+    public string? Note { get; set; }
 }

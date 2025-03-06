@@ -9,7 +9,7 @@ namespace RentEase.Service.Service.Authenticate
 {
     public interface IAccountTokenService
     {
-        Task<ServiceResult> Save(int accountId, string refreshToken);
+        Task<ServiceResult> Save(string accountId, string refreshToken);
         Task<ServiceResult> CheckRefreshTokenValidity(int id, string refreshToken);
     }
     public class AccountTokenService : IAccountTokenService
@@ -30,7 +30,7 @@ namespace RentEase.Service.Service.Authenticate
             _serviceWrapper = serviceWrapper;
             _helperWrapper = helperWrapper;
         }
-        public async Task<ServiceResult> Save(int accountId, string refreshToken)
+        public async Task<ServiceResult> Save(string accountId, string refreshToken)
         {
             if (accountId != null)
             {

@@ -7,15 +7,11 @@ namespace RentEase.Data.Models;
 
 public partial class Apt
 {
-    public int Id { get; set; }
+    public string AptId { get; set; }
 
-    public int OwnerId { get; set; }
-
-    public string AptCode { get; set; }
+    public string OwnerId { get; set; }
 
     public string Name { get; set; }
-
-    public string Description { get; set; }
 
     public double? Area { get; set; }
 
@@ -33,15 +29,15 @@ public partial class Apt
 
     public long? PilePrice { get; set; }
 
-    public int CategoryId { get; set; }
+    public int AptCategoryId { get; set; }
 
-    public int StatusId { get; set; }
+    public int AptStatusId { get; set; }
 
     public int NumberOfRoom { get; set; }
 
-    public int AvailableRoom { get; set; }
+    public int NumberOfSlot { get; set; }
 
-    public int ApproveStatusId { get; set; }
+    public int StatusId { get; set; }
 
     public string Note { get; set; }
 
@@ -55,19 +51,15 @@ public partial class Apt
 
     public bool? Status { get; set; }
 
-    public virtual ICollection<AptImage> AptImages { get; set; } = new List<AptImage>();
+    public virtual AptCategory AptCategory { get; set; }
+
+    public virtual AptImage AptImage { get; set; }
+
+    public virtual AptStatus AptStatus { get; set; }
 
     public virtual ICollection<AptUtility> AptUtilities { get; set; } = new List<AptUtility>();
 
-    public virtual AptCategory Category { get; set; }
-
-    public virtual ICollection<Contract> Contracts { get; set; } = new List<Contract>();
-
-    public virtual ICollection<CurrentResident> CurrentResidents { get; set; } = new List<CurrentResident>();
-
-    public virtual ICollection<MaintenanceRequest> MaintenanceRequests { get; set; } = new List<MaintenanceRequest>();
+    public virtual ICollection<Post> Posts { get; set; } = new List<Post>();
 
     public virtual ICollection<Review> Reviews { get; set; } = new List<Review>();
-
-    public virtual AptStatus StatusNavigation { get; set; }
 }

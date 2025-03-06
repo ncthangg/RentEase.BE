@@ -1,13 +1,7 @@
-﻿using RentEase.Common.DTOs.Response;
+﻿using RentEase.Common.DTOs;
 using RentEase.Data.DBContext;
 using RentEase.Data.Models;
 using RentEase.Data.Repository.Base;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Linq.Expressions;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace RentEase.Data.Repository.Main
 {
@@ -18,11 +12,12 @@ namespace RentEase.Data.Repository.Main
         {
         }
         public OrderRepository(RentEaseContext context) => _context = context;
-        public async Task<PagedResult<Order>> GetAllForAccountAsync(
-                  int accountId, int page = 1, int pageSize = 10)
+        public async Task<PagedResult<Order>> GetAllOwn(
+            string accountId, int? statusId, int page, int pageSize)
         {
             return await GetPagedAsync(
-                filter: o => o.LessorId == accountId,
+                filter: o => o.SenderId == accountId &&
+                             (statusId == null || o.StatusId == statusId),
                 orderBy: q => q.OrderByDescending(o => o.CreatedAt),
                 page: page,
                 pageSize: pageSize);

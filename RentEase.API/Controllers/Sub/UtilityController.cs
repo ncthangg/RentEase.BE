@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using RentEase.Common.DTOs;
 using RentEase.Common.DTOs.Dto;
-using RentEase.Common.DTOs.Response;
 using RentEase.Service.Service.Sub;
 using System.Net;
 
@@ -19,32 +19,32 @@ namespace RentEase.API.Controllers.Sub
         }
 
         [HttpGet]
-        public async Task<IActionResult> Get([FromQuery] bool status = true, [FromQuery] int page = 1, [FromQuery] int pageSize = 10)
+        public async Task<IActionResult> Get([FromQuery] int page = 1, [FromQuery] int pageSize = 10)
         {
             try
             {
-                var result = await _utilityService.GetAllAsync(status, page, pageSize);
+                var result = await _utilityService.GetAll(page, pageSize, null);
                 if (result.Status < 0 && result.Data == null)
                 {
-                    return NotFound(new ApiResponse<string>
+                    return NotFound(new ApiRes<string>
                     {
                         StatusCode = HttpStatusCode.NotFound,
                         Message = result.Message
                     });
                 }
-                return Ok(new ApiResponse<IEnumerable<ResponseUtilityDto>>
+                return Ok(new ApiRes<IEnumerable<UtilityRes>>
                 {
                     StatusCode = HttpStatusCode.OK,
                     Message = result.Message,
                     Count = result.TotalCount,
                     TotalPages = result.TotalPage,
                     CurrentPage = result.CurrentPage,
-                    Data = (IEnumerable<ResponseUtilityDto>)result.Data
+                    Data = (IEnumerable<UtilityRes>)result.Data
                 });
             }
             catch (Exception ex)
             {
-                return BadRequest(new ApiResponse<string>
+                return BadRequest(new ApiRes<string>
                 {
                     StatusCode = HttpStatusCode.InternalServerError,
                     Message = $"Lỗi hệ thống: {ex.Message}"
@@ -57,62 +57,25 @@ namespace RentEase.API.Controllers.Sub
         {
             try
             {
-                var result = await _utilityService.GetByIdAsync(id);
+                var result = await _utilityService.GetById(id);
                 if (result.Status < 0 && result.Data == null)
                 {
-                    return NotFound(new ApiResponse<string>
+                    return NotFound(new ApiRes<string>
                     {
                         StatusCode = HttpStatusCode.NotFound,
                         Message = result.Message
                     });
                 }
-                return Ok(new ApiResponse<ResponseUtilityDto>
+                return Ok(new ApiRes<UtilityRes>
                 {
                     StatusCode = HttpStatusCode.OK,
                     Message = result.Message,
-                    Data = (ResponseUtilityDto)result.Data
+                    Data = (UtilityRes)result.Data
                 });
             }
             catch (Exception ex)
             {
-                return BadRequest(new ApiResponse<string>
-                {
-                    StatusCode = HttpStatusCode.InternalServerError,
-                    Message = $"Lỗi hệ thống: {ex.Message}"
-                });
-            }
-        }
-
-        [HttpGet("search")]
-        public async Task<IActionResult> Search([FromQuery] string name, [FromQuery] bool status = true, [FromQuery] int page = 1, [FromQuery] int pageSize = 10)
-        {
-            try
-            {
-                if (string.IsNullOrWhiteSpace(name))
-                {
-                    return BadRequest(new { message = "Name is required" });
-                }
-
-                var result = await _utilityService.Search(name, status, page, pageSize);
-
-                if (result.Status < 0 && result.Data == null)
-                {
-                    return NotFound(new ApiResponse<string>
-                    {
-                        StatusCode = HttpStatusCode.NotFound,
-                        Message = result.Message
-                    });
-                }
-                return Ok(new ApiResponse<IEnumerable<ResponseUtilityDto>>
-                {
-                    StatusCode = HttpStatusCode.OK,
-                    Message = result.Message,
-                    Data = (IEnumerable<ResponseUtilityDto>)result.Data
-                });
-            }
-            catch (Exception ex)
-            {
-                return BadRequest(new ApiResponse<string>
+                return BadRequest(new ApiRes<string>
                 {
                     StatusCode = HttpStatusCode.InternalServerError,
                     Message = $"Lỗi hệ thống: {ex.Message}"
@@ -121,29 +84,28 @@ namespace RentEase.API.Controllers.Sub
         }
 
         [HttpPost]
-        public async Task<IActionResult> Post(RequestUtilityDto request)
+        public async Task<IActionResult> Post(UtilityReq request)
         {
             try
             {
                 var result = await _utilityService.Create(request);
-                if (result.Status < 0 && result.Data == null)
+                if (result.Status < 0)
                 {
-                    return NotFound(new ApiResponse<string>
+                    return NotFound(new ApiRes<string>
                     {
                         StatusCode = HttpStatusCode.NotFound,
                         Message = result.Message
                     });
                 }
-                return Ok(new ApiResponse<ResponseUtilityDto>
+                return Ok(new ApiRes<string>
                 {
                     StatusCode = HttpStatusCode.OK,
-                    Message = result.Message,
-                    Data = (ResponseUtilityDto)result.Data
+                    Message = result.Message
                 });
             }
             catch (Exception ex)
             {
-                return BadRequest(new ApiResponse<string>
+                return BadRequest(new ApiRes<string>
                 {
                     StatusCode = HttpStatusCode.InternalServerError,
                     Message = $"Lỗi hệ thống: {ex.Message}"
@@ -152,29 +114,28 @@ namespace RentEase.API.Controllers.Sub
         }
 
         [HttpPut("{id}")]
-        public async Task<IActionResult> Put(int id, RequestUtilityDto request)
+        public async Task<IActionResult> Put(int id, UtilityReq request)
         {
             try
             {
                 var result = await _utilityService.Update(id, request);
-                if (result.Status < 0 && result.Data == null)
+                if (result.Status < 0)
                 {
-                    return NotFound(new ApiResponse<string>
+                    return NotFound(new ApiRes<string>
                     {
                         StatusCode = HttpStatusCode.NotFound,
                         Message = result.Message
                     });
                 }
-                return Ok(new ApiResponse<ResponseUtilityDto>
+                return Ok(new ApiRes<string>
                 {
                     StatusCode = HttpStatusCode.OK,
-                    Message = result.Message,
-                    Data = (ResponseUtilityDto)result.Data
+                    Message = result.Message
                 });
             }
             catch (Exception ex)
             {
-                return BadRequest(new ApiResponse<string>
+                return BadRequest(new ApiRes<string>
                 {
                     StatusCode = HttpStatusCode.InternalServerError,
                     Message = $"Lỗi hệ thống: {ex.Message}"
@@ -187,25 +148,24 @@ namespace RentEase.API.Controllers.Sub
         {
             try
             {
-                var result = await _utilityService.DeleteByIdAsync(id);
-                if (result.Status < 0 && result.Data == null)
+                var result = await _utilityService.Delete(id);
+                if (result.Status < 0)
                 {
-                    return NotFound(new ApiResponse<string>
+                    return NotFound(new ApiRes<string>
                     {
                         StatusCode = HttpStatusCode.NotFound,
                         Message = result.Message
                     });
                 }
-                return Ok(new ApiResponse<ResponseUtilityDto>
+                return Ok(new ApiRes<string>
                 {
                     StatusCode = HttpStatusCode.OK,
-                    Message = result.Message,
-                    Data = (ResponseUtilityDto)result.Data
+                    Message = result.Message
                 });
             }
             catch (Exception ex)
             {
-                return BadRequest(new ApiResponse<string>
+                return BadRequest(new ApiRes<string>
                 {
                     StatusCode = HttpStatusCode.InternalServerError,
                     Message = $"Lỗi hệ thống: {ex.Message}"

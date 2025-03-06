@@ -1,8 +1,24 @@
 ﻿namespace RentEase.Common.DTOs.Dto;
 
-public class RequestAptImageDto
+public class AptImageReq
 {
-    public int AptId { get; set; }
+    public string AptId { get; set; } = string.Empty;
+
+    public string ImageUrl1 { get; set; } = string.Empty;
+
+    public string ImageUrl2 { get; set; } = string.Empty;
+
+    public string ImageUrl3 { get; set; } = string.Empty;
+
+    public string ImageUrl4 { get; set; } = string.Empty;
+
+    public string ImageUrl5 { get; set; } = string.Empty;
+
+    public string ImageUrl6 { get; set; } = string.Empty;
+}
+public class AptImageRes : Base
+{
+    public string AptId { get; set; } = string.Empty;
 
     public string? ImageUrl1 { get; set; }
 
@@ -15,30 +31,5 @@ public class RequestAptImageDto
     public string? ImageUrl5 { get; set; }
 
     public string? ImageUrl6 { get; set; }
-}
-public class ResponseAptImageDto
-{
-    public int Id { get; set; }
 
-    public int AptId { get; set; }
-
-    public string ImageUrl1 { get; set; }
-
-    public string ImageUrl2 { get; set; }
-
-    public string ImageUrl3 { get; set; }
-
-    public string ImageUrl4 { get; set; }
-
-    public string ImageUrl5 { get; set; }
-
-    public string ImageUrl6 { get; set; }
-
-    public DateTime CreatedAt { get; set; }
-
-    public DateTime? UpdatedAt { get; set; }
-
-    public DateTime? DeletedAt { get; set; }
-
-    public bool? Status { get; set; }
 }

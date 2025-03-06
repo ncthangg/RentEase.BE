@@ -1,30 +1,22 @@
 ﻿
 namespace RentEase.Common.DTOs.Dto;
-public class RequestReviewDto
+public class ReviewReq
 {
-    public int AptId { get; set; }
+    public string AptId { get; set; } = string.Empty;
 
     public double? Rating { get; set; }
 
-    public string? Comment { get; set; }
+    public string Comment { get; set; } = string.Empty;
 }
-public class ResponseReviewDto
+public class ReviewRes : Base
 {
     public int Id { get; set; }
 
-    public int ReviewerId { get; set; }
+    public string ReviewerId { get; set; } = string.Empty;
 
-    public int AptId { get; set; }
+    public string AptId { get; set; } = string.Empty;
 
     public double? Rating { get; set; }
 
-    public string Comment { get; set; }
-
-    public DateTime CreatedAt { get; set; }
-
-    public DateTime? UpdatedAt { get; set; }
-
-    public DateTime? DeletedAt { get; set; }
-
-    public bool? Status { get; set; }
+    public string Comment { get; set; } = string.Empty;
 }
