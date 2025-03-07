@@ -9,6 +9,7 @@ using RentEase.Service.AutoMapper;
 using RentEase.Service.Helper;
 using RentEase.Service.Service.Authenticate;
 using RentEase.Service.Service.Main;
+using RentEase.Service.Service.Payment;
 using RentEase.Service.Service.Sub;
 using System.Text;
 
@@ -22,6 +23,9 @@ namespace RentEase.API
             services.AddScoped<IAuthenticateService, AuthenticateService>();
             services.AddScoped<IAccountVerificationService, AccountVerificationService>();
             services.AddScoped<IAccountTokenService, AccountTokenService>();
+            services.AddScoped<IPayosService, PayosService>();
+            services.AddHttpClient<IPayosService, PayosService>();
+
 
             services.AddScoped<IAccountService, AccountService>();
             services.AddScoped<IAptCategoryService, AptCategoryService>();
@@ -31,15 +35,14 @@ namespace RentEase.API
             services.AddScoped<IAptStatusService, AptStatusService>();
             services.AddScoped<IAptUtilityService, AptUtilityService>();
             services.AddScoped<IUtilityService, UtilityService>();
-            services.AddScoped<IContractService, ContractService>();
             services.AddScoped<IAptStatusService, AptStatusService>();
-            services.AddScoped<ICurrentResidentService, CurrentResidentService>();
-            services.AddScoped<IMaintenanceRequestService, MaintenanceRequestService>();
             services.AddScoped<IReviewService, ReviewService>();
             services.AddScoped<IRoleService, RoleService>();
             services.AddScoped<ITransactionTypeService, TransactionTypeService>();
             services.AddScoped<IOrderService, OrderService>();
             services.AddScoped<ITransactionService, TransactionService>();
+            services.AddScoped<IPostService, PostService>();
+            services.AddScoped<IPostRequireService, PostRequireService>();
 
             services.AddScoped<ServiceWrapper>();
             return services;
@@ -102,7 +105,7 @@ namespace RentEase.API
                 options.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
                 {
                     In = ParameterLocation.Header,
-                    Note = "Please enter a valid token",
+                    Description = "Please enter a valid token",
                     Name = "Authorization",
                     Type = SecuritySchemeType.Http,
                     BearerFormat = "JWT",

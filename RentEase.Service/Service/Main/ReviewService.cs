@@ -10,7 +10,7 @@ namespace RentEase.Service.Service.Main
 {
     public interface IReviewService
     {
-        Task<ServiceResult> GetAll(int page, int pageSize, bool? status = true);
+        Task<ServiceResult> GetAll(int page, int pageSize, bool? status);
         Task<ServiceResult> GetById(int id);
         Task<ServiceResult> GetAllByAptId(string aptId, int page, int pageSize);
         Task<ServiceResult> Create(ReviewReq request);
@@ -44,7 +44,7 @@ namespace RentEase.Service.Service.Main
             else
             {
                 var responseData = _mapper.Map<IEnumerable<ReviewRes>>(items.Data);
-                return new ServiceResult(Const.SUCCESS_ACTION, Const.SUCCESS_ACTION_MSG, items.TotalCount, items.TotalPages, items.CurrentPage, responseData);
+                return new ServiceResult(Const.SUCCESS_ACTION_CODE, Const.SUCCESS_ACTION_MSG, items.TotalCount, items.TotalPages, items.CurrentPage, responseData);
             }
         }
         public async Task<ServiceResult> Create(ReviewReq request)
@@ -69,7 +69,7 @@ namespace RentEase.Service.Service.Main
             var result = await _unitOfWork.ReviewRepository.CreateAsync(createItem);
             if (result > 0)
             {
-                return new ServiceResult(Const.SUCCESS_ACTION, "Tạo thành công");
+                return new ServiceResult(Const.SUCCESS_ACTION_CODE, "Tạo thành công");
             }
 
             return new ServiceResult(Const.ERROR_EXCEPTION, Const.ERROR_EXCEPTION_MSG);
@@ -102,7 +102,7 @@ namespace RentEase.Service.Service.Main
             var result = await _unitOfWork.ReviewRepository.UpdateAsync(item);
             if (result > 0)
             {
-                return new ServiceResult(Const.SUCCESS_ACTION, "Cập nhật thành công");
+                return new ServiceResult(Const.SUCCESS_ACTION_CODE, "Cập nhật thành công");
             }
 
             return new ServiceResult(Const.ERROR_EXCEPTION, Const.ERROR_EXCEPTION_MSG);

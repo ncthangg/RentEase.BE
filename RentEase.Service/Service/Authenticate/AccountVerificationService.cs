@@ -40,12 +40,12 @@ namespace RentEase.Service.Service.Authenticate
             }
             else
             {
-                return new ServiceResult(Const.SUCCESS_ACTION, Const.SUCCESS_ACTION_MSG, account);
+                return new ServiceResult(Const.SUCCESS_ACTION_CODE, Const.SUCCESS_ACTION_MSG, account);
             }
         }
         public async Task<ServiceResult> Save(string accountId, string verificationCode)
         {
-            var accountExist = await _serviceWrapper.AccountService.AccountExist(accountId);
+            var accountExist = await _unitOfWork.AccountRepository.EntityExistsByPropertyAsync("AccountId", accountId);
             if (accountExist)
             {
                 var item = await _unitOfWork.AccountVerificationRepository.GetByAccountIdAndVerificationCode(accountId, verificationCode);
@@ -61,13 +61,13 @@ namespace RentEase.Service.Service.Authenticate
                         IsUsed = false,
                     };
                     await _unitOfWork.AccountVerificationRepository.CreateAsync(newCode);
-                    return new ServiceResult(Const.SUCCESS_ACTION, "Verification code created successfully", newCode);
+                    return new ServiceResult(Const.SUCCESS_ACTION_CODE, "Verification code created successfully", newCode);
                 }
                 else
                 {
                     item.IsUsed = true;
                     await _unitOfWork.AccountVerificationRepository.UpdateAsync(item);
-                    return new ServiceResult(Const.SUCCESS_ACTION, "Verification code is valid");
+                    return new ServiceResult(Const.SUCCESS_ACTION_CODE, "Verification code is valid");
                 }
             }
             else
@@ -92,40 +92,30 @@ namespace RentEase.Service.Service.Authenticate
 
             // Nếu hợp lệ, cập nhật trạng thái tài khoản
             account.IsActive = true;
-            var accountDto = _mapper.Map<AccountReq>(account);
-            var resultUpdateAccount = await _serviceWrapper.AccountService.Update(accountId, accountDto);
+
+            var accountUpdate = _mapper.Map<AccountReq>(account);
+
+            var resultUpdateAccount = await _serviceWrapper.AccountService.Update(accountId, accountUpdate);
             if (resultUpdateAccount.Status < 0)
             {
                 return new ServiceResult(Const.ERROR_EXCEPTION, "Update account thất bại!");
             }
 
-            var responseAccount = _mapper.Map<AccountRes>(account);
             var resultUpdateVerificationCode = await this.Save(accountId, verificationCode);
+
             if (resultUpdateVerificationCode.Status < 0)
             {
                 return new ServiceResult(Const.ERROR_EXCEPTION, "Update account thất bại!");
             }
-            var createItemWallet = new Wallet()
+
+            var resultData = _mapper.Map<AccountRes>(account);
+            var responseData = new RegisterRes
             {
-                AccountId = accountId,
-                Balance = 0,
-                CreatedAt = DateTime.Now,
-                UpdatedAt = null,
-                DeletedAt = null,
-                Status = true,
+                AccountRes = resultData
             };
-            var result2 = await _unitOfWork.WalletRepository.CreateAsync(createItemWallet);
-            if (result2 > 0)
-            {
-                var responseWallet = _mapper.Map<WalletRes>(createItemWallet);
-                var responseData = new RegisterRes
-                {
-                    AccountRes = responseAccount,
-                    WalletRes = responseWallet
-                };
-                return new ServiceResult(Const.SUCCESS_ACTION, "Account verified successfully!", responseData);
-            }
-            return new ServiceResult(Const.ERROR_EXCEPTION, "Account verified fail!");
+
+            return new ServiceResult(Const.SUCCESS_ACTION_CODE, "Account verified successfully!", responseData);
+
         }
 
         private async Task<bool> IsVerificationCodeValid(string accountId, string verificationCode)
@@ -138,7 +128,7 @@ namespace RentEase.Service.Service.Authenticate
             if (item.VerificationCode != null && item.VerificationCode != verificationCode)
                 return false; // Mã không khớp
 
-            if (item.ExpiresAt != null && item.ExpiresAt < DateTime.UtcNow)
+            if (item.ExpiresAt.ToShortTimeString() != null && item.ExpiresAt < DateTime.UtcNow)
                 return false; // Mã đã hết hạn
 
             if (item.IsUsed != null && item.IsUsed == true)
@@ -151,7 +141,7 @@ namespace RentEase.Service.Service.Authenticate
 
             var newVerificationCode = _helperWrapper.TokenHelper.GenerateVerificationCode();
 
-            var saveResult = await this.Save(account.Id, newVerificationCode);
+            var saveResult = await this.Save(account.AccountId, newVerificationCode);
             if (saveResult.Status < 0)
             {
                 return new ServiceResult(Const.ERROR_EXCEPTION, "Error saving verification code");
@@ -161,7 +151,7 @@ namespace RentEase.Service.Service.Authenticate
             var verificationLink = $"https://yourdomain.com/verify?code={newVerificationCode}";
             //await _helperWrapper.EmailHelper.SendVerificationEmailAsync(account.Email, newVerificationCode, verificationLink);
 
-            return new ServiceResult(Const.SUCCESS_ACTION, "Verification code sent", saveResult.Data);
+            return new ServiceResult(Const.SUCCESS_ACTION_CODE, "Verification code sent", saveResult.Data);
         }
 
 

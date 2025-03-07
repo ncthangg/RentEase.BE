@@ -1,5 +1,4 @@
 ﻿using AutoMapper;
-using Azure;
 using Microsoft.AspNetCore.Http;
 using RentEase.Common.Base;
 using RentEase.Common.DTOs.Dto;
@@ -7,14 +6,17 @@ using RentEase.Common.DTOs.Response;
 using RentEase.Data;
 using RentEase.Data.Models;
 using RentEase.Service.Service.Base;
+using RentEase.Service.Service.Payment;
+using System.Text.Json;
 
 namespace RentEase.Service.Service.Main
 {
     public interface ITransactionService
     {
-        Task<ServiceResult> GetAll(int page, int pageSize, bool? status = true);
+        Task<ServiceResult> GetAll(int page, int pageSize, bool? status);
+        Task<ServiceResult> GetAllOwn(int? statusId, int page, int pageSize);
         Task<ServiceResult> GetById(int id);
-        Task<PaymentRes> Create(TransactionReq request);
+        Task<ServiceResult> CheckOut(TransactionReq request);
     }
 
     public class TransactionService : BaseService<Transaction, TransactionRes>, ITransactionService
@@ -23,85 +25,118 @@ namespace RentEase.Service.Service.Main
         private readonly UnitOfWork _unitOfWork;
         private readonly IMapper _mapper;
         private readonly HelperWrapper _helperWrapper;
-        public TransactionService(IHttpContextAccessor httpContextAccessor, IMapper mapper, HelperWrapper helperWrapper)
+        private readonly IPayosService _payosService;
+        public TransactionService(IHttpContextAccessor httpContextAccessor, IMapper mapper, HelperWrapper helperWrapper, IPayosService payosService)
         : base(mapper)
         {
             _httpContextAccessor = httpContextAccessor;
             _unitOfWork ??= new UnitOfWork();
             _mapper = mapper;
             _helperWrapper = helperWrapper;
+            _payosService = payosService;
         }
-
-        public async Task<PaymentRes> Create(TransactionReq request)
+        public async Task<ServiceResult> GetAllOwn(int? statusId, int page, int pageSize)
         {
-            string paymentLink = "";
+            string accountId = _helperWrapper.TokenHelper.GetUserIdFromHttpContextAccessor(_httpContextAccessor);
+
+            if (string.IsNullOrEmpty(accountId))
+            {
+                return new ServiceResult(Const.ERROR_EXCEPTION, "Lỗi khi lấy info");
+            }
+
+            var items = await _unitOfWork.TransactionRepository.GetAllOwn(accountId, statusId, page, pageSize);
+
+            if (!items.Data.Any())
+            {
+                return new ServiceResult(Const.ERROR_EXCEPTION, Const.ERROR_EXCEPTION_MSG);
+            }
+            else
+            {
+                var responseData = _mapper.Map<IEnumerable<OrderRes>>(items.Data);
+                return new ServiceResult(Const.SUCCESS_ACTION_CODE, Const.SUCCESS_ACTION_MSG, items.TotalCount, items.TotalPages, items.CurrentPage, responseData);
+            }
+        }
+        public async Task<ServiceResult> CheckOut(TransactionReq request)
+        {
 
             string accountId = _helperWrapper.TokenHelper.GetUserIdFromHttpContextAccessor(_httpContextAccessor);
 
             if (string.IsNullOrEmpty(accountId))
             {
-                 return new PaymentRes()
-                {
-                    TransactionRes = null,
-                    Link = paymentLink,
-                };
+                return new ServiceResult(Const.ERROR_EXCEPTION, "Tài khoản không tồn tại");
             }
 
             var transactionItem = await _unitOfWork.TransactionRepository.GetByOrderCode(request.OrderId);
             var orderItem = await _unitOfWork.OrderRepository.GetByIdAsync(request.OrderId);
+
+            if (orderItem.SenderId != accountId)
+            {
+                return new ServiceResult(Const.ERROR_EXCEPTION, "Đơn hàng không thuộc tài khoản này");
+            }
+
+            //Khai báo
+            TransactionRes transactionRes = new TransactionRes();
+            PayosRes payosRes = new PayosRes();
 
             if (transactionItem != null)
             {
                 // Tăng giá trị lên 1 rồi chuyển lại thành string
                 var newPaymentAttempt = transactionItem.PaymentAttempt + 1;
 
-                var createItem1 = new Transaction()
+                var createItem = new Transaction()
                 {
                     TransactionTypeId = orderItem.TransactionTypeId,
                     OrderId = orderItem.OrderId,
                     PaymentAttempt = newPaymentAttempt,
-                    PaymentCode = orderItem.OrderId + DateTime.Now.ToString(),
+                    PaymentCode = $"{orderItem.OrderId}{DateTime.Now:HHmmssfff}",
                     TotalAmount = orderItem.Amount + orderItem.IncurredCost,
                     Note = request.Note,
                     CreatedAt = DateTime.Now,
                     StatusId = (int)EnumType.StatusId.Pending
                 };
 
-                await _unitOfWork.TransactionRepository.CreateAsync(createItem1);
-                var response1 = _mapper.Map<TransactionRes>(createItem1);
+                await _unitOfWork.TransactionRepository.CreateAsync(createItem);
+                transactionRes = _mapper.Map<TransactionRes>(createItem);
 
-                //paymentLink = await _VNPayService.CreatePaymentURL(newPaymentCode, order.Amount);
-                return new PaymentRes()
+                string jsonResponse = await _payosService.CreatePaymentURL(createItem.PaymentCode);
+
+                payosRes = JsonSerializer.Deserialize<PayosRes>(jsonResponse);
+
+            }
+            else
+            {
+
+                var createItem = new Transaction()
                 {
-                    TransactionRes = response1,
-                    Link = paymentLink,
+                    TransactionTypeId = orderItem.TransactionTypeId,
+                    OrderId = orderItem.OrderId,
+                    PaymentAttempt = 1,
+                    PaymentCode = $"{orderItem.OrderId}{DateTime.Now:HHmmssfff}",
+                    TotalAmount = orderItem.Amount + orderItem.IncurredCost,
+                    Note = request.Note,
+                    CreatedAt = DateTime.Now,
+                    StatusId = (int)EnumType.StatusId.Pending
                 };
+
+                await _unitOfWork.TransactionRepository.CreateAsync(createItem);
+                transactionRes = _mapper.Map<TransactionRes>(createItem);
+
+                string jsonResponse = await _payosService.CreatePaymentURL(createItem.PaymentCode);
+
+                payosRes = JsonSerializer.Deserialize<PayosRes>(jsonResponse);
+
+            }
+            if(payosRes == null)
+            {
+                return new ServiceResult(Const.ERROR_EXCEPTION, "Tạo link thanh toán thất bại");
             }
 
-            // thanh toán lầu đầu
-
-            var createItem2 = new Transaction()
+            var responseData = new PaymentRes()
             {
-                TransactionTypeId = orderItem.TransactionTypeId,
-                OrderId = orderItem.OrderId,
-                PaymentAttempt = 1,
-                PaymentCode = orderItem.OrderId + DateTime.Now.ToString(),
-                TotalAmount = orderItem.Amount + orderItem.IncurredCost,
-                Note = request.Note,
-                CreatedAt = DateTime.Now,
-                StatusId = (int)EnumType.StatusId.Pending
+                TransactionRes = transactionRes,
+                PayosRes = payosRes,
             };
-
-            await _unitOfWork.TransactionRepository.CreateAsync(createItem2);
-            var response2 = _mapper.Map<TransactionRes>(createItem2);
-
-            //paymentLink = await _VNPayService.CreatePaymentURL(newPaymentCode, order.Amount);
-
-            return new PaymentRes()
-            {
-                TransactionRes = response2,
-                Link = paymentLink,
-            };
+            return new ServiceResult(Const.SUCCESS_ACTION_CODE, "Tạo link thanh toán thành công", responseData);
         }
 
     }

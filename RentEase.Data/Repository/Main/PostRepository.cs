@@ -13,7 +13,7 @@ namespace RentEase.Data.Repository.Main
         }
         public PostRepository(RentEaseContext context) => _context = context;
         public async Task<PagedResult<Post>> GetAllOwn(
-                  string accountId, int? statusId, int page, int pageSize, bool? status)
+                  string accountId, int? statusId, bool? status, int page, int pageSize)
         {
             return await GetPagedAsync(
                 filter: o => o.AccountId == accountId &&

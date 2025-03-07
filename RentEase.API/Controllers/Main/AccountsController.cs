@@ -9,7 +9,7 @@ namespace RentEase.API.Controllers.Main
 {
     [Route("api/[controller]")]
     [ApiController]
-    [Authorize(Roles = "1")]
+    [Authorize(Roles = "1,2,3,4")]
     public class AccountsController : ControllerBase
     {
         private readonly IAccountService _accountService;
@@ -117,6 +117,36 @@ namespace RentEase.API.Controllers.Main
             try
             {
                 var result = await _accountService.Update(id, request);
+                if (result.Status < 0 && result.Data == null)
+                {
+                    return NotFound(new ApiRes<string>
+                    {
+                        StatusCode = HttpStatusCode.NotFound,
+                        Message = result.Message
+                    });
+                }
+                return Ok(new ApiRes<string>
+                {
+                    StatusCode = HttpStatusCode.OK,
+                    Message = result.Message
+                });
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new ApiRes<string>
+                {
+                    StatusCode = HttpStatusCode.InternalServerError,
+                    Message = $"Lỗi hệ thống: {ex.Message}"
+                });
+            }
+        }
+
+        [HttpPatch("{id}")]
+        public async Task<IActionResult> DeleteSoft(string id)
+        {
+            try
+            {
+                var result = await _accountService.DeleteSoft(id);
                 if (result.Status < 0 && result.Data == null)
                 {
                     return NotFound(new ApiRes<string>

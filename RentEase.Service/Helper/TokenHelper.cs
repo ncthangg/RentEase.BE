@@ -10,7 +10,7 @@ namespace RentEase.Service.Helper
 {
     public interface ITokenHelper
     {
-        Task<TokenRes> GenerateTokens(int userId, int roleId);
+        Task<TokenRes> GenerateTokens(string userId, int roleId);
         string GenerateVerificationCode();
         string GenerateAptCode(string categoryName);
         string GetUserIdFromHttpContextAccessor(IHttpContextAccessor httpContextAccessor);
@@ -27,7 +27,7 @@ namespace RentEase.Service.Helper
         }
 
         //GENERATE JWT TOKEN
-        public async Task<TokenRes> GenerateTokens(int userId, int roleId)
+        public async Task<TokenRes> GenerateTokens(string userId, int roleId)
         {
             var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["JwtSettings:Key"]));
             var credentials = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
@@ -161,7 +161,6 @@ namespace RentEase.Service.Helper
 
             return idClaim?.Value ?? throw new UnauthorizedAccessException("Role ID claim not found in token!");
         }
-
 
 
         private bool ValidateToken(string token, out ClaimsPrincipal principal)

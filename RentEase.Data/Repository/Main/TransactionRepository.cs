@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using RentEase.Common.DTOs;
 using RentEase.Data.DBContext;
 using RentEase.Data.Models;
 using RentEase.Data.Repository.Base;
@@ -12,7 +13,7 @@ namespace RentEase.Data.Repository.Main
         {
         }
         public TransactionRepository(RentEaseContext context) => _context = context;
-        public async Task<Transaction> GetByOrderCode(string orderId)
+        public async Task<Transaction?> GetByOrderCode(string orderId)
         {
             return await _context.Set<Transaction>()
                 .Where(p => p.OrderId == orderId)
@@ -20,7 +21,7 @@ namespace RentEase.Data.Repository.Main
                 .FirstOrDefaultAsync();
         }
 
-        public async Task<Transaction> GetByPaymentCode(string paymentCode)
+        public async Task<Transaction?> GetByPaymentCode(string paymentCode)
         {
             return await _context.Set<Transaction>()
                 .Where(p => p.PaymentCode == paymentCode)
@@ -28,6 +29,17 @@ namespace RentEase.Data.Repository.Main
                 .FirstOrDefaultAsync();
         }
 
+        public async Task<PagedResult<Transaction>> GetAllOwn(
+          string accountId, int? statusId, int page, int pageSize)
+        {
+            return await GetPagedAsync(
+                filter: o => o.Order.SenderId == accountId &&
+                             (statusId == null || o.StatusId == statusId),
+                orderBy: q => q.OrderByDescending(o => o.CreatedAt),
+                page: page,
+                pageSize: pageSize,
+                includes: i => i.Order);
+        }
         //public async Task<PagedResult<Account>> GetBySearchAsync(string? fullName, string? email, string? phoneNumber, int page, int pageSize)
         //{
         //    IQueryable<Account> query = _context.Set<Account>();

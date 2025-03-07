@@ -12,14 +12,14 @@ namespace RentEase.Data.Repository.Main
         }
         public AccountVerificationRepository(RentEaseContext context) => _context = context;
 
-        public async Task<AccountVerification> GetByAccountId(string accountId)
+        public async Task<AccountVerification?> GetByAccountId(string accountId)
         {
             return await _context.Set<AccountVerification>()
                 .Where(v => v.AccountId == accountId)
                 .OrderByDescending(v => v.CreatedAt)
                 .FirstOrDefaultAsync();
         }
-        public async Task<AccountVerification> GetByAccountIdAndVerificationCode(string accountId, string verificationCode)
+        public async Task<AccountVerification?> GetByAccountIdAndVerificationCode(string accountId, string verificationCode)
         {
             return await _context.Set<AccountVerification>()
                 .Where(v => v.AccountId == accountId && v.VerificationCode == verificationCode)

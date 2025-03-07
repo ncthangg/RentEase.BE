@@ -97,11 +97,10 @@ namespace RentEase.API.Controllers.Main
                         Message = result.Message
                     });
                 }
-                return Ok(new ApiRes<AptImageRes>
+                return Ok(new ApiRes<string>
                 {
                     StatusCode = HttpStatusCode.OK,
-                    Message = result.Message,
-                    Data = (AptImageRes)result.Data
+                    Message = result.Message
                 });
             }
             catch (Exception ex)
@@ -128,11 +127,10 @@ namespace RentEase.API.Controllers.Main
                         Message = result.Message
                     });
                 }
-                return Ok(new ApiRes<AptImageRes>
+                return Ok(new ApiRes<string>
                 {
                     StatusCode = HttpStatusCode.OK,
-                    Message = result.Message,
-                    Data = (AptImageRes)result.Data
+                    Message = result.Message
                 });
             }
             catch (Exception ex)
@@ -159,11 +157,10 @@ namespace RentEase.API.Controllers.Main
                         Message = result.Message
                     });
                 }
-                return Ok(new ApiRes<AptImageRes>
+                return Ok(new ApiRes<string>
                 {
                     StatusCode = HttpStatusCode.OK,
-                    Message = result.Message,
-                    Data = (AptImageRes)result.Data
+                    Message = result.Message
                 });
             }
             catch (Exception ex)

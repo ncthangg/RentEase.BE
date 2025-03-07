@@ -1,12 +1,18 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
+using RentEase.Service.Service.Main;
 
 namespace RentEase.API.Controllers.Main
 {
+    [Route("api/[controller]")]
+    [ApiController]
+    [Authorize(Roles = "1,2,3,4")]
     public class PostRequireController : Controller
     {
-        public IActionResult Index()
+        private readonly IPostRequireService _postRequireService;
+        public PostRequireController(IPostRequireService postRequireService)
         {
-            return View();
+            _postRequireService = postRequireService;
         }
     }
 }

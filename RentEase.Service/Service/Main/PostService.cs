@@ -11,11 +11,12 @@ namespace RentEase.Service.Service.Main
 
     public interface IPostService
     {
-        Task<ServiceResult> GetAll(int page, int pageSize, bool? status = true);
+        Task<ServiceResult> GetAll(int page, int pageSize, bool? status);
         Task<ServiceResult> GetById(string id);
         Task<ServiceResult> GetAllOwn(int? statusId, int page, int pageSize, bool? status = true);
         Task<ServiceResult> Create(PostReq request);
         Task<ServiceResult> Update(string postId, PostReq request);
+        Task<ServiceResult> DeleteSoft(string id);
         Task<ServiceResult> Delete(string id);
     }
     public class PostService : BaseService<Post, PostRes>, IPostService
@@ -32,7 +33,7 @@ namespace RentEase.Service.Service.Main
             _mapper = mapper;
             _helperWrapper = helperWrapper;
         }
-        public async Task<ServiceResult> GetAllOwn(int? statusId, int page, int pageSize, bool? status = true)
+        public async Task<ServiceResult> GetAllOwn(int? statusId, int page, int pageSize, bool? status)
         {
             string accountId = _helperWrapper.TokenHelper.GetUserIdFromHttpContextAccessor(_httpContextAccessor);
 
@@ -41,7 +42,7 @@ namespace RentEase.Service.Service.Main
                 return new ServiceResult(Const.ERROR_EXCEPTION, "Lỗi khi lấy info");
             }
 
-            var items = await _unitOfWork.PostRepository.GetAllOwn(accountId, statusId, page, pageSize, status);
+            var items = await _unitOfWork.PostRepository.GetAllOwn(accountId, statusId, status, page, pageSize);
             if (!items.Data.Any())
             {
                 return new ServiceResult(Const.ERROR_EXCEPTION, Const.ERROR_EXCEPTION_MSG);
@@ -49,7 +50,7 @@ namespace RentEase.Service.Service.Main
             else
             {
                 var responseData = _mapper.Map<IEnumerable<PostRes>>(items.Data);
-                return new ServiceResult(Const.SUCCESS_ACTION, Const.SUCCESS_ACTION_MSG, items.TotalCount, items.TotalPages, items.CurrentPage, responseData);
+                return new ServiceResult(Const.SUCCESS_ACTION_CODE, Const.SUCCESS_ACTION_MSG, items.TotalCount, items.TotalPages, items.CurrentPage, responseData);
             }
         }
         public async Task<ServiceResult> Create(PostReq request)
@@ -84,7 +85,7 @@ namespace RentEase.Service.Service.Main
             var result = await _unitOfWork.PostRepository.CreateAsync(createItem);
             if (result > 0)
             {
-                return new ServiceResult(Const.SUCCESS_ACTION, "Tạo thành công");
+                return new ServiceResult(Const.SUCCESS_ACTION_CODE, "Tạo thành công");
             }
 
             return new ServiceResult(Const.ERROR_EXCEPTION, Const.ERROR_EXCEPTION_MSG);
@@ -106,7 +107,7 @@ namespace RentEase.Service.Service.Main
 
             var item = await _unitOfWork.PostRepository.GetByIdAsync(postId);
 
-            if (accountId != item.AccountId && roleId != "1")
+            if (accountId != item.PostId && roleId != "1")
             {
                 return new ServiceResult(Const.ERROR_EXCEPTION, "Bạn không có quyền hạn.");
             }
@@ -121,7 +122,35 @@ namespace RentEase.Service.Service.Main
             var result = await _unitOfWork.PostRepository.UpdateAsync(item);
             if (result > 0)
             {
-                return new ServiceResult(Const.SUCCESS_ACTION, "Cập nhật thành công");
+                return new ServiceResult(Const.SUCCESS_ACTION_CODE, "Cập nhật thành công");
+            }
+
+            return new ServiceResult(Const.ERROR_EXCEPTION, Const.ERROR_EXCEPTION_MSG);
+        }
+        public async Task<ServiceResult> DeleteSoft(string id)
+        {
+            string accountId = _helperWrapper.TokenHelper.GetUserIdFromHttpContextAccessor(_httpContextAccessor);
+            string roleId = _helperWrapper.TokenHelper.GetRoleIdFromHttpContextAccessor(_httpContextAccessor);
+
+            var item = await _unitOfWork.PostRepository.GetByIdAsync(id);
+
+            if (item == null)
+            {
+                return new ServiceResult(Const.ERROR_EXCEPTION, "Không tồn tại");
+            }
+
+            if (accountId != item.AccountId && roleId != "1")
+            {
+                return new ServiceResult(Const.ERROR_EXCEPTION, "Bạn không có quyền hạn.");
+            }
+
+            item.DeletedAt = DateTime.Now;
+            item.Status = false;
+
+            var result = await _unitOfWork.PostRepository.UpdateAsync(item);
+            if (result > 0)
+            {
+                return new ServiceResult(Const.SUCCESS_ACTION_CODE, "Xóa mềm thành công");
             }
 
             return new ServiceResult(Const.ERROR_EXCEPTION, Const.ERROR_EXCEPTION_MSG);

@@ -10,8 +10,8 @@ namespace RentEase.Service.AutoMapper
         public MappingProfile()
         {
             //Login
-            CreateMap<AccountToken, AccountTokenRes>();
-            CreateMap<AccountVerification, AccountVerificationRes>();
+            CreateMap<AccountToken, AccountTokenRes>().ReverseMap();
+            CreateMap<AccountVerification, AccountVerificationRes>().ReverseMap();
 
             CreateMap<Account, AccountReq>().ReverseMap();
             CreateMap<Account, AccountRes>().ReverseMap()
@@ -24,16 +24,15 @@ namespace RentEase.Service.AutoMapper
             CreateMap<AptImage, AptImageRes>().ReverseMap();
             CreateMap<AptStatus, AptStatusRes>().ReverseMap();
             CreateMap<AptUtility, AptUtilityRes>().ReverseMap();
-            CreateMap<Contract, ContractRes>().ReverseMap();
-            CreateMap<CurrentResident, CurrentResidentRes>().ReverseMap();
-            CreateMap<MaintenanceRequest, MaintenanceRequestRes>().ReverseMap();
             CreateMap<Review, ReviewRes>().ReverseMap();
             CreateMap<Role, RoleRes>().ReverseMap();
             CreateMap<TransactionType, TransactionTypeRes>().ReverseMap();
             CreateMap<Utility, UtilityRes>().ReverseMap();
             CreateMap<Order, OrderRes>().ReverseMap();
-            CreateMap<Wallet, WalletRes>().ReverseMap();
             CreateMap<Transaction, TransactionRes>().ReverseMap();
+
+            CreateMap<Post, PostRes>().ReverseMap();
+            CreateMap<PostRequire, PostRequireRes>().ReverseMap();
         }
     }
 }

@@ -51,6 +51,19 @@ public partial class RentEaseContext : DbContext
 
     public virtual DbSet<Utility> Utilities { get; set; }
 
+    //public static string GetConnectionString(string connectionStringName)
+    //{
+    //    var config = new ConfigurationBuilder()
+    //        .SetBasePath(AppDomain.CurrentDomain.BaseDirectory)
+    //        .AddJsonFile("appsettings.json")
+    //        .Build();
+
+    //    var connectionString = Environment.GetEnvironmentVariable("DB_CONNECTION_STRING")
+    //                                   ?? "Server=103.112.211.244,1433;Database=RentEase;User ID=SA;Password=Itjustapassword1@;TrustServerCertificate=True;Encrypt=false;"; return connectionString;
+    //}
+
+    //protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+    //    => optionsBuilder.UseSqlServer(GetConnectionString("DefaultConnection")).UseQueryTrackingBehavior(QueryTrackingBehavior.NoTracking);
     public static string GetConnectionString(string connectionStringName)
     {
         var config = new ConfigurationBuilder()
@@ -58,12 +71,13 @@ public partial class RentEaseContext : DbContext
             .AddJsonFile("appsettings.json")
             .Build();
 
-        var connectionString = Environment.GetEnvironmentVariable("DB_CONNECTION_STRING")
-                                       ?? "Server=103.112.211.244,1433;Database=RentEase;User ID=SA;Password=Itjustapassword1@;TrustServerCertificate=True;Encrypt=false;"; return connectionString;
+        string connectionString = config.GetConnectionString(connectionStringName);
+        return connectionString;
     }
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-        => optionsBuilder.UseSqlServer(GetConnectionString("DefaultConnection")).UseQueryTrackingBehavior(QueryTrackingBehavior.NoTracking);
+   => optionsBuilder.UseSqlServer(GetConnectionString("DefaultConnection")).UseQueryTrackingBehavior(QueryTrackingBehavior.NoTracking);
+
 
 
     //    protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)

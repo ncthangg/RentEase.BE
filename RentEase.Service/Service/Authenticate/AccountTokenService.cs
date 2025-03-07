@@ -10,7 +10,7 @@ namespace RentEase.Service.Service.Authenticate
     public interface IAccountTokenService
     {
         Task<ServiceResult> Save(string accountId, string refreshToken);
-        Task<ServiceResult> CheckRefreshTokenValidity(int id, string refreshToken);
+        Task<ServiceResult> CheckRefreshTokenValidity(string accountId, string refreshToken);
     }
     public class AccountTokenService : IAccountTokenService
     {
@@ -42,7 +42,7 @@ namespace RentEase.Service.Service.Authenticate
                     CreatedAt = DateTime.Now
                 };
                 await _unitOfWork.AccountTokenRepository.CreateAsync(newToken);
-                return new ServiceResult(Const.SUCCESS_ACTION, Const.SUCCESS_ACTION_MSG, newToken);
+                return new ServiceResult(Const.SUCCESS_ACTION_CODE, Const.SUCCESS_ACTION_MSG, newToken);
             }
             else
             {
@@ -50,10 +50,10 @@ namespace RentEase.Service.Service.Authenticate
             }
         }
 
-        public async Task<ServiceResult> CheckRefreshTokenValidity(int id, string refreshToken)
+        public async Task<ServiceResult> CheckRefreshTokenValidity(string accountId, string refreshToken)
         {
             // Tìm AccountToken dựa trên AccountId và RefreshToken
-            var accountToken = await _unitOfWork.AccountTokenRepository.GetByAccountIdAndToken(id, refreshToken);
+            var accountToken = await _unitOfWork.AccountTokenRepository.GetByAccountIdAndToken(accountId, refreshToken);
 
             // Kiểm tra nếu không tìm thấy token trong cơ sở dữ liệu
             if (accountToken == null)
@@ -68,7 +68,7 @@ namespace RentEase.Service.Service.Authenticate
             }
 
             // Nếu token còn hạn
-            return new ServiceResult(Const.SUCCESS_ACTION, "Refresh token is valid", accountToken);
+            return new ServiceResult(Const.SUCCESS_ACTION_CODE, "Refresh token is valid", accountToken);
         }
     }
 }

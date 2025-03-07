@@ -52,39 +52,39 @@ namespace RentEase.API.Controllers.Main
             }
         }
 
-        //[HttpGet]
-        //public async Task<IActionResult> GetByAptId([FromQuery] string aptId ,[FromQuery] bool status = true, [FromQuery] int page = 1, [FromQuery] int pageSize = 10)
-        //{
-        //    try
-        //    {
-        //        var result = await _ReviewService.GetAllByAptId(aptId, page, pageSize, null);
-        //        if (result.Status < 0 && result.Data == null)
-        //        {
-        //            return NotFound(new ApiRes<string>
-        //            {
-        //                StatusCode = HttpStatusCode.NotFound,
-        //                Message = result.Message
-        //            });
-        //        }
-        //        return Ok(new ApiRes<IEnumerable<ReviewRes>>
-        //        {
-        //            StatusCode = HttpStatusCode.OK,
-        //            Message = result.Message,
-        //            Count = result.TotalCount,
-        //            TotalPages = result.TotalPage,
-        //            CurrentPage = result.CurrentPage,
-        //            Data = (IEnumerable<ReviewRes>)result.Data
-        //        });
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        return BadRequest(new ApiRes<string>
-        //        {
-        //            StatusCode = HttpStatusCode.InternalServerError,
-        //            Message = $"Lỗi hệ thống: {ex.Message}"
-        //        });
-        //    }
-        //}
+        [HttpGet("getbyApt/{aptId}")]
+        public async Task<IActionResult> GetByAptId([FromQuery] string aptId, [FromQuery] int page = 1, [FromQuery] int pageSize = 10)
+        {
+            try
+            {
+                var result = await _ReviewService.GetAllByAptId(aptId, page, pageSize);
+                if (result.Status < 0 && result.Data == null)
+                {
+                    return NotFound(new ApiRes<string>
+                    {
+                        StatusCode = HttpStatusCode.NotFound,
+                        Message = result.Message
+                    });
+                }
+                return Ok(new ApiRes<IEnumerable<ReviewRes>>
+                {
+                    StatusCode = HttpStatusCode.OK,
+                    Message = result.Message,
+                    Count = result.TotalCount,
+                    TotalPages = result.TotalPage,
+                    CurrentPage = result.CurrentPage,
+                    Data = (IEnumerable<ReviewRes>)result.Data
+                });
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new ApiRes<string>
+                {
+                    StatusCode = HttpStatusCode.InternalServerError,
+                    Message = $"Lỗi hệ thống: {ex.Message}"
+                });
+            }
+        }
 
         [HttpGet("{id}")]
         public async Task<IActionResult> Get(int id)
@@ -131,11 +131,10 @@ namespace RentEase.API.Controllers.Main
                         Message = result.Message
                     });
                 }
-                return Ok(new ApiRes<ReviewRes>
+                return Ok(new ApiRes<string>
                 {
                     StatusCode = HttpStatusCode.OK,
-                    Message = result.Message,
-                    Data = (ReviewRes)result.Data
+                    Message = result.Message
                 });
             }
             catch (Exception ex)
@@ -162,11 +161,10 @@ namespace RentEase.API.Controllers.Main
                         Message = result.Message
                     });
                 }
-                return Ok(new ApiRes<ReviewRes>
+                return Ok(new ApiRes<string>
                 {
                     StatusCode = HttpStatusCode.OK,
-                    Message = result.Message,
-                    Data = (ReviewRes)result.Data
+                    Message = result.Message
                 });
             }
             catch (Exception ex)
@@ -193,11 +191,10 @@ namespace RentEase.API.Controllers.Main
                         Message = result.Message
                     });
                 }
-                return Ok(new ApiRes<ReviewRes>
+                return Ok(new ApiRes<string>
                 {
                     StatusCode = HttpStatusCode.OK,
-                    Message = result.Message,
-                    Data = (ReviewRes)result.Data
+                    Message = result.Message
                 });
             }
             catch (Exception ex)

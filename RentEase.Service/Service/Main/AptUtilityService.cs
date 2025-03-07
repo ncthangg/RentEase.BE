@@ -10,11 +10,11 @@ namespace RentEase.Service.Service.Main
 {
     public interface IAptUtilityService
     {
-        Task<ServiceResult> GetAll(int page, int pageSize, bool? statuss = true);
+        Task<ServiceResult> GetAll(int page, int pageSize, bool? statuss);
         Task<ServiceResult> GetById(int id);
         Task<ServiceResult> GetAllForApt(string aptId, int page, int pageSize);
-        Task<ServiceResult> Create(AptUtilityReq request);
-        Task<ServiceResult> Update(int id, string? description);
+        Task<ServiceResult> Create(string aptId, int utilityId, string? note);
+        Task<ServiceResult> Update(int id, string? note);
         Task<ServiceResult> Delete(int id);
 
     }
@@ -24,9 +24,10 @@ namespace RentEase.Service.Service.Main
         private readonly UnitOfWork _unitOfWork;
         private readonly IMapper _mapper;
         private readonly HelperWrapper _helperWrapper;
-        public AptUtilityService(IMapper mapper, HelperWrapper helperWrapper)
+        public AptUtilityService(IHttpContextAccessor httpContextAccessor, IMapper mapper, HelperWrapper helperWrapper)
         : base(mapper)
         {
+            _httpContextAccessor = httpContextAccessor;
             _unitOfWork ??= new UnitOfWork();
             _mapper = mapper;
             _helperWrapper = helperWrapper;
@@ -41,25 +42,24 @@ namespace RentEase.Service.Service.Main
             else
             {
                 var responseData = _mapper.Map<IEnumerable<AptUtilityRes>>(items.Data);
-                return new ServiceResult(Const.SUCCESS_ACTION, Const.SUCCESS_ACTION_MSG, items.TotalCount, items.TotalPages, items.CurrentPage, responseData);
+                return new ServiceResult(Const.SUCCESS_ACTION_CODE, Const.SUCCESS_ACTION_MSG, items.TotalCount, items.TotalPages, items.CurrentPage, responseData);
             }
         }
-        public async Task<ServiceResult> Create(AptUtilityReq request)
+        public async Task<ServiceResult> Create(string aptId, int utilityId, string? note)
         {
-            var createItem = new AptUtility()
+            var item = new AptUtility()
             {
-                AptId = request.AptId,
-                UtilityId = request.UtilityId,
-                Note = request.Note,
+                AptId = aptId,
+                UtilityId = utilityId,
+                Note = note,
                 CreatedAt = DateTime.Now,
-                UpdatedAt = null,
             };
 
-            var result = await _unitOfWork.AptUtilityRepository.CreateAsync(createItem);
+            var result = await _unitOfWork.AptUtilityRepository.CreateAsync(item);
 
             if (result > 0)
             {
-                return new ServiceResult(Const.SUCCESS_ACTION, "Tạo thành công");
+                return new ServiceResult(Const.SUCCESS_ACTION_CODE, "Tạo thành công");
             }
 
             return new ServiceResult(Const.ERROR_EXCEPTION, Const.ERROR_EXCEPTION_MSG);
@@ -85,7 +85,7 @@ namespace RentEase.Service.Service.Main
             var result = await _unitOfWork.AptUtilityRepository.UpdateAsync(item);
             if (result > 0)
             {
-                return new ServiceResult(Const.SUCCESS_ACTION, "Cập nhật thành công");
+                return new ServiceResult(Const.SUCCESS_ACTION_CODE, "Cập nhật thành công");
             }
 
             return new ServiceResult(Const.ERROR_EXCEPTION, Const.ERROR_EXCEPTION_MSG);

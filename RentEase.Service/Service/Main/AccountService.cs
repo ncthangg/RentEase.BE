@@ -52,7 +52,7 @@ namespace RentEase.Service.Service.Main
                 }
 
                 var responseData = _mapper.Map<AccountRes>(item);
-                return new ServiceResult(Const.SUCCESS_ACTION, Const.SUCCESS_ACTION_MSG, responseData);
+                return new ServiceResult(Const.SUCCESS_ACTION_CODE, Const.SUCCESS_ACTION_MSG, responseData);
             }
             catch (Exception ex)
             {
@@ -70,7 +70,7 @@ namespace RentEase.Service.Service.Main
                 }
 
                 var responseData = _mapper.Map<AccountRes>(item);
-                return new ServiceResult(Const.SUCCESS_ACTION, Const.SUCCESS_ACTION_MSG, responseData);
+                return new ServiceResult(Const.SUCCESS_ACTION_CODE, Const.SUCCESS_ACTION_MSG, responseData);
             }
             catch (Exception ex)
             {
@@ -93,7 +93,7 @@ namespace RentEase.Service.Service.Main
                 }
 
                 var responseData = _mapper.Map<AccountRes>(item);
-                return new ServiceResult(Const.SUCCESS_ACTION, Const.SUCCESS_ACTION_MSG, responseData);
+                return new ServiceResult(Const.SUCCESS_ACTION_CODE, Const.SUCCESS_ACTION_MSG, responseData);
             }
             catch (Exception ex)
             {
@@ -110,7 +110,7 @@ namespace RentEase.Service.Service.Main
             else
             {
                 var responseData = _mapper.Map<IEnumerable<AccountRes>>(items.Data);
-                return new ServiceResult(Const.SUCCESS_ACTION, Const.SUCCESS_ACTION_MSG, items.TotalCount, items.TotalPages, items.CurrentPage, responseData);
+                return new ServiceResult(Const.SUCCESS_ACTION_CODE, Const.SUCCESS_ACTION_MSG, items.TotalCount, items.TotalPages, items.CurrentPage, responseData);
             }
         }
         public async Task<ServiceResult> Create(AccountReq request)
@@ -142,7 +142,7 @@ namespace RentEase.Service.Service.Main
             var result = await _unitOfWork.AccountRepository.CreateAsync(createItem);
             if (result > 0)
             {
-                return new ServiceResult(Const.SUCCESS_ACTION, "Tạo tài khoản thành công");
+                return new ServiceResult(Const.SUCCESS_ACTION_CODE, "Tạo tài khoản thành công");
             }
 
             return new ServiceResult(Const.ERROR_EXCEPTION, Const.ERROR_EXCEPTION_MSG);
@@ -155,7 +155,10 @@ namespace RentEase.Service.Service.Main
 
                 var isEmail = IsEmail(request.Username);
                 var createItem = new Account();
-
+                if (request.RoleId != (int)EnumType.Role.Lessor || request.RoleId != (int)EnumType.Role.Lesses)
+                {
+                    return new ServiceResult(Const.ERROR_EXCEPTION, "Khong dung ROLE");
+                }
                 if (isEmail)
                 {
                     createItem = new Account()
@@ -198,7 +201,7 @@ namespace RentEase.Service.Service.Main
                 var result = await _unitOfWork.AccountRepository.CreateAsync(createItem);
                 if (result > 0)
                 {
-                    return new ServiceResult(Const.SUCCESS_ACTION, "Tạo tài khoản thành công");
+                    return new ServiceResult(Const.SUCCESS_ACTION_CODE, "Tạo tài khoản thành công");
                 }
 
                 return new ServiceResult(Const.ERROR_EXCEPTION, "Tạo tài khoản thất bại");
@@ -254,7 +257,7 @@ namespace RentEase.Service.Service.Main
             var result = await _unitOfWork.AccountRepository.UpdateAsync(updateItem);
             if (result > 0)
             {
-                return new ServiceResult(Const.SUCCESS_ACTION, "Cập nhật thành công");
+                return new ServiceResult(Const.SUCCESS_ACTION_CODE, "Cập nhật thành công");
             }
 
             return new ServiceResult(Const.ERROR_EXCEPTION, Const.ERROR_EXCEPTION_MSG);
@@ -282,7 +285,7 @@ namespace RentEase.Service.Service.Main
             var result = await _unitOfWork.AccountRepository.UpdateAsync(item);
             if (result > 0)
             {
-                return new ServiceResult(Const.SUCCESS_ACTION, "Xóa mềm thành công");
+                return new ServiceResult(Const.SUCCESS_ACTION_CODE, "Xóa mềm thành công");
             }
 
             return new ServiceResult(Const.ERROR_EXCEPTION, Const.ERROR_EXCEPTION_MSG);

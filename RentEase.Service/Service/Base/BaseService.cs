@@ -2,6 +2,7 @@
 using RentEase.Common.Base;
 using RentEase.Data;
 using System.Linq.Expressions;
+using System.Reflection;
 
 namespace RentEase.Service.Service.Base
 {
@@ -16,21 +17,39 @@ namespace RentEase.Service.Service.Base
             _mapper = mapper;
         }
 
-        public async Task<ServiceResult> GetAll(int page, int pageSize, bool? status = null)
+        public async Task<ServiceResult> GetAll(int page, int pageSize, bool? status)
         {
             try
             {
                 Expression<Func<T, bool>>? filter = null;
                 var entityType = typeof(T);
-                var statusProperty = entityType.GetProperty("Status");
+                var statusProperty = entityType.GetProperty("Status", BindingFlags.Public | BindingFlags.Instance | BindingFlags.FlattenHierarchy);
 
-                if (status.HasValue && statusProperty != null && statusProperty.PropertyType == typeof(bool))
+                if (status.HasValue && statusProperty != null && 
+                    (statusProperty.PropertyType == typeof(bool) || statusProperty.PropertyType == typeof(bool?)))
                 {
                     var parameter = Expression.Parameter(typeof(T), "o");
                     var property = Expression.Property(parameter, statusProperty);
-                    var value = Expression.Constant(status.Value);
-                    var equalExpression = Expression.Equal(property, value);
-                    filter = Expression.Lambda<Func<T, bool>>(equalExpression, parameter);
+                    if (statusProperty.PropertyType == typeof(bool?))
+                    {
+                        // Kiểm tra nếu có giá trị (o.Status.HasValue && o.Status.Value == status.Value)
+                        var hasValueCheck = Expression.Property(property, "HasValue");
+                        var valueAccess = Expression.Property(property, "Value");
+
+                        var statusValue = Expression.Constant(status.Value, typeof(bool));
+
+                        var hasValueExpression = Expression.Equal(hasValueCheck, Expression.Constant(true));
+                        var equalExpression = Expression.Equal(valueAccess, statusValue);
+
+                        var finalExpression = Expression.AndAlso(hasValueExpression, equalExpression);
+
+                        filter = Expression.Lambda<Func<T, bool>>(finalExpression, parameter);
+                    }
+                    else
+                    {
+                        var equalExpression = Expression.Equal(property, Expression.Constant(status.Value));
+                        filter = Expression.Lambda<Func<T, bool>>(equalExpression, parameter);
+                    }
                 }
 
                 var pagedResult = await _unitOfWork.GetRepository<T>().GetPagedAsync(
@@ -47,7 +66,7 @@ namespace RentEase.Service.Service.Base
 
                 var data = _mapper.Map<IEnumerable<TDto>>(pagedResult.Data);
 
-                return new ServiceResult(Const.SUCCESS_ACTION, Const.SUCCESS_ACTION_MSG, pagedResult.TotalCount, pagedResult.TotalPages, pagedResult.CurrentPage, data);
+                return new ServiceResult(Const.SUCCESS_ACTION_CODE, Const.SUCCESS_ACTION_MSG, pagedResult.TotalCount, pagedResult.TotalPages, pagedResult.CurrentPage, data);
             }
             catch (Exception ex)
             {
@@ -66,7 +85,7 @@ namespace RentEase.Service.Service.Base
                 }
 
                 var response = _mapper.Map<TDto>(entity);
-                return new ServiceResult(Const.SUCCESS_ACTION, Const.SUCCESS_ACTION_MSG, response);
+                return new ServiceResult(Const.SUCCESS_ACTION_CODE, Const.SUCCESS_ACTION_MSG, response);
             }
             catch (Exception ex)
             {
@@ -84,7 +103,7 @@ namespace RentEase.Service.Service.Base
                 }
 
                 var response = _mapper.Map<TDto>(entity);
-                return new ServiceResult(Const.SUCCESS_ACTION, Const.SUCCESS_ACTION_MSG, response);
+                return new ServiceResult(Const.SUCCESS_ACTION_CODE, Const.SUCCESS_ACTION_MSG, response);
             }
             catch (Exception ex)
             {
@@ -105,7 +124,7 @@ namespace RentEase.Service.Service.Base
                 var result = await _unitOfWork.GetRepository<T>().RemoveAsync(entity);
                 if (result)
                 {
-                    return new ServiceResult(Const.SUCCESS_ACTION, "Xóa thành công");
+                    return new ServiceResult(Const.SUCCESS_ACTION_CODE, "Xóa thành công");
 
                 }
                 return new ServiceResult(Const.ERROR_EXCEPTION, "Xóa thất bại");
@@ -128,7 +147,7 @@ namespace RentEase.Service.Service.Base
                 var result = await _unitOfWork.GetRepository<T>().RemoveAsync(entity);
                 if (result)
                 {
-                    return new ServiceResult(Const.SUCCESS_ACTION, "Xóa thành công");
+                    return new ServiceResult(Const.SUCCESS_ACTION_CODE, "Xóa thành công");
 
                 }
                 return new ServiceResult(Const.ERROR_EXCEPTION, "Xóa thất bại");

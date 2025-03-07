@@ -10,7 +10,7 @@ namespace RentEase.Service.Service.Main
 {
     public interface IAptImageService
     {
-        Task<ServiceResult> GetAll(int page, int pageSize, bool? status = true);
+        Task<ServiceResult> GetAll(int page, int pageSize, bool? status);
         Task<ServiceResult> GetById(string id);
         Task<ServiceResult> Create(AptImageReq request);
         Task<ServiceResult> Update(string id, AptImageReq request);
@@ -55,7 +55,7 @@ namespace RentEase.Service.Service.Main
             var result = await _unitOfWork.AptImageRepository.CreateAsync(createItem);
             if (result > 0)
             {
-                return new ServiceResult(Const.SUCCESS_ACTION, "Tạo thành công");
+                return new ServiceResult(Const.SUCCESS_ACTION_CODE, "Tạo thành công");
             }
 
             return new ServiceResult(Const.ERROR_EXCEPTION, Const.ERROR_EXCEPTION_MSG);
@@ -109,7 +109,7 @@ namespace RentEase.Service.Service.Main
             var result = await _unitOfWork.AptImageRepository.UpdateAsync(updateItem);
             if (result > 0)
             {
-                return new ServiceResult(Const.SUCCESS_ACTION, "Cập nhật thành công");
+                return new ServiceResult(Const.SUCCESS_ACTION_CODE, "Cập nhật thành công");
             }
 
             return new ServiceResult(Const.ERROR_EXCEPTION, Const.ERROR_EXCEPTION_MSG);

@@ -48,7 +48,7 @@ namespace RentEase.Service.Service.Sub
 
             if (result > 0)
             {
-                return new ServiceResult(Const.SUCCESS_ACTION, "Tạo thành công");
+                return new ServiceResult(Const.SUCCESS_ACTION_CODE, "Tạo thành công");
             }
 
             return new ServiceResult(Const.ERROR_EXCEPTION, Const.ERROR_EXCEPTION_MSG);
@@ -73,7 +73,7 @@ namespace RentEase.Service.Service.Sub
             var result = await _unitOfWork.UtilityRepository.UpdateAsync(updateItem);
             if (result > 0)
             {
-                return new ServiceResult(Const.SUCCESS_ACTION, "Cập nhật thành công");
+                return new ServiceResult(Const.SUCCESS_ACTION_CODE, "Cập nhật thành công");
             }
 
             return new ServiceResult(Const.ERROR_EXCEPTION, Const.ERROR_EXCEPTION_MSG);

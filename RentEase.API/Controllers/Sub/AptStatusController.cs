@@ -9,7 +9,7 @@ namespace RentEase.API.Controllers.Sub
 {
     [Route("api/[controller]")]
     [ApiController]
-    [Authorize(Roles = "1")]
+    [Authorize(Roles = "1,2,3")]
     public class AptStatusController : ControllerBase
     {
         private readonly IAptStatusService _aptStatusService;

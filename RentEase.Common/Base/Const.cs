@@ -11,7 +11,7 @@
 
         #region Success Codes
 
-        public static int SUCCESS_ACTION = 4;
+        public static int SUCCESS_ACTION_CODE = 4;
         public static string SUCCESS_ACTION_MSG = "Thành công";
 
         #endregion

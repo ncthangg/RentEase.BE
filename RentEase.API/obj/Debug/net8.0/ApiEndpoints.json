@@ -35,7 +35,7 @@
     "Parameters": [
       {
         "Name": "request",
-        "Type": "RentEase.Common.DTOs.Dto.RequestAccountDto",
+        "Type": "RentEase.Common.DTOs.Dto.AccountReq",
         "IsRequired": true
       }
     ],
@@ -51,7 +51,7 @@
     "Parameters": [
       {
         "Name": "id",
-        "Type": "System.Int32",
+        "Type": "System.String",
         "IsRequired": true
       }
     ],
@@ -67,12 +67,28 @@
     "Parameters": [
       {
         "Name": "id",
-        "Type": "System.Int32",
+        "Type": "System.String",
         "IsRequired": true
       },
       {
         "Name": "request",
-        "Type": "RentEase.Common.DTOs.Dto.RequestAccountDto",
+        "Type": "RentEase.Common.DTOs.Dto.AccountReq",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "RentEase.API.Controllers.Main.AccountsController",
+    "Method": "DeleteSoft",
+    "RelativePath": "api/Accounts/{id}",
+    "HttpMethod": "PATCH",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "id",
+        "Type": "System.String",
         "IsRequired": true
       }
     ],
@@ -88,7 +104,7 @@
     "Parameters": [
       {
         "Name": "id",
-        "Type": "System.Int32",
+        "Type": "System.String",
         "IsRequired": true
       }
     ],
@@ -130,7 +146,7 @@
     "Parameters": [
       {
         "Name": "request",
-        "Type": "RentEase.Common.DTOs.Dto.RequestAptDto",
+        "Type": "RentEase.Common.DTOs.Dto.AptReq",
         "IsRequired": true
       }
     ],
@@ -146,7 +162,7 @@
     "Parameters": [
       {
         "Name": "id",
-        "Type": "System.Int32",
+        "Type": "System.String",
         "IsRequired": true
       }
     ],
@@ -162,23 +178,29 @@
     "Parameters": [
       {
         "Name": "id",
-        "Type": "System.Int32",
+        "Type": "System.String",
         "IsRequired": true
       },
       {
         "Name": "request",
-        "Type": "RentEase.Common.DTOs.Dto.RequestAptDto",
+        "Type": "RentEase.Common.DTOs.Dto.AptReq",
         "IsRequired": true
-      },
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "RentEase.API.Controllers.Main.AptController",
+    "Method": "DeleteSoft",
+    "RelativePath": "api/Apt/{id}",
+    "HttpMethod": "PATCH",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
       {
-        "Name": "aptStatus",
-        "Type": "System.Nullable\u00601[[System.Int32, System.Private.CoreLib, Version=8.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]]",
-        "IsRequired": false
-      },
-      {
-        "Name": "approveStatus",
-        "Type": "System.Nullable\u00601[[System.Int32, System.Private.CoreLib, Version=8.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]]",
-        "IsRequired": false
+        "Name": "id",
+        "Type": "System.String",
+        "IsRequired": true
       }
     ],
     "ReturnTypes": []
@@ -193,7 +215,7 @@
     "Parameters": [
       {
         "Name": "id",
-        "Type": "System.Int32",
+        "Type": "System.String",
         "IsRequired": true
       }
     ],
@@ -207,11 +229,6 @@
     "IsController": true,
     "Order": 0,
     "Parameters": [
-      {
-        "Name": "status",
-        "Type": "System.Boolean",
-        "IsRequired": false
-      },
       {
         "Name": "page",
         "Type": "System.Int32",
@@ -235,7 +252,7 @@
     "Parameters": [
       {
         "Name": "request",
-        "Type": "RentEase.Common.DTOs.Dto.RequestAptCategoryDto",
+        "Type": "RentEase.Common.DTOs.Dto.AptCategoryReq",
         "IsRequired": true
       }
     ],
@@ -272,7 +289,7 @@
       },
       {
         "Name": "request",
-        "Type": "RentEase.Common.DTOs.Dto.RequestAptCategoryDto",
+        "Type": "RentEase.Common.DTOs.Dto.AptCategoryReq",
         "IsRequired": true
       }
     ],
@@ -295,37 +312,6 @@
     "ReturnTypes": []
   },
   {
-    "ContainingType": "RentEase.API.Controllers.Sub.AptCategoryController",
-    "Method": "Search",
-    "RelativePath": "api/AptCategory/search",
-    "HttpMethod": "GET",
-    "IsController": true,
-    "Order": 0,
-    "Parameters": [
-      {
-        "Name": "name",
-        "Type": "System.String",
-        "IsRequired": false
-      },
-      {
-        "Name": "status",
-        "Type": "System.Boolean",
-        "IsRequired": false
-      },
-      {
-        "Name": "page",
-        "Type": "System.Int32",
-        "IsRequired": false
-      },
-      {
-        "Name": "pageSize",
-        "Type": "System.Int32",
-        "IsRequired": false
-      }
-    ],
-    "ReturnTypes": []
-  },
-  {
     "ContainingType": "RentEase.API.Controllers.Main.AptImageController",
     "Method": "Get",
     "RelativePath": "api/AptImage",
@@ -333,11 +319,6 @@
     "IsController": true,
     "Order": 0,
     "Parameters": [
-      {
-        "Name": "status",
-        "Type": "System.Boolean",
-        "IsRequired": false
-      },
       {
         "Name": "page",
         "Type": "System.Int32",
@@ -361,7 +342,7 @@
     "Parameters": [
       {
         "Name": "request",
-        "Type": "RentEase.Common.DTOs.Dto.RequestAptImageDto",
+        "Type": "RentEase.Common.DTOs.Dto.AptImageReq",
         "IsRequired": true
       }
     ],
@@ -377,7 +358,7 @@
     "Parameters": [
       {
         "Name": "id",
-        "Type": "System.Int32",
+        "Type": "System.String",
         "IsRequired": true
       }
     ],
@@ -393,12 +374,12 @@
     "Parameters": [
       {
         "Name": "id",
-        "Type": "System.Int32",
+        "Type": "System.String",
         "IsRequired": true
       },
       {
         "Name": "request",
-        "Type": "RentEase.Common.DTOs.Dto.RequestAptImageDto",
+        "Type": "RentEase.Common.DTOs.Dto.AptImageReq",
         "IsRequired": true
       }
     ],
@@ -414,7 +395,7 @@
     "Parameters": [
       {
         "Name": "id",
-        "Type": "System.Int32",
+        "Type": "System.String",
         "IsRequired": true
       }
     ],
@@ -428,11 +409,6 @@
     "IsController": true,
     "Order": 0,
     "Parameters": [
-      {
-        "Name": "status",
-        "Type": "System.Boolean",
-        "IsRequired": false
-      },
       {
         "Name": "page",
         "Type": "System.Int32",
@@ -456,7 +432,7 @@
     "Parameters": [
       {
         "Name": "request",
-        "Type": "RentEase.Common.DTOs.Dto.RequestAptStatusDto",
+        "Type": "RentEase.Common.DTOs.Dto.AptStatusReq",
         "IsRequired": true
       }
     ],
@@ -493,7 +469,7 @@
       },
       {
         "Name": "request",
-        "Type": "RentEase.Common.DTOs.Dto.RequestAptStatusDto",
+        "Type": "RentEase.Common.DTOs.Dto.AptStatusReq",
         "IsRequired": true
       }
     ],
@@ -516,32 +492,17 @@
     "ReturnTypes": []
   },
   {
-    "ContainingType": "RentEase.API.Controllers.Sub.AptStatusController",
-    "Method": "Search",
-    "RelativePath": "api/AptStatus/search",
-    "HttpMethod": "GET",
+    "ContainingType": "RentEase.API.Controllers.Main.AptUtilityController",
+    "Method": "AddUtilities",
+    "RelativePath": "api/AptUtility/add-utilities",
+    "HttpMethod": "POST",
     "IsController": true,
     "Order": 0,
     "Parameters": [
       {
-        "Name": "name",
-        "Type": "System.String",
-        "IsRequired": false
-      },
-      {
-        "Name": "status",
-        "Type": "System.Boolean",
-        "IsRequired": false
-      },
-      {
-        "Name": "page",
-        "Type": "System.Int32",
-        "IsRequired": false
-      },
-      {
-        "Name": "pageSize",
-        "Type": "System.Int32",
-        "IsRequired": false
+        "Name": "request",
+        "Type": "RentEase.Common.DTOs.Dto.AptUtilityReq",
+        "IsRequired": true
       }
     ],
     "ReturnTypes": []
@@ -556,7 +517,7 @@
     "Parameters": [
       {
         "Name": "request",
-        "Type": "RentEase.Common.DTOs.Authenticate.RequestChangePasswordDto",
+        "Type": "RentEase.Common.DTOs.Authenticate.ChangePasswordReq",
         "IsRequired": true
       }
     ],
@@ -582,7 +543,7 @@
     "Parameters": [
       {
         "Name": "request",
-        "Type": "RentEase.Common.DTOs.Authenticate.RequestLoginDto",
+        "Type": "RentEase.Common.DTOs.Authenticate.LoginReq",
         "IsRequired": true
       }
     ],
@@ -598,7 +559,7 @@
     "Parameters": [
       {
         "Name": "request",
-        "Type": "RentEase.Common.DTOs.Authenticate.RequestRegisterDto",
+        "Type": "RentEase.Common.DTOs.Authenticate.RegisterReq",
         "IsRequired": true
       }
     ],
@@ -614,23 +575,118 @@
     "Parameters": [
       {
         "Name": "request",
-        "Type": "RentEase.Common.DTOs.Request.RequestVerification",
+        "Type": "RentEase.Common.DTOs.Request.Verification",
         "IsRequired": true
       }
     ],
     "ReturnTypes": []
   },
   {
-    "ContainingType": "RentEase.API.Controllers.Main.ContractController",
+    "ContainingType": "RentEase.API.Controllers.Main.OrderController",
     "Method": "Get",
-    "RelativePath": "api/Contract",
+    "RelativePath": "api/Order",
     "HttpMethod": "GET",
     "IsController": true,
     "Order": 0,
     "Parameters": [
       {
-        "Name": "status",
-        "Type": "System.Boolean",
+        "Name": "page",
+        "Type": "System.Int32",
+        "IsRequired": false
+      },
+      {
+        "Name": "pageSize",
+        "Type": "System.Int32",
+        "IsRequired": false
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "RentEase.API.Controllers.Main.OrderController",
+    "Method": "Post",
+    "RelativePath": "api/Order",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "request",
+        "Type": "RentEase.Common.DTOs.Dto.OrderReq",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "RentEase.API.Controllers.Main.OrderController",
+    "Method": "Get",
+    "RelativePath": "api/Order/{id}",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "id",
+        "Type": "System.String",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "RentEase.API.Controllers.Main.OrderController",
+    "Method": "Put",
+    "RelativePath": "api/Order/{id}",
+    "HttpMethod": "PUT",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "id",
+        "Type": "System.String",
+        "IsRequired": false
+      },
+      {
+        "Name": "statusId",
+        "Type": "System.Int32",
+        "IsRequired": false
+      },
+      {
+        "Name": "id",
+        "Type": "",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "RentEase.API.Controllers.Main.OrderController",
+    "Method": "Delete",
+    "RelativePath": "api/Order/{id}",
+    "HttpMethod": "DELETE",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "id",
+        "Type": "System.String",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "RentEase.API.Controllers.Main.OrderController",
+    "Method": "GetAllOwn",
+    "RelativePath": "api/Order/getowner",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "statusId",
+        "Type": "System.Nullable\u00601[[System.Int32, System.Private.CoreLib, Version=8.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]]",
         "IsRequired": false
       },
       {
@@ -647,97 +703,29 @@
     "ReturnTypes": []
   },
   {
-    "ContainingType": "RentEase.API.Controllers.Main.ContractController",
+    "ContainingType": "RentEase.API.Controllers.Payment.PaymentController",
     "Method": "Post",
-    "RelativePath": "api/Contract",
+    "RelativePath": "api/Payment/create-payment-link",
     "HttpMethod": "POST",
     "IsController": true,
     "Order": 0,
     "Parameters": [
       {
         "Name": "request",
-        "Type": "RentEase.Common.DTOs.Dto.RequestContractDto",
+        "Type": "RentEase.Common.DTOs.Dto.TransactionReq",
         "IsRequired": true
       }
     ],
     "ReturnTypes": []
   },
   {
-    "ContainingType": "RentEase.API.Controllers.Main.ContractController",
+    "ContainingType": "RentEase.API.Controllers.Main.PostController",
     "Method": "Get",
-    "RelativePath": "api/Contract/{id}",
+    "RelativePath": "api/Post",
     "HttpMethod": "GET",
     "IsController": true,
     "Order": 0,
     "Parameters": [
-      {
-        "Name": "id",
-        "Type": "System.Int32",
-        "IsRequired": true
-      }
-    ],
-    "ReturnTypes": []
-  },
-  {
-    "ContainingType": "RentEase.API.Controllers.Main.ContractController",
-    "Method": "Put",
-    "RelativePath": "api/Contract/{id}",
-    "HttpMethod": "PUT",
-    "IsController": true,
-    "Order": 0,
-    "Parameters": [
-      {
-        "Name": "id",
-        "Type": "System.Int32",
-        "IsRequired": true
-      },
-      {
-        "Name": "request",
-        "Type": "RentEase.Common.DTOs.Dto.RequestContractDto",
-        "IsRequired": true
-      },
-      {
-        "Name": "contractStatus",
-        "Type": "System.Nullable\u00601[[System.Int32, System.Private.CoreLib, Version=8.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]]",
-        "IsRequired": false
-      },
-      {
-        "Name": "approveStatus",
-        "Type": "System.Nullable\u00601[[System.Int32, System.Private.CoreLib, Version=8.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]]",
-        "IsRequired": false
-      }
-    ],
-    "ReturnTypes": []
-  },
-  {
-    "ContainingType": "RentEase.API.Controllers.Main.ContractController",
-    "Method": "Delete",
-    "RelativePath": "api/Contract/{id}",
-    "HttpMethod": "DELETE",
-    "IsController": true,
-    "Order": 0,
-    "Parameters": [
-      {
-        "Name": "id",
-        "Type": "System.Int32",
-        "IsRequired": true
-      }
-    ],
-    "ReturnTypes": []
-  },
-  {
-    "ContainingType": "RentEase.API.Controllers.Main.CurrentResidentController",
-    "Method": "Get",
-    "RelativePath": "api/CurrentResident",
-    "HttpMethod": "GET",
-    "IsController": true,
-    "Order": 0,
-    "Parameters": [
-      {
-        "Name": "status",
-        "Type": "System.Boolean",
-        "IsRequired": false
-      },
       {
         "Name": "page",
         "Type": "System.Int32",
@@ -752,174 +740,135 @@
     "ReturnTypes": []
   },
   {
-    "ContainingType": "RentEase.API.Controllers.Main.CurrentResidentController",
+    "ContainingType": "RentEase.API.Controllers.Main.PostController",
     "Method": "Post",
-    "RelativePath": "api/CurrentResident",
+    "RelativePath": "api/Post",
     "HttpMethod": "POST",
     "IsController": true,
     "Order": 0,
     "Parameters": [
       {
         "Name": "request",
-        "Type": "RentEase.Common.DTOs.Dto.RequestCurrentResidentDto",
+        "Type": "RentEase.Common.DTOs.Dto.PostReq",
         "IsRequired": true
       }
     ],
     "ReturnTypes": []
   },
   {
-    "ContainingType": "RentEase.API.Controllers.Main.CurrentResidentController",
+    "ContainingType": "RentEase.API.Controllers.Main.PostController",
     "Method": "Get",
-    "RelativePath": "api/CurrentResident/{id}",
+    "RelativePath": "api/Post/{id}",
     "HttpMethod": "GET",
     "IsController": true,
     "Order": 0,
     "Parameters": [
       {
         "Name": "id",
-        "Type": "System.Int32",
+        "Type": "System.String",
         "IsRequired": true
       }
     ],
     "ReturnTypes": []
   },
   {
-    "ContainingType": "RentEase.API.Controllers.Main.CurrentResidentController",
+    "ContainingType": "RentEase.API.Controllers.Main.PostController",
     "Method": "Put",
-    "RelativePath": "api/CurrentResident/{id}",
+    "RelativePath": "api/Post/{id}",
     "HttpMethod": "PUT",
     "IsController": true,
     "Order": 0,
     "Parameters": [
       {
         "Name": "id",
-        "Type": "System.Int32",
-        "IsRequired": true
+        "Type": "System.String",
+        "IsRequired": false
       },
       {
-        "Name": "liveStatus",
+        "Name": "AptId",
+        "Type": "System.String",
+        "IsRequired": false
+      },
+      {
+        "Name": "Title",
+        "Type": "System.String",
+        "IsRequired": false
+      },
+      {
+        "Name": "TotalSlot",
         "Type": "System.Int32",
+        "IsRequired": false
+      },
+      {
+        "Name": "CurrentSlot",
+        "Type": "System.Int32",
+        "IsRequired": false
+      },
+      {
+        "Name": "GenderId",
+        "Type": "System.Int32",
+        "IsRequired": false
+      },
+      {
+        "Name": "OldId",
+        "Type": "System.Int32",
+        "IsRequired": false
+      },
+      {
+        "Name": "Note",
+        "Type": "System.String",
+        "IsRequired": false
+      },
+      {
+        "Name": "MoveInDate",
+        "Type": "System.DateOnly",
+        "IsRequired": false
+      },
+      {
+        "Name": "MoveOutDate",
+        "Type": "System.Nullable\u00601[[System.DateOnly, System.Private.CoreLib, Version=8.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]]",
+        "IsRequired": false
+      },
+      {
+        "Name": "StatusId",
+        "Type": "System.Int32",
+        "IsRequired": false
+      },
+      {
+        "Name": "id",
+        "Type": "",
         "IsRequired": true
       }
     ],
     "ReturnTypes": []
   },
   {
-    "ContainingType": "RentEase.API.Controllers.Main.CurrentResidentController",
+    "ContainingType": "RentEase.API.Controllers.Main.PostController",
+    "Method": "DeleteSoft",
+    "RelativePath": "api/Post/{id}",
+    "HttpMethod": "PATCH",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "id",
+        "Type": "System.String",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "RentEase.API.Controllers.Main.PostController",
     "Method": "Delete",
-    "RelativePath": "api/CurrentResident/{id}",
+    "RelativePath": "api/Post/{id}",
     "HttpMethod": "DELETE",
     "IsController": true,
     "Order": 0,
     "Parameters": [
       {
         "Name": "id",
-        "Type": "System.Int32",
-        "IsRequired": true
-      }
-    ],
-    "ReturnTypes": []
-  },
-  {
-    "ContainingType": "RentEase.API.Controllers.Main.MaintenanceRequestController",
-    "Method": "Get",
-    "RelativePath": "api/MaintenanceRequest",
-    "HttpMethod": "GET",
-    "IsController": true,
-    "Order": 0,
-    "Parameters": [
-      {
-        "Name": "status",
-        "Type": "System.Boolean",
-        "IsRequired": false
-      },
-      {
-        "Name": "page",
-        "Type": "System.Int32",
-        "IsRequired": false
-      },
-      {
-        "Name": "pageSize",
-        "Type": "System.Int32",
-        "IsRequired": false
-      }
-    ],
-    "ReturnTypes": []
-  },
-  {
-    "ContainingType": "RentEase.API.Controllers.Main.MaintenanceRequestController",
-    "Method": "Post",
-    "RelativePath": "api/MaintenanceRequest",
-    "HttpMethod": "POST",
-    "IsController": true,
-    "Order": 0,
-    "Parameters": [
-      {
-        "Name": "request",
-        "Type": "RentEase.Common.DTOs.Dto.RequestMaintenanceRequestDto",
-        "IsRequired": true
-      }
-    ],
-    "ReturnTypes": []
-  },
-  {
-    "ContainingType": "RentEase.API.Controllers.Main.MaintenanceRequestController",
-    "Method": "Get",
-    "RelativePath": "api/MaintenanceRequest/{id}",
-    "HttpMethod": "GET",
-    "IsController": true,
-    "Order": 0,
-    "Parameters": [
-      {
-        "Name": "id",
-        "Type": "System.Int32",
-        "IsRequired": true
-      }
-    ],
-    "ReturnTypes": []
-  },
-  {
-    "ContainingType": "RentEase.API.Controllers.Main.MaintenanceRequestController",
-    "Method": "Put",
-    "RelativePath": "api/MaintenanceRequest/{id}",
-    "HttpMethod": "PUT",
-    "IsController": true,
-    "Order": 0,
-    "Parameters": [
-      {
-        "Name": "id",
-        "Type": "System.Int32",
-        "IsRequired": true
-      },
-      {
-        "Name": "request",
-        "Type": "RentEase.Common.DTOs.Dto.RequestMaintenanceRequestDto",
-        "IsRequired": true
-      },
-      {
-        "Name": "approveStatus",
-        "Type": "System.Nullable\u00601[[System.Int32, System.Private.CoreLib, Version=8.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]]",
-        "IsRequired": false
-      },
-      {
-        "Name": "progressStatus",
-        "Type": "System.Nullable\u00601[[System.Int32, System.Private.CoreLib, Version=8.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]]",
-        "IsRequired": false
-      }
-    ],
-    "ReturnTypes": []
-  },
-  {
-    "ContainingType": "RentEase.API.Controllers.Main.MaintenanceRequestController",
-    "Method": "Delete",
-    "RelativePath": "api/MaintenanceRequest/{id}",
-    "HttpMethod": "DELETE",
-    "IsController": true,
-    "Order": 0,
-    "Parameters": [
-      {
-        "Name": "id",
-        "Type": "System.Int32",
+        "Type": "System.String",
         "IsRequired": true
       }
     ],
@@ -933,11 +882,6 @@
     "IsController": true,
     "Order": 0,
     "Parameters": [
-      {
-        "Name": "status",
-        "Type": "System.Boolean",
-        "IsRequired": false
-      },
       {
         "Name": "page",
         "Type": "System.Int32",
@@ -961,7 +905,7 @@
     "Parameters": [
       {
         "Name": "request",
-        "Type": "RentEase.Common.DTOs.Dto.RequestReviewDto",
+        "Type": "RentEase.Common.DTOs.Dto.ReviewReq",
         "IsRequired": true
       }
     ],
@@ -1029,11 +973,6 @@
     "Order": 0,
     "Parameters": [
       {
-        "Name": "status",
-        "Type": "System.Boolean",
-        "IsRequired": false
-      },
-      {
         "Name": "page",
         "Type": "System.Int32",
         "IsRequired": false
@@ -1056,7 +995,7 @@
     "Parameters": [
       {
         "Name": "request",
-        "Type": "RentEase.Common.DTOs.Dto.RequestRoleDto",
+        "Type": "RentEase.Common.DTOs.Dto.RoleReq",
         "IsRequired": true
       }
     ],
@@ -1093,7 +1032,7 @@
       },
       {
         "Name": "request",
-        "Type": "RentEase.Common.DTOs.Dto.RequestRoleDto",
+        "Type": "RentEase.Common.DTOs.Dto.RoleReq",
         "IsRequired": true
       }
     ],
@@ -1116,21 +1055,53 @@
     "ReturnTypes": []
   },
   {
-    "ContainingType": "RentEase.API.Controllers.Sub.RoleController",
-    "Method": "Search",
-    "RelativePath": "api/Role/search",
+    "ContainingType": "RentEase.API.Controllers.Main.TransactionController",
+    "Method": "Get",
+    "RelativePath": "api/Transaction",
     "HttpMethod": "GET",
     "IsController": true,
     "Order": 0,
     "Parameters": [
       {
-        "Name": "name",
-        "Type": "System.String",
+        "Name": "page",
+        "Type": "System.Int32",
         "IsRequired": false
       },
       {
-        "Name": "status",
-        "Type": "System.Boolean",
+        "Name": "pageSize",
+        "Type": "System.Int32",
+        "IsRequired": false
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "RentEase.API.Controllers.Main.TransactionController",
+    "Method": "Get",
+    "RelativePath": "api/Transaction/{id}",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "id",
+        "Type": "System.Int32",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "RentEase.API.Controllers.Main.TransactionController",
+    "Method": "GetAllOwn",
+    "RelativePath": "api/Transaction/getowner",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "statusId",
+        "Type": "System.Nullable\u00601[[System.Int32, System.Private.CoreLib, Version=8.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]]",
         "IsRequired": false
       },
       {
@@ -1155,11 +1126,6 @@
     "Order": 0,
     "Parameters": [
       {
-        "Name": "status",
-        "Type": "System.Boolean",
-        "IsRequired": false
-      },
-      {
         "Name": "page",
         "Type": "System.Int32",
         "IsRequired": false
@@ -1182,7 +1148,7 @@
     "Parameters": [
       {
         "Name": "request",
-        "Type": "RentEase.Common.DTOs.Dto.RequestTransactionTypeDto",
+        "Type": "RentEase.Common.DTOs.Dto.TransactionTypeReq",
         "IsRequired": true
       }
     ],
@@ -1219,7 +1185,7 @@
       },
       {
         "Name": "request",
-        "Type": "RentEase.Common.DTOs.Dto.RequestTransactionTypeDto",
+        "Type": "RentEase.Common.DTOs.Dto.TransactionTypeReq",
         "IsRequired": true
       }
     ],
@@ -1242,37 +1208,6 @@
     "ReturnTypes": []
   },
   {
-    "ContainingType": "RentEase.API.Controllers.Sub.TransactionTypeController",
-    "Method": "Search",
-    "RelativePath": "api/TransactionType/search",
-    "HttpMethod": "GET",
-    "IsController": true,
-    "Order": 0,
-    "Parameters": [
-      {
-        "Name": "name",
-        "Type": "System.String",
-        "IsRequired": false
-      },
-      {
-        "Name": "status",
-        "Type": "System.Boolean",
-        "IsRequired": false
-      },
-      {
-        "Name": "page",
-        "Type": "System.Int32",
-        "IsRequired": false
-      },
-      {
-        "Name": "pageSize",
-        "Type": "System.Int32",
-        "IsRequired": false
-      }
-    ],
-    "ReturnTypes": []
-  },
-  {
     "ContainingType": "RentEase.API.Controllers.Sub.UtilityController",
     "Method": "Get",
     "RelativePath": "api/Utility",
@@ -1280,11 +1215,6 @@
     "IsController": true,
     "Order": 0,
     "Parameters": [
-      {
-        "Name": "status",
-        "Type": "System.Boolean",
-        "IsRequired": false
-      },
       {
         "Name": "page",
         "Type": "System.Int32",
@@ -1308,7 +1238,7 @@
     "Parameters": [
       {
         "Name": "request",
-        "Type": "RentEase.Common.DTOs.Dto.RequestUtilityDto",
+        "Type": "RentEase.Common.DTOs.Dto.UtilityReq",
         "IsRequired": true
       }
     ],
@@ -1345,7 +1275,7 @@
       },
       {
         "Name": "request",
-        "Type": "RentEase.Common.DTOs.Dto.RequestUtilityDto",
+        "Type": "RentEase.Common.DTOs.Dto.UtilityReq",
         "IsRequired": true
       }
     ],
@@ -1368,21 +1298,47 @@
     "ReturnTypes": []
   },
   {
-    "ContainingType": "RentEase.API.Controllers.Sub.UtilityController",
-    "Method": "Search",
-    "RelativePath": "api/Utility/search",
+    "ContainingType": "RentEase.API.Controllers.Main.ReviewController",
+    "Method": "GetByAptId",
+    "RelativePath": "getbyApt/{aptId}",
     "HttpMethod": "GET",
     "IsController": true,
     "Order": 0,
     "Parameters": [
       {
-        "Name": "name",
+        "Name": "aptId",
         "Type": "System.String",
         "IsRequired": false
       },
       {
-        "Name": "status",
-        "Type": "System.Boolean",
+        "Name": "page",
+        "Type": "System.Int32",
+        "IsRequired": false
+      },
+      {
+        "Name": "pageSize",
+        "Type": "System.Int32",
+        "IsRequired": false
+      },
+      {
+        "Name": "aptId",
+        "Type": "",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "RentEase.API.Controllers.Main.PostController",
+    "Method": "GetAllOwn",
+    "RelativePath": "getowner",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "statusId",
+        "Type": "System.Nullable\u00601[[System.Int32, System.Private.CoreLib, Version=8.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]]",
         "IsRequired": false
       },
       {
