@@ -53,7 +53,7 @@ namespace RentEase.API.Controllers.Main
         }
 
         [HttpGet("{id}")]
-        public async Task<IActionResult> Get(string id)
+        public async Task<IActionResult> GetById(string id)
         {
             try
             {
@@ -113,7 +113,7 @@ namespace RentEase.API.Controllers.Main
             }
         }
 
-        [HttpPut("{id}")]
+        [HttpPut]
         public async Task<IActionResult> Put(string id, [FromBody] AptImageReq request)
         {
             try
@@ -143,34 +143,34 @@ namespace RentEase.API.Controllers.Main
             }
         }
 
-        [HttpDelete("{id}")]
-        public async Task<IActionResult> Delete(string id)
-        {
-            try
-            {
-                var result = await _AptImageService.Delete(id);
-                if (result.Status < 0 && result.Data == null)
-                {
-                    return NotFound(new ApiRes<string>
-                    {
-                        StatusCode = HttpStatusCode.NotFound,
-                        Message = result.Message
-                    });
-                }
-                return Ok(new ApiRes<string>
-                {
-                    StatusCode = HttpStatusCode.OK,
-                    Message = result.Message
-                });
-            }
-            catch (Exception ex)
-            {
-                return BadRequest(new ApiRes<string>
-                {
-                    StatusCode = HttpStatusCode.InternalServerError,
-                    Message = $"Lỗi hệ thống: {ex.Message}"
-                });
-            }
-        }
+        //[HttpDelete]
+        //public async Task<IActionResult> Delete(string id)
+        //{
+        //    try
+        //    {
+        //        var result = await _AptImageService.Delete(id);
+        //        if (result.Status < 0 && result.Data == null)
+        //        {
+        //            return NotFound(new ApiRes<string>
+        //            {
+        //                StatusCode = HttpStatusCode.NotFound,
+        //                Message = result.Message
+        //            });
+        //        }
+        //        return Ok(new ApiRes<string>
+        //        {
+        //            StatusCode = HttpStatusCode.OK,
+        //            Message = result.Message
+        //        });
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        return BadRequest(new ApiRes<string>
+        //        {
+        //            StatusCode = HttpStatusCode.InternalServerError,
+        //            Message = $"Lỗi hệ thống: {ex.Message}"
+        //        });
+        //    }
+        //}
     }
 }

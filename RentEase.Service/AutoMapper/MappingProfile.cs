@@ -14,9 +14,7 @@ namespace RentEase.Service.AutoMapper
             CreateMap<AccountVerification, AccountVerificationRes>().ReverseMap();
 
             CreateMap<Account, AccountReq>().ReverseMap();
-            CreateMap<Account, AccountRes>().ReverseMap()
-                    .ForMember(dest => dest.Gender, opt => opt.MapFrom(src => src.Gender ?? null))
-                    .ForMember(dest => dest.AvatarUrl, opt => opt.MapFrom(src => src.AvatarUrl ?? null));
+            CreateMap<Account, AccountRes>().ReverseMap();
 
 
             CreateMap<Apt, AptRes>().ReverseMap();

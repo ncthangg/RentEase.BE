@@ -168,9 +168,8 @@ namespace RentEase.Service.Service.Authenticate
                     return new ServiceResult(Const.ERROR_EXCEPTION, "Tài khoản không tồn tại ");
                 }
 
-                var responseAccountData = item;
-
-                return new ServiceResult(Const.SUCCESS_ACTION_CODE, "Lấy thông tin tài khoản thành công", responseAccountData);
+                var data = _mapper.Map<AccountRes>((item as Account));
+                return new ServiceResult(Const.SUCCESS_ACTION_CODE, "Lấy thông tin tài khoản thành công", data);
 
             }
             catch (Exception ex)
@@ -200,7 +199,6 @@ namespace RentEase.Service.Service.Authenticate
                     var result = await _serviceWrapper.AccountService.Update(accountId, updateItem);
                     if (result.Status > 0)
                     {
-
                         return new ServiceResult(Const.SUCCESS_ACTION_CODE, "Thay đổi mật khẩu thành công");
                     }
                 }

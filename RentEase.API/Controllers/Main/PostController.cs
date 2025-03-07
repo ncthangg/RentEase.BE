@@ -52,42 +52,9 @@ namespace RentEase.API.Controllers.Main
             }
         }
 
-        [HttpGet("getowner")]
-        public async Task<IActionResult> GetAllOwn([FromQuery] int? statusId, [FromQuery] int page = 1, [FromQuery] int pageSize = 10)
-        {
-            try
-            {
-                var result = await _postService.GetAllOwn(statusId, page, pageSize);
-                if (result.Status < 0 && result.Data == null)
-                {
-                    return NotFound(new ApiRes<string>
-                    {
-                        StatusCode = HttpStatusCode.NotFound,
-                        Message = result.Message
-                    });
-                }
-                return Ok(new ApiRes<IEnumerable<PostRes>>
-                {
-                    StatusCode = HttpStatusCode.OK,
-                    Message = result.Message,
-                    Count = result.TotalCount,
-                    TotalPages = result.TotalPage,
-                    CurrentPage = result.CurrentPage,
-                    Data = (IEnumerable<PostRes>)result.Data
-                });
-            }
-            catch (Exception ex)
-            {
-                return BadRequest(new ApiRes<string>
-                {
-                    StatusCode = HttpStatusCode.InternalServerError,
-                    Message = $"Lỗi hệ thống: {ex.Message}"
-                });
-            }
-        }
-
+       
         [HttpGet("{id}")]
-        public async Task<IActionResult> Get(string id)
+        public async Task<IActionResult> GetById(string id)
         {
             try
             {
@@ -116,6 +83,41 @@ namespace RentEase.API.Controllers.Main
                 });
             }
         }
+
+        //[HttpGet("getowner")]
+        //public async Task<IActionResult> GetAllOwn([FromQuery] int? statusId, [FromQuery] int page = 1, [FromQuery] int pageSize = 10)
+        //{
+        //    try
+        //    {
+        //        var result = await _postService.GetAllOwn(statusId, page, pageSize);
+        //        if (result.Status < 0 && result.Data == null)
+        //        {
+        //            return NotFound(new ApiRes<string>
+        //            {
+        //                StatusCode = HttpStatusCode.NotFound,
+        //                Message = result.Message
+        //            });
+        //        }
+        //        return Ok(new ApiRes<IEnumerable<PostRes>>
+        //        {
+        //            StatusCode = HttpStatusCode.OK,
+        //            Message = result.Message,
+        //            Count = result.TotalCount,
+        //            TotalPages = result.TotalPage,
+        //            CurrentPage = result.CurrentPage,
+        //            Data = (IEnumerable<PostRes>)result.Data
+        //        });
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        return BadRequest(new ApiRes<string>
+        //        {
+        //            StatusCode = HttpStatusCode.InternalServerError,
+        //            Message = $"Lỗi hệ thống: {ex.Message}"
+        //        });
+        //    }
+        //}
+
 
         [HttpPost]
         public async Task<IActionResult> Post([FromBody] PostReq request)
@@ -148,7 +150,7 @@ namespace RentEase.API.Controllers.Main
             }
         }
 
-        [HttpPut("{id}")]
+        [HttpPut]
         public async Task<IActionResult> Put([FromQuery] string id, [FromQuery] PostReq request)
         {
             try
@@ -178,7 +180,7 @@ namespace RentEase.API.Controllers.Main
             }
         }
 
-        [HttpPatch("{id}")]
+        [HttpPatch]
         public async Task<IActionResult> DeleteSoft(string id)
         {
             try
@@ -208,7 +210,7 @@ namespace RentEase.API.Controllers.Main
             }
         }
 
-        [HttpDelete("{id}")]
+        [HttpDelete]
         public async Task<IActionResult> Delete(string id)
         {
             try

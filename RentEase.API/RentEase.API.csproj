@@ -22,6 +22,8 @@
 
   <ItemGroup>
     <Folder Include="Middlewares\" />
+    <Folder Include="wwwroot\images\" />
+    <Folder Include="wwwroot\uploads\apt\" />
   </ItemGroup>
 
 </Project>

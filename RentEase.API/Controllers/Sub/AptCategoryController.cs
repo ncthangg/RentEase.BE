@@ -53,7 +53,7 @@ namespace RentEase.API.Controllers.Sub
         }
 
         [HttpGet("{id}")]
-        public async Task<IActionResult> Get(int id)
+        public async Task<IActionResult> GetById(int id)
         {
             try
             {
@@ -113,7 +113,7 @@ namespace RentEase.API.Controllers.Sub
             }
         }
 
-        [HttpPut("{id}")]
+        [HttpPut]
         public async Task<IActionResult> Put(int id, AptCategoryReq request)
         {
             try
@@ -143,7 +143,7 @@ namespace RentEase.API.Controllers.Sub
             }
         }
 
-        [HttpDelete("{id}")]
+        [HttpDelete]
         public async Task<IActionResult> Delete(int id)
         {
             try

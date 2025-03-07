@@ -52,42 +52,8 @@ namespace RentEase.API.Controllers.Main
             }
         }
 
-        [HttpGet("getowner")]
-        public async Task<IActionResult> GetAllOwn([FromQuery] int? statusId, [FromQuery] int page = 1, [FromQuery] int pageSize = 10)
-        {
-            try
-            {
-                var result = await _TransactionService.GetAllOwn(statusId, page, pageSize);
-                if (result.Status < 0 && result.Data == null)
-                {
-                    return NotFound(new ApiRes<string>
-                    {
-                        StatusCode = HttpStatusCode.NotFound,
-                        Message = result.Message
-                    });
-                }
-                return Ok(new ApiRes<IEnumerable<TransactionRes>>
-                {
-                    StatusCode = HttpStatusCode.OK,
-                    Message = result.Message,
-                    Count = result.TotalCount,
-                    TotalPages = result.TotalPage,
-                    CurrentPage = result.CurrentPage,
-                    Data = (IEnumerable<TransactionRes>)result.Data
-                });
-            }
-            catch (Exception ex)
-            {
-                return BadRequest(new ApiRes<string>
-                {
-                    StatusCode = HttpStatusCode.InternalServerError,
-                    Message = $"Lỗi hệ thống: {ex.Message}"
-                });
-            }
-        }
-        
         [HttpGet("{id}")]
-        public async Task<IActionResult> Get(int id)
+        public async Task<IActionResult> GetById(int id)
         {
             try
             {
@@ -116,5 +82,40 @@ namespace RentEase.API.Controllers.Main
                 });
             }
         }
+
+        //[HttpGet("getowner")]
+        //public async Task<IActionResult> GetAllOwn([FromQuery] int? statusId, [FromQuery] int page = 1, [FromQuery] int pageSize = 10)
+        //{
+        //    try
+        //    {
+        //        var result = await _TransactionService.GetAllOwn(statusId, page, pageSize);
+        //        if (result.Status < 0 && result.Data == null)
+        //        {
+        //            return NotFound(new ApiRes<string>
+        //            {
+        //                StatusCode = HttpStatusCode.NotFound,
+        //                Message = result.Message
+        //            });
+        //        }
+        //        return Ok(new ApiRes<IEnumerable<TransactionRes>>
+        //        {
+        //            StatusCode = HttpStatusCode.OK,
+        //            Message = result.Message,
+        //            Count = result.TotalCount,
+        //            TotalPages = result.TotalPage,
+        //            CurrentPage = result.CurrentPage,
+        //            Data = (IEnumerable<TransactionRes>)result.Data
+        //        });
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        return BadRequest(new ApiRes<string>
+        //        {
+        //            StatusCode = HttpStatusCode.InternalServerError,
+        //            Message = $"Lỗi hệ thống: {ex.Message}"
+        //        });
+        //    }
+        //}
+
     }
 }
