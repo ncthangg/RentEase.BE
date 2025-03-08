@@ -4,7 +4,7 @@ on:
   push:
     branches:
       - main
-#update something to test v6
+#update something to test v7
 jobs:
   compose:
     runs-on: self-hosted
