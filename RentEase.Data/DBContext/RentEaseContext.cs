@@ -56,10 +56,10 @@ public partial class RentEaseContext : DbContext
         var config = new ConfigurationBuilder()
             .SetBasePath(AppDomain.CurrentDomain.BaseDirectory)
             .AddJsonFile("appsettings.json")
-            .Build(); 
+            .Build();
 
         var connectionString = Environment.GetEnvironmentVariable("DB_CONNECTION_STRING")
-                                       ?? "Server=103.112.211.244,1433;Database=RentEase;User ID=SA;Password=Itjustapassword1@;TrustServerCertificate=True;Encrypt=false;"; return connectionString;
+                                       ?? "Data Source=103.112.211.244,1433;Initial Catalog=RentEase;Persist Security Info=True;User ID=sa;Password=Itjustapassword1@;TrustServerCertificate=True;Encrypt=false"; return connectionString;
     }
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)

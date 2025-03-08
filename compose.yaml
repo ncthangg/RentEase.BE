@@ -15,9 +15,7 @@ services:
     environment:
       - DB_CONNECTION_STRING=Server=103.112.211.244,1433;Database=RentEase;User ID=SA;Password=Itjustapassword1@;TrustServerCertificate=True;Encrypt=false;
     ports:
-      - 6969:8080
-
-
+      - 6970:8080
 # The commented out section below is an example of how to define a PostgreSQL
 # database that your application can use. `depends_on` tells Docker Compose to
 # start the database before your application. The `db-data` volume persists the
