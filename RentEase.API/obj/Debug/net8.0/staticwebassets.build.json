@@ -1,11 +1,19 @@
 {
   "Version": 1,
-  "Hash": "LKef9QWSBJyUuU4VEZWg9kxzMN38l04XY6Q5vnjrETE=",
+  "Hash": "0+bGF22lqzsGGOEFzU1+hgXgcgzPrJnHmcugTO79R5E=",
   "Source": "RentEase.API",
   "BasePath": "_content/RentEase.API",
   "Mode": "Default",
   "ManifestType": "Build",
   "ReferencedProjectsConfiguration": [],
-  "DiscoveryPatterns": [],
+  "DiscoveryPatterns": [
+    {
+      "Name": "RentEase.API\\wwwroot",
+      "Source": "RentEase.API",
+      "ContentRoot": "E:\\MyProject\\RentEase.BE\\RentEase.API\\wwwroot\\",
+      "BasePath": "_content/RentEase.API",
+      "Pattern": "**"
+    }
+  ],
   "Assets": []
 }

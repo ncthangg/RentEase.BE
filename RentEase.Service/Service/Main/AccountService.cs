@@ -6,6 +6,7 @@ using RentEase.Common.DTOs.Dto;
 using RentEase.Data;
 using RentEase.Data.Models;
 using RentEase.Service.Service.Base;
+using System.Text.RegularExpressions;
 
 namespace RentEase.Service.Service.Main
 {
@@ -24,7 +25,6 @@ namespace RentEase.Service.Service.Main
         Task<ServiceResult> DeleteSoft(string id);
         Task<bool> AccountExistByMail(string email);
         Task<bool> AccountExistByPhoneNumber(string phoneNumber);
-        bool IsEmail(string input);
 
     }
     public class AccountService : BaseService<Account, AccountRes>, IAccountService
@@ -120,13 +120,14 @@ namespace RentEase.Service.Service.Main
                 return new ServiceResult(Const.ERROR_EXCEPTION, Const.ERROR_EXCEPTION_MSG);
             }
 
-            //var hashedPassword = _helperWrapper.PasswordHelper.HashPassword(request.PasswordHash);
+            var hashedPassword = _helperWrapper.PasswordHelper.HashPassword(request.PasswordHash);
 
             var createItem = new Account()
             {
+                AccountId = Guid.NewGuid().ToString("N"),
                 Email = request.Email,
                 FullName = request.FullName,
-                PasswordHash = request.PasswordHash,
+                PasswordHash = hashedPassword,
                 PhoneNumber = request.PhoneNumber,
                 DateOfBirth = request.DateOfBirth,
                 Gender = request.Gender,
@@ -151,22 +152,45 @@ namespace RentEase.Service.Service.Main
         {
             if (request.Password.Equals(request.ConfirmPassword))
             {
-                //var hashedPassword = _helperWrapper.PasswordHelper.HashPassword(requestRegisterDto.Password);
+                var hashedPassword = _helperWrapper.PasswordHelper.HashPassword(request.Password);
 
-                var isEmail = IsEmail(request.Username);
                 var createItem = new Account();
-                if (request.RoleId != (int)EnumType.Role.Lessor || request.RoleId != (int)EnumType.Role.Lesses)
+                if (request.RoleId != (int)EnumType.Role.Lessor && request.RoleId != (int)EnumType.Role.Lesses)
                 {
                     return new ServiceResult(Const.ERROR_EXCEPTION, "Khong dung ROLE");
                 }
+
+                var isEmail = IsEmail(request.Username);
+                var isPhoneNumber = IsPhoneNumber(request.Username);
                 if (isEmail)
                 {
                     createItem = new Account()
                     {
+                        AccountId = Guid.NewGuid().ToString("N"),
                         Email = request.Username,
-                        FullName = null,
-                        PasswordHash = request.Password,
+                        FullName = request.FullName,
+                        PasswordHash = hashedPassword,
                         PhoneNumber = null,
+                        DateOfBirth = null,
+                        Gender = null,
+                        AvatarUrl = null,
+                        RoleId = request.RoleId,
+                        IsActive = false,
+                        CreatedAt = DateTime.Now,
+                        UpdatedAt = null,
+                        DeletedAt = null,
+                        Status = true,
+                    };
+                }
+                else if (isPhoneNumber)
+                {
+                    createItem = new Account()
+                    {
+                        AccountId = Guid.NewGuid().ToString("N"),
+                        Email = null,
+                        FullName = request.FullName,
+                        PasswordHash = hashedPassword,
+                        PhoneNumber = request.Username,
                         DateOfBirth = null,
                         Gender = null,
                         AvatarUrl = null,
@@ -180,22 +204,7 @@ namespace RentEase.Service.Service.Main
                 }
                 else
                 {
-                    createItem = new Account()
-                    {
-                        Email = null,
-                        FullName = null,
-                        PasswordHash = request.Password,
-                        PhoneNumber = request.Username,
-                        DateOfBirth = null,
-                        Gender = null,
-                        AvatarUrl = null,
-                        RoleId = request.RoleId,
-                        IsActive = false,
-                        CreatedAt = DateTime.Now,
-                        UpdatedAt = null,
-                        DeletedAt = null,
-                        Status = true,
-                    };
+                    return new ServiceResult(Const.SUCCESS_ACTION_CODE, "Username không đúng chuẩn");
                 }
 
                 var result = await _unitOfWork.AccountRepository.CreateAsync(createItem);
@@ -211,7 +220,7 @@ namespace RentEase.Service.Service.Main
         }
         public async Task<ServiceResult> Update(string id, AccountReq request)
         {
-            string accountId = _helperWrapper.TokenHelper.GetUserIdFromHttpContextAccessor(_httpContextAccessor);
+            string accountId = _helperWrapper.TokenHelper.GetAccountIdFromHttpContextAccessor(_httpContextAccessor);
             string roleId = _helperWrapper.TokenHelper.GetRoleIdFromHttpContextAccessor(_httpContextAccessor);
 
             if (string.IsNullOrEmpty(accountId))
@@ -231,7 +240,7 @@ namespace RentEase.Service.Service.Main
                 return new ServiceResult(Const.ERROR_EXCEPTION, "Bạn không có quyền hạn.");
             }
 
-            if (!(bool)item.Status)
+            if (!(bool)item.Status!)
             {
                 return new ServiceResult(Const.ERROR_EXCEPTION, "Status == False.");
             }
@@ -264,7 +273,7 @@ namespace RentEase.Service.Service.Main
         }
         public async Task<ServiceResult> DeleteSoft(string id)
         {
-            string accountId = _helperWrapper.TokenHelper.GetUserIdFromHttpContextAccessor(_httpContextAccessor);
+            string accountId = _helperWrapper.TokenHelper.GetAccountIdFromHttpContextAccessor(_httpContextAccessor);
             string roleId = _helperWrapper.TokenHelper.GetRoleIdFromHttpContextAccessor(_httpContextAccessor);
 
             var item = await _unitOfWork.AccountRepository.GetByIdAsync(id);
@@ -300,9 +309,13 @@ namespace RentEase.Service.Service.Main
         {
             return await _unitOfWork.AccountRepository.EntityExistsByPropertyAsync("PhoneNumber", phoneNumber);
         }
-        public bool IsEmail(string input)
+        private bool IsEmail(string input)
         {
             return input.Contains("@");
+        }
+        private bool IsPhoneNumber(string input)
+        {
+            return Regex.IsMatch(input, @"^\d{10,11}$");
         }
     }
 

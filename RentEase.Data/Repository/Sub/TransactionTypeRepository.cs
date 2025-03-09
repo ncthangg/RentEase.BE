@@ -14,14 +14,6 @@ namespace RentEase.Data.Repository.Sub
         }
         public TransactionTypeRepository(RentEaseContext context) => _context = context;
 
-        public async Task<PagedResult<TransactionType>> GetAllAsync(bool? status, int page, int pageSize)
-        {
-            IQueryable<TransactionType> query = _context.Set<TransactionType>();
-
-            Expression<Func<TransactionType, bool>> filter = null;
-
-            return await GetPagedAsync(filter, null, page, pageSize);
-        }
 
     }
 }

@@ -39,7 +39,7 @@ namespace RentEase.API.Controllers.Sub
                     Count = result.TotalCount,
                     TotalPages = result.TotalPage,
                     CurrentPage = result.CurrentPage,
-                    Data = (IEnumerable<TransactionTypeRes>)result.Data
+                    Data = (IEnumerable<TransactionTypeRes>)result.Data!
                 });
             }
             catch (Exception ex)
@@ -70,7 +70,7 @@ namespace RentEase.API.Controllers.Sub
                 {
                     StatusCode = HttpStatusCode.OK,
                     Message = result.Message,
-                    Data = (TransactionTypeRes)result.Data
+                    Data = (TransactionTypeRes)result.Data!
                 });
             }
             catch (Exception ex)

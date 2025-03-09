@@ -14,14 +14,6 @@ namespace RentEase.Data.Repository.Sub
         }
         public RoleRepository(RentEaseContext context) => _context = context;
 
-        public async Task<PagedResult<Role>> GetAllAsync(bool? status, int page, int pageSize)
-        {
-            IQueryable<Role> query = _context.Set<Role>();
-
-            Expression<Func<Role, bool>> filter = null;
-
-            return await GetPagedAsync(filter, null, page, pageSize);
-        }
 
     }
 }

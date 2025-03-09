@@ -56,10 +56,9 @@ namespace RentEase.API.Controllers.Authenticate
             {
                 StatusCode = HttpStatusCode.OK,
                 Message = result.Message,
-                Data = (LoginRes)result.Data
+                Data = (LoginRes)result.Data!
             });
         }
-
 
         [HttpPost("SignUp")]
         [AllowAnonymous]
@@ -87,10 +86,9 @@ namespace RentEase.API.Controllers.Authenticate
             {
                 StatusCode = HttpStatusCode.OK,
                 Message = result.Message,
-                Data = (RegisterRes)result.Data
+                Data = (RegisterRes)result.Data!
             });
         }
-
 
         [HttpPost("ChangePassword")]
         [AllowAnonymous]
@@ -118,7 +116,7 @@ namespace RentEase.API.Controllers.Authenticate
             {
                 StatusCode = HttpStatusCode.OK,
                 Message = result.Message,
-                Data = (RegisterRes)result.Data
+                Data = (RegisterRes)result.Data!
             });
         }
 
@@ -127,7 +125,7 @@ namespace RentEase.API.Controllers.Authenticate
         public async Task<IActionResult> Verification(Verification request)
         {
 
-            var result = await _accountVerificationService.Verification(request.AccountId, request.VerificationCode);
+            var result = await _accountVerificationService.Verification(request.Email, request.VerificationCode);
 
             if (result.Status < 0)
                 return NotFound(new ApiRes<string>
@@ -140,7 +138,7 @@ namespace RentEase.API.Controllers.Authenticate
             {
                 StatusCode = HttpStatusCode.OK,
                 Message = result.Message,
-                Data = (RegisterRes)result.Data
+                Data = (RegisterRes)result.Data!
             });
         }
 
@@ -162,7 +160,7 @@ namespace RentEase.API.Controllers.Authenticate
             {
                 StatusCode = HttpStatusCode.OK,
                 Message = result.Message,
-                Data = (AccountRes)result.Data
+                Data = (AccountRes)result.Data!
             });
         }
 

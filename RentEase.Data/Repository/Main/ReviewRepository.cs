@@ -12,7 +12,7 @@ namespace RentEase.Data.Repository.Main
         }
         public ReviewRepository(RentEaseContext context) => _context = context;
 
-        public async Task<PagedResult<Review>> GetAllForAptAsync(
+        public async Task<PagedResult<Review>> GetByAptId(
                   string aptId, int page, int pageSize)
         {
             return await GetPagedAsync(

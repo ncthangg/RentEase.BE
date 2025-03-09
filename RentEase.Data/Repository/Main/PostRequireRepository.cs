@@ -10,7 +10,7 @@ namespace RentEase.Data.Repository.Main
         {
         }
         public PostRequireRepository(RentEaseContext context) => _context = context;
-        //public async Task<PagedResult<PostRequire>> GetAllOwn(
+        //public async Task<PagedResult<PostRequire>> GetByAccountId(
         //          string accountId, int page = 1, int pageSize = 10)
         //{
         //    return await GetPagedAsync(

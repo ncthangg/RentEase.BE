@@ -13,13 +13,5 @@ namespace RentEase.Data.Repository.Sub
         }
         public AptStatusRepository(RentEaseContext context) => _context = context;
 
-        public async Task<PagedResult<AptStatus>> GetAllAsync(bool? status, int page, int pageSize)
-        {
-            IQueryable<AptStatus> query = _context.Set<AptStatus>();
-
-            Expression<Func<AptStatus, bool>> filter = null;
-
-            return await GetPagedAsync(filter, null, page, pageSize);
-        }
     }
 }

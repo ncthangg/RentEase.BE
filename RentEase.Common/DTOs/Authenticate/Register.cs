@@ -4,6 +4,7 @@ namespace RentEase.Common.DTOs.Authenticate
 {
     public class RegisterReq
     {
+        public required string FullName { get; set; }
         public required string Username { get; set; }
         public required string Password { get; set; }
         public required string ConfirmPassword { get; set; }
@@ -12,6 +13,8 @@ namespace RentEase.Common.DTOs.Authenticate
 
     public class RegisterRes
     {
-        public AccountRes AccountRes { get; set; } = new AccountRes();
+        public required string FullName { get; set; }
+        public required string Username { get; set; }
+        public string RoleName { get; set; } = string.Empty;
     }
 }

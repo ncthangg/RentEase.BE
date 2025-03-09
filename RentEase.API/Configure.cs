@@ -61,7 +61,7 @@ namespace RentEase.API
             services.AddTransient<SmtpClient>(provider =>
             {
                 var smtpClient = new SmtpClient();
-                smtpClient.Connect(configuration["SmtpSettings:Host"], int.Parse(configuration["SmtpSettings:Port"]), SecureSocketOptions.StartTls);
+                smtpClient.Connect(configuration["SmtpSettings:Host"], int.Parse(configuration["SmtpSettings:Port"]!), SecureSocketOptions.StartTls);
                 smtpClient.Authenticate(configuration["SmtpSettings:Username"], configuration["SmtpSettings:Password"]);
                 return smtpClient;
             });
@@ -93,7 +93,7 @@ namespace RentEase.API
                         ValidateIssuerSigningKey = true,
                         ValidIssuer = configuration["JwtSettings:Issuer"],
                         ValidAudience = configuration["JwtSettings:Audience"],
-                        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(configuration["JwtSettings:Key"]))
+                        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(configuration["JwtSettings:Key"]!))
                     };
 
                 });

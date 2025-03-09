@@ -12,7 +12,7 @@ namespace RentEase.Service.Service.Main
     {
         Task<ServiceResult> GetAll(int page, int pageSize, bool? status);
         Task<ServiceResult> GetById(string id);
-        Task<ServiceResult> GetAllOwn(int? statusId, int page, int pageSize);
+        Task<ServiceResult> GetByAccountId(string accountId, int? statusId, int page, int pageSize);
         Task<ServiceResult> Create(OrderReq request);
         Task<ServiceResult> Update(string orderId, int statusId); // chỉ dành cho ADMIN
         Task<ServiceResult> Delete(string id);
@@ -32,16 +32,10 @@ namespace RentEase.Service.Service.Main
             _mapper = mapper;
             _helperWrapper = helperWrapper;
         }
-        public async Task<ServiceResult> GetAllOwn(int? statusId, int page, int pageSize)
+        public async Task<ServiceResult> GetByAccountId(string accountId, int? statusId, int page, int pageSize)
         {
-            string accountId = _helperWrapper.TokenHelper.GetUserIdFromHttpContextAccessor(_httpContextAccessor);
 
-            if (string.IsNullOrEmpty(accountId))
-            {
-                return new ServiceResult(Const.ERROR_EXCEPTION, "Lỗi khi lấy info");
-            }
-
-            var items = await _unitOfWork.OrderRepository.GetAllOwn(accountId, statusId, page, pageSize);
+            var items = await _unitOfWork.OrderRepository.GetByAccountId(accountId, statusId, page, pageSize);
 
             if (!items.Data.Any())
             {
@@ -55,7 +49,7 @@ namespace RentEase.Service.Service.Main
         }
         public async Task<ServiceResult> Create(OrderReq request)
         {
-            string accountId = _helperWrapper.TokenHelper.GetUserIdFromHttpContextAccessor(_httpContextAccessor);
+            string accountId = _helperWrapper.TokenHelper.GetAccountIdFromHttpContextAccessor(_httpContextAccessor);
 
             if (string.IsNullOrEmpty(accountId))
             {
@@ -85,7 +79,7 @@ namespace RentEase.Service.Service.Main
         }
         public async Task<ServiceResult> Update(string orderId, int statusId)
         {
-            string accountId = _helperWrapper.TokenHelper.GetUserIdFromHttpContextAccessor(_httpContextAccessor);
+            string accountId = _helperWrapper.TokenHelper.GetAccountIdFromHttpContextAccessor(_httpContextAccessor);
             string roleId = _helperWrapper.TokenHelper.GetRoleIdFromHttpContextAccessor(_httpContextAccessor);
 
             if (string.IsNullOrEmpty(accountId))

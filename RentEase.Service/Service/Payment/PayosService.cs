@@ -44,7 +44,7 @@ namespace RentEase.Service.Service.Payment
 
             // Sắp xếp tham số và tạo chuỗi signature
             string rawData = PayosLib.CreateSortedQueryString(payload);
-            string signature = Utils.GenerateHmacSha256(rawData, checksumKey);
+            string signature = Utils.GenerateHmacSha256(rawData, checksumKey!);
 
             payload["signature"] = signature;
 

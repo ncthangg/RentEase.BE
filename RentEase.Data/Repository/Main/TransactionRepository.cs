@@ -29,7 +29,7 @@ namespace RentEase.Data.Repository.Main
                 .FirstOrDefaultAsync();
         }
 
-        public async Task<PagedResult<Transaction>> GetAllOwn(
+        public async Task<PagedResult<Transaction>> GetByAccountId(
           string accountId, int? statusId, int page, int pageSize)
         {
             return await GetPagedAsync(

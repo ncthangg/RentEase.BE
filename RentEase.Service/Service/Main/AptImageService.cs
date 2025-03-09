@@ -63,7 +63,7 @@ namespace RentEase.Service.Service.Main
 
         public async Task<ServiceResult> Update(string id, AptImageReq request)
         {
-            string accountId = _helperWrapper.TokenHelper.GetUserIdFromHttpContextAccessor(_httpContextAccessor);
+            string accountId = _helperWrapper.TokenHelper.GetAccountIdFromHttpContextAccessor(_httpContextAccessor);
             string roleId = _helperWrapper.TokenHelper.GetRoleIdFromHttpContextAccessor(_httpContextAccessor);
 
             if (string.IsNullOrEmpty(accountId))
@@ -88,7 +88,7 @@ namespace RentEase.Service.Service.Main
                 return new ServiceResult(Const.ERROR_EXCEPTION, "Bạn không có quyền hạn.");
             }
 
-            if (!(bool)item.Apt.Status)
+            if (!(bool)item.Apt.Status!)
             {
                 return new ServiceResult(Const.ERROR_EXCEPTION, "Status == False.");
             }

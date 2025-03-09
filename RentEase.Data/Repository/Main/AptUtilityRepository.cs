@@ -11,7 +11,7 @@ namespace RentEase.Data.Repository.Main
         {
         }
         public AptUtilityRepository(RentEaseContext context) => _context = context;
-        public async Task<PagedResult<AptUtility>> GetAllForAptAsync(
+        public async Task<PagedResult<AptUtility>> GetByAptId(
                 string aptId, int page = 1, int pageSize = 10)
         {
             return await GetPagedAsync(

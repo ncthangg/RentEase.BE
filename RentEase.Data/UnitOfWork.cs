@@ -27,7 +27,7 @@ namespace RentEase.Data
         private PostRepository _postRepository;
         private PostRequireRepository _postRequireRepository;
 
-        private RentEaseContext _dbContext;
+        private readonly RentEaseContext _dbContext;
         public UnitOfWork()
         {
             _dbContext ??= new RentEaseContext();

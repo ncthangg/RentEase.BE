@@ -19,7 +19,7 @@ namespace RentEase.API.Controllers.Main
         }
 
         [HttpGet]
-        public async Task<IActionResult> Get([FromQuery] int page = 1, [FromQuery] int pageSize = 10)
+        public async Task<IActionResult> GetAll([FromQuery] int page = 1, [FromQuery] int pageSize = 10)
         {
             try
             {
@@ -39,7 +39,7 @@ namespace RentEase.API.Controllers.Main
                     Count = result.TotalCount,
                     TotalPages = result.TotalPage,
                     CurrentPage = result.CurrentPage,
-                    Data = (IEnumerable<ReviewRes>)result.Data
+                    Data = (IEnumerable<ReviewRes>)result.Data!
                 });
             }
             catch (Exception ex)
@@ -52,7 +52,7 @@ namespace RentEase.API.Controllers.Main
             }
         }
 
-        [HttpGet("{id}")]
+        [HttpGet("get-by-id")]
         public async Task<IActionResult> GetById(int id)
         {
             try
@@ -70,7 +70,7 @@ namespace RentEase.API.Controllers.Main
                 {
                     StatusCode = HttpStatusCode.OK,
                     Message = result.Message,
-                    Data = (ReviewRes)result.Data
+                    Data = (ReviewRes)result.Data!
                 });
             }
             catch (Exception ex)
@@ -83,12 +83,12 @@ namespace RentEase.API.Controllers.Main
             }
         }
 
-        [HttpGet("getbyApt/{aptId}")]
+        [HttpGet("get-by-aptid")]
         public async Task<IActionResult> GetByAptId([FromQuery] string aptId, [FromQuery] int page = 1, [FromQuery] int pageSize = 10)
         {
             try
             {
-                var result = await _ReviewService.GetAllByAptId(aptId, page, pageSize);
+                var result = await _ReviewService.GetByAptId(aptId, page, pageSize);
                 if (result.Status < 0 && result.Data == null)
                 {
                     return NotFound(new ApiRes<string>
@@ -104,7 +104,7 @@ namespace RentEase.API.Controllers.Main
                     Count = result.TotalCount,
                     TotalPages = result.TotalPage,
                     CurrentPage = result.CurrentPage,
-                    Data = (IEnumerable<ReviewRes>)result.Data
+                    Data = (IEnumerable<ReviewRes>)result.Data!
                 });
             }
             catch (Exception ex)

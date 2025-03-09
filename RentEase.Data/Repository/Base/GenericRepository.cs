@@ -52,7 +52,7 @@ namespace RentEase.Data.Repository.Base
                 _context.Entry(entity).State = EntityState.Detached;
             }
 
-            return entity;
+            return entity!;
 
             //return await _context.Set<T>().FindAsync(id);
         }
@@ -64,7 +64,7 @@ namespace RentEase.Data.Repository.Base
             {
                 _context.Entry(entity).State = EntityState.Detached;
             }
-            return entity;
+            return entity!;
 
             //return await _context.Set<T>().FindAsync(code);
         }
@@ -77,7 +77,7 @@ namespace RentEase.Data.Repository.Base
                 _context.Entry(entity).State = EntityState.Detached;
             }
 
-            return entity;
+            return entity!;
 
             //return await _context.Set<T>().FindAsync(code);
         }

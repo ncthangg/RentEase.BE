@@ -12,7 +12,7 @@ namespace RentEase.Service.Service.Main
     {
         Task<ServiceResult> GetAll(int page, int pageSize, bool? status);
         Task<ServiceResult> GetById(int id);
-        Task<ServiceResult> GetAllByAptId(string aptId, int page, int pageSize);
+        Task<ServiceResult> GetByAptId(string aptId, int page, int pageSize);
         Task<ServiceResult> Create(ReviewReq request);
         Task<ServiceResult> Update(int id, string comment);
         Task<ServiceResult> Delete(int id);
@@ -33,10 +33,10 @@ namespace RentEase.Service.Service.Main
             _helperWrapper = helperWrapper;
         }
 
-        public async Task<ServiceResult> GetAllByAptId(string aptId, int page, int pageSize)
+        public async Task<ServiceResult> GetByAptId(string aptId, int page, int pageSize)
         {
 
-            var items = await _unitOfWork.ReviewRepository.GetAllForAptAsync(aptId, page, pageSize);
+            var items = await _unitOfWork.ReviewRepository.GetByAptId(aptId, page, pageSize);
             if (!items.Data.Any())
             {
                 return new ServiceResult(Const.ERROR_EXCEPTION, Const.ERROR_EXCEPTION_MSG);
@@ -49,7 +49,7 @@ namespace RentEase.Service.Service.Main
         }
         public async Task<ServiceResult> Create(ReviewReq request)
         {
-            string accountId = _helperWrapper.TokenHelper.GetUserIdFromHttpContextAccessor(_httpContextAccessor);
+            string accountId = _helperWrapper.TokenHelper.GetAccountIdFromHttpContextAccessor(_httpContextAccessor);
 
             if (string.IsNullOrEmpty(accountId))
             {
@@ -76,7 +76,7 @@ namespace RentEase.Service.Service.Main
         }
         public async Task<ServiceResult> Update(int id, string comment)
         {
-            string accountId = _helperWrapper.TokenHelper.GetUserIdFromHttpContextAccessor(_httpContextAccessor);
+            string accountId = _helperWrapper.TokenHelper.GetAccountIdFromHttpContextAccessor(_httpContextAccessor);
 
             string roleId = _helperWrapper.TokenHelper.GetRoleIdFromHttpContextAccessor(_httpContextAccessor);
             if (string.IsNullOrEmpty(accountId))

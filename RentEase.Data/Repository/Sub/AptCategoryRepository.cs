@@ -13,14 +13,6 @@ namespace RentEase.Data.Repository.Sub
         }
         public AptCategoryRepository(RentEaseContext context) => _context = context;
 
-        public async Task<PagedResult<AptCategory>> GetAllAsync(bool? status, int page, int pageSize)
-        {
-            IQueryable<AptCategory> query = _context.Set<AptCategory>();
-
-            Expression<Func<AptCategory, bool>> filter = null;
-
-            return await GetPagedAsync(filter, null, page, pageSize);
-        }
 
     }
 }

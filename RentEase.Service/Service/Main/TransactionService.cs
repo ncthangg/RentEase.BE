@@ -14,7 +14,7 @@ namespace RentEase.Service.Service.Main
     public interface ITransactionService
     {
         Task<ServiceResult> GetAll(int page, int pageSize, bool? status);
-        Task<ServiceResult> GetAllOwn(int? statusId, int page, int pageSize);
+        Task<ServiceResult> GetByAccountId(string accountId, int? statusId, int page, int pageSize);
         Task<ServiceResult> GetById(int id);
         Task<ServiceResult> CheckOut(TransactionReq request);
     }
@@ -35,16 +35,9 @@ namespace RentEase.Service.Service.Main
             _helperWrapper = helperWrapper;
             _payosService = payosService;
         }
-        public async Task<ServiceResult> GetAllOwn(int? statusId, int page, int pageSize)
+        public async Task<ServiceResult> GetByAccountId(string accountId, int? statusId, int page, int pageSize)
         {
-            string accountId = _helperWrapper.TokenHelper.GetUserIdFromHttpContextAccessor(_httpContextAccessor);
-
-            if (string.IsNullOrEmpty(accountId))
-            {
-                return new ServiceResult(Const.ERROR_EXCEPTION, "Lỗi khi lấy info");
-            }
-
-            var items = await _unitOfWork.TransactionRepository.GetAllOwn(accountId, statusId, page, pageSize);
+            var items = await _unitOfWork.TransactionRepository.GetByAccountId(accountId, statusId, page, pageSize);
 
             if (!items.Data.Any())
             {
@@ -59,7 +52,7 @@ namespace RentEase.Service.Service.Main
         public async Task<ServiceResult> CheckOut(TransactionReq request)
         {
 
-            string accountId = _helperWrapper.TokenHelper.GetUserIdFromHttpContextAccessor(_httpContextAccessor);
+            string accountId = _helperWrapper.TokenHelper.GetAccountIdFromHttpContextAccessor(_httpContextAccessor);
 
             if (string.IsNullOrEmpty(accountId))
             {
@@ -100,7 +93,7 @@ namespace RentEase.Service.Service.Main
 
                 string jsonResponse = await _payosService.CreatePaymentURL(createItem.PaymentCode);
 
-                payosRes = JsonSerializer.Deserialize<PayosRes>(jsonResponse);
+                payosRes = JsonSerializer.Deserialize<PayosRes>(jsonResponse)!;
 
             }
             else
@@ -123,7 +116,7 @@ namespace RentEase.Service.Service.Main
 
                 string jsonResponse = await _payosService.CreatePaymentURL(createItem.PaymentCode);
 
-                payosRes = JsonSerializer.Deserialize<PayosRes>(jsonResponse);
+                payosRes = JsonSerializer.Deserialize<PayosRes>(jsonResponse)!;
 
             }
             if(payosRes == null)

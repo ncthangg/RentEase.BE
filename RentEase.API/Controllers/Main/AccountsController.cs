@@ -20,7 +20,7 @@ namespace RentEase.API.Controllers.Main
         }
 
         [HttpGet]
-        public async Task<IActionResult> Get([FromQuery] bool status = true, [FromQuery] int page = 1, [FromQuery] int pageSize = 10)
+        public async Task<IActionResult> GetAll([FromQuery] bool status = true, [FromQuery] int page = 1, [FromQuery] int pageSize = 10)
         {
             try
             {
@@ -37,7 +37,7 @@ namespace RentEase.API.Controllers.Main
                 {
                     StatusCode = HttpStatusCode.OK,
                     Message = result.Message,
-                    Data = (List<AccountRes>)result.Data
+                    Data = (List<AccountRes>)result.Data!
                 });
             }
             catch (Exception ex)
@@ -50,7 +50,7 @@ namespace RentEase.API.Controllers.Main
             }
         }
 
-        [HttpGet("{id}")]
+        [HttpGet("get-by-id")]
         public async Task<IActionResult> GetById(string id)
         {
             try
@@ -68,7 +68,7 @@ namespace RentEase.API.Controllers.Main
                 {
                     StatusCode = HttpStatusCode.OK,
                     Message = result.Message,
-                    Data = (AccountRes)result.Data
+                    Data = (AccountRes)result.Data!
                 });
             }
             catch (Exception ex)

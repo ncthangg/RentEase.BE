@@ -12,10 +12,10 @@ namespace RentEase.Data.Repository.Main
         public AptImageRepository(RentEaseContext context) => _context = context;
 
         //public async Task<PagedResult<Order>> GetOrdersForUserAsync(
-        //       int userId, int page = 1, int pageSize = 10)
+        //       int accountId, int page = 1, int pageSize = 10)
         //{
         //    return await GetPagedAsync(
-        //        filter: o => o.UserId == userId,
+        //        filter: o => o.AccountId == accountId,
         //        orderBy: q => q.OrderByDescending(o => o.CreatedAt),
         //        page: page,
         //        pageSize: pageSize);

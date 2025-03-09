@@ -10,10 +10,10 @@ namespace RentEase.Service.Helper
 {
     public interface ITokenHelper
     {
-        Task<TokenRes> GenerateTokens(string userId, int roleId);
+        Task<TokenRes> GenerateTokens(string accountId, int roleId);
         string GenerateVerificationCode();
         string GenerateAptCode(string categoryName);
-        string GetUserIdFromHttpContextAccessor(IHttpContextAccessor httpContextAccessor);
+        string GetAccountIdFromHttpContextAccessor(IHttpContextAccessor httpContextAccessor);
         string GetRoleIdFromHttpContextAccessor(IHttpContextAccessor httpContextAccessor);
 
     }
@@ -27,14 +27,14 @@ namespace RentEase.Service.Helper
         }
 
         //GENERATE JWT TOKEN
-        public async Task<TokenRes> GenerateTokens(string userId, int roleId)
+        public async Task<TokenRes> GenerateTokens(string accountId, int roleId)
         {
-            var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["JwtSettings:Key"]));
+            var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["JwtSettings:Key"]!));
             var credentials = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
 
             var claims = new List<Claim>
         {
-            new Claim("id", userId.ToString()),
+            new Claim("id", accountId.ToString()),
             new Claim(ClaimTypes.Role, roleId.ToString())
         };
 
@@ -111,7 +111,7 @@ namespace RentEase.Service.Helper
 
 
         //CHECK
-        public string GetUserIdFromHttpContextAccessor(IHttpContextAccessor httpContextAccessor)
+        public string GetAccountIdFromHttpContextAccessor(IHttpContextAccessor httpContextAccessor)
         {
             if (httpContextAccessor.HttpContext == null || !httpContextAccessor.HttpContext.Request.Headers.ContainsKey("Authorization"))
             {
@@ -167,7 +167,7 @@ namespace RentEase.Service.Helper
         {
             principal = null!;
             var tokenHandler = new JwtSecurityTokenHandler();
-            var key = Encoding.UTF8.GetBytes(_configuration["JwtSettings:Key"]); // Ensure UTF-8 encoding
+            var key = Encoding.UTF8.GetBytes(_configuration["JwtSettings:Key"]!); // Ensure UTF-8 encoding
 
             try
             {
@@ -192,7 +192,7 @@ namespace RentEase.Service.Helper
                 return false;
             }
         }
-        private bool IsTokenExpired(string token)
+        private static bool IsTokenExpired(string token)
         {
             var jwtToken = new JwtSecurityTokenHandler().ReadJwtToken(token);
             return jwtToken.ValidTo < DateTime.Now;

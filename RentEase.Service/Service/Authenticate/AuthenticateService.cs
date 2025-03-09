@@ -55,16 +55,16 @@ namespace RentEase.Service.Service.Authenticate
 
                 var accountExist = await _serviceWrapper.AccountService.GetByEmailOrPhone(request.Username);
                 var accountData = _mapper.Map<Account>(accountExist.Data);
-                if (accountData == null || !request.Password.Equals(accountData.PasswordHash) /*!_helperWrapper.PasswordHelper.VerifyPassword(requestLoginDto.Password, accountData.Passwordhash)*/)
+                if (accountData == null || !_helperWrapper.PasswordHelper.VerifyPassword(request.Password, accountData.PasswordHash))
                 {
                     return new ServiceResult(Const.ERROR_EXCEPTION, "Tài khoản không tồn tại hoặc Password không đúng");
                 }
 
-                if (!(bool)accountData.IsActive)
+                if (!(bool)accountData.IsActive!)
                 {
                     return new ServiceResult(Const.ERROR_EXCEPTION, "Tài khoản chưa được xác minh.");
                 }
-                if (!(bool)accountData.Status)
+                if (!(bool)accountData.Status!)
                 {
                     return new ServiceResult(Const.ERROR_EXCEPTION, "Tài khoản sẽ xóa sau 7 ngày.");
                 }
@@ -112,10 +112,6 @@ namespace RentEase.Service.Service.Authenticate
                     return new ServiceResult(Const.ERROR_EXCEPTION, "Account đã tồn tại");
                 }
 
-                var response = new RegisterRes
-                {
-                    AccountRes = new AccountRes(),
-                };
 
                 var createItemResult = await _serviceWrapper.AccountService.CreateByGuest(request);
                 if (createItemResult.Status < 0)
@@ -123,25 +119,20 @@ namespace RentEase.Service.Service.Authenticate
                     return new ServiceResult(Const.ERROR_EXCEPTION, "Register thất bại");
                 }
 
-                itemData = _mapper.Map<Account>(createItemResult.Data);
-                if (itemData == null)
-                {
-                    return new ServiceResult(Const.ERROR_EXCEPTION, "Lỗi Mapping");
-                }
-
-                if ((bool)itemData.IsActive)
-                {
-                    return new ServiceResult(Const.ERROR_EXCEPTION, "Account đã tồn tại", response);
-                }
 
                 // Xử lí gửi Verify Code
-                var verificationResult = await _accountVerificationService.HandleSendVerificationCode(itemData);
+                var verificationResult = await _accountVerificationService.HandleSendVerificationCode(request.Username);
                 if (verificationResult.Status < 0)
                 {
                     return new ServiceResult(Const.ERROR_EXCEPTION, "Gửi code thất bại");
                 }
 
-                response.AccountRes = _mapper.Map<AccountRes>(itemData);
+                var response = new RegisterRes
+                {
+                    FullName = itemData!.FullName,
+                    Username = itemData.Email,
+                    RoleName = itemData.Role.RoleName
+                };
 
                 return new ServiceResult(Const.SUCCESS_ACTION_CODE, "Register thành công, Verification Code đã được gửi.", response);
             }
@@ -155,7 +146,7 @@ namespace RentEase.Service.Service.Authenticate
         {
             try
             {
-                string accountId = _helperWrapper.TokenHelper.GetUserIdFromHttpContextAccessor(_httpContextAccessor);
+                string accountId = _helperWrapper.TokenHelper.GetAccountIdFromHttpContextAccessor(_httpContextAccessor);
 
                 if (string.IsNullOrEmpty(accountId))
                 {
@@ -182,7 +173,7 @@ namespace RentEase.Service.Service.Authenticate
         {
             try
             {
-                string accountId = _helperWrapper.TokenHelper.GetUserIdFromHttpContextAccessor(_httpContextAccessor);
+                string accountId = _helperWrapper.TokenHelper.GetAccountIdFromHttpContextAccessor(_httpContextAccessor);
 
                 if (string.IsNullOrEmpty(accountId))
                 {

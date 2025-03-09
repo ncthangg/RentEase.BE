@@ -16,12 +16,14 @@ namespace RentEase.Data.Repository.Main
         public async Task<Account> GetByEmailAsync(string email)
         {
             return await _context.Set<Account>()
+            .Include(x => x.Role)
             .Where(u => EF.Functions.Like(u.Email, $"%{email}%"))
             .SingleOrDefaultAsync();
         }
         public async Task<Account> GetByPhoneAsync(string phone)
         {
             return await _context.Set<Account>()
+            .Include(x => x.Role)
             .Where(u => EF.Functions.Like(u.PhoneNumber, $"%{phone}%"))
             .SingleOrDefaultAsync();
         }

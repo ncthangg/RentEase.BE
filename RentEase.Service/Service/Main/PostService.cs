@@ -13,7 +13,7 @@ namespace RentEase.Service.Service.Main
     {
         Task<ServiceResult> GetAll(int page, int pageSize, bool? status);
         Task<ServiceResult> GetById(string id);
-        Task<ServiceResult> GetAllOwn(int? statusId, int page, int pageSize, bool? status = true);
+        Task<ServiceResult> GetByAccountId(string accountId, int? statusId, bool? status, int page, int pageSize);
         Task<ServiceResult> Create(PostReq request);
         Task<ServiceResult> Update(string postId, PostReq request);
         Task<ServiceResult> DeleteSoft(string id);
@@ -33,16 +33,10 @@ namespace RentEase.Service.Service.Main
             _mapper = mapper;
             _helperWrapper = helperWrapper;
         }
-        public async Task<ServiceResult> GetAllOwn(int? statusId, int page, int pageSize, bool? status)
+        public async Task<ServiceResult> GetByAccountId(string accountId, int? statusId, bool? status, int page, int pageSize)
         {
-            string accountId = _helperWrapper.TokenHelper.GetUserIdFromHttpContextAccessor(_httpContextAccessor);
 
-            if (string.IsNullOrEmpty(accountId))
-            {
-                return new ServiceResult(Const.ERROR_EXCEPTION, "Lỗi khi lấy info");
-            }
-
-            var items = await _unitOfWork.PostRepository.GetAllOwn(accountId, statusId, status, page, pageSize);
+            var items = await _unitOfWork.PostRepository.GetByAccountId(accountId, statusId, status, page, pageSize);
             if (!items.Data.Any())
             {
                 return new ServiceResult(Const.ERROR_EXCEPTION, Const.ERROR_EXCEPTION_MSG);
@@ -55,7 +49,7 @@ namespace RentEase.Service.Service.Main
         }
         public async Task<ServiceResult> Create(PostReq request)
         {
-            string accountId = _helperWrapper.TokenHelper.GetUserIdFromHttpContextAccessor(_httpContextAccessor);
+            string accountId = _helperWrapper.TokenHelper.GetAccountIdFromHttpContextAccessor(_httpContextAccessor);
 
             if (string.IsNullOrEmpty(accountId))
             {
@@ -92,7 +86,7 @@ namespace RentEase.Service.Service.Main
         }
         public async Task<ServiceResult> Update(string postId, PostReq request)
         {
-            string accountId = _helperWrapper.TokenHelper.GetUserIdFromHttpContextAccessor(_httpContextAccessor);
+            string accountId = _helperWrapper.TokenHelper.GetAccountIdFromHttpContextAccessor(_httpContextAccessor);
             string roleId = _helperWrapper.TokenHelper.GetRoleIdFromHttpContextAccessor(_httpContextAccessor);
 
             if (string.IsNullOrEmpty(accountId))
@@ -129,7 +123,7 @@ namespace RentEase.Service.Service.Main
         }
         public async Task<ServiceResult> DeleteSoft(string id)
         {
-            string accountId = _helperWrapper.TokenHelper.GetUserIdFromHttpContextAccessor(_httpContextAccessor);
+            string accountId = _helperWrapper.TokenHelper.GetAccountIdFromHttpContextAccessor(_httpContextAccessor);
             string roleId = _helperWrapper.TokenHelper.GetRoleIdFromHttpContextAccessor(_httpContextAccessor);
 
             var item = await _unitOfWork.PostRepository.GetByIdAsync(id);

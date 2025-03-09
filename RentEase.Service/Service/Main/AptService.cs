@@ -12,7 +12,7 @@ namespace RentEase.Service.Service.Main
     {
         Task<ServiceResult> GetAll(int page, int pageSize, bool? status);
         Task<ServiceResult> GetById(string id);
-        Task<ServiceResult> GetAllOwn(int? statusId, int page, int pageSize, bool? status);
+        Task<ServiceResult> GetByAccountId(string accountId, int? statusId, bool? status, int page, int pageSize);
         Task<ServiceResult> Create(AptReq request);
         Task<ServiceResult> Update(string id, AptReq request);
         Task<ServiceResult> Delete(string id);
@@ -32,16 +32,9 @@ namespace RentEase.Service.Service.Main
             _mapper = mapper;
             _helperWrapper = helperWrapper;
         }
-        public async Task<ServiceResult> GetAllOwn(int? statusId, int page, int pageSize, bool? status)
+        public async Task<ServiceResult> GetByAccountId(string accountId, int? statusId, bool? status, int page, int pageSize)
         {
-            string accountId = _helperWrapper.TokenHelper.GetUserIdFromHttpContextAccessor(_httpContextAccessor);
-
-            if (string.IsNullOrEmpty(accountId))
-            {
-                return new ServiceResult(Const.ERROR_EXCEPTION, "Lỗi khi lấy info");
-            }
-
-            var items = await _unitOfWork.AptRepository.GetAllOwn(accountId, statusId, page, pageSize, status);
+            var items = await _unitOfWork.AptRepository.GetByAccountId(accountId, statusId, page, pageSize, status);
 
             if (!items.Data.Any())
             {
@@ -55,7 +48,7 @@ namespace RentEase.Service.Service.Main
         }
         public async Task<ServiceResult> Create(AptReq request)
         {
-            string accountId = _helperWrapper.TokenHelper.GetUserIdFromHttpContextAccessor(_httpContextAccessor);
+            string accountId = _helperWrapper.TokenHelper.GetAccountIdFromHttpContextAccessor(_httpContextAccessor);
 
             if (string.IsNullOrEmpty(accountId))
             {
@@ -106,7 +99,7 @@ namespace RentEase.Service.Service.Main
         }
         public async Task<ServiceResult> Update(string id, AptReq request)
         {
-            string accountId = _helperWrapper.TokenHelper.GetUserIdFromHttpContextAccessor(_httpContextAccessor);
+            string accountId = _helperWrapper.TokenHelper.GetAccountIdFromHttpContextAccessor(_httpContextAccessor);
             string roleId = _helperWrapper.TokenHelper.GetRoleIdFromHttpContextAccessor(_httpContextAccessor);
 
             if (string.IsNullOrEmpty(accountId))
@@ -126,7 +119,7 @@ namespace RentEase.Service.Service.Main
                 return new ServiceResult(Const.ERROR_EXCEPTION, "Bạn không có quyền hạn.");
             }
 
-            if (!(bool)item.Status)
+            if (!(bool)item.Status!)
             {
                 return new ServiceResult(Const.ERROR_EXCEPTION, "Status == False.");
             }
@@ -188,7 +181,7 @@ namespace RentEase.Service.Service.Main
         }
         public async Task<ServiceResult> DeleteSoft(string id)
         {
-            string accountId = _helperWrapper.TokenHelper.GetUserIdFromHttpContextAccessor(_httpContextAccessor);
+            string accountId = _helperWrapper.TokenHelper.GetAccountIdFromHttpContextAccessor(_httpContextAccessor);
             string roleId = _helperWrapper.TokenHelper.GetRoleIdFromHttpContextAccessor(_httpContextAccessor);
 
             if (string.IsNullOrEmpty(accountId))

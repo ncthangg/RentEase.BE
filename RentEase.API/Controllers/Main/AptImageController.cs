@@ -19,7 +19,7 @@ namespace RentEase.API.Controllers.Main
         }
 
         [HttpGet]
-        public async Task<IActionResult> Get([FromQuery] int page = 1, [FromQuery] int pageSize = 10)
+        public async Task<IActionResult> GetAll([FromQuery] int page = 1, [FromQuery] int pageSize = 10)
         {
             try
             {
@@ -39,7 +39,7 @@ namespace RentEase.API.Controllers.Main
                     Count = result.TotalCount,
                     TotalPages = result.TotalPage,
                     CurrentPage = result.CurrentPage,
-                    Data = (IEnumerable<AptImageRes>)result.Data
+                    Data = (IEnumerable<AptImageRes>)result.Data!
                 });
             }
             catch (Exception ex)
@@ -52,7 +52,7 @@ namespace RentEase.API.Controllers.Main
             }
         }
 
-        [HttpGet("{id}")]
+        [HttpGet("get-by-id")]
         public async Task<IActionResult> GetById(string id)
         {
             try
@@ -70,7 +70,7 @@ namespace RentEase.API.Controllers.Main
                 {
                     StatusCode = HttpStatusCode.OK,
                     Message = result.Message,
-                    Data = (AptImageRes)result.Data
+                    Data = (AptImageRes)result.Data!
                 });
             }
             catch (Exception ex)

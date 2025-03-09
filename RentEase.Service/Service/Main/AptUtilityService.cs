@@ -12,7 +12,7 @@ namespace RentEase.Service.Service.Main
     {
         Task<ServiceResult> GetAll(int page, int pageSize, bool? statuss);
         Task<ServiceResult> GetById(int id);
-        Task<ServiceResult> GetAllForApt(string aptId, int page, int pageSize);
+        Task<ServiceResult> GetByAptId(string aptId, int page, int pageSize);
         Task<ServiceResult> Create(string aptId, int utilityId, string? note);
         Task<ServiceResult> Update(int id, string? note);
         Task<ServiceResult> Delete(int id);
@@ -32,9 +32,9 @@ namespace RentEase.Service.Service.Main
             _mapper = mapper;
             _helperWrapper = helperWrapper;
         }
-        public async Task<ServiceResult> GetAllForApt(string aptId, int page, int pageSize)
+        public async Task<ServiceResult> GetByAptId(string aptId, int page, int pageSize)
         {
-            var items = await _unitOfWork.AptUtilityRepository.GetAllForAptAsync(aptId, page, pageSize);
+            var items = await _unitOfWork.AptUtilityRepository.GetByAptId(aptId, page, pageSize);
             if (!items.Data.Any())
             {
                 return new ServiceResult(Const.ERROR_EXCEPTION, Const.ERROR_EXCEPTION_MSG);

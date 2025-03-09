@@ -13,7 +13,7 @@ namespace RentEase.Data.Repository.Main
         }
         public AptRepository(RentEaseContext context) => _context = context;
 
-        public async Task<PagedResult<Apt>> GetAllOwn(
+        public async Task<PagedResult<Apt>> GetByAccountId(
           string accountId, int? statusId, int page, int pageSize, bool? status)
         {
             return await GetPagedAsync(

@@ -12,7 +12,7 @@ namespace RentEase.Service.Service.Main
     {
         //Task<ServiceResult> GetAll(int page, int pageSize, bool? status);
         //Task<ServiceResult> GetById(string id);
-        //Task<ServiceResult> GetAllOwn(string accountId, int page, int pageSize);
+        //Task<ServiceResult> GetByAccountId(string accountId, int page, int pageSize);
         //Task<ServiceResult> Create(PostRequireReq request);
         //Task<ServiceResult> Update(string orderId, int? newStatus);
         //Task<ServiceResult> Delete(string id);
@@ -53,7 +53,7 @@ namespace RentEase.Service.Service.Main
 
         //public async Task<ServiceResult> Update(string orderId, int? newStatus)
         //{
-        //    string accountId = _helperWrapper.TokenHelper.GetUserIdFromHttpContextAccessor(_httpContextAccessor);
+        //    string accountId = _helperWrapper.TokenHelper.GetAccountIdFromHttpContextAccessor(_httpContextAccessor);
 
         //    if (string.IsNullOrEmpty(accountId))
         //    {

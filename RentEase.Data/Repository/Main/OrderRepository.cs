@@ -12,7 +12,7 @@ namespace RentEase.Data.Repository.Main
         {
         }
         public OrderRepository(RentEaseContext context) => _context = context;
-        public async Task<PagedResult<Order>> GetAllOwn(
+        public async Task<PagedResult<Order>> GetByAccountId(
             string accountId, int? statusId, int page, int pageSize)
         {
             return await GetPagedAsync(

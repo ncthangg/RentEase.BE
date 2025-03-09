@@ -37,7 +37,7 @@ namespace RentEase.API.Controllers.Payment
                 {
                     StatusCode = HttpStatusCode.OK,
                     Message = result.Message,
-                    Data = (PaymentRes)result.Data
+                    Data = (PaymentRes)result.Data!
                 });
             }
             catch (Exception ex)
