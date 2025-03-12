@@ -51,19 +51,19 @@ public partial class RentEaseContext : DbContext
 
     public virtual DbSet<Utility> Utilities { get; set; }
 
-    public static string GetConnectionString(string connectionStringName)
-    {
-        var config = new ConfigurationBuilder()
-            .SetBasePath(AppDomain.CurrentDomain.BaseDirectory)
-            .AddJsonFile("appsettings.json")
-            .Build();
+    //public static string GetConnectionString(string connectionStringName)
+    //{
+    //    var config = new ConfigurationBuilder()
+    //        .SetBasePath(AppDomain.CurrentDomain.BaseDirectory)
+    //        .AddJsonFile("appsettings.json")
+    //        .Build();
 
-        var connectionString = Environment.GetEnvironmentVariable("DB_CONNECTION_STRING")
-                                       ?? "Data Source=103.112.211.244,1433;Initial Catalog=RentEase;Persist Security Info=True;User ID=sa;Password=Itjustapassword1@;TrustServerCertificate=True;Encrypt=false"; return connectionString;
-    }
-
+    //    var connectionString = Environment.GetEnvironmentVariable("DB_CONNECTION_STRING")
+    //                                   ?? "Data Source=103.112.211.244,1433;Initial Catalog=RentEase;Persist Security Info=True;User ID=sa;Password=Itjustapassword1@;TrustServerCertificate=True;Encrypt=false"; return connectionString;
+    //}
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-        => optionsBuilder.UseSqlServer(GetConnectionString("DefaultConnection")).UseQueryTrackingBehavior(QueryTrackingBehavior.NoTracking);
+    => optionsBuilder.UseSqlServer("Data Source=103.112.211.244,1433;Initial Catalog=RentEase;Persist Security Info=True;User ID=sa;Password=Itjustapassword1@;TrustServerCertificate=True;Encrypt=false").UseQueryTrackingBehavior(QueryTrackingBehavior.NoTracking);
+
 
     // public static string GetConnectionString(string connectionStringName)
     // {
@@ -99,9 +99,9 @@ public partial class RentEaseContext : DbContext
 
             entity.HasIndex(e => e.RoleId, "IX_Account_RoleId");
 
-            entity.HasIndex(e => e.PhoneNumber, "UQ__Account__85FB4E38627969EB").IsUnique();
+            entity.HasIndex(e => e.PhoneNumber, "UQ__Account__85FB4E38627969EB");
 
-            entity.HasIndex(e => e.Email, "UQ__Account__A9D1053441F530BF").IsUnique();
+            entity.HasIndex(e => e.Email, "UQ__Account__A9D1053441F530BF");
 
             entity.Property(e => e.AccountId).HasMaxLength(255);
             entity.Property(e => e.CreatedAt).HasColumnType("datetime");

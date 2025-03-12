@@ -103,22 +103,12 @@ namespace RentEase.Service.Service.Authenticate
         {
             try
             {
-                // Kiểm tra người dùng đã tồn tại chưa
-                var itemExist = await _serviceWrapper.AccountService.GetByEmailOrPhone(request.Username);
-
-                var itemData = _mapper.Map<Account>(itemExist.Data);
-                if (itemData != null)
-                {
-                    return new ServiceResult(Const.ERROR_EXCEPTION, "Account đã tồn tại");
-                }
-
-
                 var createItemResult = await _serviceWrapper.AccountService.CreateByGuest(request);
                 if (createItemResult.Status < 0)
                 {
-                    return new ServiceResult(Const.ERROR_EXCEPTION, "Register thất bại");
+                    return new ServiceResult(Const.ERROR_EXCEPTION, createItemResult.Message);
                 }
-
+                var createItemResultData = (Account)createItemResult.Data!;
 
                 // Xử lí gửi Verify Code
                 var verificationResult = await _accountVerificationService.HandleSendVerificationCode(request.Username);
@@ -129,9 +119,9 @@ namespace RentEase.Service.Service.Authenticate
 
                 var response = new RegisterRes
                 {
-                    FullName = itemData!.FullName,
-                    Username = itemData.Email,
-                    RoleName = itemData.Role.RoleName
+                    FullName = createItemResultData!.FullName,
+                    Username = createItemResultData.Email,
+                    RoleName = (await _unitOfWork.RoleRepository.GetByIdAsync(createItemResultData.RoleId)).RoleName,
                 };
 
                 return new ServiceResult(Const.SUCCESS_ACTION_CODE, "Register thành công, Verification Code đã được gửi.", response);

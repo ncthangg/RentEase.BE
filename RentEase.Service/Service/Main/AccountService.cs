@@ -149,7 +149,15 @@ namespace RentEase.Service.Service.Main
             return new ServiceResult(Const.ERROR_EXCEPTION, Const.ERROR_EXCEPTION_MSG);
         }
         public async Task<ServiceResult> CreateByGuest(RegisterReq request)
-        {
+        {                
+            var itemExist = await this.GetByEmailOrPhone(request.Username);
+
+            var itemData = _mapper.Map<Account>(itemExist.Data);
+            if (itemData != null)
+            {
+                return new ServiceResult(Const.ERROR_EXCEPTION, "Account đã tồn tại");
+            }
+
             if (request.Password.Equals(request.ConfirmPassword))
             {
                 var hashedPassword = _helperWrapper.PasswordHelper.HashPassword(request.Password);
@@ -210,7 +218,8 @@ namespace RentEase.Service.Service.Main
                 var result = await _unitOfWork.AccountRepository.CreateAsync(createItem);
                 if (result > 0)
                 {
-                    return new ServiceResult(Const.SUCCESS_ACTION_CODE, "Tạo tài khoản thành công");
+                    var resposeData = createItem;
+                    return new ServiceResult(Const.SUCCESS_ACTION_CODE, "Tạo tài khoản thành công", resposeData);
                 }
 
                 return new ServiceResult(Const.ERROR_EXCEPTION, "Tạo tài khoản thất bại");
