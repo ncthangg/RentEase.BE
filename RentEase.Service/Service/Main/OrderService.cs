@@ -55,7 +55,9 @@ namespace RentEase.Service.Service.Main
             {
                 return new ServiceResult(Const.ERROR_EXCEPTION, "Lỗi khi lấy info");
             }
-            string orderId = Guid.NewGuid().ToString("N").Substring(0, 6);
+            //string orderId = Guid.NewGuid().ToString("N").Substring(0, 6);
+            //string orderId = Math.Abs(Guid.NewGuid().GetHashCode()).ToString().Substring(0, 6);
+            string orderId = (Math.Abs(Guid.NewGuid().GetHashCode()) % 1000000).ToString("D6") + DateTime.UtcNow.ToString("ssfff");
             //var transactionType = await _unitOfWork.TransactionTypeRepository.GetByIdAsync(request.TransactionTypeId);
 
             var createItem = new Order()
