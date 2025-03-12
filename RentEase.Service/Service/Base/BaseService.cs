@@ -61,7 +61,7 @@ namespace RentEase.Service.Service.Base
 
                 if (pagedResult.TotalCount == 0)
                 {
-                    return new ServiceResult(Const.ERROR_EXCEPTION, "Không có dữ liệu.");
+                    return new ServiceResult(Const.ERROR_EXCEPTION_CODE, "Không có dữ liệu.");
                 }
 
                 var data = _mapper.Map<IEnumerable<TDto>>(pagedResult.Data);
@@ -70,7 +70,7 @@ namespace RentEase.Service.Service.Base
             }
             catch (Exception ex)
             {
-                return new ServiceResult(Const.ERROR_EXCEPTION, "Lỗi khi lấy danh sách: " + ex.Message);
+                return new ServiceResult(Const.ERROR_EXCEPTION_CODE, "Lỗi khi lấy danh sách: " + ex.Message);
             }
         }
 
@@ -81,7 +81,7 @@ namespace RentEase.Service.Service.Base
                 var entity = await _unitOfWork.GetRepository<T>().GetByIdAsync(id);
                 if (entity == null)
                 {
-                    return new ServiceResult(Const.ERROR_EXCEPTION, Const.ERROR_EXCEPTION_MSG);
+                    return new ServiceResult(Const.ERROR_EXCEPTION_CODE, Const.ERROR_EXCEPTION_MSG);
                 }
 
                 var response = _mapper.Map<TDto>(entity);
@@ -89,7 +89,7 @@ namespace RentEase.Service.Service.Base
             }
             catch (Exception ex)
             {
-                return new ServiceResult(Const.ERROR_EXCEPTION, "Lỗi khi lấy dữ liệu theo ID: " + ex.Message);
+                return new ServiceResult(Const.ERROR_EXCEPTION_CODE, "Lỗi khi lấy dữ liệu theo ID: " + ex.Message);
             }
         }
         public async Task<ServiceResult> GetById(string id)
@@ -99,7 +99,7 @@ namespace RentEase.Service.Service.Base
                 var entity = await _unitOfWork.GetRepository<T>().GetByIdAsync(id);
                 if (entity == null)
                 {
-                    return new ServiceResult(Const.ERROR_EXCEPTION, Const.ERROR_EXCEPTION_MSG);
+                    return new ServiceResult(Const.ERROR_EXCEPTION_CODE, Const.ERROR_EXCEPTION_MSG);
                 }
 
                 var response = _mapper.Map<TDto>(entity);
@@ -107,7 +107,7 @@ namespace RentEase.Service.Service.Base
             }
             catch (Exception ex)
             {
-                return new ServiceResult(Const.ERROR_EXCEPTION, "Lỗi khi lấy dữ liệu theo ID: " + ex.Message);
+                return new ServiceResult(Const.ERROR_EXCEPTION_CODE, "Lỗi khi lấy dữ liệu theo ID: " + ex.Message);
             }
         }
 
@@ -118,7 +118,7 @@ namespace RentEase.Service.Service.Base
                 var entity = await _unitOfWork.GetRepository<T>().GetByIdAsync(id);
                 if (entity == null)
                 {
-                    return new ServiceResult(Const.ERROR_EXCEPTION, Const.ERROR_EXCEPTION_MSG);
+                    return new ServiceResult(Const.ERROR_EXCEPTION_CODE, Const.ERROR_EXCEPTION_MSG);
                 }
 
                 var result = await _unitOfWork.GetRepository<T>().RemoveAsync(entity);
@@ -127,11 +127,11 @@ namespace RentEase.Service.Service.Base
                     return new ServiceResult(Const.SUCCESS_ACTION_CODE, "Xóa thành công");
 
                 }
-                return new ServiceResult(Const.ERROR_EXCEPTION, "Xóa thất bại");
+                return new ServiceResult(Const.ERROR_EXCEPTION_CODE, "Xóa thất bại");
             }
             catch (Exception ex)
             {
-                return new ServiceResult(Const.ERROR_EXCEPTION, "Lỗi khi xóa: " + ex.Message);
+                return new ServiceResult(Const.ERROR_EXCEPTION_CODE, "Lỗi khi xóa: " + ex.Message);
             }
         }
         public async Task<ServiceResult> Delete(string id)
@@ -141,7 +141,7 @@ namespace RentEase.Service.Service.Base
                 var entity = await _unitOfWork.GetRepository<T>().GetByIdAsync(id);
                 if (entity == null)
                 {
-                    return new ServiceResult(Const.ERROR_EXCEPTION, Const.ERROR_EXCEPTION_MSG);
+                    return new ServiceResult(Const.ERROR_EXCEPTION_CODE, Const.ERROR_EXCEPTION_MSG);
                 }
 
                 var result = await _unitOfWork.GetRepository<T>().RemoveAsync(entity);
@@ -150,11 +150,11 @@ namespace RentEase.Service.Service.Base
                     return new ServiceResult(Const.SUCCESS_ACTION_CODE, "Xóa thành công");
 
                 }
-                return new ServiceResult(Const.ERROR_EXCEPTION, "Xóa thất bại");
+                return new ServiceResult(Const.ERROR_EXCEPTION_CODE, "Xóa thất bại");
             }
             catch (Exception ex)
             {
-                return new ServiceResult(Const.ERROR_EXCEPTION, "Lỗi khi xóa: " + ex.Message);
+                return new ServiceResult(Const.ERROR_EXCEPTION_CODE, "Lỗi khi xóa: " + ex.Message);
             }
         }
 

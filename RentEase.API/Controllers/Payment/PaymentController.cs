@@ -25,7 +25,7 @@ namespace RentEase.API.Controllers.Payment
             try
             {
                 var result = await _serviceWrapper.TransactionService.CheckOut(request);
-                if (result.Status > 0)
+                if (result.Status < 0)
                 {
                     return NotFound(new ApiRes<string>
                     {

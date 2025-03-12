@@ -142,11 +142,9 @@ namespace RentEase.API.Controllers.Authenticate
             });
         }
 
-
         [HttpGet("GetInfo")]
         public async Task<IActionResult> GetInfo()
         {
-
             var result = await _authenticateService.GetInfo();
 
             if (result.Status < 0)

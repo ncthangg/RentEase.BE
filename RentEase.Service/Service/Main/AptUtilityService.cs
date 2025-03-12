@@ -37,7 +37,7 @@ namespace RentEase.Service.Service.Main
             var items = await _unitOfWork.AptUtilityRepository.GetByAptId(aptId, page, pageSize);
             if (!items.Data.Any())
             {
-                return new ServiceResult(Const.ERROR_EXCEPTION, Const.ERROR_EXCEPTION_MSG);
+                return new ServiceResult(Const.ERROR_EXCEPTION_CODE, Const.ERROR_EXCEPTION_MSG);
             }
             else
             {
@@ -62,21 +62,21 @@ namespace RentEase.Service.Service.Main
                 return new ServiceResult(Const.SUCCESS_ACTION_CODE, "Tạo thành công");
             }
 
-            return new ServiceResult(Const.ERROR_EXCEPTION, Const.ERROR_EXCEPTION_MSG);
+            return new ServiceResult(Const.ERROR_EXCEPTION_CODE, Const.ERROR_EXCEPTION_MSG);
         }
         public async Task<ServiceResult> Update(int id, string? note)
         {
 
             if (!await EntityExistsAsync("Id", id))
             {
-                return new ServiceResult(Const.ERROR_EXCEPTION, Const.ERROR_EXCEPTION_MSG);
+                return new ServiceResult(Const.ERROR_EXCEPTION_CODE, Const.ERROR_EXCEPTION_MSG);
             }
 
             var item = await _unitOfWork.AptUtilityRepository.GetByIdAsync(id);
 
             if (item == null)
             {
-                return new ServiceResult(Const.ERROR_EXCEPTION, "Không tồn tại");
+                return new ServiceResult(Const.ERROR_EXCEPTION_CODE, "Không tồn tại");
             }
 
             item.Note = note;
@@ -88,7 +88,7 @@ namespace RentEase.Service.Service.Main
                 return new ServiceResult(Const.SUCCESS_ACTION_CODE, "Cập nhật thành công");
             }
 
-            return new ServiceResult(Const.ERROR_EXCEPTION, Const.ERROR_EXCEPTION_MSG);
+            return new ServiceResult(Const.ERROR_EXCEPTION_CODE, Const.ERROR_EXCEPTION_MSG);
 
         }
     }

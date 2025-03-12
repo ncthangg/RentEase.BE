@@ -36,7 +36,7 @@ namespace RentEase.Service.Service.Sub
         {
             if (await EntityExistsAsync("StatusName", request.StatusName))
             {
-                return new ServiceResult(Const.ERROR_EXCEPTION, Const.ERROR_EXCEPTION_MSG);
+                return new ServiceResult(Const.ERROR_EXCEPTION_CODE, Const.ERROR_EXCEPTION_MSG);
             }
 
             var createItem = new AptStatus()
@@ -54,13 +54,13 @@ namespace RentEase.Service.Service.Sub
                 return new ServiceResult(Const.SUCCESS_ACTION_CODE, "Tạo thành công");
             }
 
-            return new ServiceResult(Const.ERROR_EXCEPTION, Const.ERROR_EXCEPTION_MSG);
+            return new ServiceResult(Const.ERROR_EXCEPTION_CODE, Const.ERROR_EXCEPTION_MSG);
         }
         public async Task<ServiceResult> Update(int id, AptStatusReq request)
         {
             if (!await EntityExistsAsync("Id", id))
             {
-                return new ServiceResult(Const.ERROR_EXCEPTION, Const.ERROR_EXCEPTION_MSG);
+                return new ServiceResult(Const.ERROR_EXCEPTION_CODE, Const.ERROR_EXCEPTION_MSG);
             }
 
             var item = await _unitOfWork.AptStatusRepository.GetByIdAsync(id);
@@ -80,7 +80,7 @@ namespace RentEase.Service.Service.Sub
                 return new ServiceResult(Const.SUCCESS_ACTION_CODE, "Cập nhật thành công");
             }
 
-            return new ServiceResult(Const.ERROR_EXCEPTION, Const.ERROR_EXCEPTION_MSG);
+            return new ServiceResult(Const.ERROR_EXCEPTION_CODE, Const.ERROR_EXCEPTION_MSG);
         }
 
     }

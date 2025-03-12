@@ -46,7 +46,7 @@ namespace RentEase.Service.Service.Authenticate
             }
             else
             {
-                return new ServiceResult(Const.ERROR_EXCEPTION, Const.ERROR_EXCEPTION_MSG);
+                return new ServiceResult(Const.ERROR_EXCEPTION_CODE, Const.ERROR_EXCEPTION_MSG);
             }
         }
 
@@ -58,13 +58,13 @@ namespace RentEase.Service.Service.Authenticate
             // Kiểm tra nếu không tìm thấy token trong cơ sở dữ liệu
             if (accountToken == null)
             {
-                return new ServiceResult(Const.ERROR_EXCEPTION, "Refresh token not found");
+                return new ServiceResult(Const.ERROR_EXCEPTION_CODE, "Refresh token not found");
             }
 
             // Kiểm tra thời gian hết hạn của RefreshToken
             if (accountToken.ExpiresAt < DateTime.Now)
             {
-                return new ServiceResult(Const.ERROR_EXCEPTION, "Refresh token has expired");
+                return new ServiceResult(Const.ERROR_EXCEPTION_CODE, "Refresh token has expired");
             }
 
             // Nếu token còn hạn

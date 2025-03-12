@@ -48,7 +48,7 @@ namespace RentEase.Service.Service.Main
         //        return new ServiceResult(Const.SUCCESS_ACTION_CODE, "Tạo thành công");
         //    }
 
-        //    return new ServiceResult(Const.ERROR_EXCEPTION, Const.ERROR_EXCEPTION_MSG);
+        //    return new ServiceResult(Const.ERROR_EXCEPTION_CODE, Const.ERROR_EXCEPTION_MSG);
         //}
 
         //public async Task<ServiceResult> Update(string orderId, int? newStatus)
@@ -57,13 +57,13 @@ namespace RentEase.Service.Service.Main
 
         //    if (string.IsNullOrEmpty(accountId))
         //    {
-        //        return new ServiceResult(Const.ERROR_EXCEPTION, "Lỗi khi lấy info");
+        //        return new ServiceResult(Const.ERROR_EXCEPTION_CODE, "Lỗi khi lấy info");
         //    }
 
 
         //    if (!await EntityExistsAsync("Id", orderId))
         //    {
-        //        return new ServiceResult(Const.ERROR_EXCEPTION, Const.ERROR_EXCEPTION_MSG);
+        //        return new ServiceResult(Const.ERROR_EXCEPTION_CODE, Const.ERROR_EXCEPTION_MSG);
         //    }
 
         //    var item = await _unitOfWork.PostRequireRepository.GetByIdAsync(orderId);
@@ -72,7 +72,7 @@ namespace RentEase.Service.Service.Main
         //             newStatus != (int)EnumType.TransactionStatus.Success &&
         //                 newStatus != (int)EnumType.TransactionStatus.Failed)
         //    {
-        //        return new ServiceResult(Const.ERROR_EXCEPTION, "TransactionStatus không hợp lệ.");
+        //        return new ServiceResult(Const.ERROR_EXCEPTION_CODE, "TransactionStatus không hợp lệ.");
         //    }
 
 
@@ -83,7 +83,7 @@ namespace RentEase.Service.Service.Main
         //        return new ServiceResult(Const.SUCCESS_ACTION_CODE, "Cập nhật thành công");
         //    }
 
-        //    return new ServiceResult(Const.ERROR_EXCEPTION, Const.ERROR_EXCEPTION_MSG);
+        //    return new ServiceResult(Const.ERROR_EXCEPTION_CODE, Const.ERROR_EXCEPTION_MSG);
         //}
 
 

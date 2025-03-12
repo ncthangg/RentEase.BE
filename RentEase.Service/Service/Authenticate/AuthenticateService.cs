@@ -50,23 +50,23 @@ namespace RentEase.Service.Service.Authenticate
             {
                 if (string.IsNullOrEmpty(request.Username) || string.IsNullOrEmpty(request.Password))
                 {
-                    return new ServiceResult(Const.ERROR_EXCEPTION, "UserName và Password không được để trống");
+                    return new ServiceResult(Const.ERROR_EXCEPTION_CODE, "UserName và Password không được để trống");
                 }
 
                 var accountExist = await _serviceWrapper.AccountService.GetByEmailOrPhone(request.Username);
                 var accountData = _mapper.Map<Account>(accountExist.Data);
                 if (accountData == null || !_helperWrapper.PasswordHelper.VerifyPassword(request.Password, accountData.PasswordHash))
                 {
-                    return new ServiceResult(Const.ERROR_EXCEPTION, "Tài khoản không tồn tại hoặc Password không đúng");
+                    return new ServiceResult(Const.ERROR_EXCEPTION_CODE, "Tài khoản không tồn tại hoặc Password không đúng");
                 }
 
                 if (!(bool)accountData.IsActive!)
                 {
-                    return new ServiceResult(Const.ERROR_EXCEPTION, "Tài khoản chưa được xác minh.");
+                    return new ServiceResult(Const.ERROR_EXCEPTION_CODE, "Tài khoản chưa được xác minh.");
                 }
                 if (!(bool)accountData.Status!)
                 {
-                    return new ServiceResult(Const.ERROR_EXCEPTION, "Tài khoản sẽ xóa sau 7 ngày.");
+                    return new ServiceResult(Const.ERROR_EXCEPTION_CODE, "Tài khoản sẽ xóa sau 7 ngày.");
                 }
 
                 // Tạo token
@@ -76,7 +76,7 @@ namespace RentEase.Service.Service.Authenticate
                 var saveTokenResult = await _accountTokenService.Save(accountData.AccountId, token.RefreshToken);
                 if (saveTokenResult.Data == null)
                 {
-                    return new ServiceResult(Const.ERROR_EXCEPTION, "Lỗi khi lưu Refresh Token");
+                    return new ServiceResult(Const.ERROR_EXCEPTION_CODE, "Lỗi khi lưu Refresh Token");
                 }
                 var tokenData = saveTokenResult.Data as AccountToken;
 
@@ -95,7 +95,7 @@ namespace RentEase.Service.Service.Authenticate
             }
             catch (Exception ex)
             {
-                return new ServiceResult(Const.ERROR_EXCEPTION, ex.ToString());
+                return new ServiceResult(Const.ERROR_EXCEPTION_CODE, ex.ToString());
             }
         }
 
@@ -106,7 +106,7 @@ namespace RentEase.Service.Service.Authenticate
                 var createItemResult = await _serviceWrapper.AccountService.CreateByGuest(request);
                 if (createItemResult.Status < 0)
                 {
-                    return new ServiceResult(Const.ERROR_EXCEPTION, createItemResult.Message);
+                    return new ServiceResult(Const.ERROR_EXCEPTION_CODE, createItemResult.Message);
                 }
                 var createItemResultData = (Account)createItemResult.Data!;
 
@@ -114,7 +114,7 @@ namespace RentEase.Service.Service.Authenticate
                 var verificationResult = await _accountVerificationService.HandleSendVerificationCode(request.Username);
                 if (verificationResult.Status < 0)
                 {
-                    return new ServiceResult(Const.ERROR_EXCEPTION, "Gửi code thất bại");
+                    return new ServiceResult(Const.ERROR_EXCEPTION_CODE, "Gửi code thất bại");
                 }
 
                 var response = new RegisterRes
@@ -128,7 +128,7 @@ namespace RentEase.Service.Service.Authenticate
             }
             catch (Exception ex)
             {
-                return new ServiceResult(Const.ERROR_EXCEPTION, ex.ToString());
+                return new ServiceResult(Const.ERROR_EXCEPTION_CODE, ex.ToString());
             }
         }
 
@@ -140,13 +140,13 @@ namespace RentEase.Service.Service.Authenticate
 
                 if (string.IsNullOrEmpty(accountId))
                 {
-                    return new ServiceResult(Const.ERROR_EXCEPTION, "Lỗi khi lấy info");
+                    return new ServiceResult(Const.ERROR_EXCEPTION_CODE, "Lỗi khi lấy info");
                 }
 
                 var item = await _unitOfWork.AccountRepository.GetByIdAsync(accountId);
                 if (item == null)
                 {
-                    return new ServiceResult(Const.ERROR_EXCEPTION, "Tài khoản không tồn tại ");
+                    return new ServiceResult(Const.ERROR_EXCEPTION_CODE, "Tài khoản không tồn tại ");
                 }
 
                 var data = _mapper.Map<AccountRes>((item as Account));
@@ -155,7 +155,7 @@ namespace RentEase.Service.Service.Authenticate
             }
             catch (Exception ex)
             {
-                return new ServiceResult(Const.ERROR_EXCEPTION, ex.ToString());
+                return new ServiceResult(Const.ERROR_EXCEPTION_CODE, ex.ToString());
             }
         }
 
@@ -167,7 +167,7 @@ namespace RentEase.Service.Service.Authenticate
 
                 if (string.IsNullOrEmpty(accountId))
                 {
-                    return new ServiceResult(Const.ERROR_EXCEPTION, "Lỗi khi lấy info");
+                    return new ServiceResult(Const.ERROR_EXCEPTION_CODE, "Lỗi khi lấy info");
                 }
 
                 // Kiểm tra người dùng đã tồn tại chưa
@@ -184,12 +184,12 @@ namespace RentEase.Service.Service.Authenticate
                     }
                 }
 
-                return new ServiceResult(Const.ERROR_EXCEPTION, "Thay đổi mật khẩu thất bại");
+                return new ServiceResult(Const.ERROR_EXCEPTION_CODE, "Thay đổi mật khẩu thất bại");
 
             }
             catch (Exception ex)
             {
-                return new ServiceResult(Const.ERROR_EXCEPTION, ex.ToString());
+                return new ServiceResult(Const.ERROR_EXCEPTION_CODE, ex.ToString());
             }
         }
 

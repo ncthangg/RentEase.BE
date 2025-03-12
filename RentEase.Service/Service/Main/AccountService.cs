@@ -48,7 +48,7 @@ namespace RentEase.Service.Service.Main
                 var item = await _unitOfWork.AccountRepository.GetByEmailAsync(email);
                 if (item == null)
                 {
-                    return new ServiceResult(Const.ERROR_EXCEPTION, Const.ERROR_EXCEPTION_MSG);
+                    return new ServiceResult(Const.ERROR_EXCEPTION_CODE, Const.ERROR_EXCEPTION_MSG);
                 }
 
                 var responseData = _mapper.Map<AccountRes>(item);
@@ -56,7 +56,7 @@ namespace RentEase.Service.Service.Main
             }
             catch (Exception ex)
             {
-                return new ServiceResult(Const.ERROR_EXCEPTION, "Lỗi khi lấy dữ liệu theo Email: " + ex.Message);
+                return new ServiceResult(Const.ERROR_EXCEPTION_CODE, "Lỗi khi lấy dữ liệu theo Email: " + ex.Message);
             }
         }
         public async Task<ServiceResult> GetByPhone(string phoneNumber)
@@ -66,7 +66,7 @@ namespace RentEase.Service.Service.Main
                 var item = await _unitOfWork.AccountRepository.GetByPhoneAsync(phoneNumber);
                 if (item == null)
                 {
-                    return new ServiceResult(Const.ERROR_EXCEPTION, Const.ERROR_EXCEPTION_MSG);
+                    return new ServiceResult(Const.ERROR_EXCEPTION_CODE, Const.ERROR_EXCEPTION_MSG);
                 }
 
                 var responseData = _mapper.Map<AccountRes>(item);
@@ -74,7 +74,7 @@ namespace RentEase.Service.Service.Main
             }
             catch (Exception ex)
             {
-                return new ServiceResult(Const.ERROR_EXCEPTION, "Lỗi khi lấy dữ liệu theo Email: " + ex.Message);
+                return new ServiceResult(Const.ERROR_EXCEPTION_CODE, "Lỗi khi lấy dữ liệu theo Email: " + ex.Message);
             }
         }
         public async Task<ServiceResult> GetByEmailOrPhone(string username)
@@ -83,13 +83,13 @@ namespace RentEase.Service.Service.Main
             {
                 if (string.IsNullOrWhiteSpace(username))
                 {
-                    return new ServiceResult(Const.ERROR_EXCEPTION, Const.ERROR_EXCEPTION_MSG);
+                    return new ServiceResult(Const.ERROR_EXCEPTION_CODE, Const.ERROR_EXCEPTION_MSG);
                 }
 
                 var item = await _unitOfWork.AccountRepository.GetByEmailOrPhoneAsync(username);
                 if (item == null)
                 {
-                    return new ServiceResult(Const.ERROR_EXCEPTION, Const.ERROR_EXCEPTION_MSG);
+                    return new ServiceResult(Const.ERROR_EXCEPTION_CODE, Const.ERROR_EXCEPTION_MSG);
                 }
 
                 var responseData = _mapper.Map<AccountRes>(item);
@@ -97,7 +97,7 @@ namespace RentEase.Service.Service.Main
             }
             catch (Exception ex)
             {
-                return new ServiceResult(Const.ERROR_EXCEPTION, "Lỗi khi lấy dữ liệu theo Email: " + ex.Message);
+                return new ServiceResult(Const.ERROR_EXCEPTION_CODE, "Lỗi khi lấy dữ liệu theo Email: " + ex.Message);
             }
         }
         public async Task<ServiceResult> Search(string? fullName, string? email, string? phoneNumber, bool? isActive, bool? status, int page, int pageSize)
@@ -105,7 +105,7 @@ namespace RentEase.Service.Service.Main
             var items = await _unitOfWork.AccountRepository.GetBySearchAsync(fullName, email, phoneNumber, isActive, status, page, pageSize);
             if (!items.Data.Any())
             {
-                return new ServiceResult(Const.ERROR_EXCEPTION, Const.ERROR_EXCEPTION_MSG);
+                return new ServiceResult(Const.ERROR_EXCEPTION_CODE, Const.ERROR_EXCEPTION_MSG);
             }
             else
             {
@@ -117,7 +117,7 @@ namespace RentEase.Service.Service.Main
         {
             if (await AccountExistByMail(request.Email) || await AccountExistByPhoneNumber(request.PhoneNumber))
             {
-                return new ServiceResult(Const.ERROR_EXCEPTION, Const.ERROR_EXCEPTION_MSG);
+                return new ServiceResult(Const.ERROR_EXCEPTION_CODE, Const.ERROR_EXCEPTION_MSG);
             }
 
             var hashedPassword = _helperWrapper.PasswordHelper.HashPassword(request.PasswordHash);
@@ -146,7 +146,7 @@ namespace RentEase.Service.Service.Main
                 return new ServiceResult(Const.SUCCESS_ACTION_CODE, "Tạo tài khoản thành công");
             }
 
-            return new ServiceResult(Const.ERROR_EXCEPTION, Const.ERROR_EXCEPTION_MSG);
+            return new ServiceResult(Const.ERROR_EXCEPTION_CODE, Const.ERROR_EXCEPTION_MSG);
         }
         public async Task<ServiceResult> CreateByGuest(RegisterReq request)
         {                
@@ -155,7 +155,7 @@ namespace RentEase.Service.Service.Main
             var itemData = _mapper.Map<Account>(itemExist.Data);
             if (itemData != null)
             {
-                return new ServiceResult(Const.ERROR_EXCEPTION, "Account đã tồn tại");
+                return new ServiceResult(Const.ERROR_EXCEPTION_CODE, "Account đã tồn tại");
             }
 
             if (request.Password.Equals(request.ConfirmPassword))
@@ -165,7 +165,7 @@ namespace RentEase.Service.Service.Main
                 var createItem = new Account();
                 if (request.RoleId != (int)EnumType.Role.Lessor && request.RoleId != (int)EnumType.Role.Lesses)
                 {
-                    return new ServiceResult(Const.ERROR_EXCEPTION, "Khong dung ROLE");
+                    return new ServiceResult(Const.ERROR_EXCEPTION_CODE, "Khong dung ROLE");
                 }
 
                 var isEmail = IsEmail(request.Username);
@@ -212,7 +212,7 @@ namespace RentEase.Service.Service.Main
                 }
                 else
                 {
-                    return new ServiceResult(Const.SUCCESS_ACTION_CODE, "Username không đúng chuẩn");
+                    return new ServiceResult(Const.ERROR_EXCEPTION_CODE, "Username không đúng chuẩn");
                 }
 
                 var result = await _unitOfWork.AccountRepository.CreateAsync(createItem);
@@ -222,10 +222,10 @@ namespace RentEase.Service.Service.Main
                     return new ServiceResult(Const.SUCCESS_ACTION_CODE, "Tạo tài khoản thành công", resposeData);
                 }
 
-                return new ServiceResult(Const.ERROR_EXCEPTION, "Tạo tài khoản thất bại");
+                return new ServiceResult(Const.ERROR_EXCEPTION_CODE, "Tạo tài khoản thất bại");
             }
 
-            return new ServiceResult(Const.ERROR_EXCEPTION, Const.ERROR_EXCEPTION_MSG);
+            return new ServiceResult(Const.ERROR_EXCEPTION_CODE, Const.ERROR_EXCEPTION_MSG);
         }
         public async Task<ServiceResult> Update(string id, AccountReq request)
         {
@@ -234,24 +234,24 @@ namespace RentEase.Service.Service.Main
 
             if (string.IsNullOrEmpty(accountId))
             {
-                return new ServiceResult(Const.ERROR_EXCEPTION, "Lỗi khi lấy info");
+                return new ServiceResult(Const.ERROR_EXCEPTION_CODE, "Lỗi khi lấy info");
             }
 
             var item = await _unitOfWork.AccountRepository.GetByIdAsync(id);
 
             if (item == null)
             {
-                return new ServiceResult(Const.ERROR_EXCEPTION, "Không tồn tại");
+                return new ServiceResult(Const.ERROR_EXCEPTION_CODE, "Không tồn tại");
             }
 
             if (accountId != item.AccountId && roleId != "1")
             {
-                return new ServiceResult(Const.ERROR_EXCEPTION, "Bạn không có quyền hạn.");
+                return new ServiceResult(Const.ERROR_EXCEPTION_CODE, "Bạn không có quyền hạn.");
             }
 
             if (!(bool)item.Status!)
             {
-                return new ServiceResult(Const.ERROR_EXCEPTION, "Status == False.");
+                return new ServiceResult(Const.ERROR_EXCEPTION_CODE, "Status == False.");
             }
 
             var updateItem = new Account()
@@ -278,7 +278,7 @@ namespace RentEase.Service.Service.Main
                 return new ServiceResult(Const.SUCCESS_ACTION_CODE, "Cập nhật thành công");
             }
 
-            return new ServiceResult(Const.ERROR_EXCEPTION, Const.ERROR_EXCEPTION_MSG);
+            return new ServiceResult(Const.ERROR_EXCEPTION_CODE, Const.ERROR_EXCEPTION_MSG);
         }
         public async Task<ServiceResult> DeleteSoft(string id)
         {
@@ -289,12 +289,12 @@ namespace RentEase.Service.Service.Main
 
             if (item == null)
             {
-                return new ServiceResult(Const.ERROR_EXCEPTION, "Không tồn tại");
+                return new ServiceResult(Const.ERROR_EXCEPTION_CODE, "Không tồn tại");
             }
 
             if (accountId != item.AccountId && roleId != "1")
             {
-                return new ServiceResult(Const.ERROR_EXCEPTION, "Bạn không có quyền hạn.");
+                return new ServiceResult(Const.ERROR_EXCEPTION_CODE, "Bạn không có quyền hạn.");
             }
 
             item.DeletedAt = DateTime.Now;
@@ -306,7 +306,7 @@ namespace RentEase.Service.Service.Main
                 return new ServiceResult(Const.SUCCESS_ACTION_CODE, "Xóa mềm thành công");
             }
 
-            return new ServiceResult(Const.ERROR_EXCEPTION, Const.ERROR_EXCEPTION_MSG);
+            return new ServiceResult(Const.ERROR_EXCEPTION_CODE, Const.ERROR_EXCEPTION_MSG);
         }
 
         //CHECK

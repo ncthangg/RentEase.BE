@@ -36,7 +36,7 @@ namespace RentEase.Service.Service.Main
         {
             if (await EntityExistsAsync("AptId", request.AptId))
             {
-                return new ServiceResult(Const.ERROR_EXCEPTION, Const.ERROR_EXCEPTION_MSG);
+                return new ServiceResult(Const.ERROR_EXCEPTION_CODE, Const.ERROR_EXCEPTION_MSG);
             }
 
             var createItem = new AptImage()
@@ -58,7 +58,7 @@ namespace RentEase.Service.Service.Main
                 return new ServiceResult(Const.SUCCESS_ACTION_CODE, "Tạo thành công");
             }
 
-            return new ServiceResult(Const.ERROR_EXCEPTION, Const.ERROR_EXCEPTION_MSG);
+            return new ServiceResult(Const.ERROR_EXCEPTION_CODE, Const.ERROR_EXCEPTION_MSG);
         }
 
         public async Task<ServiceResult> Update(string id, AptImageReq request)
@@ -68,29 +68,29 @@ namespace RentEase.Service.Service.Main
 
             if (string.IsNullOrEmpty(accountId))
             {
-                return new ServiceResult(Const.ERROR_EXCEPTION, "Lỗi khi lấy info");
+                return new ServiceResult(Const.ERROR_EXCEPTION_CODE, "Lỗi khi lấy info");
             }
 
             if (!await EntityExistsAsync("AptId", id))
             {
-                return new ServiceResult(Const.ERROR_EXCEPTION, "Không tồn tại");
+                return new ServiceResult(Const.ERROR_EXCEPTION_CODE, "Không tồn tại");
             }
 
             var item = await _unitOfWork.AptImageRepository.GetByIdAsync(id);
 
             if (item == null)
             {
-                return new ServiceResult(Const.ERROR_EXCEPTION, "Không tồn tại");
+                return new ServiceResult(Const.ERROR_EXCEPTION_CODE, "Không tồn tại");
             }
 
             if (accountId != item.Apt.OwnerId && roleId != "1")
             {
-                return new ServiceResult(Const.ERROR_EXCEPTION, "Bạn không có quyền hạn.");
+                return new ServiceResult(Const.ERROR_EXCEPTION_CODE, "Bạn không có quyền hạn.");
             }
 
             if (!(bool)item.Apt.Status!)
             {
-                return new ServiceResult(Const.ERROR_EXCEPTION, "Status == False.");
+                return new ServiceResult(Const.ERROR_EXCEPTION_CODE, "Status == False.");
             }
 
             var updateItem = new AptImage()
@@ -112,7 +112,7 @@ namespace RentEase.Service.Service.Main
                 return new ServiceResult(Const.SUCCESS_ACTION_CODE, "Cập nhật thành công");
             }
 
-            return new ServiceResult(Const.ERROR_EXCEPTION, Const.ERROR_EXCEPTION_MSG);
+            return new ServiceResult(Const.ERROR_EXCEPTION_CODE, Const.ERROR_EXCEPTION_MSG);
         }
 
     }

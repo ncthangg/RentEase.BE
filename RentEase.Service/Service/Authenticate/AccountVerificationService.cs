@@ -12,7 +12,7 @@ namespace RentEase.Service.Service.Authenticate
     {
         Task<ServiceResult> GetByAccountId(string accountId);
         Task<ServiceResult> Save(string accountId, string verificationCode);
-        Task<ServiceResult> Verification(string accountId, string verificationCode);
+        Task<ServiceResult> Verification(string email, string verificationCode);
         Task<ServiceResult> HandleSendVerificationCode(string email);
     }
     public class AccountVerificationService : IAccountVerificationService
@@ -36,7 +36,7 @@ namespace RentEase.Service.Service.Authenticate
             var account = await _unitOfWork.AccountVerificationRepository.GetByAccountId(accountId);
             if (account == null)
             {
-                return new ServiceResult(Const.ERROR_EXCEPTION, Const.ERROR_EXCEPTION_MSG);
+                return new ServiceResult(Const.ERROR_EXCEPTION_CODE, Const.ERROR_EXCEPTION_MSG);
             }
             else
             {
@@ -73,7 +73,7 @@ namespace RentEase.Service.Service.Authenticate
             }
             else
             {
-                return new ServiceResult(Const.ERROR_EXCEPTION, Const.ERROR_EXCEPTION_MSG);
+                return new ServiceResult(Const.ERROR_EXCEPTION_CODE, Const.ERROR_EXCEPTION_MSG);
             }
         }
         public async Task<ServiceResult> Verification(string email, string verificationCode)
@@ -81,15 +81,15 @@ namespace RentEase.Service.Service.Authenticate
             var account = await _unitOfWork.AccountRepository.GetByEmailAsync(email);
 
             if (account == null)
-                return new ServiceResult(Const.ERROR_EXCEPTION, "User not found!");
+                return new ServiceResult(Const.ERROR_EXCEPTION_CODE, "User not found!");
 
             if ((bool)account.IsActive!)
-                return new ServiceResult(Const.ERROR_EXCEPTION, "Account already verified!");
+                return new ServiceResult(Const.ERROR_EXCEPTION_CODE, "Account already verified!");
 
             bool isValid = await this.IsVerificationCodeValid(account.AccountId, verificationCode);
 
             if (!isValid)
-                return new ServiceResult(Const.ERROR_EXCEPTION, "Invalid or expired verification code!");
+                return new ServiceResult(Const.ERROR_EXCEPTION_CODE, "Invalid or expired verification code!");
 
             // Nếu hợp lệ, cập nhật trạng thái tài khoản
             account.IsActive = true;
@@ -97,21 +97,21 @@ namespace RentEase.Service.Service.Authenticate
             var resultUpdateAccount = await _unitOfWork.AccountRepository.UpdateAsync(account);
             if (resultUpdateAccount < 0)
             {
-                return new ServiceResult(Const.ERROR_EXCEPTION, "Update account thất bại!");
+                return new ServiceResult(Const.ERROR_EXCEPTION_CODE, "Update account thất bại!");
             }
 
             var resultUpdateVerificationCode = await this.Save(account.AccountId, verificationCode);
 
             if (resultUpdateVerificationCode.Status < 0)
             {
-                return new ServiceResult(Const.ERROR_EXCEPTION, "Update account thất bại!");
+                return new ServiceResult(Const.ERROR_EXCEPTION_CODE, "Update account thất bại!");
             }
 
             var responseData = new RegisterRes
             {
                 FullName = account.FullName,
                 Username = account.Email,
-                RoleName = account.Role.RoleName
+                RoleName = (await _unitOfWork.RoleRepository.GetByIdAsync(account.RoleId)).RoleName,
             };
 
             return new ServiceResult(Const.SUCCESS_ACTION_CODE, "Account verified successfully!", responseData);
@@ -145,7 +145,7 @@ namespace RentEase.Service.Service.Authenticate
             var saveResult = await this.Save(item.AccountId, newVerificationCode);
             if (saveResult.Status < 0)
             {
-                return new ServiceResult(Const.ERROR_EXCEPTION, "Error saving verification code");
+                return new ServiceResult(Const.ERROR_EXCEPTION_CODE, "Error saving verification code");
             }
 
             // Gửi email xác thực

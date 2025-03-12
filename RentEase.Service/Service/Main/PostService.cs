@@ -39,7 +39,7 @@ namespace RentEase.Service.Service.Main
             var items = await _unitOfWork.PostRepository.GetByAccountId(accountId, statusId, status, page, pageSize);
             if (!items.Data.Any())
             {
-                return new ServiceResult(Const.ERROR_EXCEPTION, Const.ERROR_EXCEPTION_MSG);
+                return new ServiceResult(Const.ERROR_EXCEPTION_CODE, Const.ERROR_EXCEPTION_MSG);
             }
             else
             {
@@ -53,7 +53,7 @@ namespace RentEase.Service.Service.Main
 
             if (string.IsNullOrEmpty(accountId))
             {
-                return new ServiceResult(Const.ERROR_EXCEPTION, "Lỗi khi lấy info");
+                return new ServiceResult(Const.ERROR_EXCEPTION_CODE, "Lỗi khi lấy info");
             }
 
             var createItem = new Post()
@@ -82,7 +82,7 @@ namespace RentEase.Service.Service.Main
                 return new ServiceResult(Const.SUCCESS_ACTION_CODE, "Tạo thành công");
             }
 
-            return new ServiceResult(Const.ERROR_EXCEPTION, Const.ERROR_EXCEPTION_MSG);
+            return new ServiceResult(Const.ERROR_EXCEPTION_CODE, Const.ERROR_EXCEPTION_MSG);
         }
         public async Task<ServiceResult> Update(string postId, PostReq request)
         {
@@ -91,26 +91,26 @@ namespace RentEase.Service.Service.Main
 
             if (string.IsNullOrEmpty(accountId))
             {
-                return new ServiceResult(Const.ERROR_EXCEPTION, "Lỗi khi lấy info");
+                return new ServiceResult(Const.ERROR_EXCEPTION_CODE, "Lỗi khi lấy info");
             }
 
             if (!await EntityExistsAsync("PostId", postId))
             {
-                return new ServiceResult(Const.ERROR_EXCEPTION, Const.ERROR_EXCEPTION_MSG);
+                return new ServiceResult(Const.ERROR_EXCEPTION_CODE, Const.ERROR_EXCEPTION_MSG);
             }
 
             var item = await _unitOfWork.PostRepository.GetByIdAsync(postId);
 
             if (accountId != item.PostId && roleId != "1")
             {
-                return new ServiceResult(Const.ERROR_EXCEPTION, "Bạn không có quyền hạn.");
+                return new ServiceResult(Const.ERROR_EXCEPTION_CODE, "Bạn không có quyền hạn.");
             }
 
             if (request.StatusId != (int)EnumType.StatusId.Pending &&
                      request.StatusId != (int)EnumType.StatusId.Success &&
                          request.StatusId != (int)EnumType.StatusId.Failed)
             {
-                return new ServiceResult(Const.ERROR_EXCEPTION, "StatusId không hợp lệ.");
+                return new ServiceResult(Const.ERROR_EXCEPTION_CODE, "StatusId không hợp lệ.");
             }
 
             var result = await _unitOfWork.PostRepository.UpdateAsync(item);
@@ -119,7 +119,7 @@ namespace RentEase.Service.Service.Main
                 return new ServiceResult(Const.SUCCESS_ACTION_CODE, "Cập nhật thành công");
             }
 
-            return new ServiceResult(Const.ERROR_EXCEPTION, Const.ERROR_EXCEPTION_MSG);
+            return new ServiceResult(Const.ERROR_EXCEPTION_CODE, Const.ERROR_EXCEPTION_MSG);
         }
         public async Task<ServiceResult> DeleteSoft(string id)
         {
@@ -130,12 +130,12 @@ namespace RentEase.Service.Service.Main
 
             if (item == null)
             {
-                return new ServiceResult(Const.ERROR_EXCEPTION, "Không tồn tại");
+                return new ServiceResult(Const.ERROR_EXCEPTION_CODE, "Không tồn tại");
             }
 
             if (accountId != item.AccountId && roleId != "1")
             {
-                return new ServiceResult(Const.ERROR_EXCEPTION, "Bạn không có quyền hạn.");
+                return new ServiceResult(Const.ERROR_EXCEPTION_CODE, "Bạn không có quyền hạn.");
             }
 
             item.DeletedAt = DateTime.Now;
@@ -147,7 +147,7 @@ namespace RentEase.Service.Service.Main
                 return new ServiceResult(Const.SUCCESS_ACTION_CODE, "Xóa mềm thành công");
             }
 
-            return new ServiceResult(Const.ERROR_EXCEPTION, Const.ERROR_EXCEPTION_MSG);
+            return new ServiceResult(Const.ERROR_EXCEPTION_CODE, Const.ERROR_EXCEPTION_MSG);
         }
     }
 }

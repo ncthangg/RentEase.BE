@@ -38,7 +38,7 @@ namespace RentEase.Service.Service.Main
 
             if (!items.Data.Any())
             {
-                return new ServiceResult(Const.ERROR_EXCEPTION, Const.ERROR_EXCEPTION_MSG);
+                return new ServiceResult(Const.ERROR_EXCEPTION_CODE, Const.ERROR_EXCEPTION_MSG);
             }
             else
             {
@@ -52,12 +52,12 @@ namespace RentEase.Service.Service.Main
 
             if (string.IsNullOrEmpty(accountId))
             {
-                return new ServiceResult(Const.ERROR_EXCEPTION, "Lỗi khi lấy info");
+                return new ServiceResult(Const.ERROR_EXCEPTION_CODE, "Lỗi khi lấy info");
             }
 
             if (await EntityExistsAsync("Name", request.Name))
             {
-                return new ServiceResult(Const.ERROR_EXCEPTION, "Name đã tồn tại");
+                return new ServiceResult(Const.ERROR_EXCEPTION_CODE, "Name đã tồn tại");
             }
 
             var category = await _unitOfWork.AptCategoryRepository.GetByIdAsync(request.AptCategoryId);
@@ -95,7 +95,7 @@ namespace RentEase.Service.Service.Main
                 return new ServiceResult(Const.SUCCESS_ACTION_CODE, "Tạo thành công");
             }
 
-            return new ServiceResult(Const.ERROR_EXCEPTION, Const.ERROR_EXCEPTION_MSG);
+            return new ServiceResult(Const.ERROR_EXCEPTION_CODE, Const.ERROR_EXCEPTION_MSG);
         }
         public async Task<ServiceResult> Update(string id, AptReq request)
         {
@@ -104,24 +104,24 @@ namespace RentEase.Service.Service.Main
 
             if (string.IsNullOrEmpty(accountId))
             {
-                return new ServiceResult(Const.ERROR_EXCEPTION, "Lỗi khi lấy info");
+                return new ServiceResult(Const.ERROR_EXCEPTION_CODE, "Lỗi khi lấy info");
             }
 
             var item = await _unitOfWork.AptRepository.GetByIdAsync(id);
 
             if (item == null)
             {
-                return new ServiceResult(Const.ERROR_EXCEPTION, "Không tồn tại");
+                return new ServiceResult(Const.ERROR_EXCEPTION_CODE, "Không tồn tại");
             }
 
             if (accountId != item.OwnerId && roleId != "1")
             {
-                return new ServiceResult(Const.ERROR_EXCEPTION, "Bạn không có quyền hạn.");
+                return new ServiceResult(Const.ERROR_EXCEPTION_CODE, "Bạn không có quyền hạn.");
             }
 
             if (!(bool)item.Status!)
             {
-                return new ServiceResult(Const.ERROR_EXCEPTION, "Status == False.");
+                return new ServiceResult(Const.ERROR_EXCEPTION_CODE, "Status == False.");
             }
 
             //if (accountId == 1)
@@ -143,7 +143,7 @@ namespace RentEase.Service.Service.Main
                 request.AptStatusId != (int)EnumType.AptStatusId.Available &&
                 request.AptStatusId != (int)EnumType.AptStatusId.UnAvailable)
             {
-                return new ServiceResult(Const.ERROR_EXCEPTION, "AptStatus không đúng");
+                return new ServiceResult(Const.ERROR_EXCEPTION_CODE, "AptStatus không đúng");
             }
 
             var updateItem = new Apt()
@@ -177,7 +177,7 @@ namespace RentEase.Service.Service.Main
                 return new ServiceResult(Const.SUCCESS_ACTION_CODE, "Cập nhật thành công");
             }
 
-            return new ServiceResult(Const.ERROR_EXCEPTION, Const.ERROR_EXCEPTION_MSG);
+            return new ServiceResult(Const.ERROR_EXCEPTION_CODE, Const.ERROR_EXCEPTION_MSG);
         }
         public async Task<ServiceResult> DeleteSoft(string id)
         {
@@ -186,19 +186,19 @@ namespace RentEase.Service.Service.Main
 
             if (string.IsNullOrEmpty(accountId))
             {
-                return new ServiceResult(Const.ERROR_EXCEPTION, "Lỗi khi lấy info");
+                return new ServiceResult(Const.ERROR_EXCEPTION_CODE, "Lỗi khi lấy info");
             }
 
             var item = await _unitOfWork.AptRepository.GetByIdAsync(id);
 
             if (item == null)
             {
-                return new ServiceResult(Const.ERROR_EXCEPTION, "Không tồn tại");
+                return new ServiceResult(Const.ERROR_EXCEPTION_CODE, "Không tồn tại");
             }
 
             if (accountId != item.OwnerId && roleId != "1")
             {
-                return new ServiceResult(Const.ERROR_EXCEPTION, "Bạn không có quyền hạn.");
+                return new ServiceResult(Const.ERROR_EXCEPTION_CODE, "Bạn không có quyền hạn.");
             }
 
             item.DeletedAt = DateTime.Now;
@@ -211,7 +211,7 @@ namespace RentEase.Service.Service.Main
                 return new ServiceResult(Const.SUCCESS_ACTION_CODE, "Xóa mềm thành công");
             }
 
-            return new ServiceResult(Const.ERROR_EXCEPTION, Const.ERROR_EXCEPTION_MSG);
+            return new ServiceResult(Const.ERROR_EXCEPTION_CODE, Const.ERROR_EXCEPTION_MSG);
         }
 
         private async Task<string> GenerateUniqueAptIdAsync(string categoryName)

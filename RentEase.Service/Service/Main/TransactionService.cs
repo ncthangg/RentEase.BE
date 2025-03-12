@@ -8,6 +8,7 @@ using RentEase.Data.Models;
 using RentEase.Service.Service.Base;
 using RentEase.Service.Service.Payment;
 using System.Text.Json;
+using System.Text.Json.Serialization;
 
 namespace RentEase.Service.Service.Main
 {
@@ -41,7 +42,7 @@ namespace RentEase.Service.Service.Main
 
             if (!items.Data.Any())
             {
-                return new ServiceResult(Const.ERROR_EXCEPTION, Const.ERROR_EXCEPTION_MSG);
+                return new ServiceResult(Const.ERROR_EXCEPTION_CODE, Const.ERROR_EXCEPTION_MSG);
             }
             else
             {
@@ -56,7 +57,7 @@ namespace RentEase.Service.Service.Main
 
             if (string.IsNullOrEmpty(accountId))
             {
-                return new ServiceResult(Const.ERROR_EXCEPTION, "Tài khoản không tồn tại");
+                return new ServiceResult(Const.ERROR_EXCEPTION_CODE, "Tài khoản không tồn tại");
             }
 
             var transactionItem = await _unitOfWork.TransactionRepository.GetByOrderCode(request.OrderId);
@@ -64,7 +65,7 @@ namespace RentEase.Service.Service.Main
 
             if (orderItem.SenderId != accountId)
             {
-                return new ServiceResult(Const.ERROR_EXCEPTION, "Đơn hàng không thuộc tài khoản này");
+                return new ServiceResult(Const.ERROR_EXCEPTION_CODE, "Đơn hàng không thuộc tài khoản này");
             }
 
             //Khai báo
@@ -93,7 +94,13 @@ namespace RentEase.Service.Service.Main
 
                 string jsonResponse = await _payosService.CreatePaymentURL(createItem.PaymentCode);
 
-                payosRes = JsonSerializer.Deserialize<PayosRes>(jsonResponse)!;
+                var options = new JsonSerializerOptions
+                {
+                    PropertyNameCaseInsensitive = true, // Bỏ qua phân biệt chữ hoa/thường
+                    DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingNull // Bỏ qua giá trị null
+                };
+
+                payosRes = JsonSerializer.Deserialize<PayosRes>(jsonResponse, options);
 
             }
             else
@@ -116,12 +123,18 @@ namespace RentEase.Service.Service.Main
 
                 string jsonResponse = await _payosService.CreatePaymentURL(createItem.PaymentCode);
 
-                payosRes = JsonSerializer.Deserialize<PayosRes>(jsonResponse)!;
+                var options = new JsonSerializerOptions
+                {
+                    PropertyNameCaseInsensitive = true, // Bỏ qua phân biệt chữ hoa/thường
+                    DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingNull // Bỏ qua giá trị null
+                };
+
+                payosRes = JsonSerializer.Deserialize<PayosRes>(jsonResponse, options);
 
             }
-            if(payosRes == null)
+            if (payosRes == null)
             {
-                return new ServiceResult(Const.ERROR_EXCEPTION, "Tạo link thanh toán thất bại");
+                return new ServiceResult(Const.ERROR_EXCEPTION_CODE, "Tạo link thanh toán thất bại");
             }
 
             var responseData = new PaymentRes()

@@ -4,7 +4,7 @@
     {
         #region Error Codes
 
-        public static int ERROR_EXCEPTION = -4;
+        public static int ERROR_EXCEPTION_CODE = -4;
         public static string ERROR_EXCEPTION_MSG = "Lỗi";
         #endregion
 

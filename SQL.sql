@@ -41,9 +41,9 @@ CREATE TABLE TransactionType (
 CREATE TABLE Account (
     AccountId NVARCHAR(255) PRIMARY KEY,
     FullName NVARCHAR(255) NOT NULL,
-    Email NVARCHAR(255) UNIQUE NULL,
+    Email NVARCHAR(255) NULL,
     PasswordHash NVARCHAR(255) NOT NULL,
-    PhoneNumber NVARCHAR(15) UNIQUE NULL,
+    PhoneNumber NVARCHAR(15) NULL,
     DateOfBirth DATE NULL,
     Gender NVARCHAR(10) NULL,
     AvatarUrl NVARCHAR(MAX) NULL,
@@ -123,7 +123,7 @@ CREATE TABLE AccountVerification (
     IsUsed BIT DEFAULT 0,
     ExpiresAt DATETIME NOT NULL,
     CreatedAt DATETIME NOT NULL,
-    CONSTRAINT FK_AccountVerification_Account FOREIGN KEY (AccountId) REFERENCES Account(AccountId)
+    CONSTRAINT FK_AccountVerification_Account FOREIGN KEY (AccountId) REFERENCES Account(AccountId) ON DELETE CASCADE
 );
 
 CREATE TABLE AccountToken (
@@ -132,7 +132,7 @@ CREATE TABLE AccountToken (
     RefreshToken NVARCHAR(MAX) NOT NULL,
     ExpiresAt DATETIME NOT NULL,
     CreatedAt DATETIME NOT NULL,
-    CONSTRAINT FK_AccountToken_Account FOREIGN KEY (AccountId) REFERENCES Account(AccountId)
+    CONSTRAINT FK_AccountToken_Account FOREIGN KEY (AccountId) REFERENCES Account(AccountId) ON DELETE CASCADE
 );
 CREATE INDEX IX_AccountToken_AccountId ON AccountToken (AccountId);
 

@@ -13,21 +13,21 @@ namespace RentEase.Data.Repository.Main
         {
         }
         public AccountRepository(RentEaseContext context) => _context = context;
-        public async Task<Account> GetByEmailAsync(string email)
+        public async Task<Account?> GetByEmailAsync(string email)
         {
             return await _context.Set<Account>()
             .Include(x => x.Role)
             .Where(u => EF.Functions.Like(u.Email, $"%{email}%"))
             .SingleOrDefaultAsync();
         }
-        public async Task<Account> GetByPhoneAsync(string phone)
+        public async Task<Account?> GetByPhoneAsync(string phone)
         {
             return await _context.Set<Account>()
             .Include(x => x.Role)
             .Where(u => EF.Functions.Like(u.PhoneNumber, $"%{phone}%"))
             .SingleOrDefaultAsync();
         }
-        public async Task<Account> GetByEmailOrPhoneAsync(string username)
+        public async Task<Account?> GetByEmailOrPhoneAsync(string username)
         {
             return await _context.Set<Account>().FirstOrDefaultAsync(a => a.Email == username || a.PhoneNumber == username);
         }

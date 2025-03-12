@@ -51,16 +51,6 @@ public partial class RentEaseContext : DbContext
 
     public virtual DbSet<Utility> Utilities { get; set; }
 
-    //public static string GetConnectionString(string connectionStringName)
-    //{
-    //    var config = new ConfigurationBuilder()
-    //        .SetBasePath(AppDomain.CurrentDomain.BaseDirectory)
-    //        .AddJsonFile("appsettings.json")
-    //        .Build();
-
-    //    var connectionString = Environment.GetEnvironmentVariable("DB_CONNECTION_STRING")
-    //                                   ?? "Data Source=103.112.211.244,1433;Initial Catalog=RentEase;Persist Security Info=True;User ID=sa;Password=Itjustapassword1@;TrustServerCertificate=True;Encrypt=false"; return connectionString;
-    //}
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     => optionsBuilder.UseSqlServer("Data Source=103.112.211.244,1433;Initial Catalog=RentEase;Persist Security Info=True;User ID=sa;Password=Itjustapassword1@;TrustServerCertificate=True;Encrypt=false").UseQueryTrackingBehavior(QueryTrackingBehavior.NoTracking);
 
@@ -142,7 +132,7 @@ public partial class RentEaseContext : DbContext
 
             entity.HasOne(d => d.Account).WithMany(p => p.AccountTokens)
                 .HasForeignKey(d => d.AccountId)
-                .OnDelete(DeleteBehavior.ClientSetNull)
+                .OnDelete(DeleteBehavior.Cascade)
                 .HasConstraintName("FK_AccountToken_Account");
         });
 
@@ -164,7 +154,7 @@ public partial class RentEaseContext : DbContext
 
             entity.HasOne(d => d.Account).WithMany(p => p.AccountVerifications)
                 .HasForeignKey(d => d.AccountId)
-                .OnDelete(DeleteBehavior.ClientSetNull)
+                .OnDelete(DeleteBehavior.Cascade)
                 .HasConstraintName("FK_AccountVerification_Account");
         });
 

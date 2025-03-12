@@ -39,7 +39,7 @@ namespace RentEase.Service.Service.Main
 
             if (!items.Data.Any())
             {
-                return new ServiceResult(Const.ERROR_EXCEPTION, Const.ERROR_EXCEPTION_MSG);
+                return new ServiceResult(Const.ERROR_EXCEPTION_CODE, Const.ERROR_EXCEPTION_MSG);
             }
             else
             {
@@ -53,12 +53,18 @@ namespace RentEase.Service.Service.Main
 
             if (string.IsNullOrEmpty(accountId))
             {
-                return new ServiceResult(Const.ERROR_EXCEPTION, "Lỗi khi lấy info");
+                return new ServiceResult(Const.ERROR_EXCEPTION_CODE, "Lỗi khi lấy info");
             }
             //string orderId = Guid.NewGuid().ToString("N").Substring(0, 6);
             //string orderId = Math.Abs(Guid.NewGuid().GetHashCode()).ToString().Substring(0, 6);
-            string orderId = (Math.Abs(Guid.NewGuid().GetHashCode()) % 1000000).ToString("D6") + DateTime.UtcNow.ToString("ssfff");
+            //string orderId = (Math.Abs(Guid.NewGuid().GetHashCode()) % 1000000).ToString("D6") + DateTime.UtcNow.ToString("ssfff");
             //var transactionType = await _unitOfWork.TransactionTypeRepository.GetByIdAsync(request.TransactionTypeId);
+            string orderId;
+            do
+            {
+                orderId = GenerateOrderId();
+            }
+            while (await _unitOfWork.OrderRepository.GetByIdAsync(orderId) != null);
 
             var createItem = new Order()
             {
@@ -77,7 +83,7 @@ namespace RentEase.Service.Service.Main
                 return new ServiceResult(Const.SUCCESS_ACTION_CODE, "Tạo thành công", resultData);
             }
 
-            return new ServiceResult(Const.ERROR_EXCEPTION, Const.ERROR_EXCEPTION_MSG);
+            return new ServiceResult(Const.ERROR_EXCEPTION_CODE, Const.ERROR_EXCEPTION_MSG);
         }
         public async Task<ServiceResult> Update(string orderId, int statusId)
         {
@@ -86,36 +92,49 @@ namespace RentEase.Service.Service.Main
 
             if (string.IsNullOrEmpty(accountId))
             {
-                return new ServiceResult(Const.ERROR_EXCEPTION, "Lỗi khi lấy info");
+                return new ServiceResult(Const.ERROR_EXCEPTION_CODE, "Lỗi khi lấy info");
             }
 
             if (!await EntityExistsAsync("OrderId", orderId))
             {
-                return new ServiceResult(Const.ERROR_EXCEPTION, Const.ERROR_EXCEPTION_MSG);
+                return new ServiceResult(Const.ERROR_EXCEPTION_CODE, Const.ERROR_EXCEPTION_MSG);
             }
 
             var item = await _unitOfWork.OrderRepository.GetByIdAsync(orderId);
 
-            if (roleId != "1")
+            if (accountId != item.SenderId && roleId != "1")
             {
-                return new ServiceResult(Const.ERROR_EXCEPTION, "Bạn không có quyền hạn.");
+                return new ServiceResult(Const.ERROR_EXCEPTION_CODE, "Bạn không có quyền hạn.");
             }
 
             if (statusId != (int)EnumType.StatusId.Pending &&
                      statusId != (int)EnumType.StatusId.Success &&
                          statusId != (int)EnumType.StatusId.Failed)
             {
-                return new ServiceResult(Const.ERROR_EXCEPTION, "StatusId không hợp lệ.");
+                return new ServiceResult(Const.ERROR_EXCEPTION_CODE, "StatusId không hợp lệ.");
+            }
+            if (statusId == (int)EnumType.StatusId.Success)
+            {
+                item.StatusId = statusId;
+                item.PaidAt = DateTime.Now;
+            }
+            else
+            {
+                item.StatusId = statusId;
             }
 
             var result = await _unitOfWork.OrderRepository.UpdateAsync(item);
             if (result > 0)
             {
-                return new ServiceResult(Const.SUCCESS_ACTION_CODE, "Cập nhật thành công");
+                return new ServiceResult(Const.SUCCESS_ACTION_CODE, "Cập nhật Order thành công");
             }
 
-            return new ServiceResult(Const.ERROR_EXCEPTION, Const.ERROR_EXCEPTION_MSG);
+            return new ServiceResult(Const.ERROR_EXCEPTION_CODE, Const.ERROR_EXCEPTION_MSG);
         }
-
+        private static string GenerateOrderId()
+        {
+            Random random = new Random();
+            return random.Next(100000, 999999).ToString(); // Sinh số ngẫu nhiên từ 100000 đến 999999
+        }
     }
 }

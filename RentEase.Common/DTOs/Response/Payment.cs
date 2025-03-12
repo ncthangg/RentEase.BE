@@ -22,10 +22,10 @@ namespace RentEase.Common.DTOs.Response
         public string? Bin { get; set; }
         public string? AccountNumber { get; set; }
         public string? AccountName { get; set; }
-        public int Amount { get; set; }
+        public long Amount { get; set; }
         public string? Description { get; set; }
-        public int OrderCode { get; set; }
-        public string? Curency { get; set; }
+        public long OrderCode { get; set; }
+        public string? Currency { get; set; }
         public string? PaymentLinkId { get; set; }
         public string? Status { get; set; }
         public string? CheckoutUrl { get; set; }
