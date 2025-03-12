@@ -9,21 +9,21 @@ namespace RentEase.API.Controllers.Main
 {
     [Route("api/[controller]")]
     [ApiController]
-    [Authorize(Roles = "1,2,3,4")]
+    [Authorize(Roles = "1,2,3")]
     public class AptController : ControllerBase
     {
-        private readonly IAptService _AptService;
-        public AptController(IAptService AptService)
+        private readonly IAptService _aptService;
+        public AptController(IAptService aptService)
         {
-            _AptService = AptService;
+            _aptService = aptService;
         }
 
-        [HttpGet]
+        [HttpGet("GetAll")]
         public async Task<IActionResult> GetAll([FromQuery] bool status = true, [FromQuery] int page = 1, [FromQuery] int pageSize = 10)
         {
             try
             {
-                var result = await _AptService.GetAll(page, pageSize, status);
+                var result = await _aptService.GetAll(page, pageSize, status);
                 if (result.Status < 0 && result.Data == null)
                 {
                     return NotFound(new ApiRes<string>
@@ -52,15 +52,46 @@ namespace RentEase.API.Controllers.Main
             }
         }
 
-        [HttpGet("get-by-id")]
-        public async Task<IActionResult> GetById(string id)
+        [HttpGet("GetById")]
+        public async Task<IActionResult> GetById([FromQuery] string id)
         {
             try
             {
-                var result = await _AptService.GetById(id);
+                var result = await _aptService.GetById(id);
                 if (result.Status < 0 && result.Data == null)
                 {
                     return NotFound(new ApiRes<AptRes>
+                    {
+                        StatusCode = HttpStatusCode.NotFound,
+                        Message = result.Message
+                    });
+                }
+                return Ok(new ApiRes<AptRes>
+                {
+                    StatusCode = HttpStatusCode.OK,
+                    Message = result.Message,
+                    Data = (AptRes)result.Data!
+                });
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new ApiRes<string>
+                {
+                    StatusCode = HttpStatusCode.InternalServerError,
+                    Message = $"Lỗi hệ thống: {ex.Message}"
+                });
+            }
+        }
+
+        [HttpGet("GetByAccountId")]
+        public async Task<IActionResult> GetByAccountId([FromQuery] string accountId, [FromQuery] int? statusId, [FromQuery] bool? status = true, [FromQuery] int page = 1, [FromQuery] int pageSize = 10)
+        {
+            try
+            {
+                var result = await _aptService.GetByAccountId(accountId, statusId, status, page, pageSize);
+                if (result.Status < 0 && result.Data == null)
+                {
+                    return NotFound(new ApiRes<string>
                     {
                         StatusCode = HttpStatusCode.NotFound,
                         Message = result.Message
@@ -88,7 +119,7 @@ namespace RentEase.API.Controllers.Main
         {
             try
             {
-                var result = await _AptService.Create(request);
+                var result = await _aptService.Create(request);
                 if (result.Status < 0 && result.Data == null)
                 {
                     return NotFound(new ApiRes<AptRes>
@@ -118,7 +149,7 @@ namespace RentEase.API.Controllers.Main
         {
             try
             {
-                var result = await _AptService.Update(id, request);
+                var result = await _aptService.Update(id, request);
                 if (result.Status < 0 && result.Data == null)
                 {
                     return NotFound(new ApiRes<AptRes>
@@ -148,7 +179,7 @@ namespace RentEase.API.Controllers.Main
         {
             try
             {
-                var result = await _AptService.DeleteSoft(id);
+                var result = await _aptService.DeleteSoft(id);
                 if (result.Status < 0 && result.Data == null)
                 {
                     return NotFound(new ApiRes<string>
@@ -178,7 +209,7 @@ namespace RentEase.API.Controllers.Main
         {
             try
             {
-                var result = await _AptService.Delete(id);
+                var result = await _aptService.Delete(id);
                 if (result.Status < 0 && result.Data == null)
                 {
                     return NotFound(new ApiRes<string>

@@ -70,7 +70,7 @@ namespace RentEase.Service.Service.Authenticate
                 }
 
                 // Tạo token
-                var token = await _helperWrapper.TokenHelper.GenerateTokens(accountData.AccountId, accountData.RoleId);
+                var token = await _helperWrapper.TokenHelper.GenerateJwtTokens(accountData.AccountId, accountData.RoleId);
 
                 // Lưu Refresh token
                 var saveTokenResult = await _accountTokenService.Save(accountData.AccountId, token.RefreshToken);
@@ -98,7 +98,6 @@ namespace RentEase.Service.Service.Authenticate
                 return new ServiceResult(Const.ERROR_EXCEPTION_CODE, ex.ToString());
             }
         }
-
         public async Task<ServiceResult> SignUp(RegisterReq request)
         {
             try
@@ -114,7 +113,7 @@ namespace RentEase.Service.Service.Authenticate
                 var verificationResult = await _accountVerificationService.HandleSendVerificationCode(request.Username);
                 if (verificationResult.Status < 0)
                 {
-                    return new ServiceResult(Const.ERROR_EXCEPTION_CODE, "Gửi code thất bại");
+                    return new ServiceResult(Const.ERROR_EXCEPTION_CODE, verificationResult.Message);
                 }
 
                 var response = new RegisterRes
@@ -131,7 +130,6 @@ namespace RentEase.Service.Service.Authenticate
                 return new ServiceResult(Const.ERROR_EXCEPTION_CODE, ex.ToString());
             }
         }
-
         public async Task<ServiceResult> GetInfo()
         {
             try
@@ -158,7 +156,6 @@ namespace RentEase.Service.Service.Authenticate
                 return new ServiceResult(Const.ERROR_EXCEPTION_CODE, ex.ToString());
             }
         }
-
         public async Task<ServiceResult> ChangePassword(ChangePasswordReq request)
         {
             try
@@ -180,7 +177,7 @@ namespace RentEase.Service.Service.Authenticate
                     var result = await _serviceWrapper.AccountService.Update(accountId, updateItem);
                     if (result.Status > 0)
                     {
-                        return new ServiceResult(Const.SUCCESS_ACTION_CODE, "Thay đổi mật khẩu thành công");
+                        return new ServiceResult(Const.SUCCESS_ACTION_CODE, result.Message);
                     }
                 }
 
@@ -192,6 +189,7 @@ namespace RentEase.Service.Service.Authenticate
                 return new ServiceResult(Const.ERROR_EXCEPTION_CODE, ex.ToString());
             }
         }
+
 
         public Task<ServiceResult> Logout()
         {

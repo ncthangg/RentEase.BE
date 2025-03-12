@@ -9,7 +9,7 @@ namespace RentEase.API.Controllers.Main
 {
     [Route("api/[controller]")]
     [ApiController]
-    [Authorize(Roles = "1,2,3,4")]
+    [Authorize(Roles = "1,2,3")]
     public class AccountsController : ControllerBase
     {
         private readonly IAccountService _accountService;
@@ -19,7 +19,7 @@ namespace RentEase.API.Controllers.Main
             _accountService = accountService;
         }
 
-        [HttpGet]
+        [HttpGet("GetAll")]
         public async Task<IActionResult> GetAll([FromQuery] bool status = true, [FromQuery] int page = 1, [FromQuery] int pageSize = 10)
         {
             try
@@ -50,8 +50,8 @@ namespace RentEase.API.Controllers.Main
             }
         }
 
-        [HttpGet("get-by-id")]
-        public async Task<IActionResult> GetById(string id)
+        [HttpGet("GetById")]
+        public async Task<IActionResult> GetById([FromQuery] string id)
         {
             try
             {

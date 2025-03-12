@@ -9,7 +9,7 @@ namespace RentEase.API.Controllers.Main
 {
     [Route("api/[controller]")]
     [ApiController]
-    [Authorize(Roles = "1,2,3,4")]
+    [Authorize(Roles = "1,2,3")]
     public class OrderController : Controller
     {
         private readonly IOrderService _OrderService;
@@ -18,7 +18,7 @@ namespace RentEase.API.Controllers.Main
             _OrderService = OrderService;
         }
 
-        [HttpGet]
+        [HttpGet("GetAll")]
         public async Task<IActionResult> GetAll([FromQuery] int page = 1, [FromQuery] int pageSize = 10)
         {
             try
@@ -52,8 +52,8 @@ namespace RentEase.API.Controllers.Main
             }
         }
 
-        [HttpGet("get-by-id")]
-        public async Task<IActionResult> GetById(string id)
+        [HttpGet("GetById")]
+        public async Task<IActionResult> GetById([FromQuery] string id)
         {
             try
             {
@@ -71,6 +71,37 @@ namespace RentEase.API.Controllers.Main
                     StatusCode = HttpStatusCode.OK,
                     Message = result.Message,
                     Data = (OrderRes)result.Data!
+                });
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new ApiRes<string>
+                {
+                    StatusCode = HttpStatusCode.InternalServerError,
+                    Message = $"Lỗi hệ thống: {ex.Message}"
+                });
+            }
+        }
+
+        [HttpGet("GetByAccountId")]
+        public async Task<IActionResult> GetByAccountId([FromQuery] string accountId, [FromQuery] int? statusId, [FromQuery] int page = 1, [FromQuery] int pageSize = 10)
+        {
+            try
+            {
+                var result = await _OrderService.GetByAccountId(accountId, statusId, page, pageSize);
+                if (result.Status < 0 && result.Data == null)
+                {
+                    return NotFound(new ApiRes<string>
+                    {
+                        StatusCode = HttpStatusCode.NotFound,
+                        Message = result.Message
+                    });
+                }
+                return Ok(new ApiRes<IEnumerable<OrderRes>>
+                {
+                    StatusCode = HttpStatusCode.OK,
+                    Message = result.Message,
+                    Data = (IEnumerable<OrderRes>)result.Data!
                 });
             }
             catch (Exception ex)

@@ -814,4 +814,3 @@ E:\MyProject\RentEase.BE\RentEase.API\obj\Debug\net8.0\RentEase.API.pdb
 E:\MyProject\RentEase.BE\RentEase.API\obj\Debug\net8.0\RentEase.API.genruntimeconfig.cache
 E:\MyProject\RentEase.BE\RentEase.API\obj\Debug\net8.0\ref\RentEase.API.dll
 E:\MyProject\RentEase.BE\RentEase.API\bin\Debug\net8.0\RentEase.API.staticwebassets.runtime.json
-E:\MyProject\RentEase.BE\RentEase.API\obj\Debug\net8.0\RentEase.API.MvcApplicationPartsAssemblyInfo.cs

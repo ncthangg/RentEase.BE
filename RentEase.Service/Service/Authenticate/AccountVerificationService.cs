@@ -43,7 +43,6 @@ namespace RentEase.Service.Service.Authenticate
                 return new ServiceResult(Const.SUCCESS_ACTION_CODE, Const.SUCCESS_ACTION_MSG, account);
             }
         }
-
         public async Task<ServiceResult> Save(string accountId, string verificationCode)
         {
             var accountExist = await _unitOfWork.AccountRepository.EntityExistsByPropertyAsync("AccountId", accountId);
@@ -117,7 +116,39 @@ namespace RentEase.Service.Service.Authenticate
             return new ServiceResult(Const.SUCCESS_ACTION_CODE, "Account verified successfully!", responseData);
 
         }
+        public async Task<ServiceResult> HandleSendVerificationCode(string email)
+        {
+            var item = await _unitOfWork.AccountRepository.GetByEmailAsync(email);
 
+            var newVerificationCode = this.GenerateVerificationCode();
+
+            var saveResult = await this.Save(item!.AccountId, newVerificationCode);
+            if (saveResult.Status < 0)
+            {
+                return new ServiceResult(Const.ERROR_EXCEPTION_CODE, "Error saving verification code");
+            }
+
+            // Gửi email xác thực
+            var verificationLink = $"https://yourdomain.com/verify?code={newVerificationCode}";
+            await _helperWrapper.EmailHelper.SendVerificationEmailAsync(item.Email, newVerificationCode, verificationLink);
+
+            return new ServiceResult(Const.SUCCESS_ACTION_CODE, "Verification code sent", saveResult.Data);
+        }
+
+
+        private string GenerateVerificationCode()
+        {
+            // Chuỗi chứa các ký tự chữ cái và số
+            const string chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+
+            // Đối tượng Random
+            Random random = new Random();
+
+            // Sinh chuỗi ngẫu nhiên 5 ký tự
+            return new string(Enumerable.Repeat(chars, 5)
+                                        .Select(s => s[random.Next(s.Length)])
+                                        .ToArray());
+        }
         private async Task<bool> IsVerificationCodeValid(string accountId, string verificationCode)
         {
             var item = await _unitOfWork.AccountVerificationRepository.GetByAccountIdAndVerificationCode(accountId, verificationCode);
@@ -135,26 +166,5 @@ namespace RentEase.Service.Service.Authenticate
                 return false; // Mã đã sử dụng
             return true;
         }
-
-        public async Task<ServiceResult> HandleSendVerificationCode(string email)
-        {
-            var item = await _unitOfWork.AccountRepository.GetByEmailAsync(email);
-
-            var newVerificationCode = _helperWrapper.TokenHelper.GenerateVerificationCode();
-
-            var saveResult = await this.Save(item.AccountId, newVerificationCode);
-            if (saveResult.Status < 0)
-            {
-                return new ServiceResult(Const.ERROR_EXCEPTION_CODE, "Error saving verification code");
-            }
-
-            // Gửi email xác thực
-            var verificationLink = $"https://yourdomain.com/verify?code={newVerificationCode}";
-            await _helperWrapper.EmailHelper.SendVerificationEmailAsync(item.Email, newVerificationCode, verificationLink);
-
-            return new ServiceResult(Const.SUCCESS_ACTION_CODE, "Verification code sent", saveResult.Data);
-        }
-
-
     }
 }

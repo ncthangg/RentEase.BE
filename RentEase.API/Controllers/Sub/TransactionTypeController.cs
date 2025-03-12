@@ -18,7 +18,7 @@ namespace RentEase.API.Controllers.Sub
             _transactionTypeService = transactionTypeService;
         }
 
-        [HttpGet]
+        [HttpGet("GetAll")]
         public async Task<IActionResult> Get([FromQuery] int page = 1, [FromQuery] int pageSize = 10)
         {
             try
@@ -52,7 +52,7 @@ namespace RentEase.API.Controllers.Sub
             }
         }
 
-        [HttpGet("{id}")]
+        [HttpGet("GetById")]
         public async Task<IActionResult> GetById(int id)
         {
             try

@@ -214,6 +214,7 @@ namespace RentEase.Service.Service.Main
             return new ServiceResult(Const.ERROR_EXCEPTION_CODE, Const.ERROR_EXCEPTION_MSG);
         }
 
+
         private async Task<string> GenerateUniqueAptIdAsync(string categoryName)
         {
             string aptId;
@@ -222,7 +223,7 @@ namespace RentEase.Service.Service.Main
             do
             {
                 // Tạo mã aptCode mới
-                aptId = _helperWrapper.TokenHelper.GenerateAptCode(categoryName);
+                aptId = this.GenerateAptId(categoryName);
 
                 // Kiểm tra xem mã đã tồn tại trong DB chưa
                 isDuplicate = await EntityExistsAsync("AptId", aptId);
@@ -232,6 +233,16 @@ namespace RentEase.Service.Service.Main
             return aptId;
         }
 
+        private string GenerateAptId(string categoryName)
+        {
+            string prefix = string.Concat(categoryName.Split(' '))
+                                  .ToUpper()
+                                  .Substring(0, Math.Min(3, categoryName.Length));
 
+            Random random = new Random();
+            int randomNumber = random.Next(100000, 999999);  // 6 số ngẫu nhiên
+
+            return $"{prefix}{randomNumber}";
+        }
     }
 }

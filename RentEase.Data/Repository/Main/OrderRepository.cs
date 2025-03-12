@@ -1,4 +1,6 @@
-﻿using RentEase.Common.DTOs;
+﻿using Microsoft.EntityFrameworkCore;
+using RentEase.Common.DTOs;
+using RentEase.Common.DTOs.Dto;
 using RentEase.Data.DBContext;
 using RentEase.Data.Models;
 using RentEase.Data.Repository.Base;
@@ -20,7 +22,20 @@ namespace RentEase.Data.Repository.Main
                              (statusId == null || o.StatusId == statusId),
                 orderBy: q => q.OrderByDescending(o => o.CreatedAt),
                 page: page,
-                pageSize: pageSize);
+                pageSize: pageSize,
+                includes: q => q.Include(i => i.TransactionType)
+                );
+        }
+
+        public async Task<PagedResult<Order>> GetByStatusId(int? statusId, int page, int pageSize)
+        {
+            return await GetPagedAsync(
+                 filter: f => statusId == null || f.StatusId == statusId,
+                 orderBy: q => q.OrderByDescending(o => o.CreatedAt),
+                 page: page,
+                 pageSize: pageSize,
+                 includes: q => q.Include(i => i.TransactionType)
+            );
         }
 
         //public async Task<PagedResult<Account>> GetBySearchAsync(string? fullName, string? email, string? phoneNumber, int page, int pageSize)

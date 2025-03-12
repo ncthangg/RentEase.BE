@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Http;
+using Microsoft.Identity.Client;
 using RentEase.Common.Base;
 using RentEase.Common.DTOs.Dto;
 using RentEase.Common.DTOs.Response;
@@ -46,10 +47,11 @@ namespace RentEase.Service.Service.Main
             }
             else
             {
-                var responseData = _mapper.Map<IEnumerable<OrderRes>>(items.Data);
+                var responseData = _mapper.Map<IEnumerable<TransactionRes>>(items.Data);
                 return new ServiceResult(Const.SUCCESS_ACTION_CODE, Const.SUCCESS_ACTION_MSG, items.TotalCount, items.TotalPages, items.CurrentPage, responseData);
             }
         }
+
         public async Task<ServiceResult> CheckOut(TransactionReq request)
         {
 

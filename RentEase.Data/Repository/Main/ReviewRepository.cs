@@ -16,7 +16,7 @@ namespace RentEase.Data.Repository.Main
                   string aptId, int page, int pageSize)
         {
             return await GetPagedAsync(
-                filter: (o => o.AptId == aptId),
+                filter: (f => f.AptId == aptId),
                 orderBy: q => q.OrderByDescending(o => o.CreatedAt),
                 page: page,
                 pageSize: pageSize);

@@ -278,7 +278,7 @@ namespace RentEase.Service.Service.Main
                 return new ServiceResult(Const.SUCCESS_ACTION_CODE, "Cập nhật thành công");
             }
 
-            return new ServiceResult(Const.ERROR_EXCEPTION_CODE, Const.ERROR_EXCEPTION_MSG);
+            return new ServiceResult(Const.ERROR_EXCEPTION_CODE, "Cập nhật thất bại");
         }
         public async Task<ServiceResult> DeleteSoft(string id)
         {

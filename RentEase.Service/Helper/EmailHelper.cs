@@ -19,7 +19,7 @@ namespace RentEase.Service.Helper
         public async Task SendVerificationEmailAsync(string email, string verifyCode, string verificationLink)
         {
             var message = new MimeMessage();
-            message.From.Add(new MailboxAddress("Movie Appication", "Manager"));
+            message.From.Add(new MailboxAddress("Restease Appication", "Manager"));
             message.To.Add(new MailboxAddress("", email));
             message.Subject = "Verify Code";
 

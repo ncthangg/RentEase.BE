@@ -49,7 +49,6 @@ namespace RentEase.Service.Service.Authenticate
                 return new ServiceResult(Const.ERROR_EXCEPTION_CODE, Const.ERROR_EXCEPTION_MSG);
             }
         }
-
         public async Task<ServiceResult> CheckRefreshTokenValidity(string accountId, string refreshToken)
         {
             // Tìm AccountToken dựa trên AccountId và RefreshToken

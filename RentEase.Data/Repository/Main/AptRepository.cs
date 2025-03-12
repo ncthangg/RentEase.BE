@@ -1,4 +1,5 @@
-﻿using RentEase.Common.DTOs;
+﻿using Microsoft.EntityFrameworkCore;
+using RentEase.Common.DTOs;
 using RentEase.Data.DBContext;
 using RentEase.Data.Models;
 using RentEase.Data.Repository.Base;
@@ -17,12 +18,16 @@ namespace RentEase.Data.Repository.Main
           string accountId, int? statusId, int page, int pageSize, bool? status)
         {
             return await GetPagedAsync(
-                filter: (o => o.OwnerId == accountId &&
-                            (statusId == null || o.StatusId == statusId) &&
-                                 (status == null || o.Status == status)),
+                filter: (f => f.OwnerId == accountId &&
+                            (statusId == null || f.StatusId == statusId) &&
+                                 (status == null || f.Status == status)),
                 orderBy: q => q.OrderByDescending(o => o.CreatedAt),
                 page: page,
-                pageSize: pageSize);
+                pageSize: pageSize,
+                includes: q => q
+                         .Include(i => i.AptStatus)     
+                         .Include(i => i.AptCategory)
+            );
         }
 
         //public async Task<PagedResult<Account>> GetBySearchAsync(string? fullName, string? email, string? phoneNumber, int page, int pageSize)

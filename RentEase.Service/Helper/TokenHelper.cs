@@ -10,9 +10,7 @@ namespace RentEase.Service.Helper
 {
     public interface ITokenHelper
     {
-        Task<TokenRes> GenerateTokens(string accountId, int roleId);
-        string GenerateVerificationCode();
-        string GenerateAptCode(string categoryName);
+        Task<TokenRes> GenerateJwtTokens(string accountId, int roleId);
         string GetAccountIdFromHttpContextAccessor(IHttpContextAccessor httpContextAccessor);
         string GetRoleIdFromHttpContextAccessor(IHttpContextAccessor httpContextAccessor);
 
@@ -27,7 +25,7 @@ namespace RentEase.Service.Helper
         }
 
         //GENERATE JWT TOKEN
-        public async Task<TokenRes> GenerateTokens(string accountId, int roleId)
+        public async Task<TokenRes> GenerateJwtTokens(string accountId, int roleId)
         {
             var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["JwtSettings:Key"]!));
             var credentials = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
@@ -82,35 +80,13 @@ namespace RentEase.Service.Helper
 
 
         //GENERATE VERIFICATION CODE
-        public string GenerateVerificationCode()
-        {
-            // Chuỗi chứa các ký tự chữ cái và số
-            const string chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
 
-            // Đối tượng Random
-            Random random = new Random();
 
-            // Sinh chuỗi ngẫu nhiên 5 ký tự
-            return new string(Enumerable.Repeat(chars, 5)
-                                        .Select(s => s[random.Next(s.Length)])
-                                        .ToArray());
-        }
-
-        //GENERATE APT CODE
-        public string GenerateAptCode(string categoryName)
-        {
-            string prefix = string.Concat(categoryName.Split(' '))
-                                  .ToUpper()
-                                  .Substring(0, Math.Min(3, categoryName.Length));
-
-            Random random = new Random();
-            int randomNumber = random.Next(100000, 999999);  // 6 số ngẫu nhiên
-
-            return $"{prefix}{randomNumber}";
-        }
 
 
         //CHECK
+
+
         public string GetAccountIdFromHttpContextAccessor(IHttpContextAccessor httpContextAccessor)
         {
             if (httpContextAccessor.HttpContext == null || !httpContextAccessor.HttpContext.Request.Headers.ContainsKey("Authorization"))

@@ -16,7 +16,6 @@ namespace RentEase.Service.Service.Main
         Task<ServiceResult> Create(OrderReq request);
         Task<ServiceResult> Update(string orderId, int statusId); // chỉ dành cho ADMIN
         Task<ServiceResult> Delete(string id);
-
     }
     public class OrderService : BaseService<Order, OrderRes>, IOrderService
     {
@@ -97,7 +96,7 @@ namespace RentEase.Service.Service.Main
 
             if (!await EntityExistsAsync("OrderId", orderId))
             {
-                return new ServiceResult(Const.ERROR_EXCEPTION_CODE, Const.ERROR_EXCEPTION_MSG);
+                return new ServiceResult(Const.ERROR_EXCEPTION_CODE, "Order không tồn tại");
             }
 
             var item = await _unitOfWork.OrderRepository.GetByIdAsync(orderId);
@@ -129,12 +128,14 @@ namespace RentEase.Service.Service.Main
                 return new ServiceResult(Const.SUCCESS_ACTION_CODE, "Cập nhật Order thành công");
             }
 
-            return new ServiceResult(Const.ERROR_EXCEPTION_CODE, Const.ERROR_EXCEPTION_MSG);
+            return new ServiceResult(Const.ERROR_EXCEPTION_CODE, "Cập nhật Order thất bại");
         }
         private static string GenerateOrderId()
         {
             Random random = new Random();
             return random.Next(100000, 999999).ToString(); // Sinh số ngẫu nhiên từ 100000 đến 999999
         }
+
+ 
     }
 }

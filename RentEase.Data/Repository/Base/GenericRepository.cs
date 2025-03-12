@@ -130,16 +130,13 @@ namespace RentEase.Data.Repository.Base
                Expression<Func<T, bool>>? filter = null,
                Func<IQueryable<T>, IOrderedQueryable<T>>? orderBy = null,
                int page = 1, int pageSize = 10,
-               params Expression<Func<T, object>>[]? includes)
+               Func<IQueryable<T>, IQueryable<T>>? includes = null)
         {
             IQueryable<T> query = _context.Set<T>();
 
             if (includes != null)
             {
-                foreach (var include in includes)
-                {
-                    query = query.Include(include);
-                }
+                query = includes(query); // Gọi hàm includes để áp dụng Include() và ThenInclude()
             }
 
             if (filter != null)

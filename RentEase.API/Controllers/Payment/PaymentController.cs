@@ -10,7 +10,7 @@ namespace RentEase.API.Controllers.Payment
 {
     [Route("api/[controller]")]
     [ApiController]
-    [Authorize(Roles = "1,2,3,4")]
+    [Authorize(Roles = "1,2,3")]
     public class PaymentController : Controller
     {
         private readonly ServiceWrapper _serviceWrapper;

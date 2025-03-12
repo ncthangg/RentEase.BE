@@ -9,7 +9,7 @@ namespace RentEase.API.Controllers.Main
 {
     [Route("api/[controller]")]
     [ApiController]
-    [Authorize(Roles = "1,2,3,4")]
+    [Authorize(Roles = "1,2,3")]
     public class PostController : Controller
     {
         private readonly IPostService _postService;
@@ -18,7 +18,7 @@ namespace RentEase.API.Controllers.Main
             _postService = postService;
         }
 
-        [HttpGet]
+        [HttpGet("GetAll")]
         public async Task<IActionResult> GetAll([FromQuery] bool status = true, [FromQuery] int page = 1, [FromQuery] int pageSize = 10)
         {
             try
@@ -52,13 +52,43 @@ namespace RentEase.API.Controllers.Main
             }
         }
 
-       
-        [HttpGet("get-by-id")]
-        public async Task<IActionResult> GetById(string id)
+        [HttpGet("GetById")]
+        public async Task<IActionResult> GetById([FromQuery] string id)
         {
             try
             {
                 var result = await _postService.GetById(id);
+                if (result.Status < 0 && result.Data == null)
+                {
+                    return NotFound(new ApiRes<string>
+                    {
+                        StatusCode = HttpStatusCode.NotFound,
+                        Message = result.Message
+                    });
+                }
+                return Ok(new ApiRes<PostRes>
+                {
+                    StatusCode = HttpStatusCode.OK,
+                    Message = result.Message,
+                    Data = (PostRes)result.Data!
+                });
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new ApiRes<string>
+                {
+                    StatusCode = HttpStatusCode.InternalServerError,
+                    Message = $"Lỗi hệ thống: {ex.Message}"
+                });
+            }
+        }
+
+        [HttpGet("GetByAccountId")]
+        public async Task<IActionResult> GetByAccountId([FromQuery] string accountId, [FromQuery] int? statusId, [FromQuery] bool status = true, [FromQuery] int page = 1, [FromQuery] int pageSize = 10)
+        {
+            try
+            {
+                var result = await _postService.GetByAccountId(accountId, statusId, status, page, pageSize);
                 if (result.Status < 0 && result.Data == null)
                 {
                     return NotFound(new ApiRes<string>
