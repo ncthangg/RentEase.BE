@@ -1,5 +1,7 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Http;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
 using RentEase.Common.Base;
 using RentEase.Common.DTOs.Dto;
 using RentEase.Data;
@@ -15,8 +17,8 @@ namespace RentEase.Service.Service.Main
         Task<ServiceResult> GetByAptId(string aptId, int page, int pageSize);
         Task<ServiceResult> Create(string aptId, int utilityId, string? note);
         Task<ServiceResult> Update(int id, string? note);
-        Task<ServiceResult> Delete(int id);
-
+        Task<ServiceResult> Remove(string aptId, int utilityId);
+        Task<ServiceResult> RemoveAll(string aptId);
     }
     public class AptUtilityService : BaseService<AptUtility, AptUtilityRes>, IAptUtilityService
     {
@@ -88,8 +90,30 @@ namespace RentEase.Service.Service.Main
                 return new ServiceResult(Const.SUCCESS_ACTION_CODE, "Cập nhật thành công");
             }
 
-            return new ServiceResult(Const.ERROR_EXCEPTION_CODE, Const.ERROR_EXCEPTION_MSG);
+                return new ServiceResult(Const.ERROR_EXCEPTION_CODE, Const.ERROR_EXCEPTION_MSG);
 
+        }
+        public async Task<ServiceResult> Remove(string aptId, int utilityId)
+        {
+            var result = await _unitOfWork.AptUtilityRepository.RemoveAsync(aptId, utilityId);
+
+            if (result)
+            {
+                return new ServiceResult(Const.SUCCESS_ACTION_CODE, Const.SUCCESS_ACTION_MSG);
+            }
+
+            return new ServiceResult(Const.ERROR_EXCEPTION_CODE, Const.ERROR_EXCEPTION_MSG);
+        }
+        public async Task<ServiceResult> RemoveAll(string aptId)
+        {
+            var result = await _unitOfWork.AptUtilityRepository.RemoveAllAsync(aptId);
+
+            if (result)
+            {
+                return new ServiceResult(Const.SUCCESS_ACTION_CODE, Const.SUCCESS_ACTION_MSG);
+            }
+
+            return new ServiceResult(Const.ERROR_EXCEPTION_CODE, Const.ERROR_EXCEPTION_MSG);
         }
     }
 }

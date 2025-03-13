@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
 using RentEase.Common.DTOs;
 using RentEase.Data.DBContext;
 using RentEase.Data.Models;
@@ -22,5 +23,28 @@ namespace RentEase.Data.Repository.Main
                 pageSize: pageSize,
                 includes: q => q.Include(i => i.Utility));
         }
+
+        public async Task<bool> RemoveAsync(string aptId, int utilityId)
+        {
+            var entity = await _context.AptUtilities
+            .FirstOrDefaultAsync(x => x.AptId == aptId && x.UtilityId == utilityId);
+
+            if (entity == null)
+                return false;
+
+            _context.AptUtilities.Remove(entity);
+            await _context.SaveChangesAsync();
+            return true;
+        }
+
+        public async Task<bool> RemoveAllAsync(string aptId)
+        {
+            var entities = _context.AptUtilities.Where(x => x.AptId == aptId);
+            _context.AptUtilities.RemoveRange(entities);
+            await _context.SaveChangesAsync();
+            return true;
+        }
+        
+
     }
 }

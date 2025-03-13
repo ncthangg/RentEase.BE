@@ -29,11 +29,11 @@ namespace RentEase.API.Controllers.Main
 
                 var result = await _aptUtilityService.GetByAptId(aptId, page, pageSize);
 
-                return Ok(new ApiRes<AptUtilityRes>
+                return Ok(new ApiRes<IEnumerable<AptUtilityRes>>
                 {
                     StatusCode = HttpStatusCode.OK,
                     Message = result.Message,
-                    Data = (AptUtilityRes)result.Data!
+                    Data = (IEnumerable<AptUtilityRes>)result.Data!
                 });
             }
             catch (Exception ex)
@@ -45,7 +45,6 @@ namespace RentEase.API.Controllers.Main
                 });
             }
         }
-
 
         [HttpPost("Add-Utilities")]
         public async Task<IActionResult> AddUtilities([FromBody] AptUtilityReq request)
@@ -59,7 +58,6 @@ namespace RentEase.API.Controllers.Main
 
                 foreach (var utility in request.Utilities)
                 {
-                    // Lưu vào database hoặc gọi service xử lý
                     await _aptUtilityService.Create(request.AptId, utility.UtilityId, utility.Note);
                 }
 
@@ -79,8 +77,63 @@ namespace RentEase.API.Controllers.Main
             }
         }
 
+        [HttpPost("Remove-Utilities")]
+        public async Task<IActionResult> RemoveUtilities([FromBody] AptUtilityReq request)
+        {
+            try
+            {
+                if (string.IsNullOrEmpty(request.AptId) || request.Utilities == null || !request.Utilities.Any())
+                {
+                    return BadRequest(new { message = "Dữ liệu không hợp lệ" });
+                }
 
+                foreach (var utility in request.Utilities)
+                {
+                    await _aptUtilityService.Remove(request.AptId, utility.UtilityId);
+                }
 
+                return Ok(new ApiRes<string>
+                {
+                    StatusCode = HttpStatusCode.OK,
+                    Message = "Xóa tiện ích thành công"
+                });
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new ApiRes<string>
+                {
+                    StatusCode = HttpStatusCode.InternalServerError,
+                    Message = $"Lỗi hệ thống: {ex.Message}"
+                });
+            }
+        }
 
+        [HttpPost("Remove-All-Utilities")]
+        public async Task<IActionResult> RemoveAllUtility([FromQuery] string aptId)
+        {
+            try
+            {
+                if (string.IsNullOrEmpty(aptId) )
+                {
+                    return BadRequest(new { message = "Dữ liệu không hợp lệ" });
+                }
+
+                await _aptUtilityService.RemoveAll(aptId);
+
+                return Ok(new ApiRes<string>
+                {
+                    StatusCode = HttpStatusCode.OK,
+                    Message = "Xóa tiện ích thành công"
+                });
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new ApiRes<string>
+                {
+                    StatusCode = HttpStatusCode.InternalServerError,
+                    Message = $"Lỗi hệ thống: {ex.Message}"
+                });
+            }
+        }
     }
 }

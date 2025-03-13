@@ -554,6 +554,38 @@
     "ReturnTypes": []
   },
   {
+    "ContainingType": "RentEase.API.Controllers.Main.AptUtilityController",
+    "Method": "RemoveAllUtility",
+    "RelativePath": "api/AptUtility/Remove-All-Utilities",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "aptId",
+        "Type": "System.String",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "RentEase.API.Controllers.Main.AptUtilityController",
+    "Method": "RemoveUtilities",
+    "RelativePath": "api/AptUtility/Remove-Utilities",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "request",
+        "Type": "RentEase.Common.DTOs.Dto.AptUtilityReq",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
     "ContainingType": "RentEase.API.Controllers.Authenticate.AuthController",
     "Method": "ChangePassword",
     "RelativePath": "api/Auth/ChangePassword",
