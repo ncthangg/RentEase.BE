@@ -30,6 +30,14 @@
             Failed = 3        // Thất bại
         }
 
+        public enum PaymentStatusId
+        {
+            PENDING = 1,   // Chờ thanh toán
+            PAID = 2,      // Đã thanh toán
+            PROCESSING = 3,      // Đang xử lý
+            CANCELLED = 4        // Hủy
+        }
+
         public enum LiveStatusId
         {
             Active = 1,       // Đang hoạt động

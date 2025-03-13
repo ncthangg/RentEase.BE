@@ -19,7 +19,7 @@ namespace RentEase.Data.Repository.Main
         {
             return await GetPagedAsync(
                 filter: o => o.SenderId == accountId &&
-                             (statusId == null || o.StatusId == statusId),
+                             (statusId == null || o.PaymentStatusId == statusId),
                 orderBy: q => q.OrderByDescending(o => o.CreatedAt),
                 page: page,
                 pageSize: pageSize,
@@ -30,7 +30,7 @@ namespace RentEase.Data.Repository.Main
         public async Task<PagedResult<Order>> GetByStatusId(int? statusId, int page, int pageSize)
         {
             return await GetPagedAsync(
-                 filter: f => statusId == null || f.StatusId == statusId,
+                 filter: f => statusId == null || f.PaymentStatusId == statusId,
                  orderBy: q => q.OrderByDescending(o => o.CreatedAt),
                  page: page,
                  pageSize: pageSize,

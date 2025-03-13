@@ -4,7 +4,9 @@ using RentEase.Common.DTOs;
 using RentEase.Common.DTOs.Dto;
 using RentEase.Common.DTOs.Response;
 using RentEase.Service;
+using RentEase.Service.Service.Payment;
 using System.Net;
+using System.Threading.Channels;
 
 namespace RentEase.API.Controllers.Payment
 {
@@ -14,17 +16,59 @@ namespace RentEase.API.Controllers.Payment
     public class PaymentController : Controller
     {
         private readonly ServiceWrapper _serviceWrapper;
+        private readonly IPayosService _payosService;
 
-        public PaymentController(ServiceWrapper serviceWrapper)
+        public PaymentController(ServiceWrapper serviceWrapper, IPayosService payosService)
         {
             _serviceWrapper = serviceWrapper;
+            _payosService = payosService;
         }
         [HttpPost("create-payment-link")]
         public async Task<IActionResult> Post([FromBody] TransactionReq request)
         {
             try
             {
-                var result = await _serviceWrapper.TransactionService.CheckOut(request);
+                var result = await _payosService.CheckOut(request);
+                if (result.Status < 0)
+                {
+                    return NotFound(new ApiRes<string>
+                    {
+                        StatusCode = HttpStatusCode.NotFound,
+                        Message = result.Message
+                    });
+                }
+                return Ok(new ApiRes<PaymentRes>
+                {
+                    StatusCode = HttpStatusCode.OK,
+                    Message = result.Message,
+                    Data = (PaymentRes)result.Data!
+                });
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new ApiRes<string>
+                {
+                    StatusCode = HttpStatusCode.InternalServerError,
+                    Message = $"Lỗi hệ thống: {ex.Message}"
+                });
+            }
+        }
+
+        [HttpGet("payment-callback")]
+        public async Task<IActionResult> PaymentCallback([FromQuery] PaymentCallback request)
+        {
+            try
+            {   
+                if (request == null || string.IsNullOrEmpty(request.Id) || string.IsNullOrEmpty(request.OrderCode))
+                {
+                    return BadRequest(new ApiRes<string>
+                    {
+                        StatusCode = HttpStatusCode.BadRequest,
+                        Message = "Dữ liệu không hợp lệ"
+                    });
+                }
+
+                var result = await _payosService.Callback(request);
                 if (result.Status < 0)
                 {
                     return NotFound(new ApiRes<string>

@@ -765,6 +765,42 @@
     "ReturnTypes": []
   },
   {
+    "ContainingType": "RentEase.API.Controllers.Payment.PaymentController",
+    "Method": "PaymentCallback",
+    "RelativePath": "api/Payment/payment-callback",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "Code",
+        "Type": "System.String",
+        "IsRequired": false
+      },
+      {
+        "Name": "Id",
+        "Type": "System.String",
+        "IsRequired": false
+      },
+      {
+        "Name": "Cancel",
+        "Type": "System.Boolean",
+        "IsRequired": false
+      },
+      {
+        "Name": "Status",
+        "Type": "System.String",
+        "IsRequired": false
+      },
+      {
+        "Name": "OrderCode",
+        "Type": "System.String",
+        "IsRequired": false
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
     "ContainingType": "RentEase.API.Controllers.Main.PostController",
     "Method": "Post",
     "RelativePath": "api/Post",

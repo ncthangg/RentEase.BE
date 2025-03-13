@@ -8,6 +8,15 @@ namespace RentEase.Common.DTOs.Response
         public PayosRes? PayosRes { get; set; } = new PayosRes();
 
     }
+    public class PaymentCallback
+    {
+        public required string Code { get; set; } // Mã lỗi
+        public required string Id { get; set; } // Payment Link Id
+        public bool Cancel { get; set; } // Trạng thái hủy
+        public required string Status { get; set; } // Trạng thái thanh toán
+        public required string OrderCode { get; set; } // Mã đơn hàng
+    }
+
 
     public class PayosRes
     {
@@ -31,5 +40,7 @@ namespace RentEase.Common.DTOs.Response
         public string? CheckoutUrl { get; set; }
         public string? QrCode { get; set; }
     }
+
+
 
 }

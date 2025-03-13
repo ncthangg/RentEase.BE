@@ -84,7 +84,7 @@ namespace RentEase.Service.Service.Main
 
             return new ServiceResult(Const.ERROR_EXCEPTION_CODE, Const.ERROR_EXCEPTION_MSG);
         }
-        public async Task<ServiceResult> Update(string orderId, int statusId)
+        public async Task<ServiceResult> Update(string orderId, int paymentStatusId)
         {
             string accountId = _helperWrapper.TokenHelper.GetAccountIdFromHttpContextAccessor(_httpContextAccessor);
             string roleId = _helperWrapper.TokenHelper.GetRoleIdFromHttpContextAccessor(_httpContextAccessor);
@@ -106,20 +106,22 @@ namespace RentEase.Service.Service.Main
                 return new ServiceResult(Const.ERROR_EXCEPTION_CODE, "Bạn không có quyền hạn.");
             }
 
-            if (statusId != (int)EnumType.StatusId.Pending &&
-                     statusId != (int)EnumType.StatusId.Success &&
-                         statusId != (int)EnumType.StatusId.Failed)
+            if (paymentStatusId != (int)EnumType.PaymentStatusId.PENDING ||
+                       paymentStatusId != (int)EnumType.PaymentStatusId.PAID || 
+                            paymentStatusId != (int)EnumType.PaymentStatusId.PROCESSING ||
+                                   paymentStatusId != (int)EnumType.PaymentStatusId.CANCELLED)
             {
                 return new ServiceResult(Const.ERROR_EXCEPTION_CODE, "StatusId không hợp lệ.");
             }
-            if (statusId == (int)EnumType.StatusId.Success)
+
+            if (paymentStatusId == (int)EnumType.PaymentStatusId.PAID)
             {
-                item.StatusId = statusId;
+                item.PaymentStatusId = paymentStatusId;
                 item.PaidAt = DateTime.Now;
             }
             else
             {
-                item.StatusId = statusId;
+                item.PaymentStatusId = paymentStatusId;
             }
 
             var result = await _unitOfWork.OrderRepository.UpdateAsync(item);

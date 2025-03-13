@@ -21,7 +21,9 @@ public partial class Order
 
     public DateTime? PaidAt { get; set; }
 
-    public int StatusId { get; set; }
+    public DateTime? CancelleddAt { get; set; }
+
+    public int PaymentStatusId { get; set; }
 
     public virtual Account Sender { get; set; }
 
