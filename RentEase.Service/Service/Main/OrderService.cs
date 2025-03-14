@@ -101,7 +101,7 @@ namespace RentEase.Service.Service.Main
 
             var item = await _unitOfWork.OrderRepository.GetByIdAsync(orderId);
 
-            if (accountId != item.SenderId && roleId != "1")
+            if (accountId != item.SenderId || roleId != "1")
             {
                 return new ServiceResult(Const.ERROR_EXCEPTION_CODE, "Bạn không có quyền hạn.");
             }

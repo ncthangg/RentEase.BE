@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using RentEase.Common.Base;
 using RentEase.Common.DTOs;
 using RentEase.Common.DTOs.Dto;
 using RentEase.Service.Service.Main;
@@ -9,7 +10,6 @@ namespace RentEase.API.Controllers.Main
 {
     [Route("api/[controller]")]
     [ApiController]
-    [Authorize(Roles = "1,2,3")]
     public class AptImageController : Controller
     {
         private readonly IAptImageService _AptImageService;
@@ -18,46 +18,12 @@ namespace RentEase.API.Controllers.Main
             _AptImageService = AptImageService;
         }
 
-        [HttpGet("GetAll")]
-        public async Task<IActionResult> GetAll([FromQuery] int page = 1, [FromQuery] int pageSize = 10)
-        {
-            try
-            {
-                var result = await _AptImageService.GetAll(page, pageSize, null);
-                if (result.Status < 0 && result.Data == null)
-                {
-                    return NotFound(new ApiRes<string>
-                    {
-                        StatusCode = HttpStatusCode.NotFound,
-                        Message = result.Message
-                    });
-                }
-                return Ok(new ApiRes<IEnumerable<AptImageRes>>
-                {
-                    StatusCode = HttpStatusCode.OK,
-                    Message = result.Message,
-                    Count = result.TotalCount,
-                    TotalPages = result.TotalPage,
-                    CurrentPage = result.CurrentPage,
-                    Data = (IEnumerable<AptImageRes>)result.Data!
-                });
-            }
-            catch (Exception ex)
-            {
-                return BadRequest(new ApiRes<string>
-                {
-                    StatusCode = HttpStatusCode.InternalServerError,
-                    Message = $"Lỗi hệ thống: {ex.Message}"
-                });
-            }
-        }
-
         [HttpGet("GetByAptId")]
-        public async Task<IActionResult> GetByAptId([FromQuery] string id)
+        public async Task<IActionResult> GetByAptId([FromQuery] string aptId)
         {
             try
             {
-                var result = await _AptImageService.GetById(id);
+                var result = await _AptImageService.GetByAptId(aptId);
                 if (result.Status < 0 && result.Data == null)
                 {
                     return NotFound(new ApiRes<string>
@@ -84,7 +50,7 @@ namespace RentEase.API.Controllers.Main
         }
 
         [HttpPost]
-        public async Task<IActionResult> Post([FromQuery] AptImageReq request)
+        public async Task<IActionResult> Post([FromQuery] PostListAptImageReq request)
         {
             try
             {
@@ -97,10 +63,11 @@ namespace RentEase.API.Controllers.Main
                         Message = result.Message
                     });
                 }
-                return Ok(new ApiRes<string>
+                return Ok(new ApiRes<IEnumerable<string>>
                 {
                     StatusCode = HttpStatusCode.OK,
-                    Message = result.Message
+                    Message = result.Message,
+                    Data= (IEnumerable<string>)result.Data! 
                 });
             }
             catch (Exception ex)
@@ -113,12 +80,12 @@ namespace RentEase.API.Controllers.Main
             }
         }
 
-        [HttpPut]
-        public async Task<IActionResult> Put(string id, [FromBody] AptImageReq request)
+        [HttpPut("UpdateSingleImage")]
+        public async Task<IActionResult> UpdateSingleImage([FromQuery] int id, [FromQuery] PostSingleAptImageReq request)
         {
             try
             {
-                var result = await _AptImageService.Update(id, request);
+                var result = await _AptImageService.UpdateSingleImage(id, request);
                 if (result.Status < 0 && result.Data == null)
                 {
                     return NotFound(new ApiRes<string>
@@ -143,6 +110,23 @@ namespace RentEase.API.Controllers.Main
             }
         }
 
-
+        [HttpDelete]
+        public async Task<IActionResult> DeleteImage(int imageId)
+        {
+            var result = await _AptImageService.Delete(imageId);
+            if (result.Status == Const.SUCCESS_ACTION_CODE)
+            {
+                return Ok(new ApiRes<string>
+                {
+                    StatusCode = HttpStatusCode.OK,
+                    Message = result.Message
+                });
+            }
+            return BadRequest(new ApiRes<string>
+            {
+                StatusCode = HttpStatusCode.BadRequest,
+                Message = result.Message
+            }); ;
+        }
     }
 }

@@ -114,7 +114,7 @@ namespace RentEase.Service.Service.Main
                 return new ServiceResult(Const.ERROR_EXCEPTION_CODE, "Không tồn tại");
             }
 
-            if (accountId != item.OwnerId && roleId != "1")
+            if (accountId != item.OwnerId || roleId != "1")
             {
                 return new ServiceResult(Const.ERROR_EXCEPTION_CODE, "Bạn không có quyền hạn.");
             }
@@ -196,7 +196,7 @@ namespace RentEase.Service.Service.Main
                 return new ServiceResult(Const.ERROR_EXCEPTION_CODE, "Không tồn tại");
             }
 
-            if (accountId != item.OwnerId && roleId != "1")
+            if (accountId != item.OwnerId || roleId != "1")
             {
                 return new ServiceResult(Const.ERROR_EXCEPTION_CODE, "Bạn không có quyền hạn.");
             }

@@ -19,7 +19,6 @@ namespace RentEase.Service.AutoMapper
 
             CreateMap<Apt, AptRes>().ReverseMap();
             CreateMap<AptCategory, AptCategoryRes>().ReverseMap();
-            CreateMap<AptImage, AptImageRes>().ReverseMap();
             CreateMap<AptStatus, AptStatusRes>().ReverseMap();
             CreateMap<AptUtility, AptUtilityRes>().ReverseMap();
             CreateMap<Review, ReviewRes>().ReverseMap();
@@ -31,6 +30,7 @@ namespace RentEase.Service.AutoMapper
 
             CreateMap<Post, PostRes>().ReverseMap();
             CreateMap<PostRequire, PostRequireRes>().ReverseMap();
+
         }
     }
 }

@@ -53,7 +53,7 @@ public partial class Apt
 
     public virtual AptCategory AptCategory { get; set; }
 
-    public virtual AptImage AptImage { get; set; }
+    public ICollection<AptImage> AptImages { get; set; } = new List<AptImage>();
 
     public virtual AptStatus AptStatus { get; set; }
 

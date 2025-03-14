@@ -226,10 +226,11 @@ public partial class RentEaseContext : DbContext
             entity.Property(e => e.ImageUrl).HasColumnName("ImageURL");
             entity.Property(e => e.UpdatedAt).HasColumnType("datetime");
 
-            entity.HasOne(d => d.Apt).WithOne(p => p.AptImage)
-                .HasForeignKey<AptImage>(d => d.AptId)
-                .OnDelete(DeleteBehavior.Cascade)
-                .HasConstraintName("FK_AptImage_Apt");
+            entity.HasOne(d => d.Apt)
+                  .WithMany(p => p.AptImages) 
+                  .HasForeignKey(d => d.AptId)
+                  .OnDelete(DeleteBehavior.Cascade)
+                  .HasConstraintName("FK_AptImage_Apt");
         });
 
         modelBuilder.Entity<AptStatus>(entity =>

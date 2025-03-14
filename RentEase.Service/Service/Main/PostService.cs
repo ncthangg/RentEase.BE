@@ -101,7 +101,7 @@ namespace RentEase.Service.Service.Main
 
             var item = await _unitOfWork.PostRepository.GetByIdAsync(postId);
 
-            if (accountId != item.PostId && roleId != "1")
+            if (accountId != item.PostId || roleId != "1")
             {
                 return new ServiceResult(Const.ERROR_EXCEPTION_CODE, "Bạn không có quyền hạn.");
             }
@@ -133,7 +133,7 @@ namespace RentEase.Service.Service.Main
                 return new ServiceResult(Const.ERROR_EXCEPTION_CODE, "Không tồn tại");
             }
 
-            if (accountId != item.AccountId && roleId != "1")
+            if (accountId != item.AccountId || roleId != "1")
             {
                 return new ServiceResult(Const.ERROR_EXCEPTION_CODE, "Bạn không có quyền hạn.");
             }

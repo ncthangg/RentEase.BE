@@ -1,6 +1,7 @@
 ﻿using MailKit.Net.Smtp;
 using MailKit.Security;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Http.Features;
 using Microsoft.AspNetCore.Server.Kestrel.Core;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
@@ -52,6 +53,7 @@ namespace RentEase.API
             services.AddScoped<IEmailHelper, EmailHelper>();
             services.AddScoped<ITokenHelper, TokenHelper>();
             services.AddScoped<IPasswordHelper, PasswordHelper>();
+            services.AddScoped<IImageHelper, ImageHelper>();
 
             services.AddScoped<HelperWrapper>();
             return services;
@@ -73,6 +75,16 @@ namespace RentEase.API
             services.Configure<KestrelServerOptions>(options =>
             {
                 options.Limits.MaxRequestHeadersTotalSize = 64 * 1024; // Ví dụ: 64KB
+                options.Limits.MaxRequestBodySize = 100_000_000;
+            });
+
+            return services;
+        }
+        public static IServiceCollection ConfigureForm(this IServiceCollection services)
+        {
+            services.Configure<FormOptions>(options =>
+            {
+                options.MultipartBodyLengthLimit = 100_000_000;
             });
 
             return services;
@@ -145,6 +157,7 @@ namespace RentEase.API
             services.AddAutoMapperConfiguration();
             services.AddJwtAuthentication(configuration);
             services.ConfigureKestrel();
+            services.ConfigureForm();
 
             return services;
         }
