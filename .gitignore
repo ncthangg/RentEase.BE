@@ -1,6 +1,8 @@
 /.vs
 
-# Ignore build artifacts
-RentEase.API/bin/
-RentEase.API/bin/Debug/
-RentEase.API/bin/Debug/net8.0/
+# Bỏ qua tất cả thư mục bin, obj, Debug, Release trong toàn bộ project
+**/bin/
+**/obj/
+**/debug/
+**/release/
+**/net8.0/
