@@ -290,6 +290,12 @@ namespace RentEase.Data.Migrations
 
             modelBuilder.Entity("RentEase.Data.Models.AptImage", b =>
                 {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
                     b.Property<string>("AptId")
                         .HasMaxLength(255)
                         .HasColumnType("nvarchar(255)");
@@ -297,35 +303,19 @@ namespace RentEase.Data.Migrations
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("datetime");
 
-                    b.Property<string>("ImageUrl1")
+                    b.Property<string>("ImageUrl")
                         .HasColumnType("nvarchar(max)")
-                        .HasColumnName("ImageURL1");
-
-                    b.Property<string>("ImageUrl2")
-                        .HasColumnType("nvarchar(max)")
-                        .HasColumnName("ImageURL2");
-
-                    b.Property<string>("ImageUrl3")
-                        .HasColumnType("nvarchar(max)")
-                        .HasColumnName("ImageURL3");
-
-                    b.Property<string>("ImageUrl4")
-                        .HasColumnType("nvarchar(max)")
-                        .HasColumnName("ImageURL4");
-
-                    b.Property<string>("ImageUrl5")
-                        .HasColumnType("nvarchar(max)")
-                        .HasColumnName("ImageURL5");
-
-                    b.Property<string>("ImageUrl6")
-                        .HasColumnType("nvarchar(max)")
-                        .HasColumnName("ImageURL6");
+                        .HasColumnName("ImageURL");
 
                     b.Property<DateTime?>("UpdatedAt")
                         .HasColumnType("datetime");
 
-                    b.HasKey("AptId")
+                    b.HasKey("Id")
                         .HasName("PK__AptImage__8D24E772761F5E0C");
+
+                    b.HasIndex("AptId")
+                        .IsUnique()
+                        .HasFilter("[AptId] IS NOT NULL");
 
                     b.ToTable("AptImage", (string)null);
                 });
@@ -802,7 +792,7 @@ namespace RentEase.Data.Migrations
                     b.HasOne("RentEase.Data.Models.Apt", "Apt")
                         .WithOne("AptImage")
                         .HasForeignKey("RentEase.Data.Models.AptImage", "AptId")
-                        .IsRequired()
+                        .OnDelete(DeleteBehavior.Cascade)
                         .HasConstraintName("FK_AptImage_Apt");
 
                     b.Navigation("Apt");

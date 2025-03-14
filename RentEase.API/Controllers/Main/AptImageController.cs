@@ -84,11 +84,11 @@ namespace RentEase.API.Controllers.Main
         }
 
         [HttpPost]
-        public async Task<IActionResult> Post([FromBody] AptImageReq request)
+        public async Task<IActionResult> Post([FromQuery] AptImageReq request)
         {
             try
             {
-                var result = await _AptImageService.Create(request);
+                var result = await _AptImageService.Create(request.AptId, request.Files);
                 if (result.Status < 0 && result.Data == null)
                 {
                     return NotFound(new ApiRes<string>

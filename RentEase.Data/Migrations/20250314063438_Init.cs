@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace RentEase.Data.Migrations
 {
     /// <inheritdoc />
-    public partial class FixUniqueKey : Migration
+    public partial class Init : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -166,24 +166,22 @@ namespace RentEase.Data.Migrations
                 name: "AptImage",
                 columns: table => new
                 {
-                    AptId = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: false),
-                    ImageURL1 = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    ImageURL2 = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    ImageURL3 = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    ImageURL4 = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    ImageURL5 = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    ImageURL6 = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    AptId = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: true),
+                    ImageURL = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     CreatedAt = table.Column<DateTime>(type: "datetime", nullable: false),
                     UpdatedAt = table.Column<DateTime>(type: "datetime", nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK__AptImage__8D24E772761F5E0C", x => x.AptId);
+                    table.PrimaryKey("PK__AptImage__8D24E772761F5E0C", x => x.Id);
                     table.ForeignKey(
                         name: "FK_AptImage_Apt",
                         column: x => x.AptId,
                         principalTable: "Apt",
-                        principalColumn: "AptId");
+                        principalColumn: "AptId",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -233,7 +231,8 @@ namespace RentEase.Data.Migrations
                         name: "FK_AccountToken_Account",
                         column: x => x.AccountId,
                         principalTable: "Account",
-                        principalColumn: "AccountId");
+                        principalColumn: "AccountId",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -255,7 +254,8 @@ namespace RentEase.Data.Migrations
                         name: "FK_AccountVerification_Account",
                         column: x => x.AccountId,
                         principalTable: "Account",
-                        principalColumn: "AccountId");
+                        principalColumn: "AccountId",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -269,7 +269,8 @@ namespace RentEase.Data.Migrations
                     IncurredCost = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
                     CreatedAt = table.Column<DateTime>(type: "datetime", nullable: false),
                     PaidAt = table.Column<DateTime>(type: "datetime", nullable: true),
-                    StatusId = table.Column<int>(type: "int", nullable: false)
+                    CancelleddAt = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    PaymentStatusId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -365,7 +366,8 @@ namespace RentEase.Data.Migrations
                     Note = table.Column<string>(type: "nvarchar(500)", maxLength: 500, nullable: true),
                     CreatedAt = table.Column<DateTime>(type: "datetime", nullable: false),
                     PaidAt = table.Column<DateTime>(type: "datetime", nullable: true),
-                    StatusId = table.Column<int>(type: "int", nullable: false)
+                    CancelleddAt = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    PaymentStatusId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -466,6 +468,13 @@ namespace RentEase.Data.Migrations
                 table: "AptCategory",
                 column: "CategoryName",
                 unique: true);
+
+            migrationBuilder.CreateIndex(
+                name: "IX_AptImage_AptId",
+                table: "AptImage",
+                column: "AptId",
+                unique: true,
+                filter: "[AptId] IS NOT NULL");
 
             migrationBuilder.CreateIndex(
                 name: "UQ__AptStatu__05E7698A86EA1D6C",

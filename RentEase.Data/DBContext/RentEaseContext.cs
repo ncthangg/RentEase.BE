@@ -217,23 +217,18 @@ public partial class RentEaseContext : DbContext
 
         modelBuilder.Entity<AptImage>(entity =>
         {
-            entity.HasKey(e => e.AptId).HasName("PK__AptImage__8D24E772761F5E0C");
+            entity.HasKey(e => e.Id).HasName("PK__AptImage__8D24E772761F5E0C");
 
             entity.ToTable("AptImage");
 
             entity.Property(e => e.AptId).HasMaxLength(255);
             entity.Property(e => e.CreatedAt).HasColumnType("datetime");
-            entity.Property(e => e.ImageUrl1).HasColumnName("ImageURL1");
-            entity.Property(e => e.ImageUrl2).HasColumnName("ImageURL2");
-            entity.Property(e => e.ImageUrl3).HasColumnName("ImageURL3");
-            entity.Property(e => e.ImageUrl4).HasColumnName("ImageURL4");
-            entity.Property(e => e.ImageUrl5).HasColumnName("ImageURL5");
-            entity.Property(e => e.ImageUrl6).HasColumnName("ImageURL6");
+            entity.Property(e => e.ImageUrl).HasColumnName("ImageURL");
             entity.Property(e => e.UpdatedAt).HasColumnType("datetime");
 
             entity.HasOne(d => d.Apt).WithOne(p => p.AptImage)
                 .HasForeignKey<AptImage>(d => d.AptId)
-                .OnDelete(DeleteBehavior.ClientSetNull)
+                .OnDelete(DeleteBehavior.Cascade)
                 .HasConstraintName("FK_AptImage_Apt");
         });
 

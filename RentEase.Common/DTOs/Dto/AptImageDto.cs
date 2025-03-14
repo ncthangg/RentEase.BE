@@ -1,35 +1,27 @@
-﻿namespace RentEase.Common.DTOs.Dto;
+﻿using Microsoft.AspNetCore.Http;
+using System.Collections.Generic;
+using static System.Net.Mime.MediaTypeNames;
+
+namespace RentEase.Common.DTOs.Dto;
 
 public class AptImageReq
 {
     public string AptId { get; set; } = string.Empty;
 
-    public string ImageUrl1 { get; set; } = string.Empty;
-
-    public string ImageUrl2 { get; set; } = string.Empty;
-
-    public string ImageUrl3 { get; set; } = string.Empty;
-
-    public string ImageUrl4 { get; set; } = string.Empty;
-
-    public string ImageUrl5 { get; set; } = string.Empty;
-
-    public string ImageUrl6 { get; set; } = string.Empty;
+    public List<IFormFile> Files { get; set; } = new List<IFormFile>();
 }
+
 public class AptImageRes : Base
 {
+    public int Id { get; set; }
+
     public string AptId { get; set; } = string.Empty;
 
-    public string? ImageUrl1 { get; set; }
+    public List<Image> ImageUrl { get; set; } = new List<Image>();
 
-    public string? ImageUrl2 { get; set; }
+}
 
-    public string? ImageUrl3 { get; set; }
-
-    public string? ImageUrl4 { get; set; }
-
-    public string? ImageUrl5 { get; set; }
-
-    public string? ImageUrl6 { get; set; }
-
+public class Image
+{
+    public string ImageUrl { get; set; } = string.Empty;
 }

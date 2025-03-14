@@ -12,8 +12,8 @@ using RentEase.Data.DBContext;
 namespace RentEase.Data.Migrations
 {
     [DbContext(typeof(RentEaseContext))]
-    [Migration("20250312165124_UpdateCascadeDelete")]
-    partial class UpdateCascadeDelete
+    [Migration("20250314063438_Init")]
+    partial class Init
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -293,6 +293,12 @@ namespace RentEase.Data.Migrations
 
             modelBuilder.Entity("RentEase.Data.Models.AptImage", b =>
                 {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
                     b.Property<string>("AptId")
                         .HasMaxLength(255)
                         .HasColumnType("nvarchar(255)");
@@ -300,35 +306,19 @@ namespace RentEase.Data.Migrations
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("datetime");
 
-                    b.Property<string>("ImageUrl1")
+                    b.Property<string>("ImageUrl")
                         .HasColumnType("nvarchar(max)")
-                        .HasColumnName("ImageURL1");
-
-                    b.Property<string>("ImageUrl2")
-                        .HasColumnType("nvarchar(max)")
-                        .HasColumnName("ImageURL2");
-
-                    b.Property<string>("ImageUrl3")
-                        .HasColumnType("nvarchar(max)")
-                        .HasColumnName("ImageURL3");
-
-                    b.Property<string>("ImageUrl4")
-                        .HasColumnType("nvarchar(max)")
-                        .HasColumnName("ImageURL4");
-
-                    b.Property<string>("ImageUrl5")
-                        .HasColumnType("nvarchar(max)")
-                        .HasColumnName("ImageURL5");
-
-                    b.Property<string>("ImageUrl6")
-                        .HasColumnType("nvarchar(max)")
-                        .HasColumnName("ImageURL6");
+                        .HasColumnName("ImageURL");
 
                     b.Property<DateTime?>("UpdatedAt")
                         .HasColumnType("datetime");
 
-                    b.HasKey("AptId")
+                    b.HasKey("Id")
                         .HasName("PK__AptImage__8D24E772761F5E0C");
+
+                    b.HasIndex("AptId")
+                        .IsUnique()
+                        .HasFilter("[AptId] IS NOT NULL");
 
                     b.ToTable("AptImage", (string)null);
                 });
@@ -413,6 +403,9 @@ namespace RentEase.Data.Migrations
                     b.Property<decimal>("Amount")
                         .HasColumnType("decimal(18, 2)");
 
+                    b.Property<DateTime?>("CancelleddAt")
+                        .HasColumnType("datetime2");
+
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("datetime");
 
@@ -422,13 +415,13 @@ namespace RentEase.Data.Migrations
                     b.Property<DateTime?>("PaidAt")
                         .HasColumnType("datetime");
 
+                    b.Property<int>("PaymentStatusId")
+                        .HasColumnType("int");
+
                     b.Property<string>("SenderId")
                         .IsRequired()
                         .HasMaxLength(255)
                         .HasColumnType("nvarchar(255)");
-
-                    b.Property<int>("StatusId")
-                        .HasColumnType("int");
 
                     b.Property<int>("TransactionTypeId")
                         .HasColumnType("int");
@@ -635,6 +628,9 @@ namespace RentEase.Data.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
+                    b.Property<DateTime?>("CancelleddAt")
+                        .HasColumnType("datetime2");
+
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("datetime");
 
@@ -657,7 +653,7 @@ namespace RentEase.Data.Migrations
                         .HasMaxLength(255)
                         .HasColumnType("nvarchar(255)");
 
-                    b.Property<int>("StatusId")
+                    b.Property<int>("PaymentStatusId")
                         .HasColumnType("int");
 
                     b.Property<decimal>("TotalAmount")
@@ -799,7 +795,7 @@ namespace RentEase.Data.Migrations
                     b.HasOne("RentEase.Data.Models.Apt", "Apt")
                         .WithOne("AptImage")
                         .HasForeignKey("RentEase.Data.Models.AptImage", "AptId")
-                        .IsRequired()
+                        .OnDelete(DeleteBehavior.Cascade)
                         .HasConstraintName("FK_AptImage_Apt");
 
                     b.Navigation("Apt");
