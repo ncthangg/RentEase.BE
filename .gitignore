@@ -1,6 +1,6 @@
 /.vs
 
 # Ignore build artifacts
-RentEase.Api/bin/
-RentEase.Api/bin/debug/
-RentEase.Api/bin/debug/net8.0/
+RentEase.API/bin/
+RentEase.API/bin/Debug/
+RentEase.API/bin/Debug/net8.0/
