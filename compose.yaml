@@ -8,25 +8,14 @@
 # database or a cache. For examples, see the Awesome Compose repository:
 # https://github.com/docker/awesome-compose
 services:
-  # Dịch vụ bakingatelierbe-runner
-  bakingatelierbe-runner:
-    image: myoung34/github-runner:latest
-    networks:
-      - traefik
-
-  # Dịch vụ bakingfe-runner
-  bakingfe-runner:
-    image: myoung34/github-runner:latest
-    networks:
-      - traefik
-
-  # Dịch vụ renteasebe-runner
-  renteasebe-runner:
-    image: myoung34/github-runner:latest
-    networks:
-      - traefik
+  server:
+    build:
+      context: .
+      target: final
+    environment:
+      - DB_CONNECTION_STRING=Server=103.112.211.244,1433;Database=RentEase;User ID=SA;Password=Itjustapassword1@;TrustServerCertificate=True;Encrypt=false;
     ports:
-      - "6970:8080"  
+      - "6970:8080"
     labels:
       - "traefik.enable=true"
       - "traefik.http.routers.rentease.rule=Host(`103.112.211.244`)"
@@ -35,11 +24,10 @@ services:
       - "traefik.http.routers.rentease.middlewares=redirect-to-https"
       - "traefik.http.routers.rentease-secure.rule=Host(`103.112.211.244`)"
       - "traefik.http.routers.rentease-secure.entrypoints=https"
-      - "traefik.http.routers.rentease-secure.tls=true"
-    environment:
-      - DB_CONNECTION_STRING=Server=103.112.211.244,1433;Database=RentEase;User ID=SA;Password=Itjustapassword1@;TrustServerCertificate=True;Encrypt=false;
+      - "traefik.http.routers.rentease-secure.tls=true"  # Đảm bảo rằng TLS được bật cho router này
+    networks:
+      - traefik
 
-  # Dịch vụ Traefik
   traefik:
     image: traefik:v2.5
     command:
@@ -47,8 +35,8 @@ services:
       - "--providers.docker=true"
       - "--entrypoints.web.address=:80"
       - "--entrypoints.websecure.address=:443"
-      - "--certificatesresolvers.myresolver.acme.email=t0911609811@gmail.com"
-      - "--certificatesresolvers.myresolver.acme.storage=/acme.json"
+      - "--certificatesresolvers.myresolver.acme.email=t0911609811@gmail.com"  # Nếu bạn sử dụng Let's Encrypt (ACME)
+      - "--certificatesresolvers.myresolver.acme.storage=/acme.json"  # Cung cấp nơi lưu trữ chứng chỉ ACME nếu bạn sử dụng Let's Encrypt
     ports:
       - "80:80"
       - "443:443"
@@ -63,6 +51,7 @@ services:
 networks:
   traefik:
     external: true
+
 
 
       
