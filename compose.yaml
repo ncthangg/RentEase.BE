@@ -15,7 +15,23 @@ services:
     environment:
       - DB_CONNECTION_STRING=Server=103.112.211.244,1433;Database=RentEase;User ID=SA;Password=Itjustapassword1@;TrustServerCertificate=True;Encrypt=false;
     ports:
-      - 6970:8080
+      - "6970:8080"
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.rentease.rule=Host(`103.112.211.244`)"
+      - "traefik.http.routers.rentease.entrypoints=http"
+      - "traefik.http.middlewares.redirect-to-https.redirectscheme.scheme=https"
+      - "traefik.http.routers.rentease.middlewares=redirect-to-https"
+      - "traefik.http.routers.rentease-secure.rule=Host(`103.112.211.244`)"
+      - "traefik.http.routers.rentease-secure.entrypoints=https"
+      - "traefik.http.routers.rentease-secure.tls.certresolver=myresolver"
+    networks:
+      - traefik
+
+networks:
+  traefik:
+    external: true   
+      
 # The commented out section below is an example of how to define a PostgreSQL
 # database that your application can use. `depends_on` tells Docker Compose to
 # start the database before your application. The `db-data` volume persists the
@@ -48,25 +64,4 @@ services:
 # secrets:
 #   db-password:
 #     file: db/password.txt
-services:
-  server:
-    build:
-      context: .
-      target: final
-    environment:
-      - DB_CONNECTION_STRING=Server=103.112.211.244,1433;Database=RentEase;User ID=SA;Password=Itjustapassword1@;TrustServerCertificate=True;Encrypt=false;
-    labels:
-      - "traefik.enable=true"
-      - "traefik.http.routers.rentease.rule=Host(`103.112.211.244`)"
-      - "traefik.http.routers.rentease.entrypoints=http"
-      - "traefik.http.middlewares.redirect-to-https.redirectscheme.scheme=https"
-      - "traefik.http.routers.rentease.middlewares=redirect-to-https"
-      - "traefik.http.routers.rentease-secure.rule=Host(`103.112.211.244`)"
-      - "traefik.http.routers.rentease-secure.entrypoints=https"
-      - "traefik.http.routers.rentease-secure.tls.certresolver=myresolver"
-    networks:
-      - traefik
 
-networks:
-  traefik:
-    external: true
