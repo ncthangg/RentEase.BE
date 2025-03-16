@@ -24,7 +24,7 @@ services:
       - "traefik.http.routers.rentease.middlewares=redirect-to-https"
       - "traefik.http.routers.rentease-secure.rule=Host(`103.112.211.244`)"
       - "traefik.http.routers.rentease-secure.entrypoints=https"
-      - "traefik.http.routers.rentease-secure.tls=true"  # Đảm bảo sử dụng TLS
+      - "traefik.http.routers.rentease-secure.tls=true"  # Đảm bảo rằng TLS được bật cho router này
     networks:
       - traefik
 
@@ -35,8 +35,8 @@ services:
       - "--providers.docker=true"
       - "--entrypoints.web.address=:80"
       - "--entrypoints.websecure.address=:443"
-      - "--entrypoints.websecure.tls.certificates.certFile=/root/traefik/traefik.crt"
-      - "--entrypoints.websecure.tls.certificates.keyFile=/root/traefik/traefik.key"
+      - "--certificatesresolvers.myresolver.acme.email=t0911609811@gmail.com"  # Nếu bạn sử dụng Let's Encrypt (ACME)
+      - "--certificatesresolvers.myresolver.acme.storage=/acme.json"  # Cung cấp nơi lưu trữ chứng chỉ ACME nếu bạn sử dụng Let's Encrypt
     ports:
       - "80:80"
       - "443:443"
@@ -51,6 +51,7 @@ services:
 networks:
   traefik:
     external: true
+
 
 
       
