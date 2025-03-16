@@ -10,6 +10,7 @@ namespace RentEase.API.Controllers.Main
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize(Roles = "1,2,3")]
     public class AptImageController : Controller
     {
         private readonly IAptImageService _AptImageService;
