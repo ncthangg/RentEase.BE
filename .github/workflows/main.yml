@@ -19,6 +19,10 @@ jobs:
         docker ps -a   
         docker compose logs --tail 100
       timeout-minutes: 15
+      
+    - name: Restart Traefik
+      run: |
+        docker compose restart traefik
 
     - name: Tear down (if necessary)
       if: failure()
