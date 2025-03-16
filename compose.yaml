@@ -7,8 +7,6 @@
 # You can add other services your application may depend on here, such as a
 # database or a cache. For examples, see the Awesome Compose repository:
 # https://github.com/docker/awesome-compose
-version: '3.7'
-
 services:
   server:
     build:
@@ -20,13 +18,13 @@ services:
       - "6969:8080"
     labels:
       - "traefik.enable=true"
-      - "traefik.http.routers.rentease.rule=Host(`103.112.211.244`)"
+      - "traefik.http.routers.rentease.rule=Host(`103.112.211.244`)"  # HTTP rule
       - "traefik.http.routers.rentease.entrypoints=http"
       - "traefik.http.middlewares.redirect-to-https.redirectscheme.scheme=https"
       - "traefik.http.routers.rentease.middlewares=redirect-to-https"
-      - "traefik.http.routers.rentease-secure.rule=Host(`103.112.211.244`)"
+      - "traefik.http.routers.rentease-secure.rule=Host(`103.112.211.244`)"  # HTTPS rule
       - "traefik.http.routers.rentease-secure.entrypoints=https"
-      - "traefik.http.routers.rentease-secure.tls.certresolver=myresolver"
+      - "traefik.http.routers.rentease-secure.tls=true"
     networks:
       - traefik
 
@@ -37,7 +35,8 @@ services:
       - "--providers.docker=true"
       - "--entrypoints.web.address=:80"
       - "--entrypoints.websecure.address=:443"
-      - "--certificatesresolvers.myresolver.acme.email=t0911609811@gmail.com"  # Bạn có thể bỏ dòng này nếu không dùng ACME
+      - "--entrypoints.websecure.tls.certificates.certFile=/root/traefik/traefik.crt"
+      - "--entrypoints.websecure.tls.certificates.keyFile=/root/traefik/traefik.key
     ports:
       - "80:80"
       - "443:443"
