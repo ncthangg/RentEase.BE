@@ -14,11 +14,13 @@ services:
     networks:
       - traefik
 
+  # Dịch vụ bakingfe-runner
   bakingfe-runner:
     image: myoung34/github-runner:latest
     networks:
       - traefik
 
+  # Dịch vụ renteasebe-runner
   renteasebe-runner:
     image: myoung34/github-runner:latest
     networks:
@@ -37,10 +39,7 @@ services:
     environment:
       - DB_CONNECTION_STRING=Server=103.112.211.244,1433;Database=RentEase;User ID=SA;Password=Itjustapassword1@;TrustServerCertificate=True;Encrypt=false;
 
-networks:
-  traefik:
-    external: true
-
+  # Dịch vụ Traefik
   traefik:
     image: traefik:v2.5
     command:
@@ -48,8 +47,8 @@ networks:
       - "--providers.docker=true"
       - "--entrypoints.web.address=:80"
       - "--entrypoints.websecure.address=:443"
-      - "--certificatesresolvers.myresolver.acme.email=t0911609811@gmail.com"  # Nếu bạn sử dụng Let's Encrypt (ACME)
-      - "--certificatesresolvers.myresolver.acme.storage=/acme.json"  # Cung cấp nơi lưu trữ chứng chỉ ACME nếu bạn sử dụng Let's Encrypt
+      - "--certificatesresolvers.myresolver.acme.email=t0911609811@gmail.com"
+      - "--certificatesresolvers.myresolver.acme.storage=/acme.json"
     ports:
       - "80:80"
       - "443:443"
@@ -64,7 +63,6 @@ networks:
 networks:
   traefik:
     external: true
-
 
 
       
