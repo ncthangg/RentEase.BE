@@ -22,7 +22,7 @@ jobs:
       
     - name: Restart Traefik
       run: |
-        cd /root/traefik && docker compose -f docker-compose.traefik.yml restart traefik
+        sudo docker compose -f /root/traefik/docker-compose.traefik.yml restart traefik
       timeout-minutes: 15
 
     - name: Tear down (if necessary)
