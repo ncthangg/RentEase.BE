@@ -7,6 +7,8 @@
 # You can add other services your application may depend on here, such as a
 # database or a cache. For examples, see the Awesome Compose repository:
 # https://github.com/docker/awesome-compose
+version: '3.7'
+
 services:
   server:
     build:
@@ -35,21 +37,22 @@ services:
       - "--providers.docker=true"
       - "--entrypoints.web.address=:80"
       - "--entrypoints.websecure.address=:443"
-      - "--certificatesresolvers.myresolver.acme.certFile=/root/traefik/traefik.crt"  # Chứng chỉ SSL
-      - "--certificatesresolvers.myresolver.acme.keyFile=/root/traefik/traefik.key"   # Khóa riêng
+      - "--certificatesresolvers.myresolver.acme.email=t0911609811@gmail.com"  # Bạn có thể bỏ dòng này nếu không dùng ACME
     ports:
       - "80:80"
       - "443:443"
     volumes:
       - "/var/run/docker.sock:/var/run/docker.sock"
+      - "/root/traefik/traefik.crt:/root/traefik/traefik.crt"
+      - "/root/traefik/traefik.key:/root/traefik/traefik.key"
+      - "/root/traefik/dynamic.yaml:/etc/traefik/dynamic.yaml"  # Gắn cấu hình động
     networks:
       - traefik
-    restart: always
 
 networks:
   traefik:
     external: true
- 
+
       
 # The commented out section below is an example of how to define a PostgreSQL
 # database that your application can use. `depends_on` tells Docker Compose to
