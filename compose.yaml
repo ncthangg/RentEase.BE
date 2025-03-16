@@ -8,14 +8,23 @@
 # database or a cache. For examples, see the Awesome Compose repository:
 # https://github.com/docker/awesome-compose
 services:
-  server:
-    build:
-      context: .
-      target: final
-    environment:
-      - DB_CONNECTION_STRING=Server=103.112.211.244,1433;Database=RentEase;User ID=SA;Password=Itjustapassword1@;TrustServerCertificate=True;Encrypt=false;
+  # Dịch vụ bakingatelierbe-runner
+  bakingatelierbe-runner:
+    image: myoung34/github-runner:latest
+    networks:
+      - traefik
+
+  bakingfe-runner:
+    image: myoung34/github-runner:latest
+    networks:
+      - traefik
+
+  renteasebe-runner:
+    image: myoung34/github-runner:latest
+    networks:
+      - traefik
     ports:
-      - "6969:8080"   # Đảm bảo rằng bạn đã ánh xạ cổng đúng
+      - "6969:8080"  
     labels:
       - "traefik.enable=true"
       - "traefik.http.routers.rentease.rule=Host(`103.112.211.244`)"
@@ -24,9 +33,13 @@ services:
       - "traefik.http.routers.rentease.middlewares=redirect-to-https"
       - "traefik.http.routers.rentease-secure.rule=Host(`103.112.211.244`)"
       - "traefik.http.routers.rentease-secure.entrypoints=https"
-      - "traefik.http.routers.rentease-secure.tls.certresolver=myresolver"
-    networks:
-      - traefik
+      - "traefik.http.routers.rentease-secure.tls=true"
+    environment:
+      - DB_CONNECTION_STRING=Server=103.112.211.244,1433;Database=RentEase;User ID=SA;Password=Itjustapassword1@;TrustServerCertificate=True;Encrypt=false;
+
+networks:
+  traefik:
+    external: true
 
   traefik:
     image: traefik:v2.5
