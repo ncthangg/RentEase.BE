@@ -26,7 +26,7 @@ services:
     networks:
       - traefik
     ports:
-      - "6969:8080"  
+      - "6970:8080"  
     labels:
       - "traefik.enable=true"
       - "traefik.http.routers.rentease.rule=Host(`103.112.211.244`)"
