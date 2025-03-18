@@ -69,11 +69,11 @@ namespace RentEase.Service.Service.Main
                 Note = request.Note,
                 MoveInDate = request.MoveInDate,
                 MoveOutDate = request.MoveOutDate,
-                StatusId = (int)EnumType.StatusId.Pending,
+                ApproveStatusId = (int)EnumType.ApproveStatusId.Pending,
                 CreatedAt = DateTime.Now,
                 UpdatedAt = null,
                 DeletedAt = null,
-                Status = true
+                Status = false
             };
 
             var result = await _unitOfWork.PostRepository.CreateAsync(createItem);
@@ -106,11 +106,11 @@ namespace RentEase.Service.Service.Main
                 return new ServiceResult(Const.ERROR_EXCEPTION_CODE, "Bạn không có quyền hạn.");
             }
 
-            if (request.StatusId != (int)EnumType.StatusId.Pending &&
-                     request.StatusId != (int)EnumType.StatusId.Success &&
-                         request.StatusId != (int)EnumType.StatusId.Failed)
+            if (request.ApproveStatusId != (int)EnumType.ApproveStatusId.Pending &&
+                     request.ApproveStatusId != (int)EnumType.ApproveStatusId.Success &&
+                         request.ApproveStatusId != (int)EnumType.ApproveStatusId.Failed)
             {
-                return new ServiceResult(Const.ERROR_EXCEPTION_CODE, "StatusId không hợp lệ.");
+                return new ServiceResult(Const.ERROR_EXCEPTION_CODE, "ApproveStatusId không hợp lệ.");
             }
 
             var result = await _unitOfWork.PostRepository.UpdateAsync(item);

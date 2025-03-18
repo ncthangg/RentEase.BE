@@ -16,7 +16,7 @@
 
         public string? Note { get; set; }
 
-        public int StatusId { get; set; }
+        public int ApproveStatusId { get; set; }
 
         public DateTime CreatedAt { get; set; }
 

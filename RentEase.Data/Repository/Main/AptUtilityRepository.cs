@@ -1,5 +1,4 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using Microsoft.IdentityModel.Tokens;
 using RentEase.Common.DTOs;
 using RentEase.Data.DBContext;
 using RentEase.Data.Models;
@@ -44,7 +43,7 @@ namespace RentEase.Data.Repository.Main
             await _context.SaveChangesAsync();
             return true;
         }
-        
+
 
     }
 }

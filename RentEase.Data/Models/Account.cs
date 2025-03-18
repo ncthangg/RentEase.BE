@@ -19,13 +19,15 @@ public partial class Account
 
     public DateOnly? DateOfBirth { get; set; }
 
-    public string Gender { get; set; }
+    public int? GenderId { get; set; }
+
+    public int? OldId { get; set; }
 
     public string AvatarUrl { get; set; }
 
     public int RoleId { get; set; }
 
-    public bool? IsActive { get; set; }
+    public bool? IsVerify { get; set; }
 
     public DateTime CreatedAt { get; set; }
 
@@ -46,6 +48,8 @@ public partial class Account
     public virtual ICollection<Post> Posts { get; set; } = new List<Post>();
 
     public virtual ICollection<Review> Reviews { get; set; } = new List<Review>();
+
+    public virtual ICollection<AccountLikedApt> AccountLikedApt { get; set; } = new List<AccountLikedApt>();
 
     public virtual Role Role { get; set; }
 }

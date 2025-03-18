@@ -3,6 +3,7 @@
     public class OrderReq
     {
         public int TransactionTypeId { get; set; }
+        public string PostId { get; set; } = string.Empty;
 
         public decimal Amount { get; set; } = 0;
 
@@ -14,6 +15,8 @@
 
         public int TransactionTypeId { get; set; }
 
+        public string PostId { get; set; } = string.Empty;
+
         public string SenderId { get; set; } = string.Empty;
 
         public decimal Amount { get; set; } = 0;
@@ -24,6 +27,6 @@
 
         public DateTime? PaidAt { get; set; }
 
-        public int StatusId { get; set; }
+        public int ApproveStatusId { get; set; }
     }
 }

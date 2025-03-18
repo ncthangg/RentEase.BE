@@ -39,7 +39,7 @@ namespace RentEase.Data.Repository.Main
                 (string.IsNullOrEmpty(fullName) || a.FullName.Contains(fullName)) &&
                 (string.IsNullOrEmpty(email) || a.Email.Contains(email)) &&
                 (string.IsNullOrEmpty(phoneNumber) || a.PhoneNumber.Contains(phoneNumber)) &&
-                (!isActive.HasValue || a.IsActive == isActive.Value) &&
+                (!isActive.HasValue || a.IsVerify == isActive.Value) &&
                 (!status.HasValue || a.Status == status.Value); ;
 
             return await GetPagedAsync(filter, null, page, pageSize);

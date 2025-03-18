@@ -130,10 +130,10 @@ namespace RentEase.Service.Service.Main
                 PasswordHash = hashedPassword,
                 PhoneNumber = request.PhoneNumber,
                 DateOfBirth = request.DateOfBirth,
-                Gender = request.Gender,
+                GenderId = request.GenderId,
                 AvatarUrl = request.AvatarUrl,
                 RoleId = request.RoleId,
-                IsActive = true,
+                IsVerify = true,
                 CreatedAt = DateTime.Now,
                 UpdatedAt = null,
                 DeletedAt = null,
@@ -149,7 +149,7 @@ namespace RentEase.Service.Service.Main
             return new ServiceResult(Const.ERROR_EXCEPTION_CODE, Const.ERROR_EXCEPTION_MSG);
         }
         public async Task<ServiceResult> CreateByGuest(RegisterReq request)
-        {                
+        {
             var itemExist = await this.GetByEmailOrPhone(request.Username);
 
             var itemData = _mapper.Map<Account>(itemExist.Data);
@@ -180,10 +180,11 @@ namespace RentEase.Service.Service.Main
                         PasswordHash = hashedPassword,
                         PhoneNumber = null,
                         DateOfBirth = null,
-                        Gender = null,
+                        GenderId = null,
+                        OldId = null,
                         AvatarUrl = null,
                         RoleId = request.RoleId,
-                        IsActive = false,
+                        IsVerify = false,
                         CreatedAt = DateTime.Now,
                         UpdatedAt = null,
                         DeletedAt = null,
@@ -200,10 +201,11 @@ namespace RentEase.Service.Service.Main
                         PasswordHash = hashedPassword,
                         PhoneNumber = request.Username,
                         DateOfBirth = null,
-                        Gender = null,
+                        GenderId = null,
+                        OldId = null,
                         AvatarUrl = null,
                         RoleId = request.RoleId,
-                        IsActive = false,
+                        IsVerify = false,
                         CreatedAt = DateTime.Now,
                         UpdatedAt = null,
                         DeletedAt = null,
@@ -262,10 +264,10 @@ namespace RentEase.Service.Service.Main
                 PasswordHash = request.PasswordHash,
                 PhoneNumber = request.PhoneNumber,
                 DateOfBirth = request.DateOfBirth,
-                Gender = request.Gender,
+                GenderId = request.GenderId,
                 AvatarUrl = request.AvatarUrl,
                 RoleId = request.RoleId,
-                IsActive = item.IsActive,
+                IsVerify = item.IsVerify,
                 CreatedAt = item.CreatedAt,
                 UpdatedAt = DateTime.Now,
                 DeletedAt = null,

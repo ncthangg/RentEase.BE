@@ -24,6 +24,6 @@ public class TransactionRes
 
     public DateTime? PaidAt { get; set; }
 
-    public int StatusId { get; set; }
+    public int ApproveStatusId { get; set; }
 
 }

@@ -8,7 +8,6 @@
             Lessor = 2,
             Lesses = 3
         }
-
         public enum GenderId
         {
             Male = 1,
@@ -23,11 +22,24 @@
             Age30To40 = 4
         }
 
-        public enum StatusId
+
+        public enum AptStatusId
+        {
+            Available = 1,
+            Full = 2,
+            UnAvailable = 3
+        }
+        public enum ApproveStatusId
         {
             Pending = 1,      // Đang xử lý
             Success = 2,      // Thành công
             Failed = 3        // Thất bại
+        }
+
+        public enum LiveStatusId
+        {
+            Active = 1,       // Đang hoạt động
+            MoveOut = 2       // Rời đi
         }
 
         public enum PaymentStatusId
@@ -36,18 +48,6 @@
             PAID = 2,      // Đã thanh toán
             PROCESSING = 3,      // Đang xử lý
             CANCELLED = 4        // Hủy
-        }
-
-        public enum LiveStatusId
-        {
-            Active = 1,       // Đang hoạt động
-            MoveOut = 2       // Rời đi
-        }
-        public enum AptStatusId
-        {
-            Available = 1,
-            Full = 2,
-            UnAvailable = 3
         }
 
     }

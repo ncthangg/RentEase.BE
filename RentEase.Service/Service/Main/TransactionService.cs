@@ -1,15 +1,10 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Http;
-using Microsoft.Identity.Client;
 using RentEase.Common.Base;
 using RentEase.Common.DTOs.Dto;
-using RentEase.Common.DTOs.Response;
 using RentEase.Data;
 using RentEase.Data.Models;
 using RentEase.Service.Service.Base;
-using RentEase.Service.Service.Payment;
-using System.Text.Json;
-using System.Text.Json.Serialization;
 
 namespace RentEase.Service.Service.Main
 {
@@ -49,6 +44,6 @@ namespace RentEase.Service.Service.Main
             }
         }
 
-        
+
     }
 }

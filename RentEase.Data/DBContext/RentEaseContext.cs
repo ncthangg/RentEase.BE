@@ -39,6 +39,8 @@ public partial class RentEaseContext : DbContext
 
     public virtual DbSet<Post> Posts { get; set; }
 
+    public virtual DbSet<PostCategory> PostCategory { get; set; }
+
     public virtual DbSet<PostRequire> PostRequires { get; set; }
 
     public virtual DbSet<Review> Reviews { get; set; }
@@ -50,6 +52,7 @@ public partial class RentEaseContext : DbContext
     public virtual DbSet<TransactionType> TransactionTypes { get; set; }
 
     public virtual DbSet<Utility> Utilities { get; set; }
+    public virtual DbSet<AccountLikedApt> AccountLikedApts { get; set; }
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     => optionsBuilder.UseSqlServer("Data Source=103.112.211.244,1433;Initial Catalog=RentEase;Persist Security Info=True;User ID=sa;Password=Itjustapassword1@;TrustServerCertificate=True;Encrypt=false").UseQueryTrackingBehavior(QueryTrackingBehavior.NoTracking);
@@ -100,8 +103,8 @@ public partial class RentEaseContext : DbContext
             entity.Property(e => e.FullName)
                 .IsRequired()
                 .HasMaxLength(255);
-            entity.Property(e => e.Gender).HasMaxLength(10);
-            entity.Property(e => e.IsActive).HasDefaultValue(false);
+            entity.Property(e => e.GenderId).HasMaxLength(10);
+            entity.Property(e => e.IsVerify).HasDefaultValue(false);
             entity.Property(e => e.PasswordHash)
                 .IsRequired()
                 .HasMaxLength(255);
@@ -182,7 +185,6 @@ public partial class RentEaseContext : DbContext
                 .IsRequired()
                 .HasMaxLength(255);
             entity.Property(e => e.OwnerId)
-                .IsRequired()
                 .HasMaxLength(255);
             entity.Property(e => e.Rating).HasDefaultValue(0.0);
             entity.Property(e => e.Status).HasDefaultValue(false);

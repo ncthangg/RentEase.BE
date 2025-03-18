@@ -68,7 +68,7 @@ namespace RentEase.API.Controllers.Main
                 {
                     StatusCode = HttpStatusCode.OK,
                     Message = result.Message,
-                    Data= (IEnumerable<string>)result.Data! 
+                    Data = (IEnumerable<string>)result.Data!
                 });
             }
             catch (Exception ex)
@@ -81,8 +81,8 @@ namespace RentEase.API.Controllers.Main
             }
         }
 
-        [HttpPut("UpdateSingleImage")]
-        public async Task<IActionResult> UpdateSingleImage([FromQuery] int id, [FromQuery] PostSingleAptImageReq request)
+        [HttpPut]
+        public async Task<IActionResult> Update([FromQuery] int id, [FromQuery] PostSingleAptImageReq request)
         {
             try
             {
@@ -112,9 +112,9 @@ namespace RentEase.API.Controllers.Main
         }
 
         [HttpDelete]
-        public async Task<IActionResult> DeleteImage(int imageId)
+        public async Task<IActionResult> Delete(int imageId)
         {
-            var result = await _AptImageService.Delete(imageId);
+            var result = await _AptImageService.DeleteSingleImage(imageId);
             if (result.Status == Const.SUCCESS_ACTION_CODE)
             {
                 return Ok(new ApiRes<string>

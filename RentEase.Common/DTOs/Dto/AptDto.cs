@@ -2,6 +2,12 @@
 
 public class AptReq
 {
+    public string OwnerId { get; set; } = string.Empty;
+
+    public string OwnerName { get; set; } = string.Empty;
+
+    public string OwnerPhone { get; set; } = string.Empty;
+
     public string Name { get; set; } = string.Empty;
 
     public double Area { get; set; } = 0;
@@ -37,6 +43,10 @@ public class AptRes : Base
 
     public string OwnerId { get; set; } = string.Empty;
 
+    public string OwnerName { get; set; } = string.Empty;
+
+    public string OwnerPhone { get; set; } = string.Empty;
+
     public string Name { get; set; } = string.Empty;
 
     public double? Area { get; set; }
@@ -63,7 +73,7 @@ public class AptRes : Base
 
     public int NumberOfSlot { get; set; }
 
-    public int StatusId { get; set; }
+    public int ApproveStatusId { get; set; }
 
     public string? Note { get; set; }
 

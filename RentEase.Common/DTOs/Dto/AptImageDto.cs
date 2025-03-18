@@ -1,6 +1,4 @@
 ﻿using Microsoft.AspNetCore.Http;
-using System.Collections.Generic;
-using static System.Net.Mime.MediaTypeNames;
 
 namespace RentEase.Common.DTOs.Dto;
 

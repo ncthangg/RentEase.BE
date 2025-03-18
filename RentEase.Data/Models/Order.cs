@@ -11,6 +11,8 @@ public partial class Order
 
     public int TransactionTypeId { get; set; }
 
+    public string PostId { get; set; }
+
     public string SenderId { get; set; }
 
     public decimal Amount { get; set; }
@@ -21,9 +23,11 @@ public partial class Order
 
     public DateTime? PaidAt { get; set; }
 
-    public DateTime? CancelleddAt { get; set; }
+    public DateTime? CancelledAt { get; set; }
 
     public int PaymentStatusId { get; set; }
+
+    public virtual Post Post { get; set; }
 
     public virtual Account Sender { get; set; }
 

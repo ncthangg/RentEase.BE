@@ -60,7 +60,7 @@ namespace RentEase.Service.Service.Authenticate
                     return new ServiceResult(Const.ERROR_EXCEPTION_CODE, "Tài khoản không tồn tại hoặc Password không đúng");
                 }
 
-                if (!(bool)accountData.IsActive!)
+                if (!(bool)accountData.IsVerify!)
                 {
                     return new ServiceResult(Const.ERROR_EXCEPTION_CODE, "Tài khoản chưa được xác minh.");
                 }

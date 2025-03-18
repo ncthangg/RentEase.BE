@@ -10,30 +10,30 @@ namespace RentEase.API.Controllers.Main
     [Route("api/[controller]")]
     [ApiController]
     [Authorize(Roles = "1,2,3")]
-    public class AptUtilityController : Controller
+    public class AccountLikedAptController : Controller
     {
-        private readonly IAptUtilityService _aptUtilityService;
-        public AptUtilityController(IAptUtilityService aptUtilityService)
+        private readonly IAccountLikedAptService _accountLikedAptService;
+        public AccountLikedAptController(IAccountLikedAptService accountLikedAptService)
         {
-            _aptUtilityService = aptUtilityService;
+            _accountLikedAptService = accountLikedAptService;
         }
-        [HttpPost("GetByAptId")]
-        public async Task<IActionResult> GetByAptId([FromQuery] string aptId, [FromQuery] int page = 1, [FromQuery] int pageSize = 10)
+        [HttpPost("GetByAccountId")]
+        public async Task<IActionResult> GetByAccountId([FromQuery] string accountId, [FromQuery] int page = 1, [FromQuery] int pageSize = 10)
         {
             try
             {
-                if (string.IsNullOrEmpty(aptId))
+                if (string.IsNullOrEmpty(accountId))
                 {
                     return BadRequest(new { message = "Dữ liệu không hợp lệ" });
                 }
 
-                var result = await _aptUtilityService.GetByAptId(aptId, page, pageSize);
+                var result = await _accountLikedAptService.GetByAccountId(accountId, page, pageSize);
 
-                return Ok(new ApiRes<IEnumerable<AptUtilityRes>>
+                return Ok(new ApiRes<IEnumerable<AccountLikedAptRes>>
                 {
                     StatusCode = HttpStatusCode.OK,
                     Message = result.Message,
-                    Data = (IEnumerable<AptUtilityRes>)result.Data!
+                    Data = (IEnumerable<AccountLikedAptRes>)result.Data!
                 });
             }
             catch (Exception ex)
@@ -46,25 +46,22 @@ namespace RentEase.API.Controllers.Main
             }
         }
 
-        [HttpPost("Add-Utilities")]
-        public async Task<IActionResult> AddUtilities([FromBody] AptUtilityReq request)
+        [HttpPost("Add-Like")]
+        public async Task<IActionResult> AddLike([FromBody] AccountLikedAptReq request)
         {
             try
             {
-                if (string.IsNullOrEmpty(request.AptId) || request.Utilities == null || !request.Utilities.Any())
+                if (string.IsNullOrEmpty(request.AccountId) || string.IsNullOrEmpty(request.AptId))
                 {
                     return BadRequest(new { message = "Dữ liệu không hợp lệ" });
                 }
 
-                foreach (var utility in request.Utilities)
-                {
-                    await _aptUtilityService.Create(request.AptId, utility.UtilityId, utility.Note);
-                }
+                await _accountLikedAptService.Create(request.AccountId, request.AptId);
 
                 return Ok(new ApiRes<string>
                 {
                     StatusCode = HttpStatusCode.OK,
-                    Message = "Thêm tiện ích thành công"
+                    Message = "Thêm like thành công"
                 });
             }
             catch (Exception ex)
@@ -77,25 +74,22 @@ namespace RentEase.API.Controllers.Main
             }
         }
 
-        [HttpPost("Remove-Utilities")]
-        public async Task<IActionResult> RemoveUtilities([FromBody] AptUtilityReq request)
+        [HttpPost("Remove-Liked")]
+        public async Task<IActionResult> RemoveLiked([FromBody] AccountLikedAptReq request)
         {
             try
             {
-                if (string.IsNullOrEmpty(request.AptId) || request.Utilities == null || !request.Utilities.Any())
+                if (string.IsNullOrEmpty(request.AccountId) || string.IsNullOrEmpty(request.AptId))
                 {
                     return BadRequest(new { message = "Dữ liệu không hợp lệ" });
                 }
 
-                foreach (var utility in request.Utilities)
-                {
-                    await _aptUtilityService.Remove(request.AptId, utility.UtilityId);
-                }
+                await _accountLikedAptService.Remove(request.AccountId, request.AptId);
 
                 return Ok(new ApiRes<string>
                 {
                     StatusCode = HttpStatusCode.OK,
-                    Message = "Xóa tiện ích thành công"
+                    Message = "Xóa like thành công"
                 });
             }
             catch (Exception ex)
@@ -108,22 +102,22 @@ namespace RentEase.API.Controllers.Main
             }
         }
 
-        [HttpPost("Remove-All-Utilities")]
-        public async Task<IActionResult> RemoveAllUtility([FromQuery] string aptId)
+        [HttpPost("Remove-All-Liked")]
+        public async Task<IActionResult> RemoveAllLiked([FromQuery] string accountId)
         {
             try
             {
-                if (string.IsNullOrEmpty(aptId))
+                if (string.IsNullOrEmpty(accountId))
                 {
                     return BadRequest(new { message = "Dữ liệu không hợp lệ" });
                 }
 
-                await _aptUtilityService.RemoveAll(aptId);
+                await _accountLikedAptService.RemoveAll(accountId);
 
                 return Ok(new ApiRes<string>
                 {
                     StatusCode = HttpStatusCode.OK,
-                    Message = "Xóa tiện ích thành công"
+                    Message = "Xóa like thành công"
                 });
             }
             catch (Exception ex)

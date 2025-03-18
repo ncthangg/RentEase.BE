@@ -1,10 +1,8 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using Microsoft.Identity.Client;
 using RentEase.Common.DTOs;
 using RentEase.Data.DBContext;
 using RentEase.Data.Models;
 using RentEase.Data.Repository.Base;
-using System.Linq;
 
 namespace RentEase.Data.Repository.Main
 {
@@ -44,7 +42,7 @@ namespace RentEase.Data.Repository.Main
                 );
         }
 
-        public async Task<PagedResult<Transaction>> GetByStatusId(int? statusId, int page, int pageSize)
+        public async Task<PagedResult<Transaction>> GetByApproveStatusId(int? statusId, int page, int pageSize)
         {
             return await GetPagedAsync(
                 filter: f => statusId == null || f.PaymentStatusId == statusId,

@@ -6,7 +6,6 @@ using RentEase.Common.DTOs.Response;
 using RentEase.Service;
 using RentEase.Service.Service.Payment;
 using System.Net;
-using System.Threading.Channels;
 
 namespace RentEase.API.Controllers.Payment
 {
@@ -58,7 +57,7 @@ namespace RentEase.API.Controllers.Payment
         public async Task<IActionResult> PaymentCallback([FromQuery] PaymentCallback request)
         {
             try
-            {   
+            {
                 if (request == null || string.IsNullOrEmpty(request.Id) || string.IsNullOrEmpty(request.OrderCode))
                 {
                     return BadRequest(new ApiRes<string>

@@ -9,6 +9,7 @@ namespace RentEase.Data
 {
     public class UnitOfWork
     {
+        private AccountLikedAptRepository _accountLikedAptRepository;
         private AccountRepository _accountRepository;
         private AccountTokenRepository _accountTokenRepository;
         private AccountVerificationRepository _accounVerificationRepository;
@@ -26,13 +27,14 @@ namespace RentEase.Data
 
         private PostRepository _postRepository;
         private PostRequireRepository _postRequireRepository;
+        private PostCategoryRepository _postCategoryRepository;
 
         private readonly RentEaseContext _dbContext;
         public UnitOfWork()
         {
             _dbContext ??= new RentEaseContext();
         }
-
+        public AccountLikedAptRepository AccountLikedAptRepository => _accountLikedAptRepository ??= new Repository.Main.AccountLikedAptRepository(_dbContext);
         public AccountRepository AccountRepository => _accountRepository ??= new Repository.Main.AccountRepository(_dbContext);
         public AccountTokenRepository AccountTokenRepository => _accountTokenRepository ??= new Repository.Main.AccountTokenRepository(_dbContext);
         public AccountVerificationRepository AccountVerificationRepository => _accounVerificationRepository ??= new Repository.Main.AccountVerificationRepository(_dbContext);
@@ -49,7 +51,7 @@ namespace RentEase.Data
         public TransactionRepository TransactionRepository => _transactionRepository ??= new Repository.Main.TransactionRepository(_dbContext);
         public PostRepository PostRepository => _postRepository ??= new Repository.Main.PostRepository(_dbContext);
         public PostRequireRepository PostRequireRepository => _postRequireRepository ??= new Repository.Main.PostRequireRepository(_dbContext);
-
+        public PostCategoryRepository PostCategoryRepository => _postCategoryRepository ??= new Repository.Sub.PostCategoryRepository(_dbContext);
         public GenericRepository<T> GetRepository<T>() where T : class
         {
             return new GenericRepository<T>();

@@ -6,7 +6,8 @@ public class AccountReq
     public string FullName { get; set; } = string.Empty;
     public string PasswordHash { get; set; } = string.Empty;
     public DateOnly? DateOfBirth { get; set; }
-    public string Gender { get; set; } = string.Empty;
+    public int GenderId { get; set; }
+    public int OldId { get; set; }
     public string AvatarUrl { get; set; } = string.Empty;
     public int RoleId { get; set; }
 }
@@ -24,11 +25,13 @@ public class AccountRes : Base
 
     public DateOnly? DateOfBirth { get; set; }
 
-    public string? Gender { get; set; }
+    public int? GenderId { get; set; }
+
+    public int? OldId { get; set; }
 
     public string? AvatarUrl { get; set; }
 
     public int RoleId { get; set; }
 
-    public bool? IsActive { get; set; }
+    public bool? IsVerify { get; set; }
 }

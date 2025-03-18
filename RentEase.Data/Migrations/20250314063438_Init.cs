@@ -1,5 +1,4 @@
-﻿using System;
-using Microsoft.EntityFrameworkCore.Migrations;
+﻿using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
@@ -110,7 +109,7 @@ namespace RentEase.Data.Migrations
                     AptStatusId = table.Column<int>(type: "int", nullable: false),
                     NumberOfRoom = table.Column<int>(type: "int", nullable: false),
                     NumberOfSlot = table.Column<int>(type: "int", nullable: false),
-                    StatusId = table.Column<int>(type: "int", nullable: false),
+                    ApproveStatusId = table.Column<int>(type: "int", nullable: false),
                     Note = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Rating = table.Column<double>(type: "float", nullable: true, defaultValue: 0.0),
                     CreatedAt = table.Column<DateTime>(type: "datetime", nullable: false),
@@ -143,10 +142,10 @@ namespace RentEase.Data.Migrations
                     PasswordHash = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: false),
                     PhoneNumber = table.Column<string>(type: "nvarchar(15)", maxLength: 15, nullable: true),
                     DateOfBirth = table.Column<DateOnly>(type: "date", nullable: true),
-                    Gender = table.Column<string>(type: "nvarchar(10)", maxLength: 10, nullable: true),
+                    GenderId = table.Column<string>(type: "nvarchar(10)", maxLength: 10, nullable: true),
                     AvatarUrl = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     RoleId = table.Column<int>(type: "int", nullable: false),
-                    IsActive = table.Column<bool>(type: "bit", nullable: true, defaultValue: false),
+                    IsVerify = table.Column<bool>(type: "bit", nullable: true, defaultValue: false),
                     CreatedAt = table.Column<DateTime>(type: "datetime", nullable: false),
                     UpdatedAt = table.Column<DateTime>(type: "datetime", nullable: true),
                     DeletedAt = table.Column<DateTime>(type: "datetime", nullable: true),
@@ -269,7 +268,7 @@ namespace RentEase.Data.Migrations
                     IncurredCost = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
                     CreatedAt = table.Column<DateTime>(type: "datetime", nullable: false),
                     PaidAt = table.Column<DateTime>(type: "datetime", nullable: true),
-                    CancelleddAt = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    CancelledAt = table.Column<DateTime>(type: "datetime2", nullable: true),
                     PaymentStatusId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
@@ -303,7 +302,7 @@ namespace RentEase.Data.Migrations
                     Note = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     MoveInDate = table.Column<DateOnly>(type: "date", nullable: false),
                     MoveOutDate = table.Column<DateOnly>(type: "date", nullable: true),
-                    StatusId = table.Column<int>(type: "int", nullable: false),
+                    ApproveStatusId = table.Column<int>(type: "int", nullable: false),
                     CreatedAt = table.Column<DateTime>(type: "datetime", nullable: false),
                     UpdatedAt = table.Column<DateTime>(type: "datetime", nullable: true),
                     DeletedAt = table.Column<DateTime>(type: "datetime", nullable: true),
@@ -366,7 +365,7 @@ namespace RentEase.Data.Migrations
                     Note = table.Column<string>(type: "nvarchar(500)", maxLength: 500, nullable: true),
                     CreatedAt = table.Column<DateTime>(type: "datetime", nullable: false),
                     PaidAt = table.Column<DateTime>(type: "datetime", nullable: true),
-                    CancelleddAt = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    CancelledAt = table.Column<DateTime>(type: "datetime2", nullable: true),
                     PaymentStatusId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
@@ -394,7 +393,7 @@ namespace RentEase.Data.Migrations
                     AccountId = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: false),
                     PostId = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: false),
                     Note = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    StatusId = table.Column<int>(type: "int", nullable: false),
+                    ApproveStatusId = table.Column<int>(type: "int", nullable: false),
                     CreatedAt = table.Column<DateTime>(type: "datetime", nullable: false),
                     UpdatedAt = table.Column<DateTime>(type: "datetime", nullable: true)
                 },

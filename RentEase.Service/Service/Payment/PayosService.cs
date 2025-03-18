@@ -1,9 +1,7 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Http;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using RentEase.Common.Base;
-using RentEase.Common.DTOs;
 using RentEase.Common.DTOs.Dto;
 using RentEase.Common.DTOs.Response;
 using RentEase.Data;
@@ -12,7 +10,6 @@ using RentEase.Service.Helper;
 using System.Text;
 using System.Text.Json;
 using System.Text.Json.Serialization;
-using static RentEase.Common.Base.EnumType;
 
 namespace RentEase.Service.Service.Payment
 {
@@ -87,7 +84,7 @@ namespace RentEase.Service.Service.Payment
                     TotalAmount = orderItem.Amount + orderItem.IncurredCost,
                     Note = request.Note,
                     CreatedAt = DateTime.Now,
-                    PaymentStatusId = (int)EnumType.StatusId.Pending
+                    PaymentStatusId = (int)EnumType.ApproveStatusId.Pending
                 };
 
                 await _unitOfWork.TransactionRepository.CreateAsync(createItem);
@@ -115,7 +112,7 @@ namespace RentEase.Service.Service.Payment
                     TotalAmount = orderItem.Amount + orderItem.IncurredCost,
                     Note = request.Note,
                     CreatedAt = DateTime.Now,
-                    PaymentStatusId = (int)EnumType.StatusId.Pending
+                    PaymentStatusId = (int)EnumType.ApproveStatusId.Pending
                 };
 
                 await _unitOfWork.TransactionRepository.CreateAsync(createItem);
@@ -173,7 +170,7 @@ namespace RentEase.Service.Service.Payment
                 "CANCELLED" => (int)EnumType.PaymentStatusId.CANCELLED,
             };
 
-            if (order.PaymentStatusId == (int)EnumType.PaymentStatusId.PAID && 
+            if (order.PaymentStatusId == (int)EnumType.PaymentStatusId.PAID &&
                    transaction.PaymentStatusId == (int)EnumType.PaymentStatusId.PAID)
             {
                 order.PaidAt = DateTime.Now;
@@ -181,8 +178,8 @@ namespace RentEase.Service.Service.Payment
             }
             else
             {
-                order.CancelleddAt = DateTime.Now;
-                transaction.CancelleddAt = DateTime.Now;
+                order.CancelledAt = DateTime.Now;
+                transaction.CancelledAt = DateTime.Now;
             }
 
 

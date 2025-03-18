@@ -1,13 +1,10 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Http;
-using Microsoft.EntityFrameworkCore;
 using RentEase.Common.Base;
 using RentEase.Common.DTOs.Dto;
 using RentEase.Data;
 using RentEase.Data.Models;
 using RentEase.Service.Service.Base;
-using SixLabors.ImageSharp.Formats.Jpeg;
-using static System.Net.Mime.MediaTypeNames;
 
 namespace RentEase.Service.Service.Main
 {
@@ -18,7 +15,7 @@ namespace RentEase.Service.Service.Main
         Task<ServiceResult> GetByAptId(string aptId);
         Task<ServiceResult> Create(string aptId, List<IFormFile> files);
         Task<ServiceResult> UpdateSingleImage(int id, PostSingleAptImageReq request);
-        Task<ServiceResult> Delete(int id);
+        Task<ServiceResult> DeleteSingleImage(int id);
 
     }
     public class AptImageService : BaseService<AptImage, AptImageRes>, IAptImageService
@@ -232,7 +229,7 @@ namespace RentEase.Service.Service.Main
             }
         }
 
-        public async Task<ServiceResult> Delete(int id)
+        public async Task<ServiceResult> DeleteSingleImage(int id)
         {
             string accountId = _helperWrapper.TokenHelper.GetAccountIdFromHttpContextAccessor(_httpContextAccessor);
             string roleId = _helperWrapper.TokenHelper.GetRoleIdFromHttpContextAccessor(_httpContextAccessor);

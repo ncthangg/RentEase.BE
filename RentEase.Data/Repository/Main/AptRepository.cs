@@ -19,13 +19,13 @@ namespace RentEase.Data.Repository.Main
         {
             return await GetPagedAsync(
                 filter: (f => f.OwnerId == accountId &&
-                            (statusId == null || f.StatusId == statusId) &&
+                            (statusId == null || f.ApproveStatusId == statusId) &&
                                  (status == null || f.Status == status)),
                 orderBy: q => q.OrderByDescending(o => o.CreatedAt),
                 page: page,
                 pageSize: pageSize,
                 includes: q => q
-                         .Include(i => i.AptStatus)     
+                         .Include(i => i.AptStatus)
                          .Include(i => i.AptCategory)
             );
         }

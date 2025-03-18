@@ -2,6 +2,8 @@
 {
     public class PostReq
     {
+        public int PostCategoryId { get; set; }
+
         public string AptId { get; set; } = string.Empty;
 
         public string Title { get; set; } = string.Empty;
@@ -19,11 +21,13 @@
         public DateOnly MoveInDate { get; set; }
 
         public DateOnly? MoveOutDate { get; set; }
-        public int StatusId { get; set; } = 1;
+        public int ApproveStatusId { get; set; } = 1;
     }
     public class PostRes : Base
     {
         public string PostId { get; set; } = string.Empty;
+
+        public int PostCategoryId { get; set; }
 
         public string AccountId { get; set; } = string.Empty;
 
@@ -45,6 +49,6 @@
 
         public DateOnly? MoveOutDate { get; set; }
 
-        public int StatusId { get; set; }
+        public int ApproveStatusId { get; set; }
     }
 }

@@ -1,6 +1,4 @@
-﻿using RentEase.Common.DTOs.Dto;
-
-namespace RentEase.Common.DTOs.Authenticate
+﻿namespace RentEase.Common.DTOs.Authenticate
 {
     public class RegisterReq
     {

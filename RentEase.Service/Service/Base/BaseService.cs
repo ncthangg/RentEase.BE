@@ -25,7 +25,7 @@ namespace RentEase.Service.Service.Base
                 var entityType = typeof(T);
                 var statusProperty = entityType.GetProperty("Status", BindingFlags.Public | BindingFlags.Instance | BindingFlags.FlattenHierarchy);
 
-                if (status.HasValue && statusProperty != null && 
+                if (status.HasValue && statusProperty != null &&
                     (statusProperty.PropertyType == typeof(bool) || statusProperty.PropertyType == typeof(bool?)))
                 {
                     var parameter = Expression.Parameter(typeof(T), "o");

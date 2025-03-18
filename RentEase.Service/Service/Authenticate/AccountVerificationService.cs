@@ -2,7 +2,6 @@
 using Microsoft.Extensions.Configuration;
 using RentEase.Common.Base;
 using RentEase.Common.DTOs.Authenticate;
-using RentEase.Common.DTOs.Dto;
 using RentEase.Data;
 using RentEase.Data.Models;
 
@@ -82,7 +81,7 @@ namespace RentEase.Service.Service.Authenticate
             if (account == null)
                 return new ServiceResult(Const.ERROR_EXCEPTION_CODE, "User not found!");
 
-            if ((bool)account.IsActive!)
+            if ((bool)account.IsVerify!)
                 return new ServiceResult(Const.ERROR_EXCEPTION_CODE, "Account already verified!");
 
             bool isValid = await this.IsVerificationCodeValid(account.AccountId, verificationCode);
@@ -91,7 +90,7 @@ namespace RentEase.Service.Service.Authenticate
                 return new ServiceResult(Const.ERROR_EXCEPTION_CODE, "Invalid or expired verification code!");
 
             // Nếu hợp lệ, cập nhật trạng thái tài khoản
-            account.IsActive = true;
+            account.IsVerify = true;
 
             var resultUpdateAccount = await _unitOfWork.AccountRepository.UpdateAsync(account);
             if (resultUpdateAccount < 0)

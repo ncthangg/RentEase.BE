@@ -4,7 +4,6 @@ using RentEase.Common.DTOs;
 using RentEase.Common.DTOs.Authenticate;
 using RentEase.Common.DTOs.Dto;
 using RentEase.Common.DTOs.Request;
-using RentEase.Data.Models;
 using RentEase.Service;
 using RentEase.Service.Service.Authenticate;
 using System.Net;

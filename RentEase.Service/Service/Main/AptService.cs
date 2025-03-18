@@ -48,12 +48,12 @@ namespace RentEase.Service.Service.Main
         }
         public async Task<ServiceResult> Create(AptReq request)
         {
-            string accountId = _helperWrapper.TokenHelper.GetAccountIdFromHttpContextAccessor(_httpContextAccessor);
+            //string accountId = _helperWrapper.TokenHelper.GetAccountIdFromHttpContextAccessor(_httpContextAccessor);
 
-            if (string.IsNullOrEmpty(accountId))
-            {
-                return new ServiceResult(Const.ERROR_EXCEPTION_CODE, "Lỗi khi lấy info");
-            }
+            //if (string.IsNullOrEmpty(accountId))
+            //{
+            //    return new ServiceResult(Const.ERROR_EXCEPTION_CODE, "Lỗi khi lấy info");
+            //}
 
             if (await EntityExistsAsync("Name", request.Name))
             {
@@ -67,7 +67,9 @@ namespace RentEase.Service.Service.Main
             var createItem = new Apt()
             {
                 AptId = aptId,
-                OwnerId = accountId,
+                OwnerId = request.OwnerId,
+                OwnerName = request.OwnerName,
+                OwnerPhone = request.OwnerPhone,
                 Name = request.Name,
                 Area = request.Area,
                 Address = request.Address,
@@ -81,12 +83,12 @@ namespace RentEase.Service.Service.Main
                 AptStatusId = request.AptStatusId,
                 NumberOfRoom = request.NumberOfRoom,
                 NumberOfSlot = request.NumberOfSlot,
-                StatusId = (int)EnumType.StatusId.Pending,
+                ApproveStatusId = (int)EnumType.ApproveStatusId.Pending,
                 Note = request.Note,
                 CreatedAt = DateTime.Now,
                 UpdatedAt = null,
                 DeletedAt = null,
-                Status = true,
+                Status = false,
             };
 
             var result = await _unitOfWork.AptRepository.CreateAsync(createItem);
@@ -126,8 +128,8 @@ namespace RentEase.Service.Service.Main
 
             //if (accountId == 1)
             //{
-            //    item.StatusId = (int)aptStatus;
-            //    item.ApproveStatusId = (int)approveStatus;
+            //    item.ApproveStatusId = (int)aptStatus;
+            //    item.ApproveApproveStatusId = (int)approveStatus;
             //    item.UpdatedAt = DateTime.Now;
 
             //    var result1 = await _unitOfWork.AptRepository.UpdateAsync(item);
@@ -163,7 +165,7 @@ namespace RentEase.Service.Service.Main
                 AptStatusId = item.AptStatusId,
                 NumberOfRoom = request.NumberOfRoom,
                 NumberOfSlot = request.NumberOfSlot,
-                StatusId = item.StatusId,
+                ApproveStatusId = item.ApproveStatusId,
                 Note = request.Note,
                 CreatedAt = item.CreatedAt,
                 UpdatedAt = DateTime.Now,

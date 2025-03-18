@@ -1,5 +1,4 @@
-﻿using RentEase.Common.DTOs.Response;
-using System.Security.Cryptography;
+﻿using System.Security.Cryptography;
 using System.Text;
 
 namespace RentEase.Service.Helper

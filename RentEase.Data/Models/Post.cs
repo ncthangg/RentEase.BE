@@ -9,6 +9,8 @@ public partial class Post
 {
     public string PostId { get; set; }
 
+    public int PostCategoryId { get; set; }
+
     public string AccountId { get; set; }
 
     public string AptId { get; set; }
@@ -29,7 +31,7 @@ public partial class Post
 
     public DateOnly? MoveOutDate { get; set; }
 
-    public int StatusId { get; set; }
+    public int ApproveStatusId { get; set; }
 
     public DateTime CreatedAt { get; set; }
 
@@ -43,5 +45,9 @@ public partial class Post
 
     public virtual Apt Apt { get; set; }
 
+    public virtual PostCategory PostCategory { get; set; }
+
     public virtual ICollection<PostRequire> PostRequires { get; set; } = new List<PostRequire>();
+
+    public virtual ICollection<Order> Orders { get; set; } = new List<Order>();
 }

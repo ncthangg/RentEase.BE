@@ -11,6 +11,10 @@ public partial class Apt
 
     public string OwnerId { get; set; }
 
+    public string OwnerName { get; set; }
+
+    public string OwnerPhone { get; set; }
+
     public string Name { get; set; }
 
     public double? Area { get; set; }
@@ -37,11 +41,11 @@ public partial class Apt
 
     public int NumberOfSlot { get; set; }
 
-    public int StatusId { get; set; }
-
     public string Note { get; set; }
 
     public double? Rating { get; set; }
+
+    public int ApproveStatusId { get; set; }
 
     public DateTime CreatedAt { get; set; }
 
@@ -53,13 +57,15 @@ public partial class Apt
 
     public virtual AptCategory AptCategory { get; set; }
 
-    public ICollection<AptImage> AptImages { get; set; } = new List<AptImage>();
-
     public virtual AptStatus AptStatus { get; set; }
+
+    public virtual ICollection<AptImage> AptImages { get; set; } = new List<AptImage>();
 
     public virtual ICollection<AptUtility> AptUtilities { get; set; } = new List<AptUtility>();
 
     public virtual ICollection<Post> Posts { get; set; } = new List<Post>();
 
     public virtual ICollection<Review> Reviews { get; set; } = new List<Review>();
+
+    public virtual ICollection<AccountLikedApt> AccountLikedApt { get; set; } = new List<AccountLikedApt>();
 }
