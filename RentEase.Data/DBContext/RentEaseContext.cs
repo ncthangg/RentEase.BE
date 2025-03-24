@@ -47,9 +47,7 @@ public partial class RentEaseContext : DbContext
 
     public virtual DbSet<Role> Roles { get; set; }
 
-    public virtual DbSet<Transaction> Transactions { get; set; }
-
-    public virtual DbSet<TransactionType> TransactionTypes { get; set; }
+    public virtual DbSet<OrderType> OrderTypes { get; set; }
 
     public virtual DbSet<Utility> Utilities { get; set; }
     public virtual DbSet<AccountLikedApt> AccountLikedApts { get; set; }
@@ -284,9 +282,8 @@ public partial class RentEaseContext : DbContext
             entity.HasKey(e => e.OrderId).HasName("PK__Orders__C3905BCF74207269");
 
             entity.Property(e => e.OrderId).HasMaxLength(255);
-            entity.Property(e => e.Amount).HasColumnType("decimal(18, 2)");
+            entity.Property(e => e.TotalAmount).HasColumnType("decimal(18, 2)");
             entity.Property(e => e.CreatedAt).HasColumnType("datetime");
-            entity.Property(e => e.IncurredCost).HasColumnType("decimal(18, 2)");
             entity.Property(e => e.PaidAt).HasColumnType("datetime");
             entity.Property(e => e.SenderId)
                 .IsRequired()
@@ -297,9 +294,9 @@ public partial class RentEaseContext : DbContext
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK_Order_Sender");
 
-            entity.HasOne(d => d.TransactionType).WithMany(p => p.Orders)
-                .HasForeignKey(d => d.TransactionTypeId)
-                .HasConstraintName("FK_Order_TransactionType");
+            entity.HasOne(d => d.OrderType).WithMany(p => p.Orders)
+                .HasForeignKey(d => d.OrderTypeId)
+                .HasConstraintName("FK_Order_OrderType");
         });
 
         modelBuilder.Entity<Post>(entity =>
@@ -408,39 +405,16 @@ public partial class RentEaseContext : DbContext
             entity.Property(e => e.UpdatedAt).HasColumnType("datetime");
         });
 
-        modelBuilder.Entity<Transaction>(entity =>
+
+        modelBuilder.Entity<OrderType>(entity =>
         {
-            entity.HasKey(e => e.Id).HasName("PK__Transact__3214EC07438D024A");
+            entity.HasKey(e => e.Id).HasName("PK__Ordert__3214EC07450B5CD3");
 
-            entity.ToTable("Transaction");
+            entity.ToTable("OrderType");
 
-            entity.Property(e => e.CreatedAt).HasColumnType("datetime");
-            entity.Property(e => e.Note).HasMaxLength(500);
-            entity.Property(e => e.OrderId)
-                .IsRequired()
-                .HasMaxLength(255);
-            entity.Property(e => e.PaidAt).HasColumnType("datetime");
-            entity.Property(e => e.PaymentCode).HasMaxLength(255);
-            entity.Property(e => e.TotalAmount).HasColumnType("decimal(18, 2)");
+            entity.HasIndex(e => e.TypeName, "UQ__Ordert__D4E7DFA8FCA6D65C").IsUnique();
 
-            entity.HasOne(d => d.Order).WithMany(p => p.Transactions)
-                .HasForeignKey(d => d.OrderId)
-                .HasConstraintName("FK_Transaction_Orders");
-
-            entity.HasOne(d => d.TransactionType).WithMany(p => p.Transactions)
-                .HasForeignKey(d => d.TransactionTypeId)
-                .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK_Transaction_TransactionType");
-        });
-
-        modelBuilder.Entity<TransactionType>(entity =>
-        {
-            entity.HasKey(e => e.Id).HasName("PK__Transact__3214EC07450B5CD3");
-
-            entity.ToTable("TransactionType");
-
-            entity.HasIndex(e => e.TypeName, "UQ__Transact__D4E7DFA8FCA6D65C").IsUnique();
-
+            entity.Property(e => e.Amount).HasColumnType("decimal(18, 2)");
             entity.Property(e => e.CreatedAt).HasColumnType("datetime");
             entity.Property(e => e.Note).HasMaxLength(255);
             entity.Property(e => e.TypeName)

@@ -34,8 +34,8 @@ namespace RentEase.Service.Service.Main
         }
         //public async Task<ServiceResult> Create(PostRequireReq request)
         //{
-        //    var transactionType = await _unitOfWork.TransactionTypeRepository.GetByIdAsync(request.TransactionTypeId);
-        //    var orderId = transactionType.TypeName + DateTime.Now.ToString();
+        //    var orderType = await _unitOfWork.OrderTypeRepository.GetByIdAsync(request.OrderTypeId);
+        //    var orderId = orderType.TypeName + DateTime.Now.ToString();
         //    var createItem = new PostRequire()
         //    {
         //        PostRequireId = Guid.NewGuid().ToString("N"),

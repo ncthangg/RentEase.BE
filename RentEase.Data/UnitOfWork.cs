@@ -21,9 +21,8 @@ namespace RentEase.Data
         private UtilityRepository _utilityRepository;
         private ReviewRepository _reviewRepository;
         private RoleRepository _roleRepository;
-        private TransactionTypeRepository _transactionTypeRepository;
+        private OrderTypeRepository _orderTypeRepository;
         private OrderRepository _orderRepository;
-        private TransactionRepository _transactionRepository;
 
         private PostRepository _postRepository;
         private PostRequireRepository _postRequireRepository;
@@ -46,9 +45,8 @@ namespace RentEase.Data
         public UtilityRepository UtilityRepository => _utilityRepository ??= new Repository.Sub.UtilityRepository(_dbContext);
         public ReviewRepository ReviewRepository => _reviewRepository ??= new Repository.Main.ReviewRepository(_dbContext);
         public RoleRepository RoleRepository => _roleRepository ??= new Repository.Sub.RoleRepository(_dbContext);
-        public TransactionTypeRepository TransactionTypeRepository => _transactionTypeRepository ??= new Repository.Sub.TransactionTypeRepository(_dbContext);
+        public OrderTypeRepository OrderTypeRepository => _orderTypeRepository ??= new Repository.Sub.OrderTypeRepository(_dbContext);
         public OrderRepository OrderRepository => _orderRepository ??= new Repository.Main.OrderRepository(_dbContext);
-        public TransactionRepository TransactionRepository => _transactionRepository ??= new Repository.Main.TransactionRepository(_dbContext);
         public PostRepository PostRepository => _postRepository ??= new Repository.Main.PostRepository(_dbContext);
         public PostRequireRepository PostRequireRepository => _postRequireRepository ??= new Repository.Main.PostRequireRepository(_dbContext);
         public PostCategoryRepository PostCategoryRepository => _postCategoryRepository ??= new Repository.Sub.PostCategoryRepository(_dbContext);

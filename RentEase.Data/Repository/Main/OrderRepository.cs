@@ -13,6 +13,7 @@ namespace RentEase.Data.Repository.Main
         {
         }
         public OrderRepository(RentEaseContext context) => _context = context;
+
         public async Task<PagedResult<Order>> GetByAccountId(
             string accountId, int? statusId, int page, int pageSize)
         {
@@ -21,8 +22,7 @@ namespace RentEase.Data.Repository.Main
                              (statusId == null || o.PaymentStatusId == statusId),
                 orderBy: q => q.OrderByDescending(o => o.CreatedAt),
                 page: page,
-                pageSize: pageSize,
-                includes: q => q.Include(i => i.TransactionType)
+                pageSize: pageSize
                 );
         }
 
@@ -32,10 +32,18 @@ namespace RentEase.Data.Repository.Main
                  filter: f => statusId == null || f.PaymentStatusId == statusId,
                  orderBy: q => q.OrderByDescending(o => o.CreatedAt),
                  page: page,
-                 pageSize: pageSize,
-                 includes: q => q.Include(i => i.TransactionType)
+                 pageSize: pageSize
             );
         }
+
+        public async Task<Order?> GetByOrderCodeAsync(string orderCode)
+        {
+            return await _context.Set<Order>()
+                .Where(p => p.OrderCode == orderCode)
+                .OrderByDescending(p => p.CreatedAt)
+                .FirstOrDefaultAsync();
+        }
+
 
         //public async Task<PagedResult<Account>> GetBySearchAsync(string? fullName, string? email, string? phoneNumber, int page, int pageSize)
         //{

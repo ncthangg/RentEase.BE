@@ -4,7 +4,7 @@ namespace RentEase.Common.DTOs.Response
 {
     public class PaymentRes
     {
-        public TransactionRes? TransactionRes { get; set; } = new TransactionRes();
+        public OrderRes? OrderRes { get; set; } = new OrderRes();
         public PayosRes? PayosRes { get; set; } = new PayosRes();
 
     }

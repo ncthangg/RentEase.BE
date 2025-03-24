@@ -14,8 +14,8 @@ namespace RentEase.Service
         public IUtilityService UtilityService { get; set; }
         public IReviewService ReviewService { get; set; }
         public IRoleService RoleService { get; set; }
-        public ITransactionTypeService TransactionTypeService { get; set; }
-        public ITransactionService TransactionService { get; set; }
+        public IOrderService OrderService { get; set; }
+        public IOrderTypeService OrderTypeService { get; set; }
         public IPostService PostService { get; set; }
         public IPostRequireService PostRequireService { get; set; }
 
@@ -29,8 +29,8 @@ namespace RentEase.Service
              IUtilityService utilityService,
              IReviewService reviewService,
              IRoleService roleService,
-             ITransactionTypeService transactionTypeService,
-             ITransactionService walletTransactionService,
+             IOrderService orderService,
+             IOrderTypeService orderTypeService,
              IPostService postService,
              IPostRequireService postRequireService
              )
@@ -44,8 +44,8 @@ namespace RentEase.Service
             UtilityService = utilityService;
             ReviewService = reviewService;
             RoleService = roleService;
-            TransactionTypeService = transactionTypeService;
-            TransactionService = walletTransactionService;
+            OrderService = orderService;
+            OrderTypeService = orderTypeService;
             PostService = postService;
             PostRequireService = postRequireService;
         }

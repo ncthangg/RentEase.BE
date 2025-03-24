@@ -10,12 +10,12 @@ namespace RentEase.API.Controllers.Sub
     [Route("api/[controller]")]
     [ApiController]
     [Authorize(Roles = "1,2,3")]
-    public class TransactionTypeController : ControllerBase
+    public class OrderTypeController : ControllerBase
     {
-        private readonly ITransactionTypeService _transactionTypeService;
-        public TransactionTypeController(ITransactionTypeService transactionTypeService)
+        private readonly IOrderTypeService _orderTypeService;
+        public OrderTypeController(IOrderTypeService orderTypeService)
         {
-            _transactionTypeService = transactionTypeService;
+            _orderTypeService = orderTypeService;
         }
 
         [HttpGet("GetAll")]
@@ -23,7 +23,7 @@ namespace RentEase.API.Controllers.Sub
         {
             try
             {
-                var result = await _transactionTypeService.GetAll(page, pageSize, null);
+                var result = await _orderTypeService.GetAll(page, pageSize, null);
                 if (result.Status < 0 && result.Data == null)
                 {
                     return NotFound(new ApiRes<string>
@@ -32,14 +32,14 @@ namespace RentEase.API.Controllers.Sub
                         Message = result.Message
                     });
                 }
-                return Ok(new ApiRes<IEnumerable<TransactionTypeRes>>
+                return Ok(new ApiRes<IEnumerable<OrderTypeRes>>
                 {
                     StatusCode = HttpStatusCode.OK,
                     Message = result.Message,
                     Count = result.TotalCount,
                     TotalPages = result.TotalPage,
                     CurrentPage = result.CurrentPage,
-                    Data = (IEnumerable<TransactionTypeRes>)result.Data!
+                    Data = (IEnumerable<OrderTypeRes>)result.Data!
                 });
             }
             catch (Exception ex)
@@ -57,7 +57,7 @@ namespace RentEase.API.Controllers.Sub
         {
             try
             {
-                var result = await _transactionTypeService.GetById(id);
+                var result = await _orderTypeService.GetById(id);
                 if (result.Status < 0 && result.Data == null)
                 {
                     return NotFound(new ApiRes<string>
@@ -66,11 +66,11 @@ namespace RentEase.API.Controllers.Sub
                         Message = result.Message
                     });
                 }
-                return Ok(new ApiRes<TransactionTypeRes>
+                return Ok(new ApiRes<OrderTypeRes>
                 {
                     StatusCode = HttpStatusCode.OK,
                     Message = result.Message,
-                    Data = (TransactionTypeRes)result.Data!
+                    Data = (OrderTypeRes)result.Data!
                 });
             }
             catch (Exception ex)
@@ -84,11 +84,11 @@ namespace RentEase.API.Controllers.Sub
         }
 
         [HttpPost]
-        public async Task<IActionResult> Post(TransactionTypeReq request)
+        public async Task<IActionResult> Post(OrderTypeReq request)
         {
             try
             {
-                var result = await _transactionTypeService.Create(request);
+                var result = await _orderTypeService.Create(request);
                 if (result.Status < 0)
                 {
                     return NotFound(new ApiRes<string>
@@ -114,11 +114,11 @@ namespace RentEase.API.Controllers.Sub
         }
 
         [HttpPut]
-        public async Task<IActionResult> Put(int id, TransactionTypeReq request)
+        public async Task<IActionResult> Put(int id, OrderTypeReq request)
         {
             try
             {
-                var result = await _transactionTypeService.Update(id, request);
+                var result = await _orderTypeService.Update(id, request);
                 if (result.Status < 0)
                 {
                     return NotFound(new ApiRes<string>
@@ -148,7 +148,7 @@ namespace RentEase.API.Controllers.Sub
         {
             try
             {
-                var result = await _transactionTypeService.Delete(id);
+                var result = await _orderTypeService.Delete(id);
                 if (result.Status < 0)
                 {
                     return NotFound(new ApiRes<string>

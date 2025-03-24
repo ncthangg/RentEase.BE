@@ -114,37 +114,6 @@ namespace RentEase.API.Controllers.Main
             }
         }
 
-        [HttpPost]
-        public async Task<IActionResult> Post([FromBody] OrderReq request)
-        {
-            try
-            {
-                var result = await _OrderService.Create(request);
-                if (result.Status < 0 && result.Data == null)
-                {
-                    return NotFound(new ApiRes<string>
-                    {
-                        StatusCode = HttpStatusCode.NotFound,
-                        Message = result.Message
-                    });
-                }
-                return Ok(new ApiRes<OrderRes>
-                {
-                    StatusCode = HttpStatusCode.OK,
-                    Message = result.Message,
-                    Data = (OrderRes)result.Data!
-                });
-            }
-            catch (Exception ex)
-            {
-                return BadRequest(new ApiRes<string>
-                {
-                    StatusCode = HttpStatusCode.InternalServerError,
-                    Message = $"Lỗi hệ thống: {ex.Message}"
-                });
-            }
-        }
-
         [HttpPut]
         public async Task<IActionResult> Put([FromQuery] string id, [FromQuery] int statusId)
         {

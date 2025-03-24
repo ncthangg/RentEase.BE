@@ -1,12 +1,12 @@
 ﻿
 namespace RentEase.Common.DTOs.Dto;
-public class TransactionTypeReq
+public class OrderTypeReq
 {
     public string TypeName { get; set; } = string.Empty;
 
     public string? Note { get; set; }
 }
-public class TransactionTypeRes : Base
+public class OrderTypeRes : Base
 {
     public int Id { get; set; }
 

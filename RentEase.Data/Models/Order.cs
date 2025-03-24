@@ -9,15 +9,17 @@ public partial class Order
 {
     public string OrderId { get; set; }
 
-    public int TransactionTypeId { get; set; }
+    public int OrderTypeId { get; set; }
+
+    public string OrderCode { get; set; }
 
     public string PostId { get; set; }
 
     public string SenderId { get; set; }
 
-    public decimal Amount { get; set; }
+    public decimal TotalAmount { get; set; }
 
-    public decimal IncurredCost { get; set; }
+    public string Note { get; set; }
 
     public DateTime CreatedAt { get; set; }
 
@@ -31,7 +33,6 @@ public partial class Order
 
     public virtual Account Sender { get; set; }
 
-    public virtual TransactionType TransactionType { get; set; }
+    public virtual OrderType OrderType { get; set; }
 
-    public virtual ICollection<Transaction> Transactions { get; set; } = new List<Transaction>();
 }

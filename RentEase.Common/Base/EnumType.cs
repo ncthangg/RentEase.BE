@@ -8,12 +8,14 @@
             Lessor = 2,
             Lesses = 3
         }
+
         public enum GenderId
         {
             Male = 1,
             Female = 2,
             Other = 3
         }
+
         public enum OldId
         {
             Age18To22 = 1,
@@ -22,24 +24,18 @@
             Age30To40 = 4
         }
 
-
         public enum AptStatusId
         {
             Available = 1,
             Full = 2,
             UnAvailable = 3
         }
+
         public enum ApproveStatusId
         {
             Pending = 1,      // Đang xử lý
             Success = 2,      // Thành công
             Failed = 3        // Thất bại
-        }
-
-        public enum LiveStatusId
-        {
-            Active = 1,       // Đang hoạt động
-            MoveOut = 2       // Rời đi
         }
 
         public enum PaymentStatusId

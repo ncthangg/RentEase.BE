@@ -431,17 +431,20 @@ namespace RentEase.Data.Migrations
                         .HasMaxLength(255)
                         .HasColumnType("nvarchar(255)");
 
-                    b.Property<decimal>("Amount")
-                        .HasColumnType("decimal(18, 2)");
-
                     b.Property<DateTime?>("CancelledAt")
                         .HasColumnType("datetime2");
 
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("datetime");
 
-                    b.Property<decimal>("IncurredCost")
-                        .HasColumnType("decimal(18, 2)");
+                    b.Property<string>("Note")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("OrderCode")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("OrderTypeId")
+                        .HasColumnType("int");
 
                     b.Property<DateTime?>("PaidAt")
                         .HasColumnType("datetime");
@@ -457,19 +460,54 @@ namespace RentEase.Data.Migrations
                         .HasMaxLength(255)
                         .HasColumnType("nvarchar(255)");
 
-                    b.Property<int>("TransactionTypeId")
-                        .HasColumnType("int");
+                    b.Property<decimal>("TotalAmount")
+                        .HasColumnType("decimal(18, 2)");
 
                     b.HasKey("OrderId")
                         .HasName("PK__Orders__C3905BCF74207269");
+
+                    b.HasIndex("OrderTypeId");
 
                     b.HasIndex("PostId");
 
                     b.HasIndex("SenderId");
 
-                    b.HasIndex("TransactionTypeId");
-
                     b.ToTable("Orders");
+                });
+
+            modelBuilder.Entity("RentEase.Data.Models.OrderType", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<decimal>("Amount")
+                        .HasColumnType("decimal(18, 2)");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime");
+
+                    b.Property<string>("Note")
+                        .HasMaxLength(255)
+                        .HasColumnType("nvarchar(255)");
+
+                    b.Property<string>("TypeName")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
+
+                    b.Property<DateTime?>("UpdatedAt")
+                        .HasColumnType("datetime");
+
+                    b.HasKey("Id")
+                        .HasName("PK__Ordert__3214EC07450B5CD3");
+
+                    b.HasIndex(new[] { "TypeName" }, "UQ__Ordert__D4E7DFA8FCA6D65C")
+                        .IsUnique();
+
+                    b.ToTable("OrderType", (string)null);
                 });
 
             modelBuilder.Entity("RentEase.Data.Models.Post", b =>
@@ -688,90 +726,6 @@ namespace RentEase.Data.Migrations
                     b.ToTable("Role", (string)null);
                 });
 
-            modelBuilder.Entity("RentEase.Data.Models.Transaction", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<DateTime?>("CancelledAt")
-                        .HasColumnType("datetime2");
-
-                    b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("datetime");
-
-                    b.Property<string>("Note")
-                        .HasMaxLength(500)
-                        .HasColumnType("nvarchar(500)");
-
-                    b.Property<string>("OrderId")
-                        .IsRequired()
-                        .HasMaxLength(255)
-                        .HasColumnType("nvarchar(255)");
-
-                    b.Property<DateTime?>("PaidAt")
-                        .HasColumnType("datetime");
-
-                    b.Property<int>("PaymentAttempt")
-                        .HasColumnType("int");
-
-                    b.Property<string>("PaymentCode")
-                        .HasMaxLength(255)
-                        .HasColumnType("nvarchar(255)");
-
-                    b.Property<int>("PaymentStatusId")
-                        .HasColumnType("int");
-
-                    b.Property<decimal>("TotalAmount")
-                        .HasColumnType("decimal(18, 2)");
-
-                    b.Property<int>("TransactionTypeId")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id")
-                        .HasName("PK__Transact__3214EC07438D024A");
-
-                    b.HasIndex("OrderId");
-
-                    b.HasIndex("TransactionTypeId");
-
-                    b.ToTable("Transaction", (string)null);
-                });
-
-            modelBuilder.Entity("RentEase.Data.Models.TransactionType", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("datetime");
-
-                    b.Property<string>("Note")
-                        .HasMaxLength(255)
-                        .HasColumnType("nvarchar(255)");
-
-                    b.Property<string>("TypeName")
-                        .IsRequired()
-                        .HasMaxLength(100)
-                        .HasColumnType("nvarchar(100)");
-
-                    b.Property<DateTime?>("UpdatedAt")
-                        .HasColumnType("datetime");
-
-                    b.HasKey("Id")
-                        .HasName("PK__Transact__3214EC07450B5CD3");
-
-                    b.HasIndex(new[] { "TypeName" }, "UQ__Transact__D4E7DFA8FCA6D65C")
-                        .IsUnique();
-
-                    b.ToTable("TransactionType", (string)null);
-                });
-
             modelBuilder.Entity("RentEase.Data.Models.Utility", b =>
                 {
                     b.Property<int>("Id")
@@ -911,6 +865,13 @@ namespace RentEase.Data.Migrations
 
             modelBuilder.Entity("RentEase.Data.Models.Order", b =>
                 {
+                    b.HasOne("RentEase.Data.Models.OrderType", "OrderType")
+                        .WithMany("Orders")
+                        .HasForeignKey("OrderTypeId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired()
+                        .HasConstraintName("FK_Order_OrderType");
+
                     b.HasOne("RentEase.Data.Models.Post", "Post")
                         .WithMany("Orders")
                         .HasForeignKey("PostId");
@@ -921,18 +882,11 @@ namespace RentEase.Data.Migrations
                         .IsRequired()
                         .HasConstraintName("FK_Order_Sender");
 
-                    b.HasOne("RentEase.Data.Models.TransactionType", "TransactionType")
-                        .WithMany("Orders")
-                        .HasForeignKey("TransactionTypeId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired()
-                        .HasConstraintName("FK_Order_TransactionType");
+                    b.Navigation("OrderType");
 
                     b.Navigation("Post");
 
                     b.Navigation("Sender");
-
-                    b.Navigation("TransactionType");
                 });
 
             modelBuilder.Entity("RentEase.Data.Models.Post", b =>
@@ -1000,26 +954,6 @@ namespace RentEase.Data.Migrations
                     b.Navigation("Apt");
                 });
 
-            modelBuilder.Entity("RentEase.Data.Models.Transaction", b =>
-                {
-                    b.HasOne("RentEase.Data.Models.Order", "Order")
-                        .WithMany("Transactions")
-                        .HasForeignKey("OrderId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired()
-                        .HasConstraintName("FK_Transaction_Orders");
-
-                    b.HasOne("RentEase.Data.Models.TransactionType", "TransactionType")
-                        .WithMany("Transactions")
-                        .HasForeignKey("TransactionTypeId")
-                        .IsRequired()
-                        .HasConstraintName("FK_Transaction_TransactionType");
-
-                    b.Navigation("Order");
-
-                    b.Navigation("TransactionType");
-                });
-
             modelBuilder.Entity("RentEase.Data.Models.Account", b =>
                 {
                     b.Navigation("AccountLikedApt");
@@ -1060,9 +994,9 @@ namespace RentEase.Data.Migrations
                     b.Navigation("Apts");
                 });
 
-            modelBuilder.Entity("RentEase.Data.Models.Order", b =>
+            modelBuilder.Entity("RentEase.Data.Models.OrderType", b =>
                 {
-                    b.Navigation("Transactions");
+                    b.Navigation("Orders");
                 });
 
             modelBuilder.Entity("RentEase.Data.Models.Post", b =>
@@ -1080,13 +1014,6 @@ namespace RentEase.Data.Migrations
             modelBuilder.Entity("RentEase.Data.Models.Role", b =>
                 {
                     b.Navigation("Accounts");
-                });
-
-            modelBuilder.Entity("RentEase.Data.Models.TransactionType", b =>
-                {
-                    b.Navigation("Orders");
-
-                    b.Navigation("Transactions");
                 });
 
             modelBuilder.Entity("RentEase.Data.Models.Utility", b =>

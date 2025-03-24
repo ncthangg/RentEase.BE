@@ -23,10 +23,9 @@ namespace RentEase.Service.AutoMapper
             CreateMap<AptUtility, AptUtilityRes>().ReverseMap();
             CreateMap<Review, ReviewRes>().ReverseMap();
             CreateMap<Role, RoleRes>().ReverseMap();
-            CreateMap<TransactionType, TransactionTypeRes>().ReverseMap();
+            CreateMap<OrderType, OrderTypeRes>().ReverseMap();
             CreateMap<Utility, UtilityRes>().ReverseMap();
             CreateMap<Order, OrderRes>().ReverseMap();
-            CreateMap<Transaction, TransactionRes>().ReverseMap();
 
             CreateMap<Post, PostRes>().ReverseMap();
             CreateMap<PostRequire, PostRequireRes>().ReverseMap();

@@ -5,7 +5,7 @@ using System.Collections.Generic;
 
 namespace RentEase.Data.Models;
 
-public partial class TransactionType
+public partial class OrderType
 {
     public int Id { get; set; }
 
@@ -13,11 +13,11 @@ public partial class TransactionType
 
     public string Note { get; set; }
 
+    public decimal Amount { get; set; }
+
     public DateTime CreatedAt { get; set; }
 
     public DateTime? UpdatedAt { get; set; }
 
     public virtual ICollection<Order> Orders { get; set; } = new List<Order>();
-
-    public virtual ICollection<Transaction> Transactions { get; set; } = new List<Transaction>();
 }

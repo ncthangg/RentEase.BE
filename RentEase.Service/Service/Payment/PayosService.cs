@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using MailKit.Search;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
 using RentEase.Common.Base;
@@ -16,7 +17,7 @@ namespace RentEase.Service.Service.Payment
 
     public interface IPayosService
     {
-        Task<ServiceResult> CheckOut(TransactionReq request);
+        Task<ServiceResult> CheckOut(OrderReq request);
         Task<ServiceResult> Callback(PaymentCallback request);
         //VnPayRes PaymentExecute(IQueryCollection collections);
     }
@@ -41,7 +42,7 @@ namespace RentEase.Service.Service.Payment
             _helperWrapper = helperWrapper;
         }
 
-        public async Task<ServiceResult> CheckOut(TransactionReq request)
+        public async Task<ServiceResult> CheckOut(OrderReq request)
         {
 
             string accountId = _helperWrapper.TokenHelper.GetAccountIdFromHttpContextAccessor(_httpContextAccessor);
@@ -51,100 +52,56 @@ namespace RentEase.Service.Service.Payment
                 return new ServiceResult(Const.ERROR_EXCEPTION_CODE, "Tài khoản không tồn tại");
             }
 
-            var transactionItem = await _unitOfWork.TransactionRepository.GetByOrderCode(request.OrderId);
-            var orderItem = await _unitOfWork.OrderRepository.GetByIdAsync(request.OrderId);
+            string orderCode = GenerateOrderId();
 
-            if (orderItem.PaymentStatusId == (int)EnumType.PaymentStatusId.PAID ||
-                        orderItem.PaymentStatusId == (int)EnumType.PaymentStatusId.PROCESSING ||
-                               orderItem.PaymentStatusId == (int)EnumType.PaymentStatusId.CANCELLED)
+            var createItem = new Order()
             {
-                return new ServiceResult(Const.ERROR_EXCEPTION_CODE, "Đơn hàng đã thanh toán hoặc đã được hủy");
-            }
-
-            if (orderItem.SenderId != accountId)
-            {
-                return new ServiceResult(Const.ERROR_EXCEPTION_CODE, "Đơn hàng không thuộc tài khoản này");
-            }
-
-            //Khai báo
-            TransactionRes transactionRes = new TransactionRes();
-            PayosRes payosRes = new PayosRes();
-
-            if (transactionItem != null)
-            {
-                // Tăng giá trị lên 1 rồi chuyển lại thành string
-                var newPaymentAttempt = transactionItem.PaymentAttempt + 1;
-
-                var createItem = new Transaction()
-                {
-                    TransactionTypeId = orderItem.TransactionTypeId,
-                    OrderId = orderItem.OrderId,
-                    PaymentAttempt = newPaymentAttempt,
-                    PaymentCode = $"{orderItem.OrderId}{DateTime.Now:HHmmssfff}",
-                    TotalAmount = orderItem.Amount + orderItem.IncurredCost,
-                    Note = request.Note,
-                    CreatedAt = DateTime.Now,
-                    PaymentStatusId = (int)EnumType.ApproveStatusId.Pending
-                };
-
-                await _unitOfWork.TransactionRepository.CreateAsync(createItem);
-                transactionRes = _mapper.Map<TransactionRes>(createItem);
-
-                string jsonResponse = await this.CreatePaymentURL(createItem.PaymentCode);
-
-                var options = new JsonSerializerOptions
-                {
-                    PropertyNameCaseInsensitive = true, // Bỏ qua phân biệt chữ hoa/thường
-                    DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingNull // Bỏ qua giá trị null
-                };
-
-                payosRes = JsonSerializer.Deserialize<PayosRes>(jsonResponse, options);
-
-            }
-            else
-            {
-                var createItem = new Transaction()
-                {
-                    TransactionTypeId = orderItem.TransactionTypeId,
-                    OrderId = orderItem.OrderId,
-                    PaymentAttempt = 1,
-                    PaymentCode = $"{orderItem.OrderId}{DateTime.Now:HHmmssfff}",
-                    TotalAmount = orderItem.Amount + orderItem.IncurredCost,
-                    Note = request.Note,
-                    CreatedAt = DateTime.Now,
-                    PaymentStatusId = (int)EnumType.ApproveStatusId.Pending
-                };
-
-                await _unitOfWork.TransactionRepository.CreateAsync(createItem);
-                transactionRes = _mapper.Map<TransactionRes>(createItem);
-
-                string jsonResponse = await this.CreatePaymentURL(createItem.PaymentCode);
-
-                var options = new JsonSerializerOptions
-                {
-                    PropertyNameCaseInsensitive = true, // Bỏ qua phân biệt chữ hoa/thường
-                    DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingNull // Bỏ qua giá trị null
-                };
-
-                payosRes = JsonSerializer.Deserialize<PayosRes>(jsonResponse, options);
-
-            }
-            if (payosRes == null)
-            {
-                return new ServiceResult(Const.ERROR_EXCEPTION_CODE, "Tạo link thanh toán thất bại");
-            }
-
-            var responseData = new PaymentRes()
-            {
-                TransactionRes = transactionRes,
-                PayosRes = payosRes,
+                OrderId = Guid.NewGuid().ToString("N"),
+                OrderTypeId = request.OrderTypeId,
+                OrderCode = $"{orderCode}{DateTime.Now:HHmmssfff}",
+                PostId = request.PostId,
+                SenderId = accountId,
+                TotalAmount = request.Amount + (request.Amount * request.IncurredCost),
+                Note = request.Note,
+                CreatedAt = DateTime.Now,
+                PaymentStatusId = (int)EnumType.ApproveStatusId.Pending
             };
-            return new ServiceResult(Const.SUCCESS_ACTION_CODE, "Tạo link thanh toán thành công", responseData);
+
+            var result = await _unitOfWork.OrderRepository.CreateAsync(createItem);
+            if (result > 0)
+            {
+                var order = await _unitOfWork.OrderRepository.GetByOrderCodeAsync(createItem.OrderCode);
+                var orderRes = _mapper.Map<OrderRes>(order);
+
+                string jsonResponse = await this.CreatePaymentURL(createItem.OrderCode);
+
+                var options = new JsonSerializerOptions
+                {
+                    PropertyNameCaseInsensitive = true, // Bỏ qua phân biệt chữ hoa/thường
+                    DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingNull // Bỏ qua giá trị null
+                };
+
+                PayosRes payosRes = JsonSerializer.Deserialize<PayosRes>(jsonResponse, options);
+
+                if (payosRes == null)
+                {
+                    return new ServiceResult(Const.ERROR_EXCEPTION_CODE, "Tạo link thanh toán thất bại");
+                }
+
+                var responseData = new PaymentRes()
+                {
+                    OrderRes = orderRes,
+                    PayosRes = payosRes,
+                };
+                return new ServiceResult(Const.SUCCESS_ACTION_CODE, "Tạo link thanh toán thành công", responseData);
+            }
+
+            return new ServiceResult(Const.ERROR_EXCEPTION_CODE, "Tạo link thanh toán thất bại");
         }
 
         public async Task<ServiceResult> Callback(PaymentCallback request)
         {
-            var transaction = await _unitOfWork.TransactionRepository.GetByPaymentCode(request.OrderCode);
+            var transaction = await _unitOfWork.OrderRepository.GetByOrderCodeAsync(request.OrderCode);
             if (transaction == null)
             {
                 return new ServiceResult(Const.ERROR_EXCEPTION_CODE, "Khong tim thay don hang");
@@ -162,36 +119,25 @@ namespace RentEase.Service.Service.Payment
                 "PROCESSING" => (int)EnumType.PaymentStatusId.PROCESSING,
                 "CANCELLED" => (int)EnumType.PaymentStatusId.CANCELLED,
             };
-            transaction.PaymentStatusId = request.Status switch
-            {
-                "PAID" => (int)EnumType.PaymentStatusId.PAID,
-                "PENDING" => (int)EnumType.PaymentStatusId.PENDING,
-                "PROCESSING" => (int)EnumType.PaymentStatusId.PROCESSING,
-                "CANCELLED" => (int)EnumType.PaymentStatusId.CANCELLED,
-            };
 
-            if (order.PaymentStatusId == (int)EnumType.PaymentStatusId.PAID &&
-                   transaction.PaymentStatusId == (int)EnumType.PaymentStatusId.PAID)
+            if (order.PaymentStatusId == (int)EnumType.PaymentStatusId.PAID)
             {
                 order.PaidAt = DateTime.Now;
-                transaction.PaidAt = DateTime.Now;
             }
             else
             {
                 order.CancelledAt = DateTime.Now;
-                transaction.CancelledAt = DateTime.Now;
             }
 
 
             await _unitOfWork.OrderRepository.UpdateAsync(order);
-            await _unitOfWork.TransactionRepository.UpdateAsync(transaction);
 
             return new ServiceResult(Const.SUCCESS_ACTION_CODE, "Cap nhat trang thai don hang thanh cong");
         }
 
 
 
-        private async Task<string> CreatePaymentURL(string paymentCode)
+        private async Task<string> CreatePaymentURL(string orderCode)
         {
             var requestUrl = _configuration["PayosSettings:RequestUrl"];
             var clientId = _configuration["PayosSettings:ClientId"];
@@ -201,7 +147,7 @@ namespace RentEase.Service.Service.Payment
             var returnUrl = _configuration["PayosSettings:ReturnUrl"];
             var cancelUrl = _configuration["PayosSettings:CancelUrl"];
 
-            var request = await _unitOfWork.TransactionRepository.GetByPaymentCode(paymentCode);
+            var request = await _unitOfWork.OrderRepository.GetByOrderCodeAsync(orderCode);
 
             // Tạo dictionary chứa tham số
             var payload = new Dictionary<string, object>
@@ -209,7 +155,7 @@ namespace RentEase.Service.Service.Payment
                                  { "amount", (int)request.TotalAmount },
                                  { "cancelUrl", cancelUrl },
                                  { "description", request.Note },
-                                 { "orderCode", long.Parse(request.PaymentCode) },
+                                 { "orderCode", long.Parse(request.OrderCode) },
                                  { "returnUrl", returnUrl }
                              };
 
@@ -240,6 +186,10 @@ namespace RentEase.Service.Service.Payment
                 throw new Exception("Lỗi khi gọi API PayOS: " + ex.Message);
             }
         }
-
+        private static string GenerateOrderId()
+        {
+            Random random = new Random();
+            return random.Next(100000, 999999).ToString(); // Sinh số ngẫu nhiên từ 100000 đến 999999
+        }
     }
 }

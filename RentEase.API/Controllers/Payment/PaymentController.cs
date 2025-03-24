@@ -23,7 +23,7 @@ namespace RentEase.API.Controllers.Payment
             _payosService = payosService;
         }
         [HttpPost("create-payment-link")]
-        public async Task<IActionResult> Post([FromBody] TransactionReq request)
+        public async Task<IActionResult> Post([FromBody] OrderReq request)
         {
             try
             {
