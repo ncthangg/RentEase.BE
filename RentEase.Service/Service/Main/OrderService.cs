@@ -12,6 +12,7 @@ namespace RentEase.Service.Service.Main
     {
         Task<ServiceResult> GetAll(int page, int pageSize, bool? status);
         Task<ServiceResult> GetById(string id);
+        Task<ServiceResult> GetByOrderCode(string orderCode);
         Task<ServiceResult> GetByAccountId(string accountId, int? statusId, int page, int pageSize);
         Task<ServiceResult> Update(string orderId, int statusId); // chỉ dành cho ADMIN
         Task<ServiceResult> Delete(string id);
@@ -30,6 +31,21 @@ namespace RentEase.Service.Service.Main
             _mapper = mapper;
             _helperWrapper = helperWrapper;
         }
+        public async Task<ServiceResult> GetByOrderCode(string orderCode)
+        {
+
+            var item = await _unitOfWork.OrderRepository.GetByOrderCodeAsync(orderCode);
+
+            if (item == null)
+            {
+                return new ServiceResult(Const.ERROR_EXCEPTION_CODE, Const.ERROR_EXCEPTION_MSG);
+            }
+            else
+            {
+                var responseData = _mapper.Map<OrderRes>(item);
+                return new ServiceResult(Const.SUCCESS_ACTION_CODE, Const.SUCCESS_ACTION_MSG, responseData);
+            }
+        }
         public async Task<ServiceResult> GetByAccountId(string accountId, int? statusId, int page, int pageSize)
         {
 
@@ -45,7 +61,6 @@ namespace RentEase.Service.Service.Main
                 return new ServiceResult(Const.SUCCESS_ACTION_CODE, Const.SUCCESS_ACTION_MSG, items.TotalCount, items.TotalPages, items.CurrentPage, responseData);
             }
         }
-
         public async Task<ServiceResult> Update(string orderId, int paymentApproveStatusId)
         {
             string accountId = _helperWrapper.TokenHelper.GetAccountIdFromHttpContextAccessor(_httpContextAccessor);

@@ -19,7 +19,6 @@ namespace RentEase.Service.Service.Payment
     {
         Task<ServiceResult> CheckOut(OrderReq request);
         Task<ServiceResult> Callback(PaymentCallback request);
-        //VnPayRes PaymentExecute(IQueryCollection collections);
     }
     public class PayosService : IPayosService
     {
@@ -51,14 +50,18 @@ namespace RentEase.Service.Service.Payment
             {
                 return new ServiceResult(Const.ERROR_EXCEPTION_CODE, "Tài khoản không tồn tại");
             }
-
-            string orderCode = GenerateOrderId();
+            string orderCode = "";
+            do
+            {
+                orderCode = $"{GenerateOrderCode()}{DateTime.Now:HHmmssfff}";
+            }
+            while (await _unitOfWork.OrderRepository.GetByOrderCodeAsync(orderCode) != null);
 
             var createItem = new Order()
             {
                 OrderId = Guid.NewGuid().ToString("N"),
                 OrderTypeId = request.OrderTypeId,
-                OrderCode = $"{orderCode}{DateTime.Now:HHmmssfff}",
+                OrderCode = orderCode,
                 PostId = request.PostId,
                 SenderId = accountId,
                 TotalAmount = request.Amount + (request.Amount * request.IncurredCost),
@@ -101,15 +104,10 @@ namespace RentEase.Service.Service.Payment
 
         public async Task<ServiceResult> Callback(PaymentCallback request)
         {
-            var transaction = await _unitOfWork.OrderRepository.GetByOrderCodeAsync(request.OrderCode);
-            if (transaction == null)
-            {
-                return new ServiceResult(Const.ERROR_EXCEPTION_CODE, "Khong tim thay don hang");
-            }
-            var order = await _unitOfWork.OrderRepository.GetByIdAsync(transaction.OrderId);
+            var order = await _unitOfWork.OrderRepository.GetByOrderCodeAsync(request.OrderCode);
             if (order == null)
             {
-                return new ServiceResult(Const.ERROR_EXCEPTION_CODE, "Khong tim thay don hang");
+                return new ServiceResult(Const.ERROR_EXCEPTION_CODE, "Không tìm thấy đơn hàng");
             }
 
             order.PaymentStatusId = request.Status switch
@@ -123,6 +121,13 @@ namespace RentEase.Service.Service.Payment
             if (order.PaymentStatusId == (int)EnumType.PaymentStatusId.PAID)
             {
                 order.PaidAt = DateTime.Now;
+
+                var orderType = await _unitOfWork.OrderTypeRepository.GetByIdAsync(order.OrderTypeId);
+                var post = await _unitOfWork.PostRepository.GetByIdAsync(order.PostId);
+                post.StartPublic = DateTime.Now;
+                post.EndPublic = DateTime.Now.AddMonths(orderType.Month);
+                post.UpdatedAt = DateTime.Now;
+                post.Status = true;
             }
             else
             {
@@ -186,7 +191,7 @@ namespace RentEase.Service.Service.Payment
                 throw new Exception("Lỗi khi gọi API PayOS: " + ex.Message);
             }
         }
-        private static string GenerateOrderId()
+        private static string GenerateOrderCode()
         {
             Random random = new Random();
             return random.Next(100000, 999999).ToString(); // Sinh số ngẫu nhiên từ 100000 đến 999999

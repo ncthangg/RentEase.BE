@@ -1,10 +1,13 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Http;
 using RentEase.Common.Base;
+using RentEase.Common.DTOs;
 using RentEase.Common.DTOs.Dto;
 using RentEase.Data;
 using RentEase.Data.Models;
 using RentEase.Service.Service.Base;
+using System.Data;
+using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
 
 namespace RentEase.Service.Service.Main
 {
@@ -14,7 +17,8 @@ namespace RentEase.Service.Service.Main
         Task<ServiceResult> GetById(string id);
         Task<ServiceResult> GetByAccountId(string accountId, int? statusId, bool? status, int page, int pageSize);
         Task<ServiceResult> Create(AptReq request);
-        Task<ServiceResult> Update(string id, AptReq request);
+        Task<ServiceResult> Update(string id, AptReq request); 
+        Task<ServiceResult> UpdateStatus(string id);
         Task<ServiceResult> Delete(string id);
         Task<ServiceResult> DeleteSoft(string id);
     }
@@ -48,12 +52,12 @@ namespace RentEase.Service.Service.Main
         }
         public async Task<ServiceResult> Create(AptReq request)
         {
-            //string accountId = _helperWrapper.TokenHelper.GetAccountIdFromHttpContextAccessor(_httpContextAccessor);
+            string accountId = _helperWrapper.TokenHelper.GetAccountIdFromHttpContextAccessor(_httpContextAccessor);
 
-            //if (string.IsNullOrEmpty(accountId))
-            //{
-            //    return new ServiceResult(Const.ERROR_EXCEPTION_CODE, "Lỗi khi lấy info");
-            //}
+            if (string.IsNullOrEmpty(accountId))
+            {
+                return new ServiceResult(Const.ERROR_EXCEPTION_CODE, "Lỗi khi lấy info");
+            }
 
             if (await EntityExistsAsync("Name", request.Name))
             {
@@ -64,32 +68,67 @@ namespace RentEase.Service.Service.Main
 
             var aptId = await GenerateUniqueAptIdAsync(category.CategoryName);
 
-            var createItem = new Apt()
+            var createItem = new Apt();
+            if (!string.IsNullOrEmpty(request.OwnerId) && accountId.Contains(request.OwnerId))
             {
-                AptId = aptId,
-                OwnerId = request.OwnerId,
-                OwnerName = request.OwnerName,
-                OwnerPhone = request.OwnerPhone,
-                Name = request.Name,
-                Area = request.Area,
-                Address = request.Address,
-                ProvinceId = request.ProvinceId,
-                DistrictId = request.DistrictId,
-                WardId = request.WardId,
-                AddressLink = request.AddressLink,
-                RentPrice = request.RentPrice,
-                PilePrice = request.PilePrice,
-                AptCategoryId = request.AptCategoryId,
-                AptStatusId = request.AptStatusId,
-                NumberOfRoom = request.NumberOfRoom,
-                NumberOfSlot = request.NumberOfSlot,
-                ApproveStatusId = (int)EnumType.ApproveStatusId.Pending,
-                Note = request.Note,
-                CreatedAt = DateTime.Now,
-                UpdatedAt = null,
-                DeletedAt = null,
-                Status = false,
-            };
+                var accountInfo = await _unitOfWork.AccountRepository.GetByIdAsync(accountId);
+
+                createItem = new Apt()
+                {
+                    AptId = aptId,
+                    OwnerId = accountId,
+                    OwnerName = accountInfo.FullName,
+                    OwnerPhone = accountInfo.PhoneNumber,
+                    OwnerEmail = accountInfo.Email,
+                    Name = request.Name,
+                    Area = request.Area,
+                    Address = request.Address,
+                    ProvinceId = request.ProvinceId,
+                    DistrictId = request.DistrictId,
+                    WardId = request.WardId,
+                    AddressLink = request.AddressLink,
+                    AptCategoryId = request.AptCategoryId,
+                    AptStatusId = request.AptStatusId,
+                    NumberOfRoom = request.NumberOfRoom,
+                    NumberOfSlot = request.NumberOfSlot,
+                    ApproveStatusId = (int)EnumType.ApproveStatusId.Pending,
+                    Note = request.Note,
+                    CreatedAt = DateTime.Now,
+                    UpdatedAt = null,
+                    DeletedAt = null,
+                    Status = false,
+                };
+            }
+            else
+            {
+
+                createItem = new Apt()
+                {
+                    AptId = aptId,
+                    OwnerId = null,
+                    OwnerName = request.OwnerName,
+                    OwnerPhone = request.OwnerPhone,
+                    OwnerEmail = request.OwnerEmail,
+                    Name = request.Name,
+                    Area = request.Area,
+                    Address = request.Address,
+                    ProvinceId = request.ProvinceId,
+                    DistrictId = request.DistrictId,
+                    WardId = request.WardId,
+                    AddressLink = request.AddressLink,
+                    AptCategoryId = request.AptCategoryId,
+                    AptStatusId = request.AptStatusId,
+                    NumberOfRoom = request.NumberOfRoom,
+                    NumberOfSlot = request.NumberOfSlot,
+                    ApproveStatusId = (int)EnumType.ApproveStatusId.Pending,
+                    Note = request.Note,
+                    CreatedAt = DateTime.Now,
+                    UpdatedAt = null,
+                    DeletedAt = null,
+                    Status = false,
+                };
+            }
+
 
             var result = await _unitOfWork.AptRepository.CreateAsync(createItem);
             if (result > 0)
@@ -159,8 +198,6 @@ namespace RentEase.Service.Service.Main
                 DistrictId = request.DistrictId,
                 WardId = request.WardId,
                 AddressLink = request.AddressLink,
-                RentPrice = request.RentPrice,
-                PilePrice = request.PilePrice,
                 AptCategoryId = item.AptCategoryId,
                 AptStatusId = item.AptStatusId,
                 NumberOfRoom = request.NumberOfRoom,
@@ -180,6 +217,37 @@ namespace RentEase.Service.Service.Main
             }
 
             return new ServiceResult(Const.ERROR_EXCEPTION_CODE, Const.ERROR_EXCEPTION_MSG);
+        }
+        public async Task<ServiceResult> UpdateStatus(string id)
+        {
+            string accountId = _helperWrapper.TokenHelper.GetAccountIdFromHttpContextAccessor(_httpContextAccessor);
+            string roleId = _helperWrapper.TokenHelper.GetRoleIdFromHttpContextAccessor(_httpContextAccessor);
+
+            if (string.IsNullOrEmpty(accountId))
+            {
+                return new ServiceResult(Const.ERROR_EXCEPTION_CODE, "Lỗi khi lấy info");
+            }
+
+            var item = await _unitOfWork.AptRepository.GetByIdAsync(id);
+
+            if (item == null)
+            {
+                return new ServiceResult(Const.ERROR_EXCEPTION_CODE, "Không tồn tại");
+            }
+
+            if (roleId != "1")
+            {
+                return new ServiceResult(Const.ERROR_EXCEPTION_CODE, "Bạn không có quyền hạn.");
+            }
+
+
+            // Đảo trạng thái (false -> true, true -> false)
+            item.Status = !item.Status;
+            item.UpdatedAt = DateTime.Now;
+
+            await _unitOfWork.AptRepository.UpdateAsync(item);
+
+            return new ServiceResult(Const.SUCCESS_ACTION_CODE, "Cập nhật thành công");
         }
         public async Task<ServiceResult> DeleteSoft(string id)
         {
@@ -234,7 +302,6 @@ namespace RentEase.Service.Service.Main
 
             return aptId;
         }
-
         private string GenerateAptId(string categoryName)
         {
             string prefix = string.Concat(categoryName.Split(' '))

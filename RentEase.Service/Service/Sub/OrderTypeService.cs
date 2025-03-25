@@ -33,15 +33,18 @@ namespace RentEase.Service.Service.Sub
         }
         public async Task<ServiceResult> Create(OrderTypeReq request)
         {
-            if (await EntityExistsAsync("TypeName", request.TypeName))
+            if (await EntityExistsAsync("Name", request.Name))
             {
                 return new ServiceResult(Const.ERROR_EXCEPTION_CODE, Const.ERROR_EXCEPTION_MSG);
             }
 
             var createItem = new OrderType()
             {
-                TypeName = request.TypeName.ToLower(),
+                Id = Guid.NewGuid().ToString("N"),
+                Name = request.Name.ToLower(),
                 Note = request.Note,
+                Month = request.Month,
+                Amount = request.Amount,
                 CreatedAt = DateTime.Now,
                 UpdatedAt = null,
             };
@@ -66,8 +69,10 @@ namespace RentEase.Service.Service.Sub
             var updateItem = new OrderType()
             {
                 Id = item.Id,
-                TypeName = request.TypeName.ToLower(),
+                Name = request.Name.ToLower(),
                 Note = request.Note,
+                Month = request.Month,
+                Amount = request.Amount,
                 CreatedAt = item.CreatedAt,
                 UpdatedAt = DateTime.Now,
             };

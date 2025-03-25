@@ -9,7 +9,7 @@ public partial class Order
 {
     public string OrderId { get; set; }
 
-    public int OrderTypeId { get; set; }
+    public string OrderTypeId { get; set; }
 
     public string OrderCode { get; set; }
 

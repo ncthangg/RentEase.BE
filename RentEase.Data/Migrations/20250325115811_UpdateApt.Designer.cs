@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using RentEase.Data.DBContext;
 
@@ -11,9 +12,11 @@ using RentEase.Data.DBContext;
 namespace RentEase.Data.Migrations
 {
     [DbContext(typeof(RentEaseContext))]
-    partial class RentEaseContextModelSnapshot : ModelSnapshot
+    [Migration("20250325115811_UpdateApt")]
+    partial class UpdateApt
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

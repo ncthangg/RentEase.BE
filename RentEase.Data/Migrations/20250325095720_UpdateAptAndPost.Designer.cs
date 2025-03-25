@@ -12,8 +12,8 @@ using RentEase.Data.DBContext;
 namespace RentEase.Data.Migrations
 {
     [DbContext(typeof(RentEaseContext))]
-    [Migration("20250324170920_Init")]
-    partial class Init
+    [Migration("20250325095720_UpdateAptAndPost")]
+    partial class UpdateAptAndPost
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -258,9 +258,6 @@ namespace RentEase.Data.Migrations
                     b.Property<string>("OwnerPhone")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<long?>("PilePrice")
-                        .HasColumnType("bigint");
-
                     b.Property<int>("ProvinceId")
                         .HasColumnType("int");
 
@@ -268,9 +265,6 @@ namespace RentEase.Data.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("float")
                         .HasDefaultValue(0.0);
-
-                    b.Property<long>("RentPrice")
-                        .HasColumnType("bigint");
 
                     b.Property<bool?>("Status")
                         .ValueGeneratedOnAdd()
@@ -446,8 +440,8 @@ namespace RentEase.Data.Migrations
                     b.Property<string>("OrderCode")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("OrderTypeId")
-                        .HasColumnType("int");
+                    b.Property<string>("OrderTypeId")
+                        .HasColumnType("nvarchar(255)");
 
                     b.Property<DateTime?>("PaidAt")
                         .HasColumnType("datetime");
@@ -480,11 +474,9 @@ namespace RentEase.Data.Migrations
 
             modelBuilder.Entity("RentEase.Data.Models.OrderType", b =>
                 {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+                    b.Property<string>("Id")
+                        .HasMaxLength(255)
+                        .HasColumnType("nvarchar(255)");
 
                     b.Property<decimal>("Amount")
                         .HasColumnType("decimal(18, 2)");
@@ -492,14 +484,17 @@ namespace RentEase.Data.Migrations
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("datetime");
 
-                    b.Property<string>("Note")
-                        .HasMaxLength(255)
-                        .HasColumnType("nvarchar(255)");
+                    b.Property<int>("Month")
+                        .HasColumnType("int");
 
-                    b.Property<string>("TypeName")
+                    b.Property<string>("Name")
                         .IsRequired()
                         .HasMaxLength(100)
                         .HasColumnType("nvarchar(100)");
+
+                    b.Property<string>("Note")
+                        .HasMaxLength(255)
+                        .HasColumnType("nvarchar(255)");
 
                     b.Property<DateTime?>("UpdatedAt")
                         .HasColumnType("datetime");
@@ -507,7 +502,7 @@ namespace RentEase.Data.Migrations
                     b.HasKey("Id")
                         .HasName("PK__Ordert__3214EC07450B5CD3");
 
-                    b.HasIndex(new[] { "TypeName" }, "UQ__Ordert__D4E7DFA8FCA6D65C")
+                    b.HasIndex(new[] { "Name" }, "UQ__Ordert__D4E7DFA8FCA6D65C")
                         .IsUnique();
 
                     b.ToTable("OrderType", (string)null);
@@ -541,6 +536,9 @@ namespace RentEase.Data.Migrations
                     b.Property<DateTime?>("DeletedAt")
                         .HasColumnType("datetime");
 
+                    b.Property<DateTime?>("EndPublic")
+                        .HasColumnType("datetime2");
+
                     b.Property<int>("GenderId")
                         .HasColumnType("int");
 
@@ -556,8 +554,17 @@ namespace RentEase.Data.Migrations
                     b.Property<int>("OldId")
                         .HasColumnType("int");
 
+                    b.Property<long?>("PilePrice")
+                        .HasColumnType("bigint");
+
                     b.Property<int>("PostCategoryId")
                         .HasColumnType("int");
+
+                    b.Property<long>("RentPrice")
+                        .HasColumnType("bigint");
+
+                    b.Property<DateTime?>("StartPublic")
+                        .HasColumnType("datetime2");
 
                     b.Property<bool?>("Status")
                         .ValueGeneratedOnAdd()
@@ -871,8 +878,6 @@ namespace RentEase.Data.Migrations
                     b.HasOne("RentEase.Data.Models.OrderType", "OrderType")
                         .WithMany("Orders")
                         .HasForeignKey("OrderTypeId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired()
                         .HasConstraintName("FK_Order_OrderType");
 
                     b.HasOne("RentEase.Data.Models.Post", "Post")

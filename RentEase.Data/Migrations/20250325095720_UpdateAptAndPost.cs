@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace RentEase.Data.Migrations
 {
     /// <inheritdoc />
-    public partial class Init : Migration
+    public partial class UpdateAptAndPost : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -47,10 +47,10 @@ namespace RentEase.Data.Migrations
                 name: "OrderType",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    TypeName = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
+                    Id = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: false),
+                    Name = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
                     Note = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: true),
+                    Month = table.Column<int>(type: "int", nullable: false),
                     Amount = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
                     CreatedAt = table.Column<DateTime>(type: "datetime", nullable: false),
                     UpdatedAt = table.Column<DateTime>(type: "datetime", nullable: true)
@@ -123,8 +123,6 @@ namespace RentEase.Data.Migrations
                     ProvinceId = table.Column<int>(type: "int", nullable: false),
                     DistrictId = table.Column<int>(type: "int", nullable: false),
                     WardId = table.Column<int>(type: "int", nullable: false),
-                    RentPrice = table.Column<long>(type: "bigint", nullable: false),
-                    PilePrice = table.Column<long>(type: "bigint", nullable: true),
                     AptCategoryId = table.Column<int>(type: "int", nullable: false),
                     AptStatusId = table.Column<int>(type: "int", nullable: false),
                     NumberOfRoom = table.Column<int>(type: "int", nullable: false),
@@ -314,6 +312,8 @@ namespace RentEase.Data.Migrations
                     AccountId = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: false),
                     AptId = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: false),
                     Title = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: false),
+                    RentPrice = table.Column<long>(type: "bigint", nullable: false),
+                    PilePrice = table.Column<long>(type: "bigint", nullable: true),
                     TotalSlot = table.Column<int>(type: "int", nullable: false),
                     CurrentSlot = table.Column<int>(type: "int", nullable: false),
                     GenderId = table.Column<int>(type: "int", nullable: false),
@@ -325,6 +325,8 @@ namespace RentEase.Data.Migrations
                     CreatedAt = table.Column<DateTime>(type: "datetime", nullable: false),
                     UpdatedAt = table.Column<DateTime>(type: "datetime", nullable: true),
                     DeletedAt = table.Column<DateTime>(type: "datetime", nullable: true),
+                    StartPublic = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    EndPublic = table.Column<DateTime>(type: "datetime2", nullable: true),
                     Status = table.Column<bool>(type: "bit", nullable: true, defaultValue: true)
                 },
                 constraints: table =>
@@ -381,7 +383,7 @@ namespace RentEase.Data.Migrations
                 columns: table => new
                 {
                     OrderId = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: false),
-                    OrderTypeId = table.Column<int>(type: "int", nullable: false),
+                    OrderTypeId = table.Column<string>(type: "nvarchar(255)", nullable: true),
                     OrderCode = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     PostId = table.Column<string>(type: "nvarchar(255)", nullable: true),
                     SenderId = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: false),
@@ -399,8 +401,7 @@ namespace RentEase.Data.Migrations
                         name: "FK_Order_OrderType",
                         column: x => x.OrderTypeId,
                         principalTable: "OrderType",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        principalColumn: "Id");
                     table.ForeignKey(
                         name: "FK_Order_Sender",
                         column: x => x.SenderId,
@@ -552,7 +553,7 @@ namespace RentEase.Data.Migrations
             migrationBuilder.CreateIndex(
                 name: "UQ__Ordert__D4E7DFA8FCA6D65C",
                 table: "OrderType",
-                column: "TypeName",
+                column: "Name",
                 unique: true);
 
             migrationBuilder.CreateIndex(

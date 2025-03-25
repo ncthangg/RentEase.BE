@@ -8,7 +8,6 @@ using RentEase.Service.Service.Base;
 
 namespace RentEase.Service.Service.Main
 {
-
     public interface IPostService
     {
         Task<ServiceResult> GetAll(int page, int pageSize, bool? status);

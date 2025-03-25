@@ -33,6 +33,9 @@ namespace RentEase.API.Controllers.Main
                 {
                     StatusCode = HttpStatusCode.OK,
                     Message = result.Message,
+                    Count = result.TotalCount,
+                    TotalPages = result.TotalPage,
+                    CurrentPage = result.CurrentPage,
                     Data = (IEnumerable<AccountLikedAptRes>)result.Data!
                 });
             }

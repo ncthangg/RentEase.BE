@@ -21,6 +21,7 @@
         public DateOnly MoveInDate { get; set; }
 
         public DateOnly? MoveOutDate { get; set; }
+
         public int ApproveStatusId { get; set; } = 1;
     }
     public class PostRes : Base
@@ -35,6 +36,10 @@
 
         public string Title { get; set; } = string.Empty;
 
+        public long RentPrice { get; set; }
+
+        public long? PilePrice { get; set; }
+
         public int TotalSlot { get; set; }
 
         public int CurrentSlot { get; set; }
@@ -43,12 +48,17 @@
 
         public int OldId { get; set; }
 
-        public string? Note { get; set; }
+        public string Note { get; set; } = string.Empty;
 
         public DateOnly MoveInDate { get; set; }
 
         public DateOnly? MoveOutDate { get; set; }
 
         public int ApproveStatusId { get; set; }
+
+        public DateTime? StartPublic { get; set; }
+
+        public DateTime? EndPublic { get; set; }
+
     }
 }

@@ -19,7 +19,7 @@ namespace RentEase.API.Controllers.Main
         }
 
         [HttpGet("GetAll")]
-        public async Task<IActionResult> GetAll([FromQuery] bool status = true, [FromQuery] int page = 1, [FromQuery] int pageSize = 10)
+        public async Task<IActionResult> GetAll([FromQuery] bool status, [FromQuery] int page = 1, [FromQuery] int pageSize = 10)
         {
             try
             {
@@ -84,7 +84,7 @@ namespace RentEase.API.Controllers.Main
         }
 
         [HttpGet("GetByAccountId")]
-        public async Task<IActionResult> GetByAccountId([FromQuery] string accountId, [FromQuery] int? statusId, [FromQuery] bool status = true, [FromQuery] int page = 1, [FromQuery] int pageSize = 10)
+        public async Task<IActionResult> GetByAccountId([FromQuery] string accountId, [FromQuery] int? statusId, [FromQuery] bool status, [FromQuery] int page = 1, [FromQuery] int pageSize = 10)
         {
             try
             {
@@ -101,6 +101,9 @@ namespace RentEase.API.Controllers.Main
                 {
                     StatusCode = HttpStatusCode.OK,
                     Message = result.Message,
+                    Count = result.TotalCount,
+                    TotalPages = result.TotalPage,
+                    CurrentPage = result.CurrentPage,
                     Data = (PostRes)result.Data!
                 });
             }

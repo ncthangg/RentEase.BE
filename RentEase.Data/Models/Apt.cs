@@ -15,6 +15,8 @@ public partial class Apt
 
     public string OwnerPhone { get; set; }
 
+    public string OwnerEmail { get; set; }
+
     public string Name { get; set; }
 
     public double? Area { get; set; }
@@ -28,10 +30,6 @@ public partial class Apt
     public int DistrictId { get; set; }
 
     public int WardId { get; set; }
-
-    public long RentPrice { get; set; }
-
-    public long? PilePrice { get; set; }
 
     public int AptCategoryId { get; set; }
 

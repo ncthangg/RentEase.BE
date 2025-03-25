@@ -410,14 +410,15 @@ public partial class RentEaseContext : DbContext
         {
             entity.HasKey(e => e.Id).HasName("PK__Ordert__3214EC07450B5CD3");
 
+            entity.Property(e => e.Id).HasMaxLength(255);
             entity.ToTable("OrderType");
 
-            entity.HasIndex(e => e.TypeName, "UQ__Ordert__D4E7DFA8FCA6D65C").IsUnique();
+            entity.HasIndex(e => e.Name, "UQ__Ordert__D4E7DFA8FCA6D65C").IsUnique();
 
             entity.Property(e => e.Amount).HasColumnType("decimal(18, 2)");
             entity.Property(e => e.CreatedAt).HasColumnType("datetime");
             entity.Property(e => e.Note).HasMaxLength(255);
-            entity.Property(e => e.TypeName)
+            entity.Property(e => e.Name)
                 .IsRequired()
                 .HasMaxLength(100);
             entity.Property(e => e.UpdatedAt).HasColumnType("datetime");

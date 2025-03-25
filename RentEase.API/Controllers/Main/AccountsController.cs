@@ -20,7 +20,7 @@ namespace RentEase.API.Controllers.Main
         }
 
         [HttpGet("GetAll")]
-        public async Task<IActionResult> GetAll([FromQuery] bool status = true, [FromQuery] int page = 1, [FromQuery] int pageSize = 10)
+        public async Task<IActionResult> GetAll([FromQuery] bool status, [FromQuery] int page = 1, [FromQuery] int pageSize = 10)
         {
             try
             {

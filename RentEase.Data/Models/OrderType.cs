@@ -7,11 +7,13 @@ namespace RentEase.Data.Models;
 
 public partial class OrderType
 {
-    public int Id { get; set; }
+    public string Id { get; set; }
 
-    public string TypeName { get; set; }
+    public string Name { get; set; }
 
     public string Note { get; set; }
+
+    public int Month { get; set; }
 
     public decimal Amount { get; set; }
 

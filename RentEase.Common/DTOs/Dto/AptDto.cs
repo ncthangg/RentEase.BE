@@ -8,6 +8,8 @@ public class AptReq
 
     public string OwnerPhone { get; set; } = string.Empty;
 
+    public string OwnerEmail { get; set; } = string.Empty;
+
     public string Name { get; set; } = string.Empty;
 
     public double Area { get; set; } = 0;
@@ -21,10 +23,6 @@ public class AptReq
     public int DistrictId { get; set; }
 
     public int WardId { get; set; }
-
-    public long RentPrice { get; set; } = 0;
-
-    public long PilePrice { get; set; } = 0;
 
     public int AptCategoryId { get; set; }
 
@@ -47,6 +45,8 @@ public class AptRes : Base
 
     public string OwnerPhone { get; set; } = string.Empty;
 
+    public string OwnerEmail { get; set; } = string.Empty;
+
     public string Name { get; set; } = string.Empty;
 
     public double? Area { get; set; }
@@ -60,10 +60,6 @@ public class AptRes : Base
     public int DistrictId { get; set; }
 
     public int WardId { get; set; }
-
-    public long RentPrice { get; set; }
-
-    public long? PilePrice { get; set; }
 
     public int AptCategoryId { get; set; }
 

@@ -17,6 +17,10 @@ public partial class Post
 
     public string Title { get; set; }
 
+    public long RentPrice { get; set; }
+
+    public long? PilePrice { get; set; }
+
     public int TotalSlot { get; set; }
 
     public int CurrentSlot { get; set; }
@@ -38,6 +42,10 @@ public partial class Post
     public DateTime? UpdatedAt { get; set; }
 
     public DateTime? DeletedAt { get; set; }
+
+    public DateTime? StartPublic { get; set; }
+
+    public DateTime? EndPublic { get; set; }
 
     public bool? Status { get; set; }
 
