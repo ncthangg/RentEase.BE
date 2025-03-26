@@ -1,4 +1,5 @@
-﻿using RentEase.Common.DTOs;
+﻿using Microsoft.EntityFrameworkCore;
+using RentEase.Common.DTOs;
 using RentEase.Data.DBContext;
 using RentEase.Data.Models;
 using RentEase.Data.Repository.Base;
@@ -12,12 +13,24 @@ namespace RentEase.Data.Repository.Main
         {
         }
         public PostRepository(RentEaseContext context) => _context = context;
+        public async Task<PagedResult<Post>> GetAll(int? approveStatusId, bool? status, int page, int pageSize)
+        {
+            return await GetPagedAsync(
+                filter: (f => (!approveStatusId.HasValue || f.ApproveStatusId == approveStatusId) &&
+                                (!status.HasValue || f.Status == status.Value)),
+                orderBy: q => q.OrderByDescending(o => o.CreatedAt),
+                page: page,
+                pageSize: pageSize,
+                includes: q => q
+                         .Include(i => i.Apt)
+            );
+        }
         public async Task<PagedResult<Post>> GetByAccountId(
-                  string accountId, int? statusId, bool? status, int page, int pageSize)
+                  string accountId, int? approveStatusId, bool? status, int page, int pageSize)
         {
             return await GetPagedAsync(
                 filter: o => o.AccountId == accountId &&
-                             (statusId == null || o.ApproveStatusId == statusId) &&
+                             (approveStatusId == null || o.ApproveStatusId == approveStatusId) &&
                              (status == null || o.Status == status),
                 orderBy: q => q.OrderByDescending(o => o.CreatedAt),
                 page: page,

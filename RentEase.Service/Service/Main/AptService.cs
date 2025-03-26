@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Http;
+using Microsoft.Identity.Client;
 using RentEase.Common.Base;
 using RentEase.Common.DTOs;
 using RentEase.Common.DTOs.Dto;
@@ -13,11 +14,12 @@ namespace RentEase.Service.Service.Main
 {
     public interface IAptService
     {
-        Task<ServiceResult> GetAll(int page, int pageSize, bool? status);
+        Task<ServiceResult> GetAll(int? approveStatusId, bool? status, int page, int pageSize);
         Task<ServiceResult> GetById(string id);
-        Task<ServiceResult> GetByAccountId(string accountId, int? statusId, bool? status, int page, int pageSize);
+        Task<ServiceResult> GetByAccountId(string accountId, int? approveStatusId, bool? status, int page, int pageSize);
         Task<ServiceResult> Create(AptReq request);
-        Task<ServiceResult> Update(string id, AptReq request); 
+        Task<ServiceResult> Update(string id, AptReq request);
+        Task<ServiceResult> UpdateApproveStatusId(string aptId, int approveStatusId);
         Task<ServiceResult> UpdateStatus(string id);
         Task<ServiceResult> Delete(string id);
         Task<ServiceResult> DeleteSoft(string id);
@@ -36,9 +38,23 @@ namespace RentEase.Service.Service.Main
             _mapper = mapper;
             _helperWrapper = helperWrapper;
         }
-        public async Task<ServiceResult> GetByAccountId(string accountId, int? statusId, bool? status, int page, int pageSize)
+        public async Task<ServiceResult> GetAll(int? approveStatusId, bool? status, int page, int pageSize)
         {
-            var items = await _unitOfWork.AptRepository.GetByAccountId(accountId, statusId, page, pageSize, status);
+            var items = await _unitOfWork.AptRepository.GetAll(approveStatusId, status, page, pageSize);
+
+            if (!items.Data.Any())
+            {
+                return new ServiceResult(Const.ERROR_EXCEPTION_CODE, Const.ERROR_EXCEPTION_MSG);
+            }
+            else
+            {
+                var responseData = _mapper.Map<IEnumerable<AptRes>>(items.Data);
+                return new ServiceResult(Const.SUCCESS_ACTION_CODE, Const.SUCCESS_ACTION_MSG, items.TotalCount, items.TotalPages, items.CurrentPage, responseData);
+            }
+        }
+        public async Task<ServiceResult> GetByAccountId(string accountId, int? approveStatusId, bool? status, int page, int pageSize)
+        {
+            var items = await _unitOfWork.AptRepository.GetByAccountId(accountId, approveStatusId, page, pageSize, status);
 
             if (!items.Data.Any())
             {
@@ -218,6 +234,53 @@ namespace RentEase.Service.Service.Main
 
             return new ServiceResult(Const.ERROR_EXCEPTION_CODE, Const.ERROR_EXCEPTION_MSG);
         }
+        public async Task<ServiceResult> UpdateApproveStatusId(string aptId, int approveStatusId)
+        {
+            string accountId = _helperWrapper.TokenHelper.GetAccountIdFromHttpContextAccessor(_httpContextAccessor);
+            string roleId = _helperWrapper.TokenHelper.GetRoleIdFromHttpContextAccessor(_httpContextAccessor);
+
+            if (string.IsNullOrEmpty(accountId))
+            {
+                return new ServiceResult(Const.ERROR_EXCEPTION_CODE, "Lỗi khi lấy info");
+            }
+
+            if (!await EntityExistsAsync("AptId", aptId))
+            {
+                return new ServiceResult(Const.ERROR_EXCEPTION_CODE, "Apt không tồn tại");
+            }
+
+            var item = await _unitOfWork.AptRepository.GetByIdAsync(aptId);
+
+            if (accountId != item.OwnerId || roleId != "1")
+            {
+                return new ServiceResult(Const.ERROR_EXCEPTION_CODE, "Bạn không có quyền hạn.");
+            }
+
+            if (approveStatusId != (int)EnumType.ApproveStatusId.Pending ||
+                       approveStatusId != (int)EnumType.ApproveStatusId.Success ||
+                            approveStatusId != (int)EnumType.ApproveStatusId.Failed)
+            {
+                return new ServiceResult(Const.ERROR_EXCEPTION_CODE, "ApproveStatusId không hợp lệ.");
+            }
+
+            if (approveStatusId == (int)EnumType.ApproveStatusId.Success)
+            {
+                item.ApproveStatusId = approveStatusId;
+            }
+            else
+            {
+                item.ApproveStatusId = (int)EnumType.ApproveStatusId.Failed;
+            }
+            item.UpdatedAt = DateTime.Now;
+
+            var result = await _unitOfWork.AptRepository.UpdateAsync(item);
+            if (result > 0)
+            {
+                return new ServiceResult(Const.SUCCESS_ACTION_CODE, "Cập nhật Apt thành công");
+            }
+
+            return new ServiceResult(Const.ERROR_EXCEPTION_CODE, "Cập nhật Apt thất bại");
+        }
         public async Task<ServiceResult> UpdateStatus(string id)
         {
             string accountId = _helperWrapper.TokenHelper.GetAccountIdFromHttpContextAccessor(_httpContextAccessor);
@@ -240,8 +303,6 @@ namespace RentEase.Service.Service.Main
                 return new ServiceResult(Const.ERROR_EXCEPTION_CODE, "Bạn không có quyền hạn.");
             }
 
-
-            // Đảo trạng thái (false -> true, true -> false)
             item.Status = !item.Status;
             item.UpdatedAt = DateTime.Now;
 
@@ -313,5 +374,7 @@ namespace RentEase.Service.Service.Main
 
             return $"{prefix}{randomNumber}";
         }
+
+
     }
 }

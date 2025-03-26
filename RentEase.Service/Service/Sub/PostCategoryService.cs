@@ -34,14 +34,14 @@ namespace RentEase.Service.Service.Sub
         }
         public async Task<ServiceResult> Create(PostCategoryReq request)
         {
-            if (await EntityExistsAsync("PostCategoryName", request.PostCategoryName))
+            if (await EntityExistsAsync("CategoryName", request.CategoryName))
             {
                 return new ServiceResult(Const.ERROR_EXCEPTION_CODE, Const.ERROR_EXCEPTION_MSG);
             }
 
             var createItem = new PostCategory()
             {
-                CategoryName = request.PostCategoryName.ToLower(),
+                CategoryName = request.CategoryName.ToLower(),
                 Note = request.Note,
                 CreatedAt = DateTime.Now,
                 UpdatedAt = null,
@@ -67,7 +67,7 @@ namespace RentEase.Service.Service.Sub
             var updateItem = new PostCategory()
             {
                 Id = item.Id,
-                CategoryName = request.PostCategoryName.ToLower(),
+                CategoryName = request.CategoryName.ToLower(),
                 Note = request.Note,
                 CreatedAt = item.CreatedAt,
                 UpdatedAt = DateTime.Now

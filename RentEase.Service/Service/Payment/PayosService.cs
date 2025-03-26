@@ -128,12 +128,13 @@ namespace RentEase.Service.Service.Payment
                 post.EndPublic = DateTime.Now.AddMonths(orderType.Month);
                 post.UpdatedAt = DateTime.Now;
                 post.Status = true;
+
+                await _unitOfWork.PostRepository.UpdateAsync(post);
             }
             else
             {
                 order.CancelledAt = DateTime.Now;
             }
-
 
             await _unitOfWork.OrderRepository.UpdateAsync(order);
 
@@ -151,6 +152,9 @@ namespace RentEase.Service.Service.Payment
 
             var returnUrl = _configuration["PayosSettings:ReturnUrl"];
             var cancelUrl = _configuration["PayosSettings:CancelUrl"];
+
+            //var expiredAt = (long)DateTimeOffset.UtcNow.AddMinutes(30).ToUnixTimeSeconds();
+
 
             var request = await _unitOfWork.OrderRepository.GetByOrderCodeAsync(orderCode);
 

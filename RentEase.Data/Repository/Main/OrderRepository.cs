@@ -26,10 +26,10 @@ namespace RentEase.Data.Repository.Main
                 );
         }
 
-        public async Task<PagedResult<Order>> GetByApproveStatusId(int? statusId, int page, int pageSize)
+        public async Task<PagedResult<Order>> GetByPaymentStatusId(int? paymentStatusId, int page, int pageSize)
         {
             return await GetPagedAsync(
-                 filter: f => statusId == null || f.PaymentStatusId == statusId,
+                 filter: f => paymentStatusId == null || f.PaymentStatusId == paymentStatusId,
                  orderBy: q => q.OrderByDescending(o => o.CreatedAt),
                  page: page,
                  pageSize: pageSize

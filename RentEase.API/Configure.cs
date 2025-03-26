@@ -43,6 +43,7 @@ namespace RentEase.API
             services.AddScoped<IOrderService, OrderService>();
             services.AddScoped<IPostService, PostService>();
             services.AddScoped<IPostRequireService, PostRequireService>();
+            services.AddScoped<IPostCategoryService, PostCategoryService>();
 
             services.AddScoped<ServiceWrapper>();
             return services;

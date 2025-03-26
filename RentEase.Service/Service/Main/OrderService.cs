@@ -13,8 +13,9 @@ namespace RentEase.Service.Service.Main
         Task<ServiceResult> GetAll(int page, int pageSize, bool? status);
         Task<ServiceResult> GetById(string id);
         Task<ServiceResult> GetByOrderCode(string orderCode);
-        Task<ServiceResult> GetByAccountId(string accountId, int? statusId, int page, int pageSize);
-        Task<ServiceResult> Update(string orderId, int statusId); // chỉ dành cho ADMIN
+        Task<ServiceResult> GetByPaymentStatusId(int paymentStatusId, int page, int pageSize);
+        Task<ServiceResult> GetByAccountId(string accountId, int? paymentStatusId, int page, int pageSize);
+        Task<ServiceResult> UpdatePaymentStatusId(string orderId, int paymentStatusId); // chỉ dành cho ADMIN
         Task<ServiceResult> Delete(string id);
     }
     public class OrderService : BaseService<Order, OrderRes>, IOrderService
@@ -31,6 +32,7 @@ namespace RentEase.Service.Service.Main
             _mapper = mapper;
             _helperWrapper = helperWrapper;
         }
+
         public async Task<ServiceResult> GetByOrderCode(string orderCode)
         {
 
@@ -46,10 +48,10 @@ namespace RentEase.Service.Service.Main
                 return new ServiceResult(Const.SUCCESS_ACTION_CODE, Const.SUCCESS_ACTION_MSG, responseData);
             }
         }
-        public async Task<ServiceResult> GetByAccountId(string accountId, int? statusId, int page, int pageSize)
+        public async Task<ServiceResult> GetByPaymentStatusId(int paymentStatusId, int page, int pageSize)
         {
 
-            var items = await _unitOfWork.OrderRepository.GetByAccountId(accountId, statusId, page, pageSize);
+            var items = await _unitOfWork.OrderRepository.GetByPaymentStatusId(paymentStatusId, page, pageSize);
 
             if (!items.Data.Any())
             {
@@ -61,7 +63,22 @@ namespace RentEase.Service.Service.Main
                 return new ServiceResult(Const.SUCCESS_ACTION_CODE, Const.SUCCESS_ACTION_MSG, items.TotalCount, items.TotalPages, items.CurrentPage, responseData);
             }
         }
-        public async Task<ServiceResult> Update(string orderId, int paymentApproveStatusId)
+        public async Task<ServiceResult> GetByAccountId(string accountId, int? paymentStatusId, int page, int pageSize)
+        {
+
+            var items = await _unitOfWork.OrderRepository.GetByAccountId(accountId, paymentStatusId, page, pageSize);
+
+            if (!items.Data.Any())
+            {
+                return new ServiceResult(Const.ERROR_EXCEPTION_CODE, Const.ERROR_EXCEPTION_MSG);
+            }
+            else
+            {
+                var responseData = _mapper.Map<IEnumerable<OrderRes>>(items.Data);
+                return new ServiceResult(Const.SUCCESS_ACTION_CODE, Const.SUCCESS_ACTION_MSG, items.TotalCount, items.TotalPages, items.CurrentPage, responseData);
+            }
+        }
+        public async Task<ServiceResult> UpdatePaymentStatusId(string orderId, int paymentStatusId)
         {
             string accountId = _helperWrapper.TokenHelper.GetAccountIdFromHttpContextAccessor(_httpContextAccessor);
             string roleId = _helperWrapper.TokenHelper.GetRoleIdFromHttpContextAccessor(_httpContextAccessor);
@@ -83,22 +100,22 @@ namespace RentEase.Service.Service.Main
                 return new ServiceResult(Const.ERROR_EXCEPTION_CODE, "Bạn không có quyền hạn.");
             }
 
-            if (paymentApproveStatusId != (int)EnumType.PaymentStatusId.PENDING ||
-                       paymentApproveStatusId != (int)EnumType.PaymentStatusId.PAID ||
-                            paymentApproveStatusId != (int)EnumType.PaymentStatusId.PROCESSING ||
-                                   paymentApproveStatusId != (int)EnumType.PaymentStatusId.CANCELLED)
+            if (paymentStatusId != (int)EnumType.PaymentStatusId.PENDING ||
+                       paymentStatusId != (int)EnumType.PaymentStatusId.PAID ||
+                            paymentStatusId != (int)EnumType.PaymentStatusId.PROCESSING ||
+                                   paymentStatusId != (int)EnumType.PaymentStatusId.CANCELLED)
             {
                 return new ServiceResult(Const.ERROR_EXCEPTION_CODE, "ApproveStatusId không hợp lệ.");
             }
 
-            if (paymentApproveStatusId == (int)EnumType.PaymentStatusId.PAID)
+            if (paymentStatusId == (int)EnumType.PaymentStatusId.PAID)
             {
-                item.PaymentStatusId = paymentApproveStatusId;
+                item.PaymentStatusId = paymentStatusId;
                 item.PaidAt = DateTime.Now;
             }
             else
             {
-                item.PaymentStatusId = paymentApproveStatusId;
+                item.PaymentStatusId = paymentStatusId;
             }
 
             var result = await _unitOfWork.OrderRepository.UpdateAsync(item);

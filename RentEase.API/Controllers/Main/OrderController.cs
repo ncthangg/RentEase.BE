@@ -115,11 +115,11 @@ namespace RentEase.API.Controllers.Main
         }
 
         [HttpGet("GetByAccountId")]
-        public async Task<IActionResult> GetByAccountId([FromQuery] string accountId, [FromQuery] int? statusId, [FromQuery] int page = 1, [FromQuery] int pageSize = 10)
+        public async Task<IActionResult> GetByAccountId([FromQuery] string accountId, [FromQuery] int? paymentStatusId, [FromQuery] int page = 1, [FromQuery] int pageSize = 10)
         {
             try
             {
-                var result = await _OrderService.GetByAccountId(accountId, statusId, page, pageSize);
+                var result = await _OrderService.GetByAccountId(accountId, paymentStatusId, page, pageSize);
                 if (result.Status < 0 && result.Data == null)
                 {
                     return NotFound(new ApiRes<string>
@@ -149,11 +149,11 @@ namespace RentEase.API.Controllers.Main
         }
 
         [HttpPut]
-        public async Task<IActionResult> Put([FromQuery] string id, [FromQuery] int statusId)
+        public async Task<IActionResult> Put([FromQuery] string id, [FromQuery] int paymentStatusId)
         {
             try
             {
-                var result = await _OrderService.Update(id, statusId);
+                var result = await _OrderService.UpdatePaymentStatusId(id, paymentStatusId);
                 if (result.Status < 0 && result.Data == null)
                 {
                     return NotFound(new ApiRes<string>

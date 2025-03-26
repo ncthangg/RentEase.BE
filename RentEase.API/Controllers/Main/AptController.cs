@@ -19,11 +19,11 @@ namespace RentEase.API.Controllers.Main
         }
 
         [HttpGet("GetAll")]
-        public async Task<IActionResult> GetAll([FromQuery] bool status, [FromQuery] int page = 1, [FromQuery] int pageSize = 10)
+        public async Task<IActionResult> GetAll([FromQuery] int? approveStatusId, [FromQuery] bool? status, [FromQuery] int page = 1, [FromQuery] int pageSize = 10)
         {
             try
             {
-                var result = await _aptService.GetAll(page, pageSize, status);
+                var result = await _aptService.GetAll(approveStatusId, status, page, pageSize);
                 if (result.Status < 0 && result.Data == null)
                 {
                     return NotFound(new ApiRes<string>
@@ -84,11 +84,11 @@ namespace RentEase.API.Controllers.Main
         }
 
         [HttpGet("GetByAccountId")]
-        public async Task<IActionResult> GetByAccountId([FromQuery] string accountId, [FromQuery] int? statusId, [FromQuery] bool? status, [FromQuery] int page = 1, [FromQuery] int pageSize = 10)
+        public async Task<IActionResult> GetByAccountId([FromQuery] string accountId, [FromQuery] int? approveStatusId, [FromQuery] bool? status, [FromQuery] int page = 1, [FromQuery] int pageSize = 10)
         {
             try
             {
-                var result = await _aptService.GetByAccountId(accountId, statusId, status, page, pageSize);
+                var result = await _aptService.GetByAccountId(accountId, approveStatusId, status, page, pageSize);
                 if (result.Status < 0 && result.Data == null)
                 {
                     return NotFound(new ApiRes<string>

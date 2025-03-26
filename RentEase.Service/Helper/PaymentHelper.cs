@@ -28,10 +28,17 @@ namespace RentEase.Service.Helper
         //    return Convert.ToHexString(hash).ToLower();
         //}
 
+        //public static string CreateSortedQueryString(Dictionary<string, object> parameters)
+        //{
+        //    return string.Join("&", parameters.OrderBy(k => k.Key).Select(kv => $"{kv.Key}={kv.Value}"));
+        //}
         public static string CreateSortedQueryString(Dictionary<string, object> parameters)
         {
-            return string.Join("&", parameters.OrderBy(k => k.Key).Select(kv => $"{kv.Key}={kv.Value}"));
+            return string.Join("&", parameters
+                .OrderBy(k => k.Key)
+                .Select(kv => $"{kv.Key}={Convert.ToString(kv.Value, System.Globalization.CultureInfo.InvariantCulture)}"));
         }
+
     }
 
 
