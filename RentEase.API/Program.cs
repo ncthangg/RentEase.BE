@@ -19,12 +19,13 @@ builder.Services.AddControllers().AddJsonOptions(options =>
 
 builder.Services.AddCors(options =>
 {
-    options.AddPolicy("AllowAll", policy =>
-    {
-        policy.AllowAnyOrigin()
-              .AllowAnyMethod()
-              .AllowAnyHeader();
-    });
+    options.AddPolicy("AllowAllOrigins",
+        builder =>
+        {
+            builder.AllowAnyOrigin()   // Cho phép tất cả domain (chỉ nên dùng khi dev)
+                   .AllowAnyMethod()
+                   .AllowAnyHeader();
+        });
 });
 
 ////Add Session
@@ -50,6 +51,6 @@ app.UseAuthorization();
 
 app.MapControllers();
 
-app.UseCors("AllowAll");
+app.UseCors("AllowAllOrigins");
 
 app.Run();
