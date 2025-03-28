@@ -50,6 +50,7 @@ namespace RentEase.Service.Service.Payment
             {
                 return new ServiceResult(Const.ERROR_EXCEPTION_CODE, "Tài khoản không tồn tại");
             }
+
             string orderCode = "";
             do
             {
@@ -57,15 +58,21 @@ namespace RentEase.Service.Service.Payment
             }
             while (await _unitOfWork.OrderRepository.GetByOrderCodeAsync(orderCode) != null);
 
+            var orderType = await _unitOfWork.OrderTypeRepository.GetByIdAsync(request.OrderTypeId);
+            if (orderType == null)
+            {
+                return new ServiceResult(Const.ERROR_EXCEPTION_CODE, "Gói không khả dụng");
+            }
+
             var createItem = new Order()
             {
                 OrderId = Guid.NewGuid().ToString("N"),
-                OrderTypeId = request.OrderTypeId,
+                OrderTypeId = orderType.Id,
                 OrderCode = orderCode,
                 PostId = request.PostId,
                 SenderId = accountId,
-                TotalAmount = request.Amount + (request.Amount * request.IncurredCost),
-                Note = request.Note,
+                TotalAmount = orderType.Amount,
+                Note = $"Thanh toán: {orderType.Note}",
                 CreatedAt = DateTime.Now,
                 PaymentStatusId = (int)EnumType.ApproveStatusId.Pending
             };

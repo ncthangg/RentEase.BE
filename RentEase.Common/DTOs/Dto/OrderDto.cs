@@ -5,12 +5,7 @@
         public string OrderTypeId { get; set; }
 
         public string PostId { get; set; } = string.Empty;
-
-        public decimal Amount { get; set; } = 0;
-
-        public decimal IncurredCost { get; set; } = 0;
         
-        public string Note { get; set; } = string.Empty;
     }
 
     public class OrderRes
