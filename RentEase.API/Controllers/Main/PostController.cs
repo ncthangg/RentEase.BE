@@ -178,12 +178,42 @@ namespace RentEase.API.Controllers.Main
             }
         }
 
-        [HttpPatch]
-        public async Task<IActionResult> DeleteSoft(string id)
+        [HttpPatch("Update-ApproveStatus")]
+        public async Task<IActionResult> UpdateApproveStatus(string aptId, int approveStatusId)
         {
             try
             {
-                var result = await _postService.DeleteSoft(id);
+                var result = await _postService.UpdateApproveStatusId(aptId, approveStatusId);
+                if (result.Status < 0 && result.Data == null)
+                {
+                    return NotFound(new ApiRes<string>
+                    {
+                        StatusCode = HttpStatusCode.NotFound,
+                        Message = result.Message
+                    });
+                }
+                return Ok(new ApiRes<string>
+                {
+                    StatusCode = HttpStatusCode.OK,
+                    Message = result.Message
+                });
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new ApiRes<string>
+                {
+                    StatusCode = HttpStatusCode.InternalServerError,
+                    Message = $"Lỗi hệ thống: {ex.Message}"
+                });
+            }
+        }
+
+        [HttpPatch("Update-Status")]
+        public async Task<IActionResult> UpdateStatus(string id)
+        {
+            try
+            {
+                var result = await _postService.UpdateStatus(id);
                 if (result.Status < 0 && result.Data == null)
                 {
                     return NotFound(new ApiRes<string>

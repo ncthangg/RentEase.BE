@@ -251,7 +251,7 @@ namespace RentEase.Data.Migrations
                     b.Property<string>("OwnerEmail")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("OwnerId")
+                    b.Property<string>("PosterId")
                         .HasMaxLength(255)
                         .HasColumnType("nvarchar(255)");
 
@@ -287,7 +287,7 @@ namespace RentEase.Data.Migrations
 
                     b.HasIndex(new[] { "AptStatusId" }, "IX_Apt_AptStatus");
 
-                    b.HasIndex(new[] { "OwnerId" }, "IX_Apt_OwnerId");
+                    b.HasIndex(new[] { "PosterId" }, "IX_Apt_PosterId");
 
                     b.ToTable("Apt", (string)null);
                 });

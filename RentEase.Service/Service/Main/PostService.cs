@@ -17,7 +17,6 @@ namespace RentEase.Service.Service.Main
         Task<ServiceResult> Update(string postId, PostReq request);
         Task<ServiceResult> UpdateApproveStatusId(string postId, int approveStatusId);
         Task<ServiceResult> UpdateStatus(string id);
-        Task<ServiceResult> DeleteSoft(string id);
         Task<ServiceResult> Delete(string id);
     }
     public class PostService : BaseService<Post, PostRes>, IPostService
@@ -75,7 +74,7 @@ namespace RentEase.Service.Service.Main
             {
                 PostId = Guid.NewGuid().ToString("N"),
                 PostCategoryId = request.PostCategoryId,
-                AccountId = accountId,
+                PosterId = accountId,
                 AptId = request.AptId,
                 Title = request.Title,
                 TotalSlot = request.TotalSlot,
@@ -128,7 +127,7 @@ namespace RentEase.Service.Service.Main
             {
                 return new ServiceResult(Const.ERROR_EXCEPTION_CODE, "ApproveStatusId không hợp lệ.");
             }
-
+            item.UpdatedAt = DateTime.Now;
             var result = await _unitOfWork.PostRepository.UpdateAsync(item);
             if (result > 0)
             {
@@ -154,7 +153,7 @@ namespace RentEase.Service.Service.Main
 
             var item = await _unitOfWork.PostRepository.GetByIdAsync(postId);
 
-            if (accountId != item.AccountId || roleId != "1")
+            if (accountId != item.PosterId || roleId != "1")
             {
                 return new ServiceResult(Const.ERROR_EXCEPTION_CODE, "Bạn không có quyền hạn.");
             }
@@ -174,6 +173,7 @@ namespace RentEase.Service.Service.Main
             {
                 item.ApproveStatusId = (int)EnumType.ApproveStatusId.Failed;
             }
+
             item.UpdatedAt = DateTime.Now;
 
             var result = await _unitOfWork.PostRepository.UpdateAsync(item);
@@ -184,53 +184,24 @@ namespace RentEase.Service.Service.Main
 
             return new ServiceResult(Const.ERROR_EXCEPTION_CODE, "Cập nhật Post thất bại");
         }
-        public async Task<ServiceResult> UpdateStatus(string id)
+        public async Task<ServiceResult> UpdateStatus(string postId)
         {
             string accountId = _helperWrapper.TokenHelper.GetAccountIdFromHttpContextAccessor(_httpContextAccessor);
             string roleId = _helperWrapper.TokenHelper.GetRoleIdFromHttpContextAccessor(_httpContextAccessor);
 
-            if (string.IsNullOrEmpty(accountId))
-            {
-                return new ServiceResult(Const.ERROR_EXCEPTION_CODE, "Lỗi khi lấy info");
-            }
-
-            var item = await _unitOfWork.PostRepository.GetByIdAsync(id);
+            var item = await _unitOfWork.PostRepository.GetByIdAsync(postId);
 
             if (item == null)
             {
                 return new ServiceResult(Const.ERROR_EXCEPTION_CODE, "Không tồn tại");
             }
 
-            if (roleId != "1")
+            if (accountId != item.PosterId || roleId != "1")
             {
                 return new ServiceResult(Const.ERROR_EXCEPTION_CODE, "Bạn không có quyền hạn.");
             }
 
-            item.Status = !item.Status;
             item.UpdatedAt = DateTime.Now;
-
-            await _unitOfWork.PostRepository.UpdateAsync(item);
-
-            return new ServiceResult(Const.SUCCESS_ACTION_CODE, "Cập nhật thành công");
-        }
-        public async Task<ServiceResult> DeleteSoft(string id)
-        {
-            string accountId = _helperWrapper.TokenHelper.GetAccountIdFromHttpContextAccessor(_httpContextAccessor);
-            string roleId = _helperWrapper.TokenHelper.GetRoleIdFromHttpContextAccessor(_httpContextAccessor);
-
-            var item = await _unitOfWork.PostRepository.GetByIdAsync(id);
-
-            if (item == null)
-            {
-                return new ServiceResult(Const.ERROR_EXCEPTION_CODE, "Không tồn tại");
-            }
-
-            if (accountId != item.AccountId || roleId != "1")
-            {
-                return new ServiceResult(Const.ERROR_EXCEPTION_CODE, "Bạn không có quyền hạn.");
-            }
-
-            item.DeletedAt = DateTime.Now;
             item.Status = false;
 
             var result = await _unitOfWork.PostRepository.UpdateAsync(item);

@@ -113,7 +113,7 @@ namespace RentEase.Data.Migrations
                 columns: table => new
                 {
                     AptId = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: false),
-                    OwnerId = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: true),
+                    PosterId = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: true),
                     OwnerName = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     OwnerPhone = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Name = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: false),
@@ -498,9 +498,9 @@ namespace RentEase.Data.Migrations
                 column: "AptStatusId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Apt_OwnerId",
+                name: "IX_Apt_PosterId",
                 table: "Apt",
-                column: "OwnerId");
+                column: "PosterId");
 
             migrationBuilder.CreateIndex(
                 name: "UQ__AptCateg__8517B2E008B30AFE",

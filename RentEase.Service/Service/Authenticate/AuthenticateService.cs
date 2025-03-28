@@ -13,7 +13,7 @@ namespace RentEase.Service.Service.Authenticate
     {
         Task<ServiceResult> SignIn(LoginReq request);
         Task<ServiceResult> SignUp(RegisterReq request);
-        Task<ServiceResult> ChangePassword(ChangePasswordReq request);
+        Task<ServiceResult> ChangePassword(string accountId,ChangePasswordReq request);
         Task<ServiceResult> GetInfo();
         Task<ServiceResult> Logout();
     }
@@ -156,11 +156,12 @@ namespace RentEase.Service.Service.Authenticate
                 return new ServiceResult(Const.ERROR_EXCEPTION_CODE, ex.ToString());
             }
         }
-        public async Task<ServiceResult> ChangePassword(ChangePasswordReq request)
+        public async Task<ServiceResult> ChangePassword(string id,ChangePasswordReq request)
         {
             try
             {
                 string accountId = _helperWrapper.TokenHelper.GetAccountIdFromHttpContextAccessor(_httpContextAccessor);
+                string roleId = _helperWrapper.TokenHelper.GetRoleIdFromHttpContextAccessor(_httpContextAccessor);
 
                 if (string.IsNullOrEmpty(accountId))
                 {
@@ -168,13 +169,23 @@ namespace RentEase.Service.Service.Authenticate
                 }
 
                 // Kiểm tra người dùng đã tồn tại chưa
-                var item = await _unitOfWork.AccountRepository.GetByIdAsync(accountId);
+                var item = await _unitOfWork.AccountRepository.GetByIdAsync(id);
+
+                if (accountId != item.AccountId || roleId != "1")
+                {
+                    return new ServiceResult(Const.ERROR_EXCEPTION_CODE, "Bạn không có quyền hạn.");
+                }
+
+                if (!(bool)item.Status!)
+                {
+                    return new ServiceResult(Const.ERROR_EXCEPTION_CODE, "Status == False.");
+                }
+
 
                 if (item.PasswordHash.Equals(request.OldPassword) && request.NewPassword.Equals(request.ConfirmPassword))
                 {
-                    var updateItem = _mapper.Map<AccountReq>(item);
-                    updateItem.PasswordHash = request.NewPassword;
-                    var result = await _serviceWrapper.AccountService.Update(accountId, updateItem);
+                    var passwordHash = request.NewPassword;
+                    var result = await _serviceWrapper.AccountService.UpdatePassword(id, passwordHash);
                     if (result.Status > 0)
                     {
                         return new ServiceResult(Const.SUCCESS_ACTION_CODE, result.Message);
@@ -189,7 +200,6 @@ namespace RentEase.Service.Service.Authenticate
                 return new ServiceResult(Const.ERROR_EXCEPTION_CODE, ex.ToString());
             }
         }
-
 
         public Task<ServiceResult> Logout()
         {

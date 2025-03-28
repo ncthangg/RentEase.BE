@@ -169,7 +169,7 @@ public partial class RentEaseContext : DbContext
 
             entity.HasIndex(e => e.AptStatusId, "IX_Apt_AptStatus");
 
-            entity.HasIndex(e => e.OwnerId, "IX_Apt_OwnerId");
+            entity.HasIndex(e => e.PosterId, "IX_Apt_PosterId");
 
             entity.Property(e => e.AptId).HasMaxLength(255);
             entity.Property(e => e.Address)
@@ -182,7 +182,7 @@ public partial class RentEaseContext : DbContext
             entity.Property(e => e.Name)
                 .IsRequired()
                 .HasMaxLength(255);
-            entity.Property(e => e.OwnerId)
+            entity.Property(e => e.PosterId)
                 .HasMaxLength(255);
             entity.Property(e => e.Rating).HasDefaultValue(0.0);
             entity.Property(e => e.Status).HasDefaultValue(false);
@@ -306,7 +306,7 @@ public partial class RentEaseContext : DbContext
             entity.ToTable("Post");
 
             entity.Property(e => e.PostId).HasMaxLength(255);
-            entity.Property(e => e.AccountId)
+            entity.Property(e => e.PosterId)
                 .IsRequired()
                 .HasMaxLength(255);
             entity.Property(e => e.AptId)
@@ -321,7 +321,7 @@ public partial class RentEaseContext : DbContext
             entity.Property(e => e.UpdatedAt).HasColumnType("datetime");
 
             entity.HasOne(d => d.Account).WithMany(p => p.Posts)
-                .HasForeignKey(d => d.AccountId)
+                .HasForeignKey(d => d.PosterId)
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK_CPost_Account");
 

@@ -9,7 +9,7 @@ public partial class Apt
 {
     public string AptId { get; set; }
 
-    public string OwnerId { get; set; }
+    public string PosterId { get; set; }
 
     public string OwnerName { get; set; }
 

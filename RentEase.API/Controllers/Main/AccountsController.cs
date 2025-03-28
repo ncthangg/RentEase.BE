@@ -82,7 +82,7 @@ namespace RentEase.API.Controllers.Main
         }
 
         [HttpPost]
-        public async Task<IActionResult> Post([FromBody] AccountReq request)
+        public async Task<IActionResult> Post([FromBody] PostAccountReq request)
         {
             try
             {
@@ -112,7 +112,7 @@ namespace RentEase.API.Controllers.Main
         }
 
         [HttpPut]
-        public async Task<IActionResult> Put(string id, [FromBody] AccountReq request)
+        public async Task<IActionResult> Put(string id, [FromBody] PutAccountReq request)
         {
             try
             {
@@ -141,12 +141,12 @@ namespace RentEase.API.Controllers.Main
             }
         }
 
-        [HttpPatch]
-        public async Task<IActionResult> DeleteSoft(string id)
+        [HttpPatch("Update-Status")]
+        public async Task<IActionResult> UpdateStatus(string id)
         {
             try
             {
-                var result = await _accountService.DeleteSoft(id);
+                var result = await _accountService.UpdateStatus(id);
                 if (result.Status < 0 && result.Data == null)
                 {
                     return NotFound(new ApiRes<string>

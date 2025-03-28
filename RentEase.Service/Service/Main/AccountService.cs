@@ -4,9 +4,11 @@ using RentEase.Common.Base;
 using RentEase.Common.DTOs.Authenticate;
 using RentEase.Common.DTOs.Dto;
 using RentEase.Data;
+using RentEase.Data.Migrations;
 using RentEase.Data.Models;
 using RentEase.Service.Service.Base;
 using System.Text.RegularExpressions;
+using static RentEase.Common.Base.EnumType;
 
 namespace RentEase.Service.Service.Main
 {
@@ -18,11 +20,12 @@ namespace RentEase.Service.Service.Main
         Task<ServiceResult> GetByPhone(string phoneNumber);
         Task<ServiceResult> GetByEmailOrPhone(string email);
         Task<ServiceResult> Search(string? fullName, string? email, string? phoneNumber, bool? isActive, bool? status, int page, int pageSize);
-        Task<ServiceResult> Create(AccountReq request);
+        Task<ServiceResult> Create(PostAccountReq request);
         Task<ServiceResult> CreateByGuest(RegisterReq request);
-        Task<ServiceResult> Update(string id, AccountReq request);
+        Task<ServiceResult> Update(string id, PutAccountReq request);
+        Task<ServiceResult> UpdatePassword(string id, string newPassword);
+        Task<ServiceResult> UpdateStatus(string id);
         Task<ServiceResult> Delete(string id);
-        Task<ServiceResult> DeleteSoft(string id);
         Task<bool> AccountExistByMail(string email);
         Task<bool> AccountExistByPhoneNumber(string phoneNumber);
 
@@ -113,14 +116,14 @@ namespace RentEase.Service.Service.Main
                 return new ServiceResult(Const.SUCCESS_ACTION_CODE, Const.SUCCESS_ACTION_MSG, items.TotalCount, items.TotalPages, items.CurrentPage, responseData);
             }
         }
-        public async Task<ServiceResult> Create(AccountReq request)
+        public async Task<ServiceResult> Create(PostAccountReq request)
         {
             if (await AccountExistByMail(request.Email) || await AccountExistByPhoneNumber(request.PhoneNumber))
             {
                 return new ServiceResult(Const.ERROR_EXCEPTION_CODE, Const.ERROR_EXCEPTION_MSG);
             }
 
-            var hashedPassword = _helperWrapper.PasswordHelper.HashPassword(request.PasswordHash);
+            var hashedPassword = _helperWrapper.PasswordHelper.HashPassword(request.Password);
 
             var createItem = new Account()
             {
@@ -229,7 +232,7 @@ namespace RentEase.Service.Service.Main
 
             return new ServiceResult(Const.ERROR_EXCEPTION_CODE, Const.ERROR_EXCEPTION_MSG);
         }
-        public async Task<ServiceResult> Update(string id, AccountReq request)
+        public async Task<ServiceResult> Update(string id, PutAccountReq request)
         {
             string accountId = _helperWrapper.TokenHelper.GetAccountIdFromHttpContextAccessor(_httpContextAccessor);
             string roleId = _helperWrapper.TokenHelper.GetRoleIdFromHttpContextAccessor(_httpContextAccessor);
@@ -256,25 +259,15 @@ namespace RentEase.Service.Service.Main
                 return new ServiceResult(Const.ERROR_EXCEPTION_CODE, "Status == False.");
             }
 
-            var updateItem = new Account()
-            {
-                AccountId = item.AccountId,
-                Email = item.Email,
-                FullName = request.FullName,
-                PasswordHash = request.PasswordHash,
-                PhoneNumber = request.PhoneNumber,
-                DateOfBirth = request.DateOfBirth,
-                GenderId = request.GenderId,
-                AvatarUrl = request.AvatarUrl,
-                RoleId = request.RoleId,
-                IsVerify = item.IsVerify,
-                CreatedAt = item.CreatedAt,
-                UpdatedAt = DateTime.Now,
-                DeletedAt = null,
-                Status = item.Status,
-            };
+            item.FullName = request.FullName;
+            item.DateOfBirth = request.DateOfBirth;
+            item.OldId = request.OldId;
+            item.GenderId = request.GenderId;
+            item.AvatarUrl = request.AvatarUrl;
+            item.UpdatedAt = DateTime.Now;
 
-            var result = await _unitOfWork.AccountRepository.UpdateAsync(updateItem);
+
+            var result = await _unitOfWork.AccountRepository.UpdateAsync(item);
             if (result > 0)
             {
                 return new ServiceResult(Const.SUCCESS_ACTION_CODE, "Cập nhật thành công");
@@ -282,7 +275,45 @@ namespace RentEase.Service.Service.Main
 
             return new ServiceResult(Const.ERROR_EXCEPTION_CODE, "Cập nhật thất bại");
         }
-        public async Task<ServiceResult> DeleteSoft(string id)
+        public async Task<ServiceResult> UpdatePassword(string id, string newPassword)
+        {
+            string accountId = _helperWrapper.TokenHelper.GetAccountIdFromHttpContextAccessor(_httpContextAccessor);
+            string roleId = _helperWrapper.TokenHelper.GetRoleIdFromHttpContextAccessor(_httpContextAccessor);
+
+            if (string.IsNullOrEmpty(accountId))
+            {
+                return new ServiceResult(Const.ERROR_EXCEPTION_CODE, "Lỗi khi lấy info");
+            }
+
+            var item = await _unitOfWork.AccountRepository.GetByIdAsync(id);
+
+            if (item == null)
+            {
+                return new ServiceResult(Const.ERROR_EXCEPTION_CODE, "Không tồn tại");
+            }
+
+            if (accountId != item.AccountId || roleId != "1")
+            {
+                return new ServiceResult(Const.ERROR_EXCEPTION_CODE, "Bạn không có quyền hạn.");
+            }
+
+            if (!(bool)item.Status!)
+            {
+                return new ServiceResult(Const.ERROR_EXCEPTION_CODE, "Status == False.");
+            }
+
+            item.PasswordHash = newPassword;
+            item.UpdatedAt = DateTime.Now;
+
+            var result = await _unitOfWork.AccountRepository.UpdateAsync(item);
+            if (result > 0)
+            {
+                return new ServiceResult(Const.SUCCESS_ACTION_CODE, "Cập nhật thành công");
+            }
+
+            return new ServiceResult(Const.ERROR_EXCEPTION_CODE, "Cập nhật thất bại");
+        }
+        public async Task<ServiceResult> UpdateStatus(string id)
         {
             string accountId = _helperWrapper.TokenHelper.GetAccountIdFromHttpContextAccessor(_httpContextAccessor);
             string roleId = _helperWrapper.TokenHelper.GetRoleIdFromHttpContextAccessor(_httpContextAccessor);

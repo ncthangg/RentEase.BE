@@ -11,7 +11,7 @@ public partial class Post
 
     public int PostCategoryId { get; set; }
 
-    public string AccountId { get; set; }
+    public string PosterId { get; set; }
 
     public string AptId { get; set; }
 

@@ -2,8 +2,6 @@
 
 public class AptReq
 {
-    public string OwnerId { get; set; } = string.Empty;
-
     public string OwnerName { get; set; } = string.Empty;
 
     public string OwnerPhone { get; set; } = string.Empty;
@@ -39,7 +37,7 @@ public class AptRes : Base
 {
     public string AptId { get; set; } = string.Empty;
 
-    public string OwnerId { get; set; } = string.Empty;
+    public string PosterId { get; set; } = string.Empty;
 
     public string OwnerName { get; set; } = string.Empty;
 

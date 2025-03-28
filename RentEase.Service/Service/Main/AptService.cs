@@ -22,7 +22,6 @@ namespace RentEase.Service.Service.Main
         Task<ServiceResult> UpdateApproveStatusId(string aptId, int approveStatusId);
         Task<ServiceResult> UpdateStatus(string id);
         Task<ServiceResult> Delete(string id);
-        Task<ServiceResult> DeleteSoft(string id);
     }
     public class AptService : BaseService<Apt, AptRes>, IAptService
     {
@@ -85,14 +84,15 @@ namespace RentEase.Service.Service.Main
             var aptId = await GenerateUniqueAptIdAsync(category.CategoryName);
 
             var createItem = new Apt();
-            if (!string.IsNullOrEmpty(request.OwnerId) && accountId.Contains(request.OwnerId))
+            if (string.IsNullOrEmpty(request.OwnerName) && string.IsNullOrEmpty(request.OwnerPhone) && string.IsNullOrEmpty(request.OwnerEmail))
             {
+
                 var accountInfo = await _unitOfWork.AccountRepository.GetByIdAsync(accountId);
 
                 createItem = new Apt()
                 {
                     AptId = aptId,
-                    OwnerId = accountId,
+                    PosterId = accountId,
                     OwnerName = accountInfo.FullName,
                     OwnerPhone = accountInfo.PhoneNumber,
                     OwnerEmail = accountInfo.Email,
@@ -117,11 +117,10 @@ namespace RentEase.Service.Service.Main
             }
             else
             {
-
                 createItem = new Apt()
                 {
                     AptId = aptId,
-                    OwnerId = null,
+                    PosterId = accountId,
                     OwnerName = request.OwnerName,
                     OwnerPhone = request.OwnerPhone,
                     OwnerEmail = request.OwnerEmail,
@@ -144,7 +143,6 @@ namespace RentEase.Service.Service.Main
                     Status = false,
                 };
             }
-
 
             var result = await _unitOfWork.AptRepository.CreateAsync(createItem);
             if (result > 0)
@@ -171,7 +169,7 @@ namespace RentEase.Service.Service.Main
                 return new ServiceResult(Const.ERROR_EXCEPTION_CODE, "Không tồn tại");
             }
 
-            if (accountId != item.OwnerId || roleId != "1")
+            if (accountId != item.PosterId || roleId != "1")
             {
                 return new ServiceResult(Const.ERROR_EXCEPTION_CODE, "Bạn không có quyền hạn.");
             }
@@ -180,21 +178,6 @@ namespace RentEase.Service.Service.Main
             {
                 return new ServiceResult(Const.ERROR_EXCEPTION_CODE, "Status == False.");
             }
-
-            //if (accountId == 1)
-            //{
-            //    item.ApproveStatusId = (int)aptStatus;
-            //    item.ApproveApproveStatusId = (int)approveStatus;
-            //    item.UpdatedAt = DateTime.Now;
-
-            //    var result1 = await _unitOfWork.AptRepository.UpdateAsync(item);
-            //    if (result1 > 0)
-            //    {
-            //        var responseData = _mapper.Map<AptRes>(item);
-
-            //        return new ServiceResult(Const.SUCCESS_ACTION_CODE, "Cập nhật thành công");
-            //    }
-            //}
 
             if (request.AptStatusId != (int)EnumType.AptStatusId.Full &&
                 request.AptStatusId != (int)EnumType.AptStatusId.Available &&
@@ -206,7 +189,7 @@ namespace RentEase.Service.Service.Main
             var updateItem = new Apt()
             {
                 AptId = item.AptId,
-                OwnerId = item.OwnerId,
+                PosterId = item.PosterId,
                 Name = request.Name,
                 Area = request.Area,
                 Address = request.Address,
@@ -251,7 +234,7 @@ namespace RentEase.Service.Service.Main
 
             var item = await _unitOfWork.AptRepository.GetByIdAsync(aptId);
 
-            if (accountId != item.OwnerId || roleId != "1")
+            if (accountId != item.PosterId || roleId != "1")
             {
                 return new ServiceResult(Const.ERROR_EXCEPTION_CODE, "Bạn không có quyền hạn.");
             }
@@ -271,6 +254,7 @@ namespace RentEase.Service.Service.Main
             {
                 item.ApproveStatusId = (int)EnumType.ApproveStatusId.Failed;
             }
+
             item.UpdatedAt = DateTime.Now;
 
             var result = await _unitOfWork.AptRepository.UpdateAsync(item);
@@ -298,41 +282,12 @@ namespace RentEase.Service.Service.Main
                 return new ServiceResult(Const.ERROR_EXCEPTION_CODE, "Không tồn tại");
             }
 
-            if (roleId != "1")
+            if (accountId != item.PosterId || roleId != "1")
             {
                 return new ServiceResult(Const.ERROR_EXCEPTION_CODE, "Bạn không có quyền hạn.");
             }
 
-            item.Status = !item.Status;
             item.UpdatedAt = DateTime.Now;
-
-            await _unitOfWork.AptRepository.UpdateAsync(item);
-
-            return new ServiceResult(Const.SUCCESS_ACTION_CODE, "Cập nhật thành công");
-        }
-        public async Task<ServiceResult> DeleteSoft(string id)
-        {
-            string accountId = _helperWrapper.TokenHelper.GetAccountIdFromHttpContextAccessor(_httpContextAccessor);
-            string roleId = _helperWrapper.TokenHelper.GetRoleIdFromHttpContextAccessor(_httpContextAccessor);
-
-            if (string.IsNullOrEmpty(accountId))
-            {
-                return new ServiceResult(Const.ERROR_EXCEPTION_CODE, "Lỗi khi lấy info");
-            }
-
-            var item = await _unitOfWork.AptRepository.GetByIdAsync(id);
-
-            if (item == null)
-            {
-                return new ServiceResult(Const.ERROR_EXCEPTION_CODE, "Không tồn tại");
-            }
-
-            if (accountId != item.OwnerId || roleId != "1")
-            {
-                return new ServiceResult(Const.ERROR_EXCEPTION_CODE, "Bạn không có quyền hạn.");
-            }
-
-            item.DeletedAt = DateTime.Now;
             item.Status = false;
 
             var result = await _unitOfWork.AptRepository.UpdateAsync(item);

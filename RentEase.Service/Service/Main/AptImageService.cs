@@ -150,7 +150,7 @@ namespace RentEase.Service.Service.Main
                 }
 
                 // Kiểm tra quyền sở hữu hoặc quyền admin
-                if (accountId != apt.OwnerId && roleId != "1")
+                if (accountId != apt.PosterId && roleId != "1")
                 {
                     return new ServiceResult(Const.ERROR_EXCEPTION_CODE, "Bạn không có quyền chỉnh sửa.");
                 }
@@ -254,7 +254,7 @@ namespace RentEase.Service.Service.Main
             }
 
             // Kiểm tra quyền sở hữu hoặc quyền admin
-            if (accountId != apt.OwnerId && roleId != "1")
+            if (accountId != apt.PosterId && roleId != "1")
             {
                 return new ServiceResult(Const.ERROR_EXCEPTION_CODE, "Bạn không có quyền xóa ảnh này.");
             }

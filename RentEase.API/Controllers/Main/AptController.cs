@@ -177,12 +177,12 @@ namespace RentEase.API.Controllers.Main
             }
         }
 
-        [HttpPost("Update-Status")]
-        public async Task<IActionResult> UpdateStatus(string aptId)
+        [HttpPatch("Update-ApproveStatus")]
+        public async Task<IActionResult> UpdateApproveStatus(string aptId, int approveStatusId)
         {
             try
             {
-                var result = await _aptService.UpdateStatus(aptId);
+                var result = await _aptService.UpdateApproveStatusId(aptId, approveStatusId);
                 if (result.Status < 0 && result.Data == null)
                 {
                     return NotFound(new ApiRes<string>
@@ -207,12 +207,12 @@ namespace RentEase.API.Controllers.Main
             }
         }
 
-        [HttpPatch]
-        public async Task<IActionResult> DeleteSoft(string aptId)
+        [HttpPatch("Update-Status")]
+        public async Task<IActionResult> UpdateStatus(string aptId)
         {
             try
             {
-                var result = await _aptService.DeleteSoft(aptId);
+                var result = await _aptService.UpdateStatus(aptId);
                 if (result.Status < 0 && result.Data == null)
                 {
                     return NotFound(new ApiRes<string>

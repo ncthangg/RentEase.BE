@@ -29,7 +29,7 @@ namespace RentEase.Data.Repository.Main
                   string accountId, int? approveStatusId, bool? status, int page, int pageSize)
         {
             return await GetPagedAsync(
-                filter: o => o.AccountId == accountId &&
+                filter: o => o.PosterId == accountId &&
                              (approveStatusId == null || o.ApproveStatusId == approveStatusId) &&
                              (status == null || o.Status == status),
                 orderBy: q => q.OrderByDescending(o => o.CreatedAt),
