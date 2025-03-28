@@ -97,14 +97,14 @@ namespace RentEase.API.Controllers.Main
                         Message = result.Message
                     });
                 }
-                return Ok(new ApiRes<PostRes>
+                return Ok(new ApiRes<IEnumerable<PostRes>>
                 {
                     StatusCode = HttpStatusCode.OK,
                     Message = result.Message,
                     Count = result.TotalCount,
                     TotalPages = result.TotalPage,
                     CurrentPage = result.CurrentPage,
-                    Data = (PostRes)result.Data!
+                    Data = (IEnumerable<PostRes>)result.Data!
                 });
             }
             catch (Exception ex)
