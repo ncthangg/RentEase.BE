@@ -172,7 +172,6 @@ namespace RentEase.Service.Service.Main
                 }
 
                 var isEmail = IsEmail(request.Username);
-                var isPhoneNumber = IsPhoneNumber(request.Username);
                 if (isEmail)
                 {
                     createItem = new Account()
@@ -181,28 +180,7 @@ namespace RentEase.Service.Service.Main
                         Email = request.Username,
                         FullName = request.FullName,
                         PasswordHash = hashedPassword,
-                        PhoneNumber = null,
-                        DateOfBirth = null,
-                        GenderId = null,
-                        OldId = null,
-                        AvatarUrl = null,
-                        RoleId = request.RoleId,
-                        IsVerify = false,
-                        CreatedAt = DateTime.Now,
-                        UpdatedAt = null,
-                        DeletedAt = null,
-                        Status = true,
-                    };
-                }
-                else if (isPhoneNumber)
-                {
-                    createItem = new Account()
-                    {
-                        AccountId = Guid.NewGuid().ToString("N"),
-                        Email = null,
-                        FullName = request.FullName,
-                        PasswordHash = hashedPassword,
-                        PhoneNumber = request.Username,
+                        PhoneNumber = request.PhoneNumber,
                         DateOfBirth = null,
                         GenderId = null,
                         OldId = null,
