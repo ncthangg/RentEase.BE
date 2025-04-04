@@ -22,7 +22,37 @@ namespace RentEase.API.Controllers.Payment
             _serviceWrapper = serviceWrapper;
             _payosService = payosService;
         }
-        [HttpPost("create-payment-link")]
+        [HttpGet("GetByOrderCode")]
+        public async Task<IActionResult> GetByOrderCode([FromQuery] string code)
+        {
+            try
+            {
+                var result = await _payosService.GetByOrderCode(code);
+                if (result.Status < 0 && result.Data == null)
+                    {
+                        return NotFound(new ApiRes<string>
+                        {
+                            StatusCode = HttpStatusCode.NotFound,
+                            Message = result.Message
+                        });
+                    }
+                return Ok(new ApiRes<PaymentRes>
+                {
+                    StatusCode = HttpStatusCode.OK,
+                    Message = result.Message,
+                    Data = (PaymentRes)result.Data!
+                });
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new ApiRes<string>
+                {
+                    StatusCode = HttpStatusCode.InternalServerError,
+                    Message = $"Lỗi hệ thống: {ex.Message}"
+                });
+            }
+        }
+        [HttpPost("Create-Payment-Link")]
         public async Task<IActionResult> Post([FromBody] OrderReq request)
         {
             try
@@ -53,7 +83,7 @@ namespace RentEase.API.Controllers.Payment
             }
         }
 
-        [HttpGet("payment-callback")]
+        [HttpGet("Payment-Callback")]
         public async Task<IActionResult> PaymentCallback([FromQuery] PaymentCallback request)
         {
             try
@@ -93,5 +123,35 @@ namespace RentEase.API.Controllers.Payment
             }
         }
 
+        [HttpPost("Delete-Payment-Link")]
+        public async Task<IActionResult> Delete([FromQuery] string code)
+        {
+            try
+            {
+                var result = await _payosService.Delete(code);
+                if (result.Status < 0 && result.Data == null)
+                {
+                    return NotFound(new ApiRes<string>
+                    {
+                        StatusCode = HttpStatusCode.NotFound,
+                        Message = result.Message
+                    });
+                }
+                return Ok(new ApiRes<PaymentRes>
+                {
+                    StatusCode = HttpStatusCode.OK,
+                    Message = result.Message,
+                    Data = (PaymentRes)result.Data!
+                });
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new ApiRes<string>
+                {
+                    StatusCode = HttpStatusCode.InternalServerError,
+                    Message = $"Lỗi hệ thống: {ex.Message}"
+                });
+            }
+        }
     }
 }

@@ -17,8 +17,10 @@ namespace RentEase.Service.Service.Payment
 
     public interface IPayosService
     {
+        Task<ServiceResult> GetByOrderCode(string code);
         Task<ServiceResult> CheckOut(OrderReq request);
         Task<ServiceResult> Callback(PaymentCallback request);
+        Task<ServiceResult> Delete(string code);
     }
     public class PayosService : IPayosService
     {
@@ -41,6 +43,70 @@ namespace RentEase.Service.Service.Payment
             _helperWrapper = helperWrapper;
         }
 
+        public async Task<ServiceResult> GetByOrderCode(string code)
+        {
+            var requestUrl = _configuration["PayosSettings:RequestUrl"];
+            var clientId = _configuration["PayosSettings:ClientId"];
+            var apiKey = _configuration["PayosSettings:ApiKey"];
+
+            var url = $"{requestUrl}/{code}";
+
+            _httpClient.DefaultRequestHeaders.Clear();
+            _httpClient.DefaultRequestHeaders.Add("x-client-id", clientId);
+            _httpClient.DefaultRequestHeaders.Add("x-api-key", apiKey);
+
+            var response = await _httpClient.GetAsync(url);
+            var responseString = await response.Content.ReadAsStringAsync();
+
+            if (!response.IsSuccessStatusCode)
+            {
+                return new ServiceResult(
+                    Const.ERROR_EXCEPTION_CODE,
+                    $"Lỗi từ PayOS: {response.StatusCode}, Nội dung: {responseString}"
+                );
+            }
+
+            if (string.IsNullOrEmpty(responseString))
+            {
+                return new ServiceResult(Const.ERROR_EXCEPTION_CODE, "Phản hồi từ PayOS rỗng.");
+            }
+
+            var options = new JsonSerializerOptions
+            {
+                PropertyNameCaseInsensitive = true, // Bỏ qua phân biệt chữ hoa/thường
+                DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingNull // Bỏ qua giá trị null
+            };
+
+            PayosRes? payosRes;
+            try
+            {
+                payosRes = JsonSerializer.Deserialize<PayosRes>(responseString, options);
+            }
+            catch (JsonException ex)
+            {
+                return new ServiceResult(Const.ERROR_EXCEPTION_CODE, $"Lỗi parse JSON: {ex.Message}");
+            }
+
+            if (payosRes == null)
+            {
+                return new ServiceResult(Const.ERROR_EXCEPTION_CODE, "Không thể lấy thông tin thanh toán.");
+            }
+
+            var order = await _serviceWrapper.OrderService.GetByOrderCode(code);
+
+            if (order?.Data == null)
+            {
+                return new ServiceResult(Const.ERROR_EXCEPTION_CODE, "Không tìm thấy đơn hàng.");
+            }
+
+            var responseData = new PaymentRes()
+            {
+                OrderRes = (OrderRes)order.Data,
+                PayosRes = payosRes,
+            };
+
+            return new ServiceResult(Const.SUCCESS_ACTION_CODE, "Lấy thông tin thành công", responseData);
+        }
         public async Task<ServiceResult> CheckOut(OrderReq request)
         {
 
@@ -83,7 +149,7 @@ namespace RentEase.Service.Service.Payment
                 var order = await _unitOfWork.OrderRepository.GetByOrderCodeAsync(createItem.OrderCode);
                 var orderRes = _mapper.Map<OrderRes>(order);
 
-                string jsonResponse = await this.CreatePaymentURL(createItem.OrderCode);
+                string responseString = await this.CreatePaymentURL(createItem.OrderCode);
 
                 var options = new JsonSerializerOptions
                 {
@@ -91,7 +157,7 @@ namespace RentEase.Service.Service.Payment
                     DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingNull // Bỏ qua giá trị null
                 };
 
-                PayosRes payosRes = JsonSerializer.Deserialize<PayosRes>(jsonResponse, options);
+                PayosRes payosRes = JsonSerializer.Deserialize<PayosRes>(responseString, options);
 
                 if (payosRes == null)
                 {
@@ -108,7 +174,6 @@ namespace RentEase.Service.Service.Payment
 
             return new ServiceResult(Const.ERROR_EXCEPTION_CODE, "Tạo link thanh toán thất bại");
         }
-
         public async Task<ServiceResult> Callback(PaymentCallback request)
         {
             var order = await _unitOfWork.OrderRepository.GetByOrderCodeAsync(request.OrderCode);
@@ -147,8 +212,82 @@ namespace RentEase.Service.Service.Payment
 
             return new ServiceResult(Const.SUCCESS_ACTION_CODE, "Cap nhat trang thai don hang thanh cong");
         }
+        public async Task<ServiceResult> Delete(string code)
+        {
+            var requestUrl = _configuration["PayosSettings:RequestUrl"];
+            var clientId = _configuration["PayosSettings:ClientId"];
+            var apiKey = _configuration["PayosSettings:ApiKey"];
 
+            var url = $"{requestUrl}/{code}/cancel";
 
+            _httpClient.DefaultRequestHeaders.Clear();
+            _httpClient.DefaultRequestHeaders.Add("x-client-id", clientId);
+            _httpClient.DefaultRequestHeaders.Add("x-api-key", apiKey);
+
+            var payload = new
+            {
+                reason = "Quá thời hạn",
+            };
+            var content = new StringContent(JsonSerializer.Serialize(payload), Encoding.UTF8, "application/json");
+            var response = await _httpClient.PostAsync(url, content);
+            var responseString = await response.Content.ReadAsStringAsync();
+
+            if (!response.IsSuccessStatusCode)
+            {
+                return new ServiceResult(
+                    Const.ERROR_EXCEPTION_CODE,
+                    $"Lỗi từ PayOS: {response.StatusCode}, Nội dung: {responseString}"
+                );
+            }
+
+            if (string.IsNullOrEmpty(responseString))
+            {
+                return new ServiceResult(Const.ERROR_EXCEPTION_CODE, "Phản hồi từ PayOS rỗng.");
+            }
+
+            var options = new JsonSerializerOptions
+            {
+                PropertyNameCaseInsensitive = true, // Bỏ qua phân biệt chữ hoa/thường
+                DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingNull // Bỏ qua giá trị null
+            };
+
+            PayosRes? payosRes;
+            try
+            {
+                payosRes = JsonSerializer.Deserialize<PayosRes>(responseString, options);
+            }
+            catch (JsonException ex)
+            {
+                return new ServiceResult(Const.ERROR_EXCEPTION_CODE, $"Lỗi parse JSON: {ex.Message}");
+            }
+
+            if (payosRes == null)
+            {
+                return new ServiceResult(Const.ERROR_EXCEPTION_CODE, "Không thể lấy thông tin thanh toán.");
+            }
+
+            var order = await _unitOfWork.OrderRepository.GetByOrderCodeAsync(code);
+
+            if (order == null)
+            {
+                return new ServiceResult(Const.ERROR_EXCEPTION_CODE, "Không tìm thấy đơn hàng.");
+            }
+            order.CancelledAt = DateTime.Now;
+            order.PaymentStatusId = (int)EnumType.PaymentStatusId.CANCELLED;
+
+            var updateResult = await _unitOfWork.OrderRepository.UpdateAsync(order);
+            if(updateResult <= 0)
+            {
+                return new ServiceResult(Const.ERROR_EXCEPTION_CODE, "Cập nhật đơn hàng thất bại.");
+            }
+            var responseData = new PaymentRes()
+            {
+                OrderRes = _mapper.Map<OrderRes>(order),
+                PayosRes = payosRes,
+            };
+
+            return new ServiceResult(Const.SUCCESS_ACTION_CODE, "Lấy thông tin thành công", responseData);
+        }
 
         private async Task<string> CreatePaymentURL(string orderCode)
         {
