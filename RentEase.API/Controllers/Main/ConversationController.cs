@@ -83,6 +83,37 @@ namespace RentEase.API.Controllers.Main
             }
         }
 
+        [HttpGet("GetByAccountId")]
+        public async Task<IActionResult> GetByAccountId([FromQuery] string accountId)
+        {
+            try
+            {
+                var result = await _ConversationService.GetByAccountId(accountId);
+                if (result.Status < 0 && result.Data == null)
+                {
+                    return NotFound(new ApiRes<string>
+                    {
+                        StatusCode = HttpStatusCode.NotFound,
+                        Message = result.Message
+                    });
+                }
+                return Ok(new ApiRes<IEnumerable<ConversationRes>>
+                {
+                    StatusCode = HttpStatusCode.OK,
+                    Message = result.Message,
+                    Data = (IEnumerable<ConversationRes>)result.Data!
+                });
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new ApiRes<string>
+                {
+                    StatusCode = HttpStatusCode.InternalServerError,
+                    Message = $"Lỗi hệ thống: {ex.Message}"
+                });
+            }
+        }
+
         [HttpPost]
         public async Task<IActionResult> Post([FromBody] ConversationReq request)
         {

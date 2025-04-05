@@ -21,7 +21,7 @@ namespace RentEase.Data.Repository.Main
         public async Task<IEnumerable<Message>> GetByConversationIdAsync(string conversationId)
         {
             return await _context.Messages
-                                 .Where(m => m.ConversationId.Contains(conversationId))
+                                 .Where(m => m.ConversationId == conversationId)
                                  .OrderBy(m => m.SentAt)
                                  .ToListAsync();
         }

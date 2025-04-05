@@ -1,4 +1,5 @@
-﻿using RentEase.Data.DBContext;
+﻿using Microsoft.EntityFrameworkCore;
+using RentEase.Data.DBContext;
 using RentEase.Data.Models;
 using RentEase.Data.Repository.Base;
 using System;
@@ -16,5 +17,12 @@ namespace RentEase.Data.Repository.Main
         }
         public ConversationRepository(RentEaseContext context) => _context = context;
 
+        public async Task<IEnumerable<Conversation>> GetByAccountIdAsync(string accountId)
+        {
+            return await _context.Conversations
+                                 .Where(m => m.AccountId1 == accountId || m.AccountId2 == accountId)
+                                 .OrderBy(m => m.CreatedAt)
+                                 .ToListAsync();
+        }
     }
 }

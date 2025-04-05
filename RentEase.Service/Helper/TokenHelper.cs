@@ -79,11 +79,6 @@ namespace RentEase.Service.Helper
         //}
 
 
-        //GENERATE VERIFICATION CODE
-
-
-
-
         //CHECK
         public string GetAccountIdFromHttpContextAccessor(IHttpContextAccessor httpContextAccessor)
         {

@@ -17,6 +17,7 @@ namespace RentEase.Service.Service.Main
     {
         Task<ServiceResult> GetAll(int page, int pageSize, bool? status);
         Task<ServiceResult> GetById(string id);
+        Task<ServiceResult> GetByAccountId(string accountId);
         Task<ServiceResult> Create(ConversationReq request);
         Task<ServiceResult> Delete(string id);
 
@@ -34,6 +35,19 @@ namespace RentEase.Service.Service.Main
             _unitOfWork ??= new UnitOfWork();
             _mapper = mapper;
             _helperWrapper = helperWrapper;
+        }
+
+        public async Task<ServiceResult> GetByAccountId(string accountId)
+        {
+            var items = await _unitOfWork.ConversationRepository.GetByAccountIdAsync(accountId);
+
+            if (items == null || !items.Any())
+            {
+                return new ServiceResult(Const.ERROR_EXCEPTION_CODE, "Không tìm thấy cuộc hội thoại nào của tài khoản này.");
+            }
+
+            var responseData = _mapper.Map<IEnumerable<ConversationRes>>(items);
+            return new ServiceResult(Const.SUCCESS_ACTION_CODE, Const.SUCCESS_ACTION_MSG, responseData);
         }
 
         public async Task<ServiceResult> Create(ConversationReq request)
@@ -61,7 +75,6 @@ namespace RentEase.Service.Service.Main
 
             return new ServiceResult(Const.ERROR_EXCEPTION_CODE, Const.ERROR_EXCEPTION_MSG);
         }
-
 
 
     }
