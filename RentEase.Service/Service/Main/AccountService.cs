@@ -4,11 +4,9 @@ using RentEase.Common.Base;
 using RentEase.Common.DTOs.Authenticate;
 using RentEase.Common.DTOs.Dto;
 using RentEase.Data;
-using RentEase.Data.Migrations;
 using RentEase.Data.Models;
 using RentEase.Service.Service.Base;
 using System.Text.RegularExpressions;
-using static RentEase.Common.Base.EnumType;
 
 namespace RentEase.Service.Service.Main
 {
@@ -227,7 +225,7 @@ namespace RentEase.Service.Service.Main
                 return new ServiceResult(Const.ERROR_EXCEPTION_CODE, "Không tồn tại");
             }
 
-            if (accountId != item.AccountId || roleId != "1")
+            if (accountId != item.AccountId && roleId != ((int)EnumType.Role.Admin).ToString())
             {
                 return new ServiceResult(Const.ERROR_EXCEPTION_CODE, "Bạn không có quyền hạn.");
             }
@@ -270,7 +268,7 @@ namespace RentEase.Service.Service.Main
                 return new ServiceResult(Const.ERROR_EXCEPTION_CODE, "Không tồn tại");
             }
 
-            if (accountId != item.AccountId || roleId != "1")
+            if (accountId != item.AccountId && roleId != ((int)EnumType.Role.Admin).ToString())
             {
                 return new ServiceResult(Const.ERROR_EXCEPTION_CODE, "Bạn không có quyền hạn.");
             }
@@ -303,7 +301,7 @@ namespace RentEase.Service.Service.Main
                 return new ServiceResult(Const.ERROR_EXCEPTION_CODE, "Không tồn tại");
             }
 
-            if (accountId != item.AccountId || roleId != "1")
+            if (accountId != item.AccountId && roleId != ((int)EnumType.Role.Admin).ToString())
             {
                 return new ServiceResult(Const.ERROR_EXCEPTION_CODE, "Bạn không có quyền hạn.");
             }

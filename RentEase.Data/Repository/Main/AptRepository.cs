@@ -3,7 +3,6 @@ using RentEase.Common.DTOs;
 using RentEase.Data.DBContext;
 using RentEase.Data.Models;
 using RentEase.Data.Repository.Base;
-using static RentEase.Common.Base.EnumType;
 
 namespace RentEase.Data.Repository.Main
 {
@@ -18,7 +17,7 @@ namespace RentEase.Data.Repository.Main
         public async Task<PagedResult<Apt>> GetAll(int? approveStatusId, bool? status, int page, int pageSize)
         {
             return await GetPagedAsync(
-                filter: (f =>   (!approveStatusId.HasValue || f.ApproveStatusId == approveStatusId) &&
+                filter: (f => (!approveStatusId.HasValue || f.ApproveStatusId == approveStatusId) &&
                                 (!status.HasValue || f.Status == status.Value)),
                 orderBy: q => q.OrderByDescending(o => o.CreatedAt),
                 page: page,

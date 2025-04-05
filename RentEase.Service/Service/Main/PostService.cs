@@ -116,7 +116,7 @@ namespace RentEase.Service.Service.Main
 
             var item = await _unitOfWork.PostRepository.GetByIdAsync(postId);
 
-            if (accountId != item.PostId || roleId != "1")
+            if (accountId != item.PostId && roleId != "1")
             {
                 return new ServiceResult(Const.ERROR_EXCEPTION_CODE, "Bạn không có quyền hạn.");
             }
@@ -153,14 +153,14 @@ namespace RentEase.Service.Service.Main
 
             var item = await _unitOfWork.PostRepository.GetByIdAsync(postId);
 
-            if (accountId != item.PosterId || roleId != "1")
+            if (accountId != item.PosterId && roleId != "1")
             {
                 return new ServiceResult(Const.ERROR_EXCEPTION_CODE, "Bạn không có quyền hạn.");
             }
 
-            if (approveStatusId != (int)EnumType.ApproveStatusId.Pending ||
-                       approveStatusId != (int)EnumType.ApproveStatusId.Success ||
-                            approveStatusId != (int)EnumType.ApproveStatusId.Failed)
+            if (approveStatusId != (int)EnumType.ApproveStatusId.Pending &&
+                       approveStatusId != (int)EnumType.ApproveStatusId.Success &&
+                                approveStatusId != (int)EnumType.ApproveStatusId.Failed)
             {
                 return new ServiceResult(Const.ERROR_EXCEPTION_CODE, "ApproveStatusId không hợp lệ.");
             }
@@ -196,7 +196,7 @@ namespace RentEase.Service.Service.Main
                 return new ServiceResult(Const.ERROR_EXCEPTION_CODE, "Không tồn tại");
             }
 
-            if (accountId != item.PosterId || roleId != "1")
+            if (accountId != item.PosterId && roleId != "1")
             {
                 return new ServiceResult(Const.ERROR_EXCEPTION_CODE, "Bạn không có quyền hạn.");
             }

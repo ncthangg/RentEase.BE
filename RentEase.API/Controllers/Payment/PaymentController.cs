@@ -29,13 +29,13 @@ namespace RentEase.API.Controllers.Payment
             {
                 var result = await _payosService.GetByOrderCode(code);
                 if (result.Status < 0 && result.Data == null)
+                {
+                    return NotFound(new ApiRes<string>
                     {
-                        return NotFound(new ApiRes<string>
-                        {
-                            StatusCode = HttpStatusCode.NotFound,
-                            Message = result.Message
-                        });
-                    }
+                        StatusCode = HttpStatusCode.NotFound,
+                        Message = result.Message
+                    });
+                }
                 return Ok(new ApiRes<PaymentRes>
                 {
                     StatusCode = HttpStatusCode.OK,
@@ -52,6 +52,7 @@ namespace RentEase.API.Controllers.Payment
                 });
             }
         }
+
         [HttpPost("Create-Payment-Link")]
         public async Task<IActionResult> Post([FromBody] OrderReq request)
         {
@@ -128,7 +129,7 @@ namespace RentEase.API.Controllers.Payment
         {
             try
             {
-                var result = await _payosService.Delete(code);
+                var result = await _payosService.DeleteByOrderCode(code);
                 if (result.Status < 0 && result.Data == null)
                 {
                     return NotFound(new ApiRes<string>

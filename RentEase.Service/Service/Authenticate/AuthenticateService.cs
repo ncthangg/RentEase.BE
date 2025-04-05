@@ -13,7 +13,7 @@ namespace RentEase.Service.Service.Authenticate
     {
         Task<ServiceResult> SignIn(LoginReq request);
         Task<ServiceResult> SignUp(RegisterReq request);
-        Task<ServiceResult> ChangePassword(string accountId,ChangePasswordReq request);
+        Task<ServiceResult> ChangePassword(string accountId, ChangePasswordReq request);
         Task<ServiceResult> GetInfo();
         Task<ServiceResult> Logout();
     }
@@ -156,7 +156,7 @@ namespace RentEase.Service.Service.Authenticate
                 return new ServiceResult(Const.ERROR_EXCEPTION_CODE, ex.ToString());
             }
         }
-        public async Task<ServiceResult> ChangePassword(string id,ChangePasswordReq request)
+        public async Task<ServiceResult> ChangePassword(string id, ChangePasswordReq request)
         {
             try
             {
@@ -171,7 +171,7 @@ namespace RentEase.Service.Service.Authenticate
                 // Kiểm tra người dùng đã tồn tại chưa
                 var item = await _unitOfWork.AccountRepository.GetByIdAsync(id);
 
-                if (accountId != item.AccountId || roleId != "1")
+                if (accountId != item.AccountId && roleId != ((int)EnumType.Role.Admin).ToString())
                 {
                     return new ServiceResult(Const.ERROR_EXCEPTION_CODE, "Bạn không có quyền hạn.");
                 }

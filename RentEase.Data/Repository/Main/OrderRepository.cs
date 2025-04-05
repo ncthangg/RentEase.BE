@@ -15,11 +15,11 @@ namespace RentEase.Data.Repository.Main
         public OrderRepository(RentEaseContext context) => _context = context;
 
         public async Task<PagedResult<Order>> GetByAccountId(
-            string accountId, int? statusId, int page, int pageSize)
+            string accountId, int? paymentStatusId, int page, int pageSize)
         {
             return await GetPagedAsync(
-                filter: o => o.SenderId == accountId &&
-                             (statusId == null || o.PaymentStatusId == statusId),
+                filter: o => (accountId == null || o.SenderId == accountId) &&
+                             (paymentStatusId == null || o.PaymentStatusId == paymentStatusId),
                 orderBy: q => q.OrderByDescending(o => o.CreatedAt),
                 page: page,
                 pageSize: pageSize
@@ -40,6 +40,14 @@ namespace RentEase.Data.Repository.Main
         {
             return await _context.Set<Order>()
                 .Where(p => p.OrderCode == orderCode)
+                .OrderByDescending(p => p.CreatedAt)
+                .FirstOrDefaultAsync();
+        }
+
+        public async Task<Order?> GetByOrderTypeIdAndPostIdAsync(string orderTypeId, string postId)
+        {
+            return await _context.Set<Order>()
+                .Where(p => p.OrderTypeId == orderTypeId && p.PostId == postId)
                 .OrderByDescending(p => p.CreatedAt)
                 .FirstOrDefaultAsync();
         }

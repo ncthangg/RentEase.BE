@@ -2,10 +2,10 @@
 {
     public class OrderReq
     {
-        public string OrderTypeId { get; set; }
+        public string OrderTypeId { get; set; } = string.Empty;
 
         public string PostId { get; set; } = string.Empty;
-        
+
     }
 
     public class OrderRes

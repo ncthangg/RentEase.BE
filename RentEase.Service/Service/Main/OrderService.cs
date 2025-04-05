@@ -88,6 +88,11 @@ namespace RentEase.Service.Service.Main
                 return new ServiceResult(Const.ERROR_EXCEPTION_CODE, "Lỗi khi lấy info");
             }
 
+            if (roleId != "1")
+            {
+                return new ServiceResult(Const.ERROR_EXCEPTION_CODE, "Bạn không có quyền hạn.");
+            }
+
             if (!await EntityExistsAsync("OrderId", orderId))
             {
                 return new ServiceResult(Const.ERROR_EXCEPTION_CODE, "Order không tồn tại");
@@ -95,14 +100,9 @@ namespace RentEase.Service.Service.Main
 
             var item = await _unitOfWork.OrderRepository.GetByIdAsync(orderId);
 
-            if (accountId != item.SenderId || roleId != "1")
-            {
-                return new ServiceResult(Const.ERROR_EXCEPTION_CODE, "Bạn không có quyền hạn.");
-            }
-
-            if (paymentStatusId != (int)EnumType.PaymentStatusId.PENDING ||
-                       paymentStatusId != (int)EnumType.PaymentStatusId.PAID ||
-                            paymentStatusId != (int)EnumType.PaymentStatusId.PROCESSING ||
+            if (paymentStatusId != (int)EnumType.PaymentStatusId.PENDING &&
+                       paymentStatusId != (int)EnumType.PaymentStatusId.PAID &&
+                            paymentStatusId != (int)EnumType.PaymentStatusId.PROCESSING &&
                                    paymentStatusId != (int)EnumType.PaymentStatusId.CANCELLED)
             {
                 return new ServiceResult(Const.ERROR_EXCEPTION_CODE, "ApproveStatusId không hợp lệ.");
@@ -116,6 +116,7 @@ namespace RentEase.Service.Service.Main
             else
             {
                 item.PaymentStatusId = paymentStatusId;
+                item.CancelledAt = DateTime.Now;
             }
 
             var result = await _unitOfWork.OrderRepository.UpdateAsync(item);

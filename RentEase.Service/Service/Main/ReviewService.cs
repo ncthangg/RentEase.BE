@@ -91,7 +91,7 @@ namespace RentEase.Service.Service.Main
 
             var item = await _unitOfWork.ReviewRepository.GetByIdAsync(id);
 
-            if (accountId != item.AccountId || roleId != "1")
+            if (accountId != item.AccountId && roleId != ((int)EnumType.Role.Admin).ToString())
             {
                 return new ServiceResult(Const.ERROR_EXCEPTION_CODE, "Bạn không có quyền hạn.");
             }

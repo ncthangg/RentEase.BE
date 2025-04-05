@@ -91,7 +91,7 @@ namespace RentEase.API.Controllers.Authenticate
 
         [HttpPost("ChangePassword")]
         [AllowAnonymous]
-        public async Task<IActionResult> ChangePassword([FromQuery] string accountId,ChangePasswordReq request)
+        public async Task<IActionResult> ChangePassword([FromQuery] string accountId, ChangePasswordReq request)
         {
             if (!ModelState.IsValid)
             {

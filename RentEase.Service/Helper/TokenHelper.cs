@@ -85,8 +85,6 @@ namespace RentEase.Service.Helper
 
 
         //CHECK
-
-
         public string GetAccountIdFromHttpContextAccessor(IHttpContextAccessor httpContextAccessor)
         {
             if (httpContextAccessor.HttpContext == null || !httpContextAccessor.HttpContext.Request.Headers.ContainsKey("Authorization"))

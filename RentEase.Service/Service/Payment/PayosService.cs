@@ -1,5 +1,4 @@
 ﻿using AutoMapper;
-using MailKit.Search;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
 using RentEase.Common.Base;
@@ -20,7 +19,7 @@ namespace RentEase.Service.Service.Payment
         Task<ServiceResult> GetByOrderCode(string code);
         Task<ServiceResult> CheckOut(OrderReq request);
         Task<ServiceResult> Callback(PaymentCallback request);
-        Task<ServiceResult> Delete(string code);
+        Task<ServiceResult> DeleteByOrderCode(string code);
     }
     public class PayosService : IPayosService
     {
@@ -109,12 +108,31 @@ namespace RentEase.Service.Service.Payment
         }
         public async Task<ServiceResult> CheckOut(OrderReq request)
         {
-
             string accountId = _helperWrapper.TokenHelper.GetAccountIdFromHttpContextAccessor(_httpContextAccessor);
 
             if (string.IsNullOrEmpty(accountId))
             {
                 return new ServiceResult(Const.ERROR_EXCEPTION_CODE, "Tài khoản không tồn tại");
+            }
+
+            var orderType = await _unitOfWork.OrderTypeRepository.GetByIdAsync(request.OrderTypeId);
+            if (orderType == null)
+            {
+                return new ServiceResult(Const.ERROR_EXCEPTION_CODE, "Gói không khả dụng");
+            }
+
+            var orderExisted = await _unitOfWork.OrderRepository.GetByOrderTypeIdAndPostIdAsync(request.OrderTypeId, request.PostId);
+
+            if (orderExisted != null && DateTime.Now < orderExisted.CreatedAt.AddMinutes(10))
+            {
+                var responseData = (await this.GetByOrderCode(orderExisted.OrderCode)).Data;
+
+                return new ServiceResult(Const.SUCCESS_ACTION_CODE, "Lấy link thanh toán còn hiệu lực", responseData);
+            }
+
+            if (orderExisted != null && orderExisted.PaymentStatusId == (int)EnumType.PaymentStatusId.PENDING && DateTime.Now > orderExisted.CreatedAt.AddMinutes(10))
+            {
+                await this.DeleteByOrderCode(orderExisted.OrderCode);
             }
 
             string orderCode = "";
@@ -123,12 +141,6 @@ namespace RentEase.Service.Service.Payment
                 orderCode = $"{GenerateOrderCode()}{DateTime.Now:HHmmssfff}";
             }
             while (await _unitOfWork.OrderRepository.GetByOrderCodeAsync(orderCode) != null);
-
-            var orderType = await _unitOfWork.OrderTypeRepository.GetByIdAsync(request.OrderTypeId);
-            if (orderType == null)
-            {
-                return new ServiceResult(Const.ERROR_EXCEPTION_CODE, "Gói không khả dụng");
-            }
 
             var createItem = new Order()
             {
@@ -195,6 +207,7 @@ namespace RentEase.Service.Service.Payment
                 order.PaidAt = DateTime.Now;
 
                 var orderType = await _unitOfWork.OrderTypeRepository.GetByIdAsync(order.OrderTypeId);
+
                 var post = await _unitOfWork.PostRepository.GetByIdAsync(order.PostId);
                 post.StartPublic = DateTime.Now;
                 post.EndPublic = DateTime.Now.AddMonths(orderType.Month);
@@ -212,7 +225,7 @@ namespace RentEase.Service.Service.Payment
 
             return new ServiceResult(Const.SUCCESS_ACTION_CODE, "Cap nhat trang thai don hang thanh cong");
         }
-        public async Task<ServiceResult> Delete(string code)
+        public async Task<ServiceResult> DeleteByOrderCode(string code)
         {
             var requestUrl = _configuration["PayosSettings:RequestUrl"];
             var clientId = _configuration["PayosSettings:ClientId"];
@@ -276,7 +289,7 @@ namespace RentEase.Service.Service.Payment
             order.PaymentStatusId = (int)EnumType.PaymentStatusId.CANCELLED;
 
             var updateResult = await _unitOfWork.OrderRepository.UpdateAsync(order);
-            if(updateResult <= 0)
+            if (updateResult <= 0)
             {
                 return new ServiceResult(Const.ERROR_EXCEPTION_CODE, "Cập nhật đơn hàng thất bại.");
             }

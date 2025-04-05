@@ -1,14 +1,10 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Http;
-using Microsoft.Identity.Client;
 using RentEase.Common.Base;
-using RentEase.Common.DTOs;
 using RentEase.Common.DTOs.Dto;
 using RentEase.Data;
 using RentEase.Data.Models;
 using RentEase.Service.Service.Base;
-using System.Data;
-using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
 
 namespace RentEase.Service.Service.Main
 {
@@ -169,7 +165,7 @@ namespace RentEase.Service.Service.Main
                 return new ServiceResult(Const.ERROR_EXCEPTION_CODE, "Không tồn tại");
             }
 
-            if (accountId != item.PosterId || roleId != "1")
+            if (accountId != item.PosterId && roleId != "1")
             {
                 return new ServiceResult(Const.ERROR_EXCEPTION_CODE, "Bạn không có quyền hạn.");
             }
@@ -227,20 +223,20 @@ namespace RentEase.Service.Service.Main
                 return new ServiceResult(Const.ERROR_EXCEPTION_CODE, "Lỗi khi lấy info");
             }
 
+            var item = await _unitOfWork.AptRepository.GetByIdAsync(aptId);
+
+            if (accountId != item.PosterId && roleId != "1")
+            {
+                return new ServiceResult(Const.ERROR_EXCEPTION_CODE, "Bạn không có quyền hạn.");
+            }
+
             if (!await EntityExistsAsync("AptId", aptId))
             {
                 return new ServiceResult(Const.ERROR_EXCEPTION_CODE, "Apt không tồn tại");
             }
 
-            var item = await _unitOfWork.AptRepository.GetByIdAsync(aptId);
-
-            if (accountId != item.PosterId || roleId != "1")
-            {
-                return new ServiceResult(Const.ERROR_EXCEPTION_CODE, "Bạn không có quyền hạn.");
-            }
-
-            if (approveStatusId != (int)EnumType.ApproveStatusId.Pending ||
-                       approveStatusId != (int)EnumType.ApproveStatusId.Success ||
+            if (approveStatusId != (int)EnumType.ApproveStatusId.Pending &&
+                       approveStatusId != (int)EnumType.ApproveStatusId.Success &&
                             approveStatusId != (int)EnumType.ApproveStatusId.Failed)
             {
                 return new ServiceResult(Const.ERROR_EXCEPTION_CODE, "ApproveStatusId không hợp lệ.");
@@ -282,7 +278,7 @@ namespace RentEase.Service.Service.Main
                 return new ServiceResult(Const.ERROR_EXCEPTION_CODE, "Không tồn tại");
             }
 
-            if (accountId != item.PosterId || roleId != "1")
+            if (accountId != item.PosterId && roleId != "1")
             {
                 return new ServiceResult(Const.ERROR_EXCEPTION_CODE, "Bạn không có quyền hạn.");
             }
