@@ -28,6 +28,10 @@ namespace RentEase.Data
         private PostRequireRepository _postRequireRepository;
         private PostCategoryRepository _postCategoryRepository;
 
+
+        private ConversationRepository _conversationRepository;
+        private MessageRepository _messageRepository;
+
         private readonly RentEaseContext _dbContext;
         public UnitOfWork()
         {
@@ -50,6 +54,8 @@ namespace RentEase.Data
         public PostRepository PostRepository => _postRepository ??= new Repository.Main.PostRepository(_dbContext);
         public PostRequireRepository PostRequireRepository => _postRequireRepository ??= new Repository.Main.PostRequireRepository(_dbContext);
         public PostCategoryRepository PostCategoryRepository => _postCategoryRepository ??= new Repository.Sub.PostCategoryRepository(_dbContext);
+        public ConversationRepository ConversationRepository => _conversationRepository ??= new Repository.Main.ConversationRepository(_dbContext);
+        public MessageRepository MessageRepository => _messageRepository ??= new Repository.Main.MessageRepository(_dbContext);
         public GenericRepository<T> GetRepository<T>() where T : class
         {
             return new GenericRepository<T>();

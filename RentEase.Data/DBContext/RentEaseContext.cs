@@ -50,7 +50,12 @@ public partial class RentEaseContext : DbContext
     public virtual DbSet<OrderType> OrderTypes { get; set; }
 
     public virtual DbSet<Utility> Utilities { get; set; }
+
     public virtual DbSet<AccountLikedApt> AccountLikedApts { get; set; }
+
+    public virtual DbSet<Conversation> Conversations { get; set; }
+
+    public virtual DbSet<Message> Messages { get; set; }
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     => optionsBuilder.UseSqlServer("Data Source=103.112.211.244,1433;Initial Catalog=RentEase;Persist Security Info=True;User ID=sa;Password=Itjustapassword1@;TrustServerCertificate=True;Encrypt=false").UseQueryTrackingBehavior(QueryTrackingBehavior.NoTracking);

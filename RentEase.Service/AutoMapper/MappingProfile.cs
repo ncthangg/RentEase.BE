@@ -30,6 +30,9 @@ namespace RentEase.Service.AutoMapper
             CreateMap<PostRequire, PostRequireRes>().ReverseMap();
             CreateMap<PostCategory, PostCategoryRes>().ReverseMap();
 
+            CreateMap<Conversation, ConversationRes>().ReverseMap();
+            CreateMap<Message, MessageRes>().ReverseMap();
+
         }
     }
 }
