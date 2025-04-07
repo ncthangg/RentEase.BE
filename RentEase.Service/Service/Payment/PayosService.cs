@@ -7,9 +7,12 @@ using RentEase.Common.DTOs.Response;
 using RentEase.Data;
 using RentEase.Data.Models;
 using RentEase.Service.Helper;
+using System.Security.Cryptography;
 using System.Text;
+using System.Text.Encodings.Web;
 using System.Text.Json;
 using System.Text.Json.Serialization;
+using System.Text.Unicode;
 
 namespace RentEase.Service.Service.Payment
 {
@@ -150,7 +153,7 @@ namespace RentEase.Service.Service.Payment
                 PostId = request.PostId,
                 SenderId = accountId,
                 TotalAmount = orderType.Amount,
-                Note = $"Thanh toán: {orderType.Note}",
+                Note = $"Pay:{orderType.Name.ToUpper()}",
                 CreatedAt = DateTime.Now,
                 PaymentStatusId = (int)EnumType.ApproveStatusId.Pending
             };
@@ -305,6 +308,7 @@ namespace RentEase.Service.Service.Payment
         private async Task<string> CreatePaymentURL(string orderCode)
         {
             var requestUrl = _configuration["PayosSettings:RequestUrl"];
+
             var clientId = _configuration["PayosSettings:ClientId"];
             var apiKey = _configuration["PayosSettings:ApiKey"];
             var checksumKey = _configuration["PayosSettings:ChecksumKey"];
@@ -312,8 +316,7 @@ namespace RentEase.Service.Service.Payment
             var returnUrl = _configuration["PayosSettings:ReturnUrl"];
             var cancelUrl = _configuration["PayosSettings:CancelUrl"];
 
-            //var expiredAt = (long)DateTimeOffset.UtcNow.AddMinutes(30).ToUnixTimeSeconds();
-
+            var expiredAt = (int)DateTimeOffset.Now.AddMinutes(10).ToUnixTimeSeconds();
 
             var request = await _unitOfWork.OrderRepository.GetByOrderCodeAsync(orderCode);
 
@@ -323,20 +326,29 @@ namespace RentEase.Service.Service.Payment
                                  { "amount", (int)request.TotalAmount },
                                  { "cancelUrl", cancelUrl },
                                  { "description", request.Note },
+                                 //{ "expiredAt", (int)DateTimeOffset.Now.AddMinutes(10).ToUnixTimeSeconds()},
                                  { "orderCode", long.Parse(request.OrderCode) },
                                  { "returnUrl", returnUrl }
                              };
 
             // Sắp xếp tham số và tạo chuỗi signature
             string rawData = PayOSUtils.CreateSortedQueryString(payload);
-            string signature = PayOSUtils.GenerateHmacSha256(rawData, checksumKey!);
+            string signature = PayOSUtils.GenerateHmacSha256(rawData, checksumKey);
 
             payload["signature"] = signature;
 
+            bool isValid = IsValidData(rawData, signature, checksumKey);
 
-            var content = new StringContent(JsonSerializer.Serialize(payload), Encoding.UTF8, "application/json");
+            var jsonPayload = JsonSerializer.Serialize(payload, new JsonSerializerOptions
+            {
+                WriteIndented = false,
+                Encoder = JavaScriptEncoder.Create(UnicodeRanges.All)
+            });
+
+            var content = new StringContent(jsonPayload, Encoding.UTF8, "application/json");
             _httpClient.DefaultRequestHeaders.Add("x-client-id", clientId);
             _httpClient.DefaultRequestHeaders.Add("x-api-key", apiKey);
+
             try
             {
                 var response = await _httpClient.PostAsync(requestUrl, content);
@@ -352,6 +364,24 @@ namespace RentEase.Service.Service.Payment
             catch (Exception ex)
             {
                 throw new Exception("Lỗi khi gọi API PayOS: " + ex.Message);
+            }
+        }
+
+        public static bool IsValidData(string rawData, string transactionSignature, string checksumKey)
+        {
+            try
+            {
+                var encoding = Encoding.UTF8;
+                using var hmac = new HMACSHA256(encoding.GetBytes(checksumKey));
+                var hashBytes = hmac.ComputeHash(encoding.GetBytes(rawData));
+                var generatedSignature = BitConverter.ToString(hashBytes).Replace("-", "").ToLowerInvariant();
+
+                return generatedSignature == transactionSignature;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("Exception in IsValidData: " + ex.Message);
+                return false;
             }
         }
         private static string GenerateOrderCode()
