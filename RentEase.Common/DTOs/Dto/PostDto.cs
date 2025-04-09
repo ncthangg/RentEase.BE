@@ -30,7 +30,7 @@
 
         public int PostCategoryId { get; set; }
 
-        public string AccountId { get; set; } = string.Empty;
+        public string PosterId { get; set; } = string.Empty;
 
         public string AptId { get; set; } = string.Empty;
 

@@ -12,9 +12,7 @@ namespace RentEase.Service.AutoMapper
             //Login
             CreateMap<AccountToken, AccountTokenRes>().ReverseMap();
             CreateMap<AccountVerification, AccountVerificationRes>().ReverseMap();
-
             CreateMap<Account, AccountRes>().ReverseMap();
-
 
             CreateMap<Apt, AptRes>().ReverseMap();
             CreateMap<AptCategory, AptCategoryRes>().ReverseMap();

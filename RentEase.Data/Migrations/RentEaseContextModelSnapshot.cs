@@ -41,6 +41,7 @@ namespace RentEase.Data.Migrations
                         .HasColumnType("datetime");
 
                     b.Property<string>("Email")
+                        .IsRequired()
                         .HasMaxLength(255)
                         .HasColumnType("nvarchar(255)");
 
@@ -67,6 +68,7 @@ namespace RentEase.Data.Migrations
                         .HasColumnType("nvarchar(255)");
 
                     b.Property<string>("PhoneNumber")
+                        .IsRequired()
                         .HasMaxLength(15)
                         .HasColumnType("nvarchar(15)");
 
@@ -205,6 +207,7 @@ namespace RentEase.Data.Migrations
                         .HasColumnType("nvarchar(500)");
 
                     b.Property<string>("AddressLink")
+                        .IsRequired()
                         .HasMaxLength(500)
                         .HasColumnType("nvarchar(500)");
 
@@ -246,15 +249,19 @@ namespace RentEase.Data.Migrations
                         .HasColumnType("int");
 
                     b.Property<string>("OwnerEmail")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("OwnerName")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("OwnerPhone")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("PosterId")
+                        .IsRequired()
                         .HasMaxLength(255)
                         .HasColumnType("nvarchar(255)");
 
@@ -306,6 +313,7 @@ namespace RentEase.Data.Migrations
                         .HasColumnType("datetime");
 
                     b.Property<string>("Note")
+                        .IsRequired()
                         .HasMaxLength(255)
                         .HasColumnType("nvarchar(255)");
 
@@ -330,6 +338,7 @@ namespace RentEase.Data.Migrations
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<string>("AptId")
+                        .IsRequired()
                         .HasMaxLength(255)
                         .HasColumnType("nvarchar(255)");
 
@@ -337,6 +346,7 @@ namespace RentEase.Data.Migrations
                         .HasColumnType("datetime");
 
                     b.Property<string>("ImageUrl")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)")
                         .HasColumnName("ImageURL");
 
@@ -363,6 +373,7 @@ namespace RentEase.Data.Migrations
                         .HasColumnType("datetime");
 
                     b.Property<string>("Note")
+                        .IsRequired()
                         .HasMaxLength(255)
                         .HasColumnType("nvarchar(255)");
 
@@ -492,9 +503,11 @@ namespace RentEase.Data.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("OrderCode")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("OrderTypeId")
+                        .IsRequired()
                         .HasColumnType("nvarchar(255)");
 
                     b.Property<DateTime?>("PaidAt")
@@ -504,6 +517,7 @@ namespace RentEase.Data.Migrations
                         .HasColumnType("int");
 
                     b.Property<string>("PostId")
+                        .IsRequired()
                         .HasColumnType("nvarchar(255)");
 
                     b.Property<string>("SenderId")
@@ -547,6 +561,7 @@ namespace RentEase.Data.Migrations
                         .HasColumnType("nvarchar(100)");
 
                     b.Property<string>("Note")
+                        .IsRequired()
                         .HasMaxLength(255)
                         .HasColumnType("nvarchar(255)");
 
@@ -677,11 +692,8 @@ namespace RentEase.Data.Migrations
 
             modelBuilder.Entity("RentEase.Data.Models.PostRequire", b =>
                 {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+                    b.Property<string>("Id")
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("AccountId")
                         .IsRequired()
@@ -701,6 +713,15 @@ namespace RentEase.Data.Migrations
                         .IsRequired()
                         .HasMaxLength(255)
                         .HasColumnType("nvarchar(255)");
+
+                    b.Property<string>("RequestMessage")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime?>("ResponseAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("ResponseMessage")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime?>("UpdatedAt")
                         .HasColumnType("datetime");
@@ -770,6 +791,7 @@ namespace RentEase.Data.Migrations
                         .HasColumnType("datetime");
 
                     b.Property<string>("Note")
+                        .IsRequired()
                         .HasMaxLength(255)
                         .HasColumnType("nvarchar(255)");
 
@@ -802,6 +824,7 @@ namespace RentEase.Data.Migrations
                         .HasColumnType("datetime");
 
                     b.Property<string>("Note")
+                        .IsRequired()
                         .HasMaxLength(255)
                         .HasColumnType("nvarchar(255)");
 
@@ -901,6 +924,7 @@ namespace RentEase.Data.Migrations
                         .WithMany("AptImages")
                         .HasForeignKey("AptId")
                         .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired()
                         .HasConstraintName("FK_AptImage_Apt");
 
                     b.Navigation("Apt");
@@ -943,11 +967,15 @@ namespace RentEase.Data.Migrations
                     b.HasOne("RentEase.Data.Models.OrderType", "OrderType")
                         .WithMany("Orders")
                         .HasForeignKey("OrderTypeId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired()
                         .HasConstraintName("FK_Order_OrderType");
 
                     b.HasOne("RentEase.Data.Models.Post", "Post")
                         .WithMany("Orders")
-                        .HasForeignKey("PostId");
+                        .HasForeignKey("PostId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.HasOne("RentEase.Data.Models.Account", "Sender")
                         .WithMany("Orders")

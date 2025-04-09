@@ -36,6 +36,13 @@ namespace RentEase.Data.Repository.Main
                 page: page,
                 pageSize: pageSize);
         }
+        public async Task<Post?> GetByAccountIdAndAptIdAsync(string accountId, string aptId)
+        {
+            return await _context.Set<Post>()
+                .Where(p => p.PosterId == accountId && p.AptId == aptId)
+                .OrderByDescending(p => p.CreatedAt)
+                .FirstOrDefaultAsync();
+        }
 
         //public async Task<PagedResult<Account>> GetBySearchAsync(string? fullName, string? email, string? phoneNumber, int page, int pageSize)
         //{

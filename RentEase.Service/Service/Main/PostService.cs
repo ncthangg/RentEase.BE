@@ -70,6 +70,17 @@ namespace RentEase.Service.Service.Main
                 return new ServiceResult(Const.ERROR_EXCEPTION_CODE, "Lỗi khi lấy info");
             }
 
+            if (string.IsNullOrEmpty(request.AptId))
+            {
+                return new ServiceResult(Const.ERROR_EXCEPTION_CODE, "Apt không hợp lệ");
+            }
+
+            var item = await _unitOfWork.PostRepository.GetByAccountIdAndAptIdAsync(accountId, request.AptId);
+            if (item != null && item.Status == true)
+            {
+                return new ServiceResult(Const.ERROR_EXCEPTION_CODE, "Đã tồn tại Post. Hoặc Post còn hiệu lực");
+            }
+
             var createItem = new Post()
             {
                 PostId = Guid.NewGuid().ToString("N"),
@@ -104,7 +115,7 @@ namespace RentEase.Service.Service.Main
             string accountId = _helperWrapper.TokenHelper.GetAccountIdFromHttpContextAccessor(_httpContextAccessor);
             string roleId = _helperWrapper.TokenHelper.GetRoleIdFromHttpContextAccessor(_httpContextAccessor);
 
-            if (string.IsNullOrEmpty(accountId))
+            if (string.IsNullOrEmpty(accountId) || string.IsNullOrEmpty(roleId))
             {
                 return new ServiceResult(Const.ERROR_EXCEPTION_CODE, "Lỗi khi lấy info");
             }

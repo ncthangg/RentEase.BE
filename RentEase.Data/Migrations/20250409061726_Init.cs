@@ -1,11 +1,12 @@
-﻿using Microsoft.EntityFrameworkCore.Migrations;
+﻿using System;
+using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
 namespace RentEase.Data.Migrations
 {
     /// <inheritdoc />
-    public partial class UpdateAptAndPost : Migration
+    public partial class Init : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -17,7 +18,7 @@ namespace RentEase.Data.Migrations
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     CategoryName = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
-                    Note = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: true),
+                    Note = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: false),
                     CreatedAt = table.Column<DateTime>(type: "datetime", nullable: false),
                     UpdatedAt = table.Column<DateTime>(type: "datetime", nullable: true)
                 },
@@ -33,7 +34,7 @@ namespace RentEase.Data.Migrations
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     StatusName = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
-                    Note = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: true),
+                    Note = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: false),
                     CreatedAt = table.Column<DateTime>(type: "datetime", nullable: false),
                     UpdatedAt = table.Column<DateTime>(type: "datetime", nullable: true)
                 },
@@ -43,12 +44,26 @@ namespace RentEase.Data.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "Conversations",
+                columns: table => new
+                {
+                    Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    AccountId1 = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    AccountId2 = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Conversations", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "OrderType",
                 columns: table => new
                 {
                     Id = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: false),
                     Name = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
-                    Note = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: true),
+                    Note = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: false),
                     Month = table.Column<int>(type: "int", nullable: false),
                     Amount = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
                     CreatedAt = table.Column<DateTime>(type: "datetime", nullable: false),
@@ -82,7 +97,7 @@ namespace RentEase.Data.Migrations
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     RoleName = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
-                    Note = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: true),
+                    Note = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: false),
                     CreatedAt = table.Column<DateTime>(type: "datetime", nullable: false),
                     UpdatedAt = table.Column<DateTime>(type: "datetime", nullable: true)
                 },
@@ -98,7 +113,7 @@ namespace RentEase.Data.Migrations
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     UtilityName = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
-                    Note = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: true),
+                    Note = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: false),
                     CreatedAt = table.Column<DateTime>(type: "datetime", nullable: false),
                     UpdatedAt = table.Column<DateTime>(type: "datetime", nullable: true)
                 },
@@ -112,13 +127,14 @@ namespace RentEase.Data.Migrations
                 columns: table => new
                 {
                     AptId = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: false),
-                    PosterId = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: true),
-                    OwnerName = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    OwnerPhone = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    PosterId = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: false),
+                    OwnerName = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    OwnerPhone = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    OwnerEmail = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Name = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: false),
                     Area = table.Column<double>(type: "float", nullable: true, defaultValue: 0.0),
                     Address = table.Column<string>(type: "nvarchar(500)", maxLength: 500, nullable: false),
-                    AddressLink = table.Column<string>(type: "nvarchar(500)", maxLength: 500, nullable: true),
+                    AddressLink = table.Column<string>(type: "nvarchar(500)", maxLength: 500, nullable: false),
                     ProvinceId = table.Column<int>(type: "int", nullable: false),
                     DistrictId = table.Column<int>(type: "int", nullable: false),
                     WardId = table.Column<int>(type: "int", nullable: false),
@@ -150,14 +166,37 @@ namespace RentEase.Data.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "Messages",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    ConversationId = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    SenderId = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Content = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    SentAt = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    IsSeen = table.Column<bool>(type: "bit", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Messages", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Messages_Conversations_ConversationId",
+                        column: x => x.ConversationId,
+                        principalTable: "Conversations",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Account",
                 columns: table => new
                 {
                     AccountId = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: false),
                     FullName = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: false),
-                    Email = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: true),
+                    Email = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: false),
                     PasswordHash = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: false),
-                    PhoneNumber = table.Column<string>(type: "nvarchar(15)", maxLength: 15, nullable: true),
+                    PhoneNumber = table.Column<string>(type: "nvarchar(15)", maxLength: 15, nullable: false),
                     DateOfBirth = table.Column<DateOnly>(type: "date", nullable: true),
                     GenderId = table.Column<int>(type: "int", maxLength: 10, nullable: true),
                     OldId = table.Column<int>(type: "int", nullable: true),
@@ -185,8 +224,8 @@ namespace RentEase.Data.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    AptId = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: true),
-                    ImageURL = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    AptId = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: false),
+                    ImageURL = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     CreatedAt = table.Column<DateTime>(type: "datetime", nullable: false),
                     UpdatedAt = table.Column<DateTime>(type: "datetime", nullable: true)
                 },
@@ -265,8 +304,8 @@ namespace RentEase.Data.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     AccountId = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: false),
                     RefreshToken = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    ExpiresAt = table.Column<DateTime>(type: "datetime", nullable: false),
-                    CreatedAt = table.Column<DateTime>(type: "datetime", nullable: false)
+                    CreatedAt = table.Column<DateTime>(type: "datetime", nullable: false),
+                    ExpiresAt = table.Column<DateTime>(type: "datetime", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -288,8 +327,8 @@ namespace RentEase.Data.Migrations
                     AccountId = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: false),
                     VerificationCode = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
                     IsUsed = table.Column<bool>(type: "bit", nullable: true, defaultValue: false),
-                    ExpiresAt = table.Column<DateTime>(type: "datetime", nullable: false),
-                    CreatedAt = table.Column<DateTime>(type: "datetime", nullable: false)
+                    CreatedAt = table.Column<DateTime>(type: "datetime", nullable: false),
+                    ExpiresAt = table.Column<DateTime>(type: "datetime", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -308,7 +347,7 @@ namespace RentEase.Data.Migrations
                 {
                     PostId = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: false),
                     PostCategoryId = table.Column<int>(type: "int", nullable: false),
-                    AccountId = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: false),
+                    PosterId = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: false),
                     AptId = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: false),
                     Title = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: false),
                     RentPrice = table.Column<long>(type: "bigint", nullable: false),
@@ -333,7 +372,7 @@ namespace RentEase.Data.Migrations
                     table.PrimaryKey("PK__Post__AA1260182BDDB060", x => x.PostId);
                     table.ForeignKey(
                         name: "FK_CPost_Account",
-                        column: x => x.AccountId,
+                        column: x => x.PosterId,
                         principalTable: "Account",
                         principalColumn: "AccountId");
                     table.ForeignKey(
@@ -382,9 +421,9 @@ namespace RentEase.Data.Migrations
                 columns: table => new
                 {
                     OrderId = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: false),
-                    OrderTypeId = table.Column<string>(type: "nvarchar(255)", nullable: true),
-                    OrderCode = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    PostId = table.Column<string>(type: "nvarchar(255)", nullable: true),
+                    OrderTypeId = table.Column<string>(type: "nvarchar(255)", nullable: false),
+                    OrderCode = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    PostId = table.Column<string>(type: "nvarchar(255)", nullable: false),
                     SenderId = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: false),
                     TotalAmount = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
                     Note = table.Column<string>(type: "nvarchar(max)", nullable: true),
@@ -400,7 +439,8 @@ namespace RentEase.Data.Migrations
                         name: "FK_Order_OrderType",
                         column: x => x.OrderTypeId,
                         principalTable: "OrderType",
-                        principalColumn: "Id");
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK_Order_Sender",
                         column: x => x.SenderId,
@@ -410,19 +450,22 @@ namespace RentEase.Data.Migrations
                         name: "FK_Orders_Post_PostId",
                         column: x => x.PostId,
                         principalTable: "Post",
-                        principalColumn: "PostId");
+                        principalColumn: "PostId",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
                 name: "PostRequire",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    AccountId = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: false),
+                    Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     PostId = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: false),
-                    Note = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    AccountId = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: false),
                     ApproveStatusId = table.Column<int>(type: "int", nullable: false),
+                    RequestMessage = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    ResponseMessage = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    ResponseAt = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    Note = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     CreatedAt = table.Column<DateTime>(type: "datetime", nullable: false),
                     UpdatedAt = table.Column<DateTime>(type: "datetime", nullable: true)
                 },
@@ -535,6 +578,11 @@ namespace RentEase.Data.Migrations
                 unique: true);
 
             migrationBuilder.CreateIndex(
+                name: "IX_Messages_ConversationId",
+                table: "Messages",
+                column: "ConversationId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Orders_OrderTypeId",
                 table: "Orders",
                 column: "OrderTypeId");
@@ -556,11 +604,6 @@ namespace RentEase.Data.Migrations
                 unique: true);
 
             migrationBuilder.CreateIndex(
-                name: "IX_Post_AccountId",
-                table: "Post",
-                column: "AccountId");
-
-            migrationBuilder.CreateIndex(
                 name: "IX_Post_AptId",
                 table: "Post",
                 column: "AptId");
@@ -569,6 +612,11 @@ namespace RentEase.Data.Migrations
                 name: "IX_Post_PostCategoryId",
                 table: "Post",
                 column: "PostCategoryId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Post_PosterId",
+                table: "Post",
+                column: "PosterId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_PostRequire_AccountId",
@@ -622,6 +670,9 @@ namespace RentEase.Data.Migrations
                 name: "AptUtility");
 
             migrationBuilder.DropTable(
+                name: "Messages");
+
+            migrationBuilder.DropTable(
                 name: "Orders");
 
             migrationBuilder.DropTable(
@@ -632,6 +683,9 @@ namespace RentEase.Data.Migrations
 
             migrationBuilder.DropTable(
                 name: "Utility");
+
+            migrationBuilder.DropTable(
+                name: "Conversations");
 
             migrationBuilder.DropTable(
                 name: "OrderType");
