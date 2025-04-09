@@ -70,7 +70,7 @@ namespace RentEase.Service.Service.Authenticate
                 }
 
                 // Tạo token
-                var token = await _helperWrapper.TokenHelper.GenerateJwtTokens(accountData.AccountId, accountData.RoleId);
+                var token = _helperWrapper.TokenHelper.GenerateJwtTokens(accountData.AccountId, accountData.RoleId);
 
                 // Lưu Refresh token
                 var saveTokenResult = await _accountTokenService.Save(accountData.AccountId, token.RefreshToken);

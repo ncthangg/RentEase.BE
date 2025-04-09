@@ -42,7 +42,7 @@ namespace RentEase.Service.Service.Sub
             var createItem = new AptCategory()
             {
                 CategoryName = request.CategoryName.ToLower(),
-                Note = request.Note,
+                Note = request.Note!,
                 CreatedAt = DateTime.Now,
                 UpdatedAt = null,
             };
@@ -68,7 +68,7 @@ namespace RentEase.Service.Service.Sub
             {
                 Id = item.Id,
                 CategoryName = request.CategoryName.ToLower(),
-                Note = request.Note,
+                Note = request.Note!,
                 CreatedAt = item.CreatedAt,
                 UpdatedAt = DateTime.Now,
             };

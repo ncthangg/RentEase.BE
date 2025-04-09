@@ -49,5 +49,5 @@ public partial class Account
 
     public virtual ICollection<AccountLikedApt> AccountLikedApt { get; set; } = new List<AccountLikedApt>();
 
-    public virtual Role Role { get; set; }
+    public virtual Role? Role { get; set; }
 }

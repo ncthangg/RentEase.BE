@@ -13,7 +13,7 @@ namespace RentEase.Data.Repository.Main
         }
         public AptImageRepository(RentEaseContext context) => _context = context;
 
-        public async Task<AptImageRes> GetByAptIdAsync(string aptId)
+        public async Task<AptImageRes?> GetByAptIdAsync(string aptId)
         {
             var aptImages = await _context.AptImages
                                           .Where(x => x.AptId == aptId)

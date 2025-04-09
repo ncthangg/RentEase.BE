@@ -203,6 +203,7 @@ namespace RentEase.Service.Service.Payment
                 "PENDING" => (int)EnumType.PaymentStatusId.PENDING,
                 "PROCESSING" => (int)EnumType.PaymentStatusId.PROCESSING,
                 "CANCELLED" => (int)EnumType.PaymentStatusId.CANCELLED,
+                _ => throw new NotImplementedException(),
             };
 
             if (order.PaymentStatusId == (int)EnumType.PaymentStatusId.PAID)

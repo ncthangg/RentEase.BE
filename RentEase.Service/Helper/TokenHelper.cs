@@ -10,7 +10,7 @@ namespace RentEase.Service.Helper
 {
     public interface ITokenHelper
     {
-        Task<TokenRes> GenerateJwtTokens(string accountId, int roleId);
+        TokenRes GenerateJwtTokens(string accountId, int roleId);
         string GetAccountIdFromHttpContextAccessor(IHttpContextAccessor httpContextAccessor);
         string GetRoleIdFromHttpContextAccessor(IHttpContextAccessor httpContextAccessor);
 
@@ -25,7 +25,7 @@ namespace RentEase.Service.Helper
         }
 
         //GENERATE JWT TOKEN
-        public async Task<TokenRes> GenerateJwtTokens(string accountId, int roleId)
+        public TokenRes GenerateJwtTokens(string accountId, int roleId)
         {
             var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["JwtSettings:Key"]!));
             var credentials = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);

@@ -37,6 +37,7 @@ namespace RentEase.Data
         {
             _dbContext ??= new RentEaseContext();
         }
+
         public AccountLikedAptRepository AccountLikedAptRepository => _accountLikedAptRepository ??= new Repository.Main.AccountLikedAptRepository(_dbContext);
         public AccountRepository AccountRepository => _accountRepository ??= new Repository.Main.AccountRepository(_dbContext);
         public AccountTokenRepository AccountTokenRepository => _accountTokenRepository ??= new Repository.Main.AccountTokenRepository(_dbContext);

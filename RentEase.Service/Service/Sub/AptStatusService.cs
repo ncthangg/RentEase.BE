@@ -42,7 +42,7 @@ namespace RentEase.Service.Service.Sub
             var createItem = new AptStatus()
             {
                 StatusName = request.StatusName.ToLower(),
-                Note = request.Note,
+                Note = request.Note!,
                 CreatedAt = DateTime.Now,
                 UpdatedAt = null,
             };
@@ -69,7 +69,7 @@ namespace RentEase.Service.Service.Sub
             {
                 Id = item.Id,
                 StatusName = request.StatusName.ToLower(),
-                Note = request.Note,
+                Note = request.Note!,
                 CreatedAt = item.CreatedAt,
                 UpdatedAt = DateTime.Now,
             };
