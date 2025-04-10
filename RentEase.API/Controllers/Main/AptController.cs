@@ -210,12 +210,12 @@ namespace RentEase.API.Controllers.Main
             }
         }
 
-        [HttpPut("Update-Status")]
-        public async Task<IActionResult> UpdateStatus(string aptId)
+        [HttpPut("Deactive")]
+        public async Task<IActionResult> Deactive(string aptId)
         {
             try
             {
-                var result = await _aptService.UpdateStatus(aptId);
+                var result = await _aptService.Deactive(aptId);
                 if (result.Status < 0 && result.Data == null)
                 {
                     return NotFound(new ApiRes<string>

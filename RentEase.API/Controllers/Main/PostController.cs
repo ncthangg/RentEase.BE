@@ -211,12 +211,12 @@ namespace RentEase.API.Controllers.Main
             }
         }
 
-        [HttpPut("Update-Status")]
-        public async Task<IActionResult> UpdateStatus(string id)
+        [HttpPut("Deactive")]
+        public async Task<IActionResult> Deactive(string id)
         {
             try
             {
-                var result = await _postService.UpdateStatus(id);
+                var result = await _postService.Deactive(id);
                 if (result.Status < 0 && result.Data == null)
                 {
                     return NotFound(new ApiRes<string>
@@ -270,5 +270,7 @@ namespace RentEase.API.Controllers.Main
                 });
             }
         }
+
+
     }
 }

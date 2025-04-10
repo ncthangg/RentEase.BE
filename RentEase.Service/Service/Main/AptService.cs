@@ -16,7 +16,7 @@ namespace RentEase.Service.Service.Main
         Task<ServiceResult> Create(AptReq request);
         Task<ServiceResult> Update(string id, AptReq request);
         Task<ServiceResult> UpdateApproveStatusId(string aptId, int approveStatusId);
-        Task<ServiceResult> UpdateStatus(string id);
+        Task<ServiceResult> Deactive(string id);
         Task<ServiceResult> Delete(string id);
     }
     public class AptService : BaseService<Apt, AptRes>, IAptService
@@ -261,7 +261,7 @@ namespace RentEase.Service.Service.Main
 
             return new ServiceResult(Const.ERROR_EXCEPTION_CODE, "Cập nhật Apt thất bại");
         }
-        public async Task<ServiceResult> UpdateStatus(string id)
+        public async Task<ServiceResult> Deactive(string id)
         {
             string accountId = _helperWrapper.TokenHelper.GetAccountIdFromHttpContextAccessor(_httpContextAccessor);
             string roleId = _helperWrapper.TokenHelper.GetRoleIdFromHttpContextAccessor(_httpContextAccessor);

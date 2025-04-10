@@ -112,10 +112,20 @@ namespace RentEase.Service.Service.Payment
         public async Task<ServiceResult> CheckOut(OrderReq request)
         {
             string accountId = _helperWrapper.TokenHelper.GetAccountIdFromHttpContextAccessor(_httpContextAccessor);
+            string roleId = _helperWrapper.TokenHelper.GetRoleIdFromHttpContextAccessor(_httpContextAccessor);
 
             if (string.IsNullOrEmpty(accountId))
             {
                 return new ServiceResult(Const.ERROR_EXCEPTION_CODE, "Tài khoản không tồn tại");
+            }
+
+            if(roleId == EnumType.Role.Lesses.ToString())
+            {
+                var postExist = await _unitOfWork.PostRepository.GetByAccountId(accountId, true);
+                if (postExist != null && postExist.Status == true)
+                {
+                    return new ServiceResult(Const.ERROR_EXCEPTION_CODE, "Có Post còn hiệu lực");
+                }
             }
 
             var orderType = await _unitOfWork.OrderTypeRepository.GetByIdAsync(request.OrderTypeId);
@@ -218,7 +228,12 @@ namespace RentEase.Service.Service.Payment
                 post.UpdatedAt = DateTime.Now;
                 post.Status = true;
 
+                var apt = await _unitOfWork.AptRepository.GetByIdAsync(post.AptId);
+                post.UpdatedAt = DateTime.Now;
+                post.Status = true;
+
                 await _unitOfWork.PostRepository.UpdateAsync(post);
+                await _unitOfWork.AptRepository.UpdateAsync(apt);
             }
             else
             {

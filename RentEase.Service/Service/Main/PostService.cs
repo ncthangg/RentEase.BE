@@ -16,7 +16,7 @@ namespace RentEase.Service.Service.Main
         Task<ServiceResult> Create(PostReq request);
         Task<ServiceResult> Update(string postId, PostReq request);
         Task<ServiceResult> UpdateApproveStatusId(string postId, int approveStatusId);
-        Task<ServiceResult> UpdateStatus(string id);
+        Task<ServiceResult> Deactive(string id);
         Task<ServiceResult> Delete(string id);
     }
     public class PostService : BaseService<Post, PostRes>, IPostService
@@ -195,7 +195,7 @@ namespace RentEase.Service.Service.Main
 
             return new ServiceResult(Const.ERROR_EXCEPTION_CODE, "Cập nhật Post thất bại");
         }
-        public async Task<ServiceResult> UpdateStatus(string postId)
+        public async Task<ServiceResult> Deactive(string postId)
         {
             string accountId = _helperWrapper.TokenHelper.GetAccountIdFromHttpContextAccessor(_httpContextAccessor);
             string roleId = _helperWrapper.TokenHelper.GetRoleIdFromHttpContextAccessor(_httpContextAccessor);
@@ -212,13 +212,14 @@ namespace RentEase.Service.Service.Main
                 return new ServiceResult(Const.ERROR_EXCEPTION_CODE, "Bạn không có quyền hạn.");
             }
 
+
             item.UpdatedAt = DateTime.Now;
             item.Status = false;
 
             var result = await _unitOfWork.PostRepository.UpdateAsync(item);
             if (result > 0)
             {
-                return new ServiceResult(Const.SUCCESS_ACTION_CODE, "Xóa mềm thành công");
+                return new ServiceResult(Const.SUCCESS_ACTION_CODE, "Private");
             }
 
             return new ServiceResult(Const.ERROR_EXCEPTION_CODE, Const.ERROR_EXCEPTION_MSG);
