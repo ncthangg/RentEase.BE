@@ -10,10 +10,9 @@ namespace RentEase.Service.Service.Main
 {
     public interface IOrderService
     {
-        Task<ServiceResult> GetAll(int page, int pageSize, bool? status);
+        Task<ServiceResult> GetAll(int? paymentStatusId,int page, int pageSize);
         Task<ServiceResult> GetById(string id);
         Task<ServiceResult> GetByOrderCode(string orderCode);
-        Task<ServiceResult> GetByPaymentStatusId(int paymentStatusId, int page, int pageSize);
         Task<ServiceResult> GetByAccountId(string accountId, int? paymentStatusId, int page, int pageSize);
         Task<ServiceResult> UpdatePaymentStatusId(string orderId, int paymentStatusId); // chỉ dành cho ADMIN
         Task<ServiceResult> Delete(string id);
@@ -32,7 +31,21 @@ namespace RentEase.Service.Service.Main
             _mapper = mapper;
             _helperWrapper = helperWrapper;
         }
+        public async Task<ServiceResult> GetAll(int? paymentStatusId, int page, int pageSize)
+        {
 
+            var items = await _unitOfWork.OrderRepository.GetAllAsync(paymentStatusId, page, pageSize);
+
+            if (!items.Data.Any())
+            {
+                return new ServiceResult(Const.ERROR_EXCEPTION_CODE, Const.ERROR_EXCEPTION_MSG);
+            }
+            else
+            {
+                var responseData = _mapper.Map<IEnumerable<OrderRes>>(items.Data);
+                return new ServiceResult(Const.SUCCESS_ACTION_CODE, Const.SUCCESS_ACTION_MSG, items.TotalCount, items.TotalPages, items.CurrentPage, responseData);
+            }
+        }
         public async Task<ServiceResult> GetByOrderCode(string orderCode)
         {
 
@@ -48,25 +61,10 @@ namespace RentEase.Service.Service.Main
                 return new ServiceResult(Const.SUCCESS_ACTION_CODE, Const.SUCCESS_ACTION_MSG, responseData);
             }
         }
-        public async Task<ServiceResult> GetByPaymentStatusId(int paymentStatusId, int page, int pageSize)
-        {
-
-            var items = await _unitOfWork.OrderRepository.GetByPaymentStatusId(paymentStatusId, page, pageSize);
-
-            if (!items.Data.Any())
-            {
-                return new ServiceResult(Const.ERROR_EXCEPTION_CODE, Const.ERROR_EXCEPTION_MSG);
-            }
-            else
-            {
-                var responseData = _mapper.Map<IEnumerable<OrderRes>>(items.Data);
-                return new ServiceResult(Const.SUCCESS_ACTION_CODE, Const.SUCCESS_ACTION_MSG, items.TotalCount, items.TotalPages, items.CurrentPage, responseData);
-            }
-        }
         public async Task<ServiceResult> GetByAccountId(string accountId, int? paymentStatusId, int page, int pageSize)
         {
 
-            var items = await _unitOfWork.OrderRepository.GetByAccountId(accountId, paymentStatusId, page, pageSize);
+            var items = await _unitOfWork.OrderRepository.GetByAccountIdAsync(accountId, paymentStatusId, page, pageSize);
 
             if (!items.Data.Any())
             {

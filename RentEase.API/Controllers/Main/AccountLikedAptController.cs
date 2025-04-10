@@ -22,11 +22,6 @@ namespace RentEase.API.Controllers.Main
         {
             try
             {
-                //if (string.IsNullOrEmpty(accountId))
-                //{
-                //    return BadRequest(new { message = "Dữ liệu không hợp lệ" });
-                //}
-
                 var result = await _accountLikedAptService.GetByAccountId(page, pageSize);
 
                 return Ok(new ApiRes<IEnumerable<AccountLikedAptRes>>

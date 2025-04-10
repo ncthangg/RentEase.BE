@@ -80,7 +80,11 @@ namespace RentEase.API.Controllers.Main
                 });
             }
         }
-
+        /// <summary>
+        /// Chỉ dành cho ADMIN
+        /// </summary>
+        /// <param name="request"></param>
+        /// <returns></returns>
         [HttpPost]
         public async Task<IActionResult> Post([FromBody] PostAccountReq request)
         {
@@ -170,7 +174,10 @@ namespace RentEase.API.Controllers.Main
                 });
             }
         }
-
+        /// <summary>
+        /// Chỉ dành cho ADMIN
+        /// </summary>
+        /// <returns></returns>
         [HttpDelete]
         public async Task<IActionResult> Delete(string id)
         {

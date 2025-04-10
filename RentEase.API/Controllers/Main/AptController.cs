@@ -176,8 +176,11 @@ namespace RentEase.API.Controllers.Main
                 });
             }
         }
-
-        [HttpPatch("Update-ApproveStatus")]
+        /// <summary>
+        /// Chỉ dành cho ADMIN
+        /// </summary>
+        /// <returns></returns>
+        [HttpPut("Update-ApproveStatus")]
         public async Task<IActionResult> UpdateApproveStatus(string aptId, int approveStatusId)
         {
             try
@@ -207,7 +210,7 @@ namespace RentEase.API.Controllers.Main
             }
         }
 
-        [HttpPatch("Update-Status")]
+        [HttpPut("Update-Status")]
         public async Task<IActionResult> UpdateStatus(string aptId)
         {
             try

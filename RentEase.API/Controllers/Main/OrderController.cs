@@ -19,11 +19,11 @@ namespace RentEase.API.Controllers.Main
         }
 
         [HttpGet("GetAll")]
-        public async Task<IActionResult> GetAll([FromQuery] int page = 1, [FromQuery] int pageSize = 10)
+        public async Task<IActionResult> GetAll([FromQuery] int? paymentStatusId, [FromQuery] int page = 1, [FromQuery] int pageSize = 10)
         {
             try
             {
-                var result = await _OrderService.GetAll(page, pageSize, null);
+                var result = await _OrderService.GetAll(paymentStatusId, page, pageSize);
                 if (result.Status < 0 && result.Data == null)
                 {
                     return NotFound(new ApiRes<string>
@@ -148,6 +148,10 @@ namespace RentEase.API.Controllers.Main
             }
         }
 
+        /// <summary>
+        /// Chỉ dành cho ADMIN
+        /// </summary>
+        /// <returns></returns>
         [HttpPut]
         public async Task<IActionResult> Put([FromQuery] string id, [FromQuery] int paymentStatusId)
         {
