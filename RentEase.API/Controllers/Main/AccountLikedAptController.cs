@@ -18,16 +18,16 @@ namespace RentEase.API.Controllers.Main
             _accountLikedAptService = accountLikedAptService;
         }
         [HttpPost("GetByAccountId")]
-        public async Task<IActionResult> GetByAccountId([FromQuery] string accountId, [FromQuery] int page = 1, [FromQuery] int pageSize = 10)
+        public async Task<IActionResult> GetByAccountId([FromQuery] int page = 1, [FromQuery] int pageSize = 10)
         {
             try
             {
-                if (string.IsNullOrEmpty(accountId))
-                {
-                    return BadRequest(new { message = "Dữ liệu không hợp lệ" });
-                }
+                //if (string.IsNullOrEmpty(accountId))
+                //{
+                //    return BadRequest(new { message = "Dữ liệu không hợp lệ" });
+                //}
 
-                var result = await _accountLikedAptService.GetByAccountId(accountId, page, pageSize);
+                var result = await _accountLikedAptService.GetByAccountId(page, pageSize);
 
                 return Ok(new ApiRes<IEnumerable<AccountLikedAptRes>>
                 {
@@ -54,12 +54,12 @@ namespace RentEase.API.Controllers.Main
         {
             try
             {
-                if (string.IsNullOrEmpty(request.AccountId) || string.IsNullOrEmpty(request.AptId))
+                if (string.IsNullOrEmpty(request.AptId))
                 {
                     return BadRequest(new { message = "Dữ liệu không hợp lệ" });
                 }
 
-                await _accountLikedAptService.Create(request.AccountId, request.AptId);
+                await _accountLikedAptService.Create(request.AptId);
 
                 return Ok(new ApiRes<string>
                 {
@@ -82,12 +82,12 @@ namespace RentEase.API.Controllers.Main
         {
             try
             {
-                if (string.IsNullOrEmpty(request.AccountId) || string.IsNullOrEmpty(request.AptId))
+                if (string.IsNullOrEmpty(request.AptId))
                 {
                     return BadRequest(new { message = "Dữ liệu không hợp lệ" });
                 }
 
-                await _accountLikedAptService.Remove(request.AccountId, request.AptId);
+                await _accountLikedAptService.Remove(request.AptId);
 
                 return Ok(new ApiRes<string>
                 {
@@ -106,16 +106,11 @@ namespace RentEase.API.Controllers.Main
         }
 
         [HttpPost("Remove-All-Liked")]
-        public async Task<IActionResult> RemoveAllLiked([FromQuery] string accountId)
+        public async Task<IActionResult> RemoveAllLiked()
         {
             try
             {
-                if (string.IsNullOrEmpty(accountId))
-                {
-                    return BadRequest(new { message = "Dữ liệu không hợp lệ" });
-                }
-
-                await _accountLikedAptService.RemoveAll(accountId);
+                await _accountLikedAptService.RemoveAll();
 
                 return Ok(new ApiRes<string>
                 {

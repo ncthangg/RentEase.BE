@@ -2,8 +2,6 @@
 {
     public class AccountLikedAptReq
     {
-        public string AccountId { get; set; } = string.Empty;
-
         public string AptId { get; set; } = string.Empty;
     }
 

@@ -12,10 +12,10 @@ namespace RentEase.Service.Service.Main
     {
         Task<ServiceResult> GetAll(int page, int pageSize, bool? statuss);
         Task<ServiceResult> GetById(int id);
-        Task<ServiceResult> GetByAccountId(string accountId, int page, int pageSize);
-        Task<ServiceResult> Create(string accountId, string aptId);
-        Task<ServiceResult> Remove(string accountId, string aptId);
-        Task<ServiceResult> RemoveAll(string accountId);
+        Task<ServiceResult> GetByAccountId(int page, int pageSize);
+        Task<ServiceResult> Create(string aptId);
+        Task<ServiceResult> Remove(string aptId);
+        Task<ServiceResult> RemoveAll();
     }
     public class AccountLikedAptService : BaseService<AccountLikedApt, AccountLikedAptRes>, IAccountLikedAptService
     {
@@ -31,8 +31,15 @@ namespace RentEase.Service.Service.Main
             _mapper = mapper;
             _helperWrapper = helperWrapper;
         }
-        public async Task<ServiceResult> GetByAccountId(string accountId, int page, int pageSize)
+        public async Task<ServiceResult> GetByAccountId(int page, int pageSize)
         {
+            string accountId = _helperWrapper.TokenHelper.GetAccountIdFromHttpContextAccessor(_httpContextAccessor);
+
+            if (string.IsNullOrEmpty(accountId))
+            {
+                return new ServiceResult(Const.ERROR_EXCEPTION_CODE, "Lỗi khi lấy info");
+            }
+
             var items = await _unitOfWork.AccountLikedAptRepository.GetByAccountId(accountId, page, pageSize);
             if (!items.Data.Any())
             {
@@ -44,8 +51,15 @@ namespace RentEase.Service.Service.Main
                 return new ServiceResult(Const.SUCCESS_ACTION_CODE, Const.SUCCESS_ACTION_MSG, items.TotalCount, items.TotalPages, items.CurrentPage, responseData);
             }
         }
-        public async Task<ServiceResult> Create(string accountId, string aptId)
+        public async Task<ServiceResult> Create(string aptId)
         {
+            string accountId = _helperWrapper.TokenHelper.GetAccountIdFromHttpContextAccessor(_httpContextAccessor);
+
+            if (string.IsNullOrEmpty(accountId))
+            {
+                return new ServiceResult(Const.ERROR_EXCEPTION_CODE, "Lỗi khi lấy info");
+            }
+
             var item = new AccountLikedApt()
             {
                 AccountId = accountId,
@@ -62,8 +76,15 @@ namespace RentEase.Service.Service.Main
 
             return new ServiceResult(Const.ERROR_EXCEPTION_CODE, Const.ERROR_EXCEPTION_MSG);
         }
-        public async Task<ServiceResult> Remove(string accountId, string aptId)
+        public async Task<ServiceResult> Remove(string aptId)
         {
+            string accountId = _helperWrapper.TokenHelper.GetAccountIdFromHttpContextAccessor(_httpContextAccessor);
+
+            if (string.IsNullOrEmpty(accountId))
+            {
+                return new ServiceResult(Const.ERROR_EXCEPTION_CODE, "Lỗi khi lấy info");
+            }
+
             var result = await _unitOfWork.AccountLikedAptRepository.RemoveByAccountIdAndAptIdAsync(accountId, aptId);
 
             if (result)
@@ -73,8 +94,15 @@ namespace RentEase.Service.Service.Main
 
             return new ServiceResult(Const.ERROR_EXCEPTION_CODE, Const.ERROR_EXCEPTION_MSG);
         }
-        public async Task<ServiceResult> RemoveAll(string accountId)
+        public async Task<ServiceResult> RemoveAll()
         {
+            string accountId = _helperWrapper.TokenHelper.GetAccountIdFromHttpContextAccessor(_httpContextAccessor);
+
+            if (string.IsNullOrEmpty(accountId))
+            {
+                return new ServiceResult(Const.ERROR_EXCEPTION_CODE, "Lỗi khi lấy info");
+            }
+
             var result = await _unitOfWork.AccountLikedAptRepository.RemoveAllByAccountIdAsync(accountId);
 
             if (result)
