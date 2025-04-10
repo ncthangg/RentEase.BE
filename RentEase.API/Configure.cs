@@ -28,6 +28,7 @@ namespace RentEase.API
             services.AddHttpClient<IPayosService, PayosService>();
 
 
+            services.AddScoped<IAccountLikedAptService, AccountLikedAptService>();
             services.AddScoped<IAccountService, AccountService>();
             services.AddScoped<IAptCategoryService, AptCategoryService>();
             services.AddScoped<IAptService, AptService>();

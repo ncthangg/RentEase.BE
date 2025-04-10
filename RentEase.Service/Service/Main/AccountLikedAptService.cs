@@ -10,8 +10,8 @@ namespace RentEase.Service.Service.Main
 {
     public interface IAccountLikedAptService
     {
-        Task<ServiceResult> GetAll(int page, int pageSize, bool? statuss);
-        Task<ServiceResult> GetById(int id);
+        //Task<ServiceResult> GetAll(int page, int pageSize, bool? statuss);
+        //Task<ServiceResult> GetById(int id);
         Task<ServiceResult> GetByAccountId(int page, int pageSize);
         Task<ServiceResult> Create(string aptId);
         Task<ServiceResult> Remove(string aptId);
