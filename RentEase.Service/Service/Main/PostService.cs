@@ -81,6 +81,12 @@ namespace RentEase.Service.Service.Main
                 return new ServiceResult(Const.ERROR_EXCEPTION_CODE, "Đã tồn tại Post. Hoặc Post còn hiệu lực");
             }
 
+            var aptExist = await _unitOfWork.AptRepository.GetByIdAsync(request.AptId);
+            if (aptExist == null || aptExist.AptStatusId != (int)EnumType.AptStatusId.Available)
+            {
+                return new ServiceResult(Const.ERROR_EXCEPTION_CODE, "Apt đang trong trạng thái UNAVAILABLE!!");
+            }
+
             var createItem = new Post()
             {
                 PostId = Guid.NewGuid().ToString("N"),

@@ -24,8 +24,6 @@ public class AptReq
 
     public int AptCategoryId { get; set; }
 
-    public int AptStatusId { get; set; } = 1;
-
     public int NumberOfRoom { get; set; } = 0;
 
     public int NumberOfSlot { get; set; } = 0;

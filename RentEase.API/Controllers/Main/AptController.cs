@@ -176,6 +176,37 @@ namespace RentEase.API.Controllers.Main
                 });
             }
         }
+
+        [HttpPut("Update-AptStatus")]
+        public async Task<IActionResult> UpdateApttatus(string aptId, int aptStatusId)
+        {
+            try
+            {
+                var result = await _aptService.UpdateAptStatusId(aptId, aptStatusId);
+                if (result.Status < 0 && result.Data == null)
+                {
+                    return NotFound(new ApiRes<string>
+                    {
+                        StatusCode = HttpStatusCode.NotFound,
+                        Message = result.Message
+                    });
+                }
+                return Ok(new ApiRes<string>
+                {
+                    StatusCode = HttpStatusCode.OK,
+                    Message = result.Message
+                });
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new ApiRes<string>
+                {
+                    StatusCode = HttpStatusCode.InternalServerError,
+                    Message = $"Lỗi hệ thống: {ex.Message}"
+                });
+            }
+        }
+
         /// <summary>
         /// Chỉ dành cho ADMIN
         /// </summary>

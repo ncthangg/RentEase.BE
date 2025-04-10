@@ -27,8 +27,7 @@
         public enum AptStatusId
         {
             Available = 1,
-            Full = 2,
-            UnAvailable = 3
+            UnAvailable = 2
         }
 
         public enum ApproveStatusId
