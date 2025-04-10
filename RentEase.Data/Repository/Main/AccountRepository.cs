@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using RentEase.Common.DTOs;
+using RentEase.Common.DTOs.Authenticate;
 using RentEase.Data.DBContext;
 using RentEase.Data.Models;
 using RentEase.Data.Repository.Base;
@@ -13,6 +14,7 @@ namespace RentEase.Data.Repository.Main
         {
         }
         public AccountRepository(RentEaseContext context) => _context = context;
+
         public async Task<Account?> GetByEmailAsync(string email)
         {
             return await _context.Set<Account>()

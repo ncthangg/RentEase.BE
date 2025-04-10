@@ -52,28 +52,27 @@ namespace RentEase.Service.Service.Authenticate
                 {
                     return new ServiceResult(Const.ERROR_EXCEPTION_CODE, "UserName và Password không được để trống");
                 }
+                var account = await _unitOfWork.AccountRepository.GetByEmailOrPhoneAsync(request.Username);
 
-                var accountExist = await _serviceWrapper.AccountService.GetByEmailOrPhone(request.Username);
-                var accountData = _mapper.Map<Account>(accountExist.Data);
-                if (accountData == null || !_helperWrapper.PasswordHelper.VerifyPassword(request.Password, accountData.PasswordHash))
+                if (account == null || !_helperWrapper.PasswordHelper.VerifyPassword(request.Password, account.PasswordHash))
                 {
                     return new ServiceResult(Const.ERROR_EXCEPTION_CODE, "Tài khoản không tồn tại hoặc Password không đúng");
                 }
 
-                if (!(bool)accountData.IsVerify!)
+                if (!(bool)account.IsVerify!)
                 {
                     return new ServiceResult(Const.ERROR_EXCEPTION_CODE, "Tài khoản chưa được xác minh.");
                 }
-                if (!(bool)accountData.Status!)
+                if (!(bool)account.Status!)
                 {
                     return new ServiceResult(Const.ERROR_EXCEPTION_CODE, "Tài khoản sẽ xóa sau 7 ngày.");
                 }
 
                 // Tạo token
-                var token = _helperWrapper.TokenHelper.GenerateJwtTokens(accountData.AccountId, accountData.RoleId);
+                var token = _helperWrapper.TokenHelper.GenerateJwtTokens(account.AccountId, account.RoleId);
 
                 // Lưu Refresh token
-                var saveTokenResult = await _accountTokenService.Save(accountData.AccountId, token.RefreshToken);
+                var saveTokenResult = await _accountTokenService.Save(account.AccountId, token.RefreshToken);
                 if (saveTokenResult.Data == null)
                 {
                     return new ServiceResult(Const.ERROR_EXCEPTION_CODE, "Lỗi khi lưu Refresh Token");
@@ -81,7 +80,7 @@ namespace RentEase.Service.Service.Authenticate
                 var tokenData = saveTokenResult.Data as AccountToken;
 
                 // Xử lí DTO trả về
-                var responseAccountDto = _mapper.Map<AccountRes>(accountData);
+                var responseAccountDto = _mapper.Map<AccountRes>(account);
                 var responseAccountTokenDto = _mapper.Map<AccountTokenRes>(tokenData);
 
                 var response = new LoginRes
