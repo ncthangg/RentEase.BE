@@ -18,6 +18,7 @@ namespace RentEase.Service.Service.Main
         Task<ServiceResult> GetAll(int page, int pageSize, bool? status);
         Task<ServiceResult> GetById(string id);
         Task<ServiceResult> GetByAccountId(string accountId);
+        Task<ServiceResult> GetByReceiverId(string receiverId);
         Task<ServiceResult> Create(ConversationReq request);
         Task<ServiceResult> Delete(string id);
 
@@ -36,7 +37,26 @@ namespace RentEase.Service.Service.Main
             _mapper = mapper;
             _helperWrapper = helperWrapper;
         }
+        
+        public async Task<ServiceResult> GetByReceiverId(string receiverId)
+        {
+            string accountId = _helperWrapper.TokenHelper.GetAccountIdFromHttpContextAccessor(_httpContextAccessor);
 
+            if (string.IsNullOrEmpty(accountId))
+            {
+                return new ServiceResult(Const.ERROR_EXCEPTION_CODE, "Lỗi khi lấy info");
+            }
+
+            var items = await _unitOfWork.ConversationRepository.GetByReceiverIdAsync(accountId, receiverId);
+
+            if (items == null)
+            {
+                return new ServiceResult(Const.ERROR_EXCEPTION_CODE, "Không tìm thấy cuộc hội thoại nào của tài khoản này.");
+            }
+
+            var responseData = _mapper.Map<ConversationRes>(items);
+            return new ServiceResult(Const.SUCCESS_ACTION_CODE, Const.SUCCESS_ACTION_MSG, responseData);
+        }
         public async Task<ServiceResult> GetByAccountId(string accountId)
         {
             var items = await _unitOfWork.ConversationRepository.GetByAccountIdAsync(accountId);

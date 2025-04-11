@@ -24,5 +24,12 @@ namespace RentEase.Data.Repository.Main
                                  .OrderBy(m => m.CreatedAt)
                                  .ToListAsync();
         }
+        public async Task<Conversation?> GetByReceiverIdAsync(string senderId, string receiverId)
+        {
+            return await _context.Conversations
+                                 .Where(m => m.AccountId1 == senderId && m.AccountId2 == receiverId)
+                                 .FirstOrDefaultAsync();
+        }
+        
     }
 }
