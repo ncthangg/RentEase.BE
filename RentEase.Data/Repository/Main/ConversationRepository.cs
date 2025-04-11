@@ -27,7 +27,7 @@ namespace RentEase.Data.Repository.Main
         public async Task<Conversation?> GetByReceiverIdAsync(string senderId, string receiverId)
         {
             return await _context.Conversations
-                                 .Where(m => m.AccountId1 == senderId && m.AccountId2 == receiverId)
+                                 .Where(m => (m.AccountId1 == senderId && m.AccountId2 == receiverId) || (m.AccountId1 == receiverId && m.AccountId2 == senderId))
                                  .FirstOrDefaultAsync();
         }
         
