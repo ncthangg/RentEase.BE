@@ -17,7 +17,7 @@ namespace RentEase.API.Controllers.Main
         {
             _accountLikedAptService = accountLikedAptService;
         }
-        [HttpPost("GetByAccountId")]
+        [HttpGet("GetByAccountId")]
         public async Task<IActionResult> GetByAccountId([FromQuery] int page = 1, [FromQuery] int pageSize = 10)
         {
             try
