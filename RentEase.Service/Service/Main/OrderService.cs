@@ -103,7 +103,7 @@ namespace RentEase.Service.Service.Main
                             paymentStatusId != (int)EnumType.PaymentStatusId.PROCESSING &&
                                    paymentStatusId != (int)EnumType.PaymentStatusId.CANCELLED)
             {
-                return new ServiceResult(Const.ERROR_EXCEPTION_CODE, "ApproveStatusId không hợp lệ.");
+                return new ServiceResult(Const.ERROR_EXCEPTION_CODE, "PaymentStatusId không hợp lệ.");
             }
 
             if (paymentStatusId == (int)EnumType.PaymentStatusId.PAID)

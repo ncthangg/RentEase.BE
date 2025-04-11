@@ -27,6 +27,8 @@ public partial class Account
 
     public bool? IsVerify { get; set; }
 
+    public int PublicPostTimes {  get; set; }
+
     public DateTime CreatedAt { get; set; }
 
     public DateTime? UpdatedAt { get; set; }

@@ -34,10 +34,8 @@ namespace RentEase.API
             services.AddScoped<IAptService, AptService>();
             services.AddScoped<IAptImageService, AptImageService>();
             services.AddScoped<IAccountService, AccountService>();
-            services.AddScoped<IAptStatusService, AptStatusService>();
             services.AddScoped<IAptUtilityService, AptUtilityService>();
             services.AddScoped<IUtilityService, UtilityService>();
-            services.AddScoped<IAptStatusService, AptStatusService>();
             services.AddScoped<IReviewService, ReviewService>();
             services.AddScoped<IRoleService, RoleService>();
 
@@ -46,7 +44,6 @@ namespace RentEase.API
 
             services.AddScoped<IPostService, PostService>();
             services.AddScoped<IPostRequireService, PostRequireService>();
-            services.AddScoped<IPostCategoryService, PostCategoryService>();
 
             services.AddScoped<IConversationService, ConversationService>();
             services.AddScoped<IMessageService, MessageService>();

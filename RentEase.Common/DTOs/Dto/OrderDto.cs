@@ -4,7 +4,7 @@
     {
         public string OrderTypeId { get; set; } = string.Empty;
 
-        public string PostId { get; set; } = string.Empty;
+        public string? PostId { get; set; } = string.Empty;
 
     }
 

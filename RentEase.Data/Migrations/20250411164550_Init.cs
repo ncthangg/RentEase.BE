@@ -28,22 +28,6 @@ namespace RentEase.Data.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "AptStatus",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    StatusName = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
-                    Note = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: false),
-                    CreatedAt = table.Column<DateTime>(type: "datetime", nullable: false),
-                    UpdatedAt = table.Column<DateTime>(type: "datetime", nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK__AptStatu__3214EC0701430943", x => x.Id);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "Conversations",
                 columns: table => new
                 {
@@ -64,30 +48,16 @@ namespace RentEase.Data.Migrations
                     Id = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: false),
                     Name = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
                     Note = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: false),
-                    Month = table.Column<int>(type: "int", nullable: false),
+                    Times = table.Column<int>(type: "int", nullable: false),
+                    Days = table.Column<int>(type: "int", nullable: false),
                     Amount = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
+                    PostCategoryId = table.Column<int>(type: "int", nullable: false),
                     CreatedAt = table.Column<DateTime>(type: "datetime", nullable: false),
                     UpdatedAt = table.Column<DateTime>(type: "datetime", nullable: true)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK__Ordert__3214EC07450B5CD3", x => x.Id);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "PostCategory",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    CategoryName = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Note = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    UpdatedAt = table.Column<DateTime>(type: "datetime2", nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_PostCategory", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -144,7 +114,6 @@ namespace RentEase.Data.Migrations
                     NumberOfSlot = table.Column<int>(type: "int", nullable: false),
                     Note = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Rating = table.Column<double>(type: "float", nullable: true, defaultValue: 0.0),
-                    ApproveStatusId = table.Column<int>(type: "int", nullable: false),
                     CreatedAt = table.Column<DateTime>(type: "datetime", nullable: false),
                     UpdatedAt = table.Column<DateTime>(type: "datetime", nullable: true),
                     DeletedAt = table.Column<DateTime>(type: "datetime", nullable: true),
@@ -157,11 +126,6 @@ namespace RentEase.Data.Migrations
                         name: "FK_Apt_AptCategory",
                         column: x => x.AptCategoryId,
                         principalTable: "AptCategory",
-                        principalColumn: "Id");
-                    table.ForeignKey(
-                        name: "FK_Apt_AptStatus",
-                        column: x => x.AptStatusId,
-                        principalTable: "AptStatus",
                         principalColumn: "Id");
                 });
 
@@ -203,6 +167,7 @@ namespace RentEase.Data.Migrations
                     AvatarUrl = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     RoleId = table.Column<int>(type: "int", nullable: false),
                     IsVerify = table.Column<bool>(type: "bit", nullable: true, defaultValue: false),
+                    PublicPostTimes = table.Column<int>(type: "int", nullable: false),
                     CreatedAt = table.Column<DateTime>(type: "datetime", nullable: false),
                     UpdatedAt = table.Column<DateTime>(type: "datetime", nullable: true),
                     DeletedAt = table.Column<DateTime>(type: "datetime", nullable: true),
@@ -359,7 +324,6 @@ namespace RentEase.Data.Migrations
                     Note = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     MoveInDate = table.Column<DateOnly>(type: "date", nullable: false),
                     MoveOutDate = table.Column<DateOnly>(type: "date", nullable: true),
-                    ApproveStatusId = table.Column<int>(type: "int", nullable: false),
                     CreatedAt = table.Column<DateTime>(type: "datetime", nullable: false),
                     UpdatedAt = table.Column<DateTime>(type: "datetime", nullable: true),
                     DeletedAt = table.Column<DateTime>(type: "datetime", nullable: true),
@@ -380,12 +344,6 @@ namespace RentEase.Data.Migrations
                         column: x => x.AptId,
                         principalTable: "Apt",
                         principalColumn: "AptId");
-                    table.ForeignKey(
-                        name: "FK_Post_PostCategory_PostCategoryId",
-                        column: x => x.PostCategoryId,
-                        principalTable: "PostCategory",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -556,12 +514,6 @@ namespace RentEase.Data.Migrations
                 column: "AptId");
 
             migrationBuilder.CreateIndex(
-                name: "UQ__AptStatu__05E7698A86EA1D6C",
-                table: "AptStatus",
-                column: "StatusName",
-                unique: true);
-
-            migrationBuilder.CreateIndex(
                 name: "IX_AptUtility_AptId",
                 table: "AptUtility",
                 column: "AptId");
@@ -607,11 +559,6 @@ namespace RentEase.Data.Migrations
                 name: "IX_Post_AptId",
                 table: "Post",
                 column: "AptId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Post_PostCategoryId",
-                table: "Post",
-                column: "PostCategoryId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Post_PosterId",
@@ -700,16 +647,10 @@ namespace RentEase.Data.Migrations
                 name: "Apt");
 
             migrationBuilder.DropTable(
-                name: "PostCategory");
-
-            migrationBuilder.DropTable(
                 name: "Role");
 
             migrationBuilder.DropTable(
                 name: "AptCategory");
-
-            migrationBuilder.DropTable(
-                name: "AptStatus");
         }
     }
 }

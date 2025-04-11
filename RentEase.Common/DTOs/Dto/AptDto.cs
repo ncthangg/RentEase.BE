@@ -65,8 +65,6 @@ public class AptRes : Base
 
     public int NumberOfSlot { get; set; }
 
-    public int ApproveStatusId { get; set; }
-
     public string? Note { get; set; }
 
     public double? Rating { get; set; }

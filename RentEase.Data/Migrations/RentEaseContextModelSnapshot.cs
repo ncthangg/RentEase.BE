@@ -72,6 +72,9 @@ namespace RentEase.Data.Migrations
                         .HasMaxLength(15)
                         .HasColumnType("nvarchar(15)");
 
+                    b.Property<int>("PublicPostTimes")
+                        .HasColumnType("int");
+
                     b.Property<int>("RoleId")
                         .HasColumnType("int");
 
@@ -210,9 +213,6 @@ namespace RentEase.Data.Migrations
                         .IsRequired()
                         .HasMaxLength(500)
                         .HasColumnType("nvarchar(500)");
-
-                    b.Property<int>("ApproveStatusId")
-                        .HasColumnType("int");
 
                     b.Property<int>("AptCategoryId")
                         .HasColumnType("int");
@@ -359,39 +359,6 @@ namespace RentEase.Data.Migrations
                     b.HasIndex("AptId");
 
                     b.ToTable("AptImage", (string)null);
-                });
-
-            modelBuilder.Entity("RentEase.Data.Models.AptStatus", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("datetime");
-
-                    b.Property<string>("Note")
-                        .IsRequired()
-                        .HasMaxLength(255)
-                        .HasColumnType("nvarchar(255)");
-
-                    b.Property<string>("StatusName")
-                        .IsRequired()
-                        .HasMaxLength(100)
-                        .HasColumnType("nvarchar(100)");
-
-                    b.Property<DateTime?>("UpdatedAt")
-                        .HasColumnType("datetime");
-
-                    b.HasKey("Id")
-                        .HasName("PK__AptStatu__3214EC0701430943");
-
-                    b.HasIndex(new[] { "StatusName" }, "UQ__AptStatu__05E7698A86EA1D6C")
-                        .IsUnique();
-
-                    b.ToTable("AptStatus", (string)null);
                 });
 
             modelBuilder.Entity("RentEase.Data.Models.AptUtility", b =>
@@ -552,7 +519,7 @@ namespace RentEase.Data.Migrations
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("datetime");
 
-                    b.Property<int>("Month")
+                    b.Property<int>("Days")
                         .HasColumnType("int");
 
                     b.Property<string>("Name")
@@ -564,6 +531,12 @@ namespace RentEase.Data.Migrations
                         .IsRequired()
                         .HasMaxLength(255)
                         .HasColumnType("nvarchar(255)");
+
+                    b.Property<int>("PostCategoryId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Times")
+                        .HasColumnType("int");
 
                     b.Property<DateTime?>("UpdatedAt")
                         .HasColumnType("datetime");
@@ -582,9 +555,6 @@ namespace RentEase.Data.Migrations
                     b.Property<string>("PostId")
                         .HasMaxLength(255)
                         .HasColumnType("nvarchar(255)");
-
-                    b.Property<int>("ApproveStatusId")
-                        .HasColumnType("int");
 
                     b.Property<string>("AptId")
                         .IsRequired()
@@ -656,38 +626,9 @@ namespace RentEase.Data.Migrations
 
                     b.HasIndex("AptId");
 
-                    b.HasIndex("PostCategoryId");
-
                     b.HasIndex("PosterId");
 
                     b.ToTable("Post", (string)null);
-                });
-
-            modelBuilder.Entity("RentEase.Data.Models.PostCategory", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<string>("CategoryName")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("Note")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTime?>("UpdatedAt")
-                        .HasColumnType("datetime2");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("PostCategory");
                 });
 
             modelBuilder.Entity("RentEase.Data.Models.PostRequire", b =>
@@ -907,15 +848,7 @@ namespace RentEase.Data.Migrations
                         .IsRequired()
                         .HasConstraintName("FK_Apt_AptCategory");
 
-                    b.HasOne("RentEase.Data.Models.AptStatus", "AptStatus")
-                        .WithMany("Apts")
-                        .HasForeignKey("AptStatusId")
-                        .IsRequired()
-                        .HasConstraintName("FK_Apt_AptStatus");
-
                     b.Navigation("AptCategory");
-
-                    b.Navigation("AptStatus");
                 });
 
             modelBuilder.Entity("RentEase.Data.Models.AptImage", b =>
@@ -998,12 +931,6 @@ namespace RentEase.Data.Migrations
                         .IsRequired()
                         .HasConstraintName("FK_Post_Apt");
 
-                    b.HasOne("RentEase.Data.Models.PostCategory", "PostCategory")
-                        .WithMany("Posts")
-                        .HasForeignKey("PostCategoryId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
                     b.HasOne("RentEase.Data.Models.Account", "Account")
                         .WithMany("Posts")
                         .HasForeignKey("PosterId")
@@ -1013,8 +940,6 @@ namespace RentEase.Data.Migrations
                     b.Navigation("Account");
 
                     b.Navigation("Apt");
-
-                    b.Navigation("PostCategory");
                 });
 
             modelBuilder.Entity("RentEase.Data.Models.PostRequire", b =>
@@ -1090,11 +1015,6 @@ namespace RentEase.Data.Migrations
                     b.Navigation("Apts");
                 });
 
-            modelBuilder.Entity("RentEase.Data.Models.AptStatus", b =>
-                {
-                    b.Navigation("Apts");
-                });
-
             modelBuilder.Entity("RentEase.Data.Models.Conversation", b =>
                 {
                     b.Navigation("Messages");
@@ -1110,11 +1030,6 @@ namespace RentEase.Data.Migrations
                     b.Navigation("Orders");
 
                     b.Navigation("PostRequires");
-                });
-
-            modelBuilder.Entity("RentEase.Data.Models.PostCategory", b =>
-                {
-                    b.Navigation("Posts");
                 });
 
             modelBuilder.Entity("RentEase.Data.Models.Role", b =>

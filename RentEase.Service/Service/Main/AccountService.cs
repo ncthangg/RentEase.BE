@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Http;
+using Microsoft.Identity.Client;
 using RentEase.Common.Base;
 using RentEase.Common.DTOs.Authenticate;
 using RentEase.Common.DTOs.Dto;
@@ -134,12 +135,18 @@ namespace RentEase.Service.Service.Main
                 GenderId = request.GenderId,
                 AvatarUrl = request.AvatarUrl,
                 RoleId = request.RoleId,
+                PublicPostTimes = 0,
                 IsVerify = true,
                 CreatedAt = DateTime.Now,
                 UpdatedAt = null,
                 DeletedAt = null,
                 Status = true,
             };
+
+            if (request.RoleId == 2)
+            {
+                createItem.PublicPostTimes = 1;
+            }
 
             var result = await _unitOfWork.AccountRepository.CreateAsync(createItem);
             if (result > 0)
@@ -184,6 +191,7 @@ namespace RentEase.Service.Service.Main
                         OldId = null,
                         AvatarUrl = null,
                         RoleId = request.RoleId,
+                        PublicPostTimes = 0,
                         IsVerify = false,
                         CreatedAt = DateTime.Now,
                         UpdatedAt = null,
@@ -194,6 +202,11 @@ namespace RentEase.Service.Service.Main
                 else
                 {
                     return new ServiceResult(Const.ERROR_EXCEPTION_CODE, "Username không đúng chuẩn");
+                }
+
+                if(request.RoleId == 2)
+                {
+                    createItem.PublicPostTimes = 1;
                 }
 
                 var result = await _unitOfWork.AccountRepository.CreateAsync(createItem);

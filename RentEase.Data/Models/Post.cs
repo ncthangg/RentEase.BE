@@ -33,8 +33,6 @@ public partial class Post
 
     public DateOnly? MoveOutDate { get; set; }
 
-    public int ApproveStatusId { get; set; }
-
     public DateTime CreatedAt { get; set; }
 
     public DateTime? UpdatedAt { get; set; }
@@ -50,8 +48,6 @@ public partial class Post
     public virtual Account? Account { get; set; }
 
     public virtual Apt? Apt { get; set; }
-
-    public virtual PostCategory? PostCategory { get; set; }
 
     public virtual ICollection<PostRequire> PostRequires { get; set; } = new List<PostRequire>();
 

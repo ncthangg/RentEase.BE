@@ -16,7 +16,6 @@ namespace RentEase.Data
         private AptCategoryRepository _aptCategoryRepository;
         private AptImageRepository _aptImageRepository;
         private AptRepository _aptRepository;
-        private AptStatusRepository _aptStatusRepository;
         private AptUtilityRepository _aptUtilityRepository;
         private UtilityRepository _utilityRepository;
         private ReviewRepository _reviewRepository;
@@ -26,7 +25,6 @@ namespace RentEase.Data
 
         private PostRepository _postRepository;
         private PostRequireRepository _postRequireRepository;
-        private PostCategoryRepository _postCategoryRepository;
 
 
         private ConversationRepository _conversationRepository;
@@ -45,7 +43,6 @@ namespace RentEase.Data
         public AptCategoryRepository AptCategoryRepository => _aptCategoryRepository ??= new Repository.Sub.AptCategoryRepository(_dbContext);
         public AptImageRepository AptImageRepository => _aptImageRepository ??= new Repository.Main.AptImageRepository(_dbContext);
         public AptRepository AptRepository => _aptRepository ??= new Repository.Main.AptRepository(_dbContext);
-        public AptStatusRepository AptStatusRepository => _aptStatusRepository ??= new Repository.Sub.AptStatusRepository(_dbContext);
         public AptUtilityRepository AptUtilityRepository => _aptUtilityRepository ??= new Repository.Main.AptUtilityRepository(_dbContext);
         public UtilityRepository UtilityRepository => _utilityRepository ??= new Repository.Sub.UtilityRepository(_dbContext);
         public ReviewRepository ReviewRepository => _reviewRepository ??= new Repository.Main.ReviewRepository(_dbContext);
@@ -54,7 +51,6 @@ namespace RentEase.Data
         public OrderRepository OrderRepository => _orderRepository ??= new Repository.Main.OrderRepository(_dbContext);
         public PostRepository PostRepository => _postRepository ??= new Repository.Main.PostRepository(_dbContext);
         public PostRequireRepository PostRequireRepository => _postRequireRepository ??= new Repository.Main.PostRequireRepository(_dbContext);
-        public PostCategoryRepository PostCategoryRepository => _postCategoryRepository ??= new Repository.Sub.PostCategoryRepository(_dbContext);
         public ConversationRepository ConversationRepository => _conversationRepository ??= new Repository.Main.ConversationRepository(_dbContext);
         public MessageRepository MessageRepository => _messageRepository ??= new Repository.Main.MessageRepository(_dbContext);
         public GenericRepository<T> GetRepository<T>() where T : class

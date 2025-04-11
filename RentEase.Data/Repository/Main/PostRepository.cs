@@ -3,6 +3,7 @@ using RentEase.Common.DTOs;
 using RentEase.Data.DBContext;
 using RentEase.Data.Models;
 using RentEase.Data.Repository.Base;
+using System.Collections.Generic;
 
 namespace RentEase.Data.Repository.Main
 {
@@ -13,11 +14,10 @@ namespace RentEase.Data.Repository.Main
         {
         }
         public PostRepository(RentEaseContext context) => _context = context;
-        public async Task<PagedResult<Post>> GetAll(int? approveStatusId, bool? status, int page, int pageSize)
+        public async Task<PagedResult<Post>> GetAll(bool? status, int page, int pageSize)
         {
             return await GetPagedAsync(
-                filter: (f => (!approveStatusId.HasValue || f.ApproveStatusId == approveStatusId) &&
-                                (!status.HasValue || f.Status == status.Value)),
+                filter: (f => (!status.HasValue || f.Status == status.Value)),
                 orderBy: q => q.OrderByDescending(o => o.CreatedAt),
                 page: page,
                 pageSize: pageSize,
@@ -26,11 +26,10 @@ namespace RentEase.Data.Repository.Main
             );
         }
         public async Task<PagedResult<Post>> GetByAccountId(
-                  string accountId, int? approveStatusId, bool? status, int page, int pageSize)
+                  string accountId, bool? status, int page, int pageSize)
         {
             return await GetPagedAsync(
                 filter: o => o.PosterId == accountId &&
-                             (approveStatusId == null || o.ApproveStatusId == approveStatusId) &&
                              (status == null || o.Status == status),
                 orderBy: q => q.OrderByDescending(o => o.CreatedAt),
                 page: page,
@@ -50,17 +49,12 @@ namespace RentEase.Data.Repository.Main
                 .OrderByDescending(p => p.CreatedAt)
                 .FirstOrDefaultAsync();
         }
+        public async Task<List<Post>> GetByAptId(string aptId)
+        {
+            return await _context.Set<Post>()
+                .Where(p => p.AptId == aptId)
+                .ToListAsync();
+        }
 
-        //public async Task<PagedResult<Account>> GetBySearchAsync(string? fullName, string? email, string? phoneNumber, int page, int pageSize)
-        //{
-        //    IQueryable<Account> query = _context.Set<Account>();
-
-        //    Expression<Func<Account, bool>> filter = a =>
-        //        (string.IsNullOrEmpty(fullName) || a.FullName.Contains(fullName)) &&
-        //        (string.IsNullOrEmpty(email) || a.Email.Contains(email)) &&
-        //        (string.IsNullOrEmpty(phoneNumber) || a.PhoneNumber.Contains(phoneNumber));
-
-        //    return await GetPagedAsync(filter, null, page, pageSize);
-        //}
     }
 }

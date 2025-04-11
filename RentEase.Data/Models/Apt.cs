@@ -41,8 +41,6 @@ public partial class Apt
 
     public double? Rating { get; set; }
 
-    public int ApproveStatusId { get; set; }
-
     public DateTime CreatedAt { get; set; }
 
     public DateTime? UpdatedAt { get; set; }
@@ -52,8 +50,6 @@ public partial class Apt
     public bool? Status { get; set; }
 
     public virtual AptCategory? AptCategory { get; set; }
-
-    public virtual AptStatus? AptStatus { get; set; }
 
     public virtual ICollection<AptImage> AptImages { get; set; } = new List<AptImage>();
 

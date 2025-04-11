@@ -22,7 +22,6 @@
 
         public DateOnly? MoveOutDate { get; set; }
 
-        public int ApproveStatusId { get; set; } = 1;
     }
     public class PostRes : Base
     {
@@ -53,8 +52,6 @@
         public DateOnly MoveInDate { get; set; }
 
         public DateOnly? MoveOutDate { get; set; }
-
-        public int ApproveStatusId { get; set; }
 
         public DateTime? StartPublic { get; set; }
 

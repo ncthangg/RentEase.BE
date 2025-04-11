@@ -12,6 +12,8 @@ namespace RentEase.Service.Service.Sub
     {
         Task<ServiceResult> GetAll(int page, int pageSize, bool? status);
         Task<ServiceResult> GetById(int id);
+        Task<ServiceResult> GetListByPostCategoryId(int postCategoryId);
+        Task<ServiceResult> GetByPostCategoryId(int postCategoryId);
         Task<ServiceResult> Create(OrderTypeReq request);
         Task<ServiceResult> Update(int id, OrderTypeReq request);
         Task<ServiceResult> Delete(int id);
@@ -31,6 +33,30 @@ namespace RentEase.Service.Service.Sub
             _mapper = mapper;
             _helperWrapper = helperWrapper;
         }
+        public async Task<ServiceResult> GetListByPostCategoryId(int postCategoryId)
+        {
+            var items = await _unitOfWork.OrderTypeRepository.GetListByPostCategoryId(postCategoryId);
+
+            if (items == null || !items.Any())
+            {
+                return new ServiceResult(Const.ERROR_EXCEPTION_CODE, $"Không tìm thấy OrderType nào theo PostCategoryId = {postCategoryId}");
+            }
+
+            var responseData = _mapper.Map<IEnumerable<OrderTypeRes>>(items);
+            return new ServiceResult(Const.SUCCESS_ACTION_CODE, Const.SUCCESS_ACTION_MSG, responseData);
+        }
+        public async Task<ServiceResult> GetByPostCategoryId(int postCategoryId)
+        {
+            var items = await _unitOfWork.OrderTypeRepository.GetByPostCategoryId(postCategoryId);
+
+            if (items == null)
+            {
+                return new ServiceResult(Const.ERROR_EXCEPTION_CODE, $"Không tìm thấy OrderType nào theo PostCategoryId = {postCategoryId}");
+            }
+
+            var responseData = _mapper.Map<OrderTypeRes>(items);
+            return new ServiceResult(Const.SUCCESS_ACTION_CODE, Const.SUCCESS_ACTION_MSG, responseData);
+        }
         public async Task<ServiceResult> Create(OrderTypeReq request)
         {
             if (await EntityExistsAsync("Name", request.Name))
@@ -41,10 +67,12 @@ namespace RentEase.Service.Service.Sub
             var createItem = new OrderType()
             {
                 Id = Guid.NewGuid().ToString("N"),
-                Name = request.Name.ToLower(),
+                Name = request.Name.ToUpper(),
                 Note = request.Note,
-                Month = request.Month,
+                Times = request.Times,
+                Days = request.Days,
                 Amount = request.Amount,
+                PostCategoryId = request.PostCategoryId,
                 CreatedAt = DateTime.Now,
                 UpdatedAt = null,
             };
@@ -69,10 +97,12 @@ namespace RentEase.Service.Service.Sub
             var updateItem = new OrderType()
             {
                 Id = item.Id,
-                Name = request.Name.ToLower(),
+                Name = request.Name.ToUpper(),
                 Note = request.Note,
-                Month = request.Month,
+                Times = request.Times,
+                Days = request.Days,
                 Amount = request.Amount,
+                PostCategoryId = request.PostCategoryId,
                 CreatedAt = item.CreatedAt,
                 UpdatedAt = DateTime.Now,
             };

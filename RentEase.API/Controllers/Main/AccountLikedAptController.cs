@@ -54,12 +54,12 @@ namespace RentEase.API.Controllers.Main
                     return BadRequest(new { message = "Dữ liệu không hợp lệ" });
                 }
 
-                await _accountLikedAptService.Create(request.AptId);
+                var result = await _accountLikedAptService.Create(request.AptId);
 
                 return Ok(new ApiRes<string>
                 {
                     StatusCode = HttpStatusCode.OK,
-                    Message = "Thêm like thành công"
+                    Message = result.Message
                 });
             }
             catch (Exception ex)
@@ -82,12 +82,12 @@ namespace RentEase.API.Controllers.Main
                     return BadRequest(new { message = "Dữ liệu không hợp lệ" });
                 }
 
-                await _accountLikedAptService.Remove(request.AptId);
+                var result = await _accountLikedAptService.Remove(request.AptId);
 
                 return Ok(new ApiRes<string>
                 {
                     StatusCode = HttpStatusCode.OK,
-                    Message = "Xóa like thành công"
+                    Message = result.Message
                 });
             }
             catch (Exception ex)
@@ -105,12 +105,12 @@ namespace RentEase.API.Controllers.Main
         {
             try
             {
-                await _accountLikedAptService.RemoveAll();
+                var result = await _accountLikedAptService.RemoveAll();
 
                 return Ok(new ApiRes<string>
                 {
                     StatusCode = HttpStatusCode.OK,
-                    Message = "Xóa like thành công"
+                    Message = result.Message
                 });
             }
             catch (Exception ex)

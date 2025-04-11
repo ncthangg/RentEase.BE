@@ -9,7 +9,6 @@ namespace RentEase.Service
         public IAptCategoryService AptCategoryService { get; set; }
         public IAptImageService AptImageService { get; set; }
         public IAptService AptService { get; set; }
-        public IAptStatusService AptStatusService { get; set; }
         public IAptUtilityService AptUtilityService { get; set; }
         public IUtilityService UtilityService { get; set; }
         public IReviewService ReviewService { get; set; }
@@ -24,7 +23,6 @@ namespace RentEase.Service
              IAptCategoryService aptCategoryService,
              IAptImageService aptImageService,
              IAptService aptService,
-             IAptStatusService aptStatusService,
              IAptUtilityService aptUtilityService,
              IUtilityService utilityService,
              IReviewService reviewService,
@@ -39,7 +37,6 @@ namespace RentEase.Service
             AptCategoryService = aptCategoryService;
             AptImageService = aptImageService;
             AptService = aptService;
-            AptStatusService = aptStatusService;
             AptUtilityService = aptUtilityService;
             UtilityService = utilityService;
             ReviewService = reviewService;

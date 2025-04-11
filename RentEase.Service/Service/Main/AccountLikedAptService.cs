@@ -40,7 +40,7 @@ namespace RentEase.Service.Service.Main
                 return new ServiceResult(Const.ERROR_EXCEPTION_CODE, "Lỗi khi lấy info");
             }
 
-            var items = await _unitOfWork.AccountLikedAptRepository.GetByAccountId(accountId, page, pageSize);
+            var items = await _unitOfWork.AccountLikedAptRepository.GetByAccountId(accountId, true, page, pageSize);
             if (!items.Data.Any())
             {
                 return new ServiceResult(Const.ERROR_EXCEPTION_CODE, Const.ERROR_EXCEPTION_MSG);
@@ -59,6 +59,12 @@ namespace RentEase.Service.Service.Main
             {
                 return new ServiceResult(Const.ERROR_EXCEPTION_CODE, "Lỗi khi lấy info");
             }
+            var apt = await _unitOfWork.AptRepository.GetByIdAsync(aptId);
+
+            if (!(bool)apt.Status)
+            {
+                return new ServiceResult(Const.ERROR_EXCEPTION_CODE, "Apt không tồn tại");
+            }
 
             var item = new AccountLikedApt()
             {
@@ -71,7 +77,7 @@ namespace RentEase.Service.Service.Main
 
             if (result > 0)
             {
-                return new ServiceResult(Const.SUCCESS_ACTION_CODE, "Tạo thành công");
+                return new ServiceResult(Const.SUCCESS_ACTION_CODE, "Like thành công");
             }
 
             return new ServiceResult(Const.ERROR_EXCEPTION_CODE, Const.ERROR_EXCEPTION_MSG);
@@ -89,7 +95,7 @@ namespace RentEase.Service.Service.Main
 
             if (result)
             {
-                return new ServiceResult(Const.SUCCESS_ACTION_CODE, Const.SUCCESS_ACTION_MSG);
+                return new ServiceResult(Const.SUCCESS_ACTION_CODE, "Remove thành công");
             }
 
             return new ServiceResult(Const.ERROR_EXCEPTION_CODE, Const.ERROR_EXCEPTION_MSG);
@@ -107,7 +113,7 @@ namespace RentEase.Service.Service.Main
 
             if (result)
             {
-                return new ServiceResult(Const.SUCCESS_ACTION_CODE, Const.SUCCESS_ACTION_MSG);
+                return new ServiceResult(Const.SUCCESS_ACTION_CODE, "RemoveAll thành công");
             }
 
             return new ServiceResult(Const.ERROR_EXCEPTION_CODE, Const.ERROR_EXCEPTION_MSG);

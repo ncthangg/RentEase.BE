@@ -19,11 +19,11 @@ namespace RentEase.API.Controllers.Main
         }
 
         [HttpGet("GetAll")]
-        public async Task<IActionResult> GetAll([FromQuery] int? approveStatusId, [FromQuery] bool? status, [FromQuery] int page = 1, [FromQuery] int pageSize = 10)
+        public async Task<IActionResult> GetAll([FromQuery] bool? status, [FromQuery] int page = 1, [FromQuery] int pageSize = 10)
         {
             try
             {
-                var result = await _postService.GetAll(approveStatusId, status, page, pageSize);
+                var result = await _postService.GetAll( status, page, pageSize);
                 if (result.Status < 0 && result.Data == null)
                 {
                     return NotFound(new ApiRes<string>
@@ -84,11 +84,11 @@ namespace RentEase.API.Controllers.Main
         }
 
         [HttpGet("GetByAccountId")]
-        public async Task<IActionResult> GetByAccountId([FromQuery] string accountId, [FromQuery] int? approveStatusId, [FromQuery] bool? status, [FromQuery] int page = 1, [FromQuery] int pageSize = 10)
+        public async Task<IActionResult> GetByAccountId([FromQuery] string accountId, [FromQuery] bool? status, [FromQuery] int page = 1, [FromQuery] int pageSize = 10)
         {
             try
             {
-                var result = await _postService.GetByAccountId(accountId, approveStatusId, status, page, pageSize);
+                var result = await _postService.GetByAccountId(accountId, status, page, pageSize);
                 if (result.Status < 0 && result.Data == null)
                 {
                     return NotFound(new ApiRes<string>
@@ -149,7 +149,7 @@ namespace RentEase.API.Controllers.Main
         }
 
         [HttpPut]
-        public async Task<IActionResult> Put([FromQuery] string id, [FromQuery] PostReq request)
+        public async Task<IActionResult> Put(string id, [FromBody] PostReq request)
         {
             try
             {
@@ -177,16 +177,13 @@ namespace RentEase.API.Controllers.Main
                 });
             }
         }
-        /// <summary>
-        /// Chỉ dành cho ADMIN
-        /// </summary>
-        /// <returns></returns>
-        [HttpPut("Update-ApproveStatus")]
-        public async Task<IActionResult> UpdateApproveStatus(string aptId, int approveStatusId)
+
+        [HttpPut("Active")]
+        public async Task<IActionResult> Active(string id)
         {
             try
             {
-                var result = await _postService.UpdateApproveStatusId(aptId, approveStatusId);
+                var result = await _postService.Active(id);
                 if (result.Status < 0 && result.Data == null)
                 {
                     return NotFound(new ApiRes<string>

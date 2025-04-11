@@ -53,7 +53,7 @@ namespace RentEase.API.Controllers.Sub
         }
 
         [HttpGet("GetById")]
-        public async Task<IActionResult> GetById(int id)
+        public async Task<IActionResult> GetById([FromQuery] int id)
         {
             try
             {
@@ -71,6 +71,68 @@ namespace RentEase.API.Controllers.Sub
                     StatusCode = HttpStatusCode.OK,
                     Message = result.Message,
                     Data = (OrderTypeRes)result.Data!
+                });
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new ApiRes<string>
+                {
+                    StatusCode = HttpStatusCode.InternalServerError,
+                    Message = $"Lỗi hệ thống: {ex.Message}"
+                });
+            }
+        }
+
+        [HttpGet("GetByPostCategoryId")]
+        public async Task<IActionResult> GetByPostCategoryId([FromQuery] int postCategoryId)
+        {
+            try
+            {
+                var result = await _orderTypeService.GetByPostCategoryId(postCategoryId);
+                if (result.Status < 0 && result.Data == null)
+                {
+                    return NotFound(new ApiRes<string>
+                    {
+                        StatusCode = HttpStatusCode.NotFound,
+                        Message = result.Message
+                    });
+                }
+                return Ok(new ApiRes<OrderTypeRes>
+                {
+                    StatusCode = HttpStatusCode.OK,
+                    Message = result.Message,
+                    Data = (OrderTypeRes)result.Data!
+                });
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new ApiRes<string>
+                {
+                    StatusCode = HttpStatusCode.InternalServerError,
+                    Message = $"Lỗi hệ thống: {ex.Message}"
+                });
+            }
+        }
+
+        [HttpGet("GetListByPostCategoryId")]
+        public async Task<IActionResult> GetListByPostCategoryId([FromQuery] int postCategoryId)
+        {
+            try
+            {
+                var result = await _orderTypeService.GetListByPostCategoryId(postCategoryId);
+                if (result.Status < 0 && result.Data == null)
+                {
+                    return NotFound(new ApiRes<string>
+                    {
+                        StatusCode = HttpStatusCode.NotFound,
+                        Message = result.Message
+                    });
+                }
+                return Ok(new ApiRes<List<OrderTypeRes>>
+                {
+                    StatusCode = HttpStatusCode.OK,
+                    Message = result.Message,
+                    Data = (List<OrderTypeRes>)result.Data!
                 });
             }
             catch (Exception ex)

@@ -45,5 +45,11 @@
             CANCELLED = 4        // Hủy
         }
 
+        public enum PostCategoryId
+        {
+            THUENHA = 1,
+            KIEMBANCUNGPHONG = 2,
+        }
+
     }
 }

@@ -80,9 +80,14 @@ namespace RentEase.Service.Service.Main
             {
                 return new ServiceResult(Const.ERROR_EXCEPTION_CODE, "Post không tồn tại!!");
             }
-            
+
+            if (postExist.Status == false)
+            {
+                return new ServiceResult(Const.ERROR_EXCEPTION_CODE, "Bài Post này không tồn tại!! Hoặc đang ở chế độ Private");
+            }
+
             var aptExist = await _unitOfWork.AptRepository.GetByIdAsync(postExist.AptId);
-            if (aptExist == null || aptExist.AptStatusId != (int)EnumType.AptStatusId.Available)
+            if (aptExist == null || aptExist.AptStatusId != (int)EnumType.AptStatusId.Available || aptExist.Status == false)
             {
                 return new ServiceResult(Const.ERROR_EXCEPTION_CODE, "Apt đang trong trạng thái UNAVAILABLE!!");
             }
@@ -119,6 +124,14 @@ namespace RentEase.Service.Service.Main
 
         public async Task<ServiceResult> UpdateApproveStatusId(string id, PutRequireReq req)
         {
+
+            if (req.ApproveStatusId != (int)EnumType.ApproveStatusId.Pending &&
+                     req.ApproveStatusId != (int)EnumType.ApproveStatusId.Success &&
+                         req.ApproveStatusId != (int)EnumType.ApproveStatusId.Failed)
+            {
+                return new ServiceResult(Const.ERROR_EXCEPTION_CODE, "ApproveStatusId không hợp lệ.");
+            }
+
             string accountId = _helperWrapper.TokenHelper.GetAccountIdFromHttpContextAccessor(_httpContextAccessor);
             string roleId = _helperWrapper.TokenHelper.GetRoleIdFromHttpContextAccessor(_httpContextAccessor);
 
@@ -138,21 +151,25 @@ namespace RentEase.Service.Service.Main
                 return new ServiceResult(Const.ERROR_EXCEPTION_CODE, "PostRequire không tồn tại.");
             }
 
-            if (accountId != item.PostId && roleId != "1")
+            var post = await _unitOfWork.PostRepository.GetByIdAsync(item.PostId);
+            if (item == null)
+            {
+                return new ServiceResult(Const.ERROR_EXCEPTION_CODE, "Post không tồn tại.");
+            }
+
+            var exist = await _unitOfWork.PostRequireRepository.GetByPostIdAndAccountIdAsync(item.PostId, accountId);
+            if(exist != null)
+            {
+                return new ServiceResult(Const.ERROR_EXCEPTION_CODE, "Đã yêu cầu cho bài Post này. Vui lòng không gửi nhiều lần");
+            }
+
+            if (accountId != post.PosterId && roleId != "1")
             {
                 return new ServiceResult(Const.ERROR_EXCEPTION_CODE, "Bạn không có quyền hạn.");
             }
 
-            if (req.ApproveStatusId != (int)EnumType.ApproveStatusId.Pending &&
-                     req.ApproveStatusId != (int)EnumType.ApproveStatusId.Success &&
-                         req.ApproveStatusId != (int)EnumType.ApproveStatusId.Failed)
-            {
-                return new ServiceResult(Const.ERROR_EXCEPTION_CODE, "ApproveStatusId không hợp lệ.");
-            }
-
             if (req.ApproveStatusId == (int)EnumType.ApproveStatusId.Success)
             {
-                var post = await _unitOfWork.PostRepository.GetByIdAsync(req.PostId);
 
                 if (post.CurrentSlot >= post.TotalSlot)
                 {

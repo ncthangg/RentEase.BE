@@ -165,7 +165,6 @@ namespace RentEase.Service.Service.Payment
                 TotalAmount = orderType.Amount,
                 Note = $"Pay:{orderType.Name.ToUpper()}",
                 CreatedAt = DateTime.Now,
-                PaymentStatusId = (int)EnumType.ApproveStatusId.Pending
             };
 
             var result = await _unitOfWork.OrderRepository.CreateAsync(createItem);
@@ -224,7 +223,7 @@ namespace RentEase.Service.Service.Payment
 
                 var post = await _unitOfWork.PostRepository.GetByIdAsync(order.PostId);
                 post.StartPublic = DateTime.Now;
-                post.EndPublic = DateTime.Now.AddMonths(orderType.Month);
+                post.EndPublic = DateTime.Now.AddDays(orderType.Days);
                 post.UpdatedAt = DateTime.Now;
                 post.Status = true;
 
@@ -382,7 +381,6 @@ namespace RentEase.Service.Service.Payment
                 throw new Exception("Lỗi khi gọi API PayOS: " + ex.Message);
             }
         }
-
         public static bool IsValidData(string rawData, string transactionSignature, string checksumKey)
         {
             try

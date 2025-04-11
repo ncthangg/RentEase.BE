@@ -11,9 +11,13 @@ public partial class OrderType
 
     public string Note { get; set; } = string.Empty;
 
-    public int Month { get; set; }
+    public int Times { get; set; }
+
+    public int Days { get; set; }
 
     public decimal Amount { get; set; }
+
+    public int PostCategoryId { get; set; }
 
     public DateTime CreatedAt { get; set; }
 

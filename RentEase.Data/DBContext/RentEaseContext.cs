@@ -31,15 +31,11 @@ public partial class RentEaseContext : DbContext
 
     public virtual DbSet<AptImage> AptImages { get; set; }
 
-    public virtual DbSet<AptStatus> AptStatuses { get; set; }
-
     public virtual DbSet<AptUtility> AptUtilities { get; set; }
 
     public virtual DbSet<Order> Orders { get; set; }
 
-    public virtual DbSet<Post> Posts { get; set; }
-
-    public virtual DbSet<PostCategory> PostCategory { get; set; }
+    public virtual DbSet<Post> Posts { get; set; } 
 
     public virtual DbSet<PostRequire> PostRequires { get; set; }
 
@@ -198,10 +194,6 @@ public partial class RentEaseContext : DbContext
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK_Apt_AptCategory");
 
-            entity.HasOne(d => d.AptStatus).WithMany(p => p.Apts)
-                .HasForeignKey(d => d.AptStatusId)
-                .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK_Apt_AptStatus");
         });
 
         modelBuilder.Entity<AptCategory>(entity =>
@@ -238,21 +230,6 @@ public partial class RentEaseContext : DbContext
                   .HasConstraintName("FK_AptImage_Apt");
         });
 
-        modelBuilder.Entity<AptStatus>(entity =>
-        {
-            entity.HasKey(e => e.Id).HasName("PK__AptStatu__3214EC0701430943");
-
-            entity.ToTable("AptStatus");
-
-            entity.HasIndex(e => e.StatusName, "UQ__AptStatu__05E7698A86EA1D6C").IsUnique();
-
-            entity.Property(e => e.CreatedAt).HasColumnType("datetime");
-            entity.Property(e => e.Note).HasMaxLength(255);
-            entity.Property(e => e.StatusName)
-                .IsRequired()
-                .HasMaxLength(100);
-            entity.Property(e => e.UpdatedAt).HasColumnType("datetime");
-        });
 
         modelBuilder.Entity<AptUtility>(entity =>
         {

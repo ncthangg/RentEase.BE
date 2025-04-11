@@ -39,5 +39,7 @@ public class AccountRes : Base
 
     public int RoleId { get; set; }
 
+    public int PublicPostTimes { get; set; }
+
     public bool? IsVerify { get; set; }
 }

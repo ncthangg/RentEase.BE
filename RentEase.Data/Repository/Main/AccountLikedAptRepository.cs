@@ -14,13 +14,15 @@ namespace RentEase.Data.Repository.Main
         public AccountLikedAptRepository(RentEaseContext context) => _context = context;
 
         public async Task<PagedResult<AccountLikedApt>> GetByAccountId(
-                                            string accountId, int page = 1, int pageSize = 10)
+                                            string accountId, bool status, int page = 1, int pageSize = 10)
         {
             return await GetPagedAsync(
-                filter: (f => f.AccountId == accountId),
+                filter: (f => f.AccountId == accountId && f.Apt.Status == status) ,
                 orderBy: q => q.OrderByDescending(o => o.CreatedAt),
                 page: page,
-                pageSize: pageSize
+                pageSize: pageSize,
+                includes: q => q
+                         .Include(i => i.Apt)
                 );
         }
 
