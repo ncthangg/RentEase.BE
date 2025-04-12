@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Azure;
 using Microsoft.AspNetCore.Http;
 using RentEase.Common.Base;
 using RentEase.Common.DTOs.Dto;
@@ -75,6 +76,12 @@ namespace RentEase.Service.Service.Main
                 return new ServiceResult(Const.ERROR_EXCEPTION_CODE, "Apt không hợp lệ");
             }
 
+            var items = await _unitOfWork.PostRepository.GetByAccountId(accountId);
+            if (items.Count() > 50)
+            {
+                return new ServiceResult(Const.ERROR_EXCEPTION_CODE, "Kho lưu trữ có nhiều hơn 50 bài post, hãy xóa bớt!!");
+            }
+
             var item = await _unitOfWork.PostRepository.GetByAccountIdAndAptIdAsync(accountId, request.AptId);
             if (item != null && item.Status == true)
             {
@@ -82,7 +89,7 @@ namespace RentEase.Service.Service.Main
             }
 
             var aptExist = await _unitOfWork.AptRepository.GetByIdAsync(request.AptId);
-            if (aptExist == null || aptExist.AptStatusId != (int)EnumType.AptStatusId.Available)
+            if (aptExist == null || aptExist.AptStatusId != (int)EnumType.AptStatusId.AVAILABLE)
             {
                 return new ServiceResult(Const.ERROR_EXCEPTION_CODE, "Apt đang trong trạng thái UNAVAILABLE!! hoặc không tồn tại");
             }

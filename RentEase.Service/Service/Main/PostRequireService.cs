@@ -87,7 +87,7 @@ namespace RentEase.Service.Service.Main
             }
 
             var aptExist = await _unitOfWork.AptRepository.GetByIdAsync(postExist.AptId);
-            if (aptExist == null || aptExist.AptStatusId != (int)EnumType.AptStatusId.Available || aptExist.Status == false)
+            if (aptExist == null || aptExist.AptStatusId != (int)EnumType.AptStatusId.AVAILABLE || aptExist.Status == false)
             {
                 return new ServiceResult(Const.ERROR_EXCEPTION_CODE, "Apt đang trong trạng thái UNAVAILABLE!!");
             }
@@ -108,7 +108,7 @@ namespace RentEase.Service.Service.Main
                 Id = Guid.NewGuid().ToString("N"),
                 PostId = request.PostId,
                 AccountId = accountId,
-                ApproveStatusId = (int)EnumType.ApproveStatusId.Pending,
+                ApproveStatusId = (int)EnumType.ApproveStatusId.PENDING,
                 RequestMessage = request.RequestMessage,
                 CreatedAt = DateTime.Now
             };
@@ -125,9 +125,9 @@ namespace RentEase.Service.Service.Main
         public async Task<ServiceResult> UpdateApproveStatusId(string id, PutRequireReq req)
         {
 
-            if (req.ApproveStatusId != (int)EnumType.ApproveStatusId.Pending &&
-                     req.ApproveStatusId != (int)EnumType.ApproveStatusId.Success &&
-                         req.ApproveStatusId != (int)EnumType.ApproveStatusId.Failed)
+            if (req.ApproveStatusId != (int)EnumType.ApproveStatusId.PENDING &&
+                     req.ApproveStatusId != (int)EnumType.ApproveStatusId.SUCCESS &&
+                         req.ApproveStatusId != (int)EnumType.ApproveStatusId.FAILED)
             {
                 return new ServiceResult(Const.ERROR_EXCEPTION_CODE, "ApproveStatusId không hợp lệ.");
             }
@@ -168,7 +168,7 @@ namespace RentEase.Service.Service.Main
                 return new ServiceResult(Const.ERROR_EXCEPTION_CODE, "Bạn không có quyền hạn.");
             }
 
-            if (req.ApproveStatusId == (int)EnumType.ApproveStatusId.Success)
+            if (req.ApproveStatusId == (int)EnumType.ApproveStatusId.SUCCESS)
             {
 
                 if (post.CurrentSlot >= post.TotalSlot)

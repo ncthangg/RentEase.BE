@@ -119,7 +119,18 @@ namespace RentEase.Service.Service.Payment
                 return new ServiceResult(Const.ERROR_EXCEPTION_CODE, "Tài khoản không tồn tại");
             }
 
-            if(roleId == EnumType.Role.Lesses.ToString())
+            if (request.PostId != null)
+            {
+                var itemList = await _unitOfWork.PostRepository.GetByAptId(request.PostId);
+                var publicPostCount = itemList.Count(x => x.Status == true);
+
+                if (publicPostCount >= 3)
+                {
+                    return new ServiceResult(Const.ERROR_EXCEPTION_CODE, "Apt này đang có > 3 bài Post đang được Public");
+                }
+            }
+
+            if (roleId == "3")
             {
                 var postExist = await _unitOfWork.PostRepository.GetByAccountId(accountId, true);
                 if (postExist != null && postExist.Status == true)

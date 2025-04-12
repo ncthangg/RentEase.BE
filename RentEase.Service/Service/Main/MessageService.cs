@@ -82,7 +82,5 @@ namespace RentEase.Service.Service.Main
             return new ServiceResult(Const.ERROR_EXCEPTION_CODE, Const.ERROR_EXCEPTION_MSG);
         }
 
-
-
     }
 }

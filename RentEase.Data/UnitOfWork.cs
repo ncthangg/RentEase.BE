@@ -26,7 +26,6 @@ namespace RentEase.Data
         private PostRepository _postRepository;
         private PostRequireRepository _postRequireRepository;
 
-
         private ConversationRepository _conversationRepository;
         private MessageRepository _messageRepository;
 

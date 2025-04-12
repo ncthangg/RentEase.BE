@@ -94,7 +94,7 @@ namespace RentEase.Service.Service.Main
                     WardId = request.WardId,
                     AddressLink = request.AddressLink,
                     AptCategoryId = request.AptCategoryId,
-                    AptStatusId = (int)EnumType.AptStatusId.Available,
+                    AptStatusId = (int)EnumType.AptStatusId.AVAILABLE,
                     NumberOfRoom = request.NumberOfRoom,
                     NumberOfSlot = request.NumberOfSlot,
                     Note = request.Note,
@@ -121,7 +121,7 @@ namespace RentEase.Service.Service.Main
                     WardId = request.WardId,
                     AddressLink = request.AddressLink,
                     AptCategoryId = request.AptCategoryId,
-                    AptStatusId = (int)EnumType.AptStatusId.Available,
+                    AptStatusId = (int)EnumType.AptStatusId.AVAILABLE,
                     NumberOfRoom = request.NumberOfRoom,
                     NumberOfSlot = request.NumberOfSlot,
                     Note = request.Note,
@@ -197,8 +197,8 @@ namespace RentEase.Service.Service.Main
         }
         public async Task<ServiceResult> UpdateAptStatusId(string aptId, int aptStatusId)
         {
-            if (aptStatusId != (int)EnumType.AptStatusId.Available &&
-                     aptStatusId != (int)EnumType.AptStatusId.UnAvailable )
+            if (aptStatusId != (int)EnumType.AptStatusId.AVAILABLE &&
+                     aptStatusId != (int)EnumType.AptStatusId.UNAVAILABLE )
             {
                 return new ServiceResult(Const.ERROR_EXCEPTION_CODE, "AptStatusId không hợp lệ.");
             }
@@ -256,7 +256,7 @@ namespace RentEase.Service.Service.Main
                 return new ServiceResult(Const.ERROR_EXCEPTION_CODE, "Bạn không có quyền hạn.");
             }
 
-            item.AptStatusId = (int)EnumType.AptStatusId.UnAvailable;
+            item.AptStatusId = (int)EnumType.AptStatusId.UNAVAILABLE;
             item.UpdatedAt = DateTime.Now;
             item.Status = false;
 

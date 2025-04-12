@@ -69,7 +69,6 @@ namespace RentEase.Service.Service.Main
             var responseData = _mapper.Map<IEnumerable<ConversationRes>>(items);
             return new ServiceResult(Const.SUCCESS_ACTION_CODE, Const.SUCCESS_ACTION_MSG, responseData);
         }
-
         public async Task<ServiceResult> Create(ConversationReq request)
         {
             string accountId = _helperWrapper.TokenHelper.GetAccountIdFromHttpContextAccessor(_httpContextAccessor);

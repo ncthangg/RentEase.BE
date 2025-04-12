@@ -55,6 +55,12 @@ namespace RentEase.Data.Repository.Main
                 .Where(p => p.AptId == aptId)
                 .ToListAsync();
         }
+        public async Task<List<Post>> GetByAccountId(string account)
+        {
+            return await _context.Set<Post>()
+                .Where(p => p.PostId == account)
+                .ToListAsync();
+        }
 
     }
 }

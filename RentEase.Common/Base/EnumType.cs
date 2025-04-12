@@ -26,15 +26,15 @@
 
         public enum AptStatusId
         {
-            Available = 1,
-            UnAvailable = 2
+            AVAILABLE = 1,
+            UNAVAILABLE = 2
         }
 
         public enum ApproveStatusId
         {
-            Pending = 1,      // Đang xử lý
-            Success = 2,      // Thành công
-            Failed = 3        // Thất bại
+            PENDING = 1,      // Đang xử lý
+            SUCCESS = 2,      // Thành công
+            FAILED = 3        // Thất bại
         }
 
         public enum PaymentStatusId
