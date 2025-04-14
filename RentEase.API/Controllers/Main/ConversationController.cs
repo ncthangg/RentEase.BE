@@ -128,11 +128,11 @@ namespace RentEase.API.Controllers.Main
                         Message = result.Message
                     });
                 }
-                return Ok(new ApiRes<IEnumerable<ConversationRes>>
+                return Ok(new ApiRes<ConversationRes>
                 {
                     StatusCode = HttpStatusCode.OK,
                     Message = result.Message,
-                    Data = (IEnumerable<ConversationRes>)result.Data!
+                    Data = (ConversationRes)result.Data!
                 });
             }
             catch (Exception ex)
@@ -144,7 +144,6 @@ namespace RentEase.API.Controllers.Main
                 });
             }
         }
-
 
         [HttpPost]
         public async Task<IActionResult> Post([FromBody] ConversationReq request)

@@ -147,7 +147,7 @@ namespace RentEase.Service.Service.Payment
 
             var orderExisted = await _unitOfWork.OrderRepository.GetByOrderTypeIdAndPostIdAsync(request.OrderTypeId, request.PostId);
 
-            if (orderExisted != null && DateTime.Now < orderExisted.CreatedAt.AddMinutes(10))
+            if (orderExisted != null && DateTime.Now < orderExisted.CreatedAt.AddMinutes(10) && orderExisted.PaymentStatusId != (int)EnumType.PaymentStatusId.CANCELLED)
             {
                 var responseData = (await this.GetByOrderCode(orderExisted.OrderCode)).Data;
 

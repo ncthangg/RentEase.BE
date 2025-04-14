@@ -142,6 +142,7 @@ namespace RentEase.API.Controllers.Authenticate
         }
 
         [HttpGet("GetInfo")]
+        [Authorize(Roles = "1,2,3")]
         public async Task<IActionResult> GetInfo()
         {
             var result = await _authenticateService.GetInfo();
