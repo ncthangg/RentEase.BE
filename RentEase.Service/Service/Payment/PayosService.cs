@@ -149,9 +149,9 @@ namespace RentEase.Service.Service.Payment
 
             if (orderExisted != null && DateTime.Now < orderExisted.CreatedAt.AddMinutes(10) && orderExisted.PaymentStatusId != (int)EnumType.PaymentStatusId.CANCELLED)
             {
-                var responseData = (await this.GetByOrderCode(orderExisted.OrderCode)).Data;
+                await this.DeleteByOrderCode(orderExisted.OrderCode);
 
-                return new ServiceResult(Const.SUCCESS_ACTION_CODE, "Lấy link thanh toán còn hiệu lực", responseData);
+                return new ServiceResult(Const.ERROR_EXCEPTION_CODE, "Đã xóa link cũ!! Vui lòng tạo link mới");
             }
 
             if (orderExisted != null && orderExisted.PaymentStatusId == (int)EnumType.PaymentStatusId.PENDING && DateTime.Now > orderExisted.CreatedAt.AddMinutes(10))
