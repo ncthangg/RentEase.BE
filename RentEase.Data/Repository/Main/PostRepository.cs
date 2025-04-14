@@ -61,6 +61,11 @@ namespace RentEase.Data.Repository.Main
                 .Where(p => p.PostId == account)
                 .ToListAsync();
         }
-
+        public async Task<List<Post>> GetByAptIdAndPostCategoryId(string aptId, int postCategoryId, bool status)
+        {
+            return await _context.Set<Post>()
+                .Where(p => p.AptId == aptId && p.PostCategoryId == postCategoryId && p.Status == status)
+                .ToListAsync();
+        }
     }
 }

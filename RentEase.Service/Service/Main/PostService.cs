@@ -13,6 +13,7 @@ namespace RentEase.Service.Service.Main
     {
         Task<ServiceResult> GetAll(bool? status, int page, int pageSize);
         Task<ServiceResult> GetById(string id);
+        Task<ServiceResult> GetByAptIdAndPostCategoryId(string aptId, int postCategoryId, bool? status);
         Task<ServiceResult> GetByAccountId(string accountId, bool? status, int page, int pageSize);
         Task<ServiceResult> Create(PostReq request);
         Task<ServiceResult> Update(string postId, PostReq request);
@@ -60,6 +61,21 @@ namespace RentEase.Service.Service.Main
             {
                 var responseData = _mapper.Map<IEnumerable<PostRes>>(items.Data);
                 return new ServiceResult(Const.SUCCESS_ACTION_CODE, Const.SUCCESS_ACTION_MSG, items.TotalCount, items.TotalPages, items.CurrentPage, responseData);
+            }
+        }
+
+        public async Task<ServiceResult> GetByAptIdAndPostCategoryId(string aptId, int postCategoryId, bool? status)
+        {
+
+            var items = await _unitOfWork.PostRepository.GetByAptIdAndPostCategoryId(aptId, postCategoryId, true);
+            if (!items.Any())
+            {
+                return new ServiceResult(Const.ERROR_EXCEPTION_CODE, Const.ERROR_EXCEPTION_MSG);
+            }
+            else
+            {
+                var responseData = _mapper.Map<IEnumerable<PostRes>>(items);
+                return new ServiceResult(Const.SUCCESS_ACTION_CODE, Const.SUCCESS_ACTION_MSG, responseData);
             }
         }
         public async Task<ServiceResult> Create(PostReq request)

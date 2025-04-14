@@ -17,7 +17,7 @@ namespace RentEase.API.Controllers.Main
         {
             _aptUtilityService = aptUtilityService;
         }
-        [HttpPost("GetByAptId")]
+        [HttpGet("GetByAptId")]
         public async Task<IActionResult> GetByAptId([FromQuery] string aptId, [FromQuery] int page = 1, [FromQuery] int pageSize = 10)
         {
             try

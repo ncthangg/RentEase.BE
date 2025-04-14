@@ -82,6 +82,36 @@ namespace RentEase.API.Controllers.Main
                 });
             }
         }
+        [HttpGet("GetByAptIdAndPostCategoryId")]
+        public async Task<IActionResult> GetByAptIdAndPostCategoryId([FromQuery] string aptId, [FromQuery] int postCategoryId, bool status = true)
+        {
+            try
+            {
+                var result = await _postService.GetByAptIdAndPostCategoryId(aptId, postCategoryId, status);
+                if (result.Status < 0 && result.Data == null)
+                {
+                    return NotFound(new ApiRes<string>
+                    {
+                        StatusCode = HttpStatusCode.NotFound,
+                        Message = result.Message
+                    });
+                }
+                return Ok(new ApiRes<IEnumerable<PostRes>>
+                {
+                    StatusCode = HttpStatusCode.OK,
+                    Message = result.Message,
+                    Data = (IEnumerable<PostRes>)result.Data!
+                });
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new ApiRes<string>
+                {
+                    StatusCode = HttpStatusCode.InternalServerError,
+                    Message = $"Lỗi hệ thống: {ex.Message}"
+                });
+            }
+        }
 
         [HttpGet("GetByAccountId")]
         public async Task<IActionResult> GetByAccountId([FromQuery] string accountId, [FromQuery] bool? status, [FromQuery] int page = 1, [FromQuery] int pageSize = 10)
