@@ -239,8 +239,8 @@ namespace RentEase.Service.Service.Payment
                 post.Status = true;
 
                 var apt = await _unitOfWork.AptRepository.GetByIdAsync(post.AptId);
-                post.UpdatedAt = DateTime.Now;
-                post.Status = true;
+                apt.UpdatedAt = DateTime.Now;
+                apt.Status = true;
 
                 await _unitOfWork.PostRepository.UpdateAsync(post);
                 await _unitOfWork.AptRepository.UpdateAsync(apt);
