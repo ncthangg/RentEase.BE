@@ -12,7 +12,7 @@ using RentEase.Data.DBContext;
 namespace RentEase.Data.Migrations
 {
     [DbContext(typeof(RentEaseContext))]
-    [Migration("20250411164550_Init")]
+    [Migration("20250417051943_Init")]
     partial class Init
     {
         /// <inheritdoc />
