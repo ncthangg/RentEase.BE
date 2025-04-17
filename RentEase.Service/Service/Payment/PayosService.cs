@@ -226,24 +226,36 @@ namespace RentEase.Service.Service.Payment
                 _ => throw new NotImplementedException(),
             };
 
+
+
             if (order.PaymentStatusId == (int)EnumType.PaymentStatusId.PAID)
             {
-                order.PaidAt = DateTime.Now;
-
                 var orderType = await _unitOfWork.OrderTypeRepository.GetByIdAsync(order.OrderTypeId);
 
-                var post = await _unitOfWork.PostRepository.GetByIdAsync(order.PostId);
-                post.StartPublic = DateTime.Now;
-                post.EndPublic = DateTime.Now.AddDays(orderType.Days);
-                post.UpdatedAt = DateTime.Now;
-                post.Status = true;
+                if (order.PostId == null)
+                {
+                    var account = await _unitOfWork.AccountRepository.GetByIdAsync(order.SenderId);
+                    account.PublicPostTimes += orderType.Times;
 
-                var apt = await _unitOfWork.AptRepository.GetByIdAsync(post.AptId);
-                apt.UpdatedAt = DateTime.Now;
-                apt.Status = true;
+                    await _unitOfWork.AccountRepository.UpdateAsync(account);
+                }
+                else
+                {
+                    var post = await _unitOfWork.PostRepository.GetByIdAsync(order.PostId);
+                    post.StartPublic = DateTime.Now;
+                    post.EndPublic = DateTime.Now.AddDays(orderType.Days);
+                    post.UpdatedAt = DateTime.Now;
+                    post.Status = true;
 
-                await _unitOfWork.PostRepository.UpdateAsync(post);
-                await _unitOfWork.AptRepository.UpdateAsync(apt);
+                    var apt = await _unitOfWork.AptRepository.GetByIdAsync(post.AptId);
+                    apt.UpdatedAt = DateTime.Now;
+                    apt.Status = true;
+
+                    await _unitOfWork.PostRepository.UpdateAsync(post);
+                    await _unitOfWork.AptRepository.UpdateAsync(apt);
+                }
+
+                order.PaidAt = DateTime.Now;
             }
             else
             {
