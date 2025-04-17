@@ -196,7 +196,7 @@ namespace RentEase.Service.Service.Main
         {
             string accountId = _helperWrapper.TokenHelper.GetAccountIdFromHttpContextAccessor(_httpContextAccessor);
             string roleId = _helperWrapper.TokenHelper.GetRoleIdFromHttpContextAccessor(_httpContextAccessor);
-            
+
             if (roleId != "2")
             {
                 return new ServiceResult(Const.ERROR_EXCEPTION_CODE, "Chỉ có ROLE: Lessor mới được sử dụng API này");
@@ -220,10 +220,10 @@ namespace RentEase.Service.Service.Main
                 return new ServiceResult(Const.ERROR_EXCEPTION_CODE, "Không đủ lượt sử dụng. Hãy mua Gói!!!");
             }
 
-            if(item.PostCategoryId == (int)EnumType.PostCategoryId.THUENHA)
+            if (item.PostCategoryId == (int)EnumType.PostCategoryId.THUENHA)
             {
-                var orderType = await _unitOfWork.OrderTypeRepository.GetByPostCategoryId(item.PostCategoryId); 
-                
+                var orderType = await _unitOfWork.OrderTypeRepository.GetByPostCategoryId(item.PostCategoryId);
+
                 account.PublicPostTimes -= 1;
                 account.UpdatedAt = DateTime.Now;
                 await _unitOfWork.AccountRepository.UpdateAsync(account);
@@ -232,7 +232,7 @@ namespace RentEase.Service.Service.Main
                 item.StartPublic = DateTime.Now;
                 item.EndPublic = DateTime.Now.AddDays(orderType.Days);
                 item.UpdatedAt = DateTime.Now;
-                
+
                 var result = await _unitOfWork.PostRepository.UpdateAsync(item);
                 if (result > 0)
                 {
@@ -271,6 +271,17 @@ namespace RentEase.Service.Service.Main
             var result = await _unitOfWork.PostRepository.UpdateAsync(item);
             if (result > 0)
             {
+                if (accountId == item.PosterId && roleId == "2")
+                {
+                    var listPost = _unitOfWork.PostRepository.GetByAptId(item.AptId);
+                    foreach (var post in listPost.Result)
+                    {
+                        post.Status = false;
+                        post.UpdatedAt = DateTime.Now;
+                        await _unitOfWork.PostRepository.UpdateAsync(post);
+                    }
+                }
+
                 return new ServiceResult(Const.SUCCESS_ACTION_CODE, "Private");
             }
 

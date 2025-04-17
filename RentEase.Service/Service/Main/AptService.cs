@@ -256,7 +256,6 @@ namespace RentEase.Service.Service.Main
                 return new ServiceResult(Const.ERROR_EXCEPTION_CODE, "Bạn không có quyền hạn.");
             }
 
-            item.AptStatusId = (int)EnumType.AptStatusId.UNAVAILABLE;
             item.UpdatedAt = DateTime.Now;
             item.Status = false;
 

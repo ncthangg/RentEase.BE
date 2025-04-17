@@ -126,7 +126,7 @@ namespace RentEase.Service.Service.Payment
 
                 if (publicPostCount >= 3)
                 {
-                    return new ServiceResult(Const.ERROR_EXCEPTION_CODE, "Apt này đang có > 3 bài Post đang được Public");
+                    return new ServiceResult(Const.ERROR_EXCEPTION_CODE, "Apt này đang có nhiều hơn 3 bài Post đang được Public");
                 }
             }
 
