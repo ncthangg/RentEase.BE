@@ -9,7 +9,7 @@ public partial class Order
 
     public string OrderCode { get; set; } = string.Empty;
 
-    public string PostId { get; set; } = string.Empty;
+    public string? PostId { get; set; } = string.Empty;
 
     public string SenderId { get; set; } = string.Empty;
 
