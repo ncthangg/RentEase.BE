@@ -12,6 +12,10 @@
 
         public int CurrentSlot { get; set; } = 0;
 
+        public long RentPrice { get; set; }
+
+        public long? PilePrice { get; set; }
+
         public int GenderId { get; set; }
 
         public int OldId { get; set; }

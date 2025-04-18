@@ -119,6 +119,8 @@ namespace RentEase.Service.Service.Main
                 Title = request.Title,
                 TotalSlot = request.TotalSlot,
                 CurrentSlot = request.CurrentSlot,
+                PilePrice = request.PilePrice,
+                RentPrice = request.RentPrice,
                 GenderId = request.GenderId,
                 OldId = request.OldId,
                 Note = request.Note,
