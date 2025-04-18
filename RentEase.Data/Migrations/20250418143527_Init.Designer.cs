@@ -12,8 +12,8 @@ using RentEase.Data.DBContext;
 namespace RentEase.Data.Migrations
 {
     [DbContext(typeof(RentEaseContext))]
-    [Migration("20250417160456_UpdateOrder")]
-    partial class UpdateOrder
+    [Migration("20250418143527_Init")]
+    partial class Init
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)

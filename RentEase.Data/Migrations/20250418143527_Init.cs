@@ -381,7 +381,7 @@ namespace RentEase.Data.Migrations
                     OrderId = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: false),
                     OrderTypeId = table.Column<string>(type: "nvarchar(255)", nullable: false),
                     OrderCode = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    PostId = table.Column<string>(type: "nvarchar(255)", nullable: false),
+                    PostId = table.Column<string>(type: "nvarchar(255)", nullable: true),
                     SenderId = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: false),
                     TotalAmount = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
                     Note = table.Column<string>(type: "nvarchar(max)", nullable: true),
@@ -408,8 +408,7 @@ namespace RentEase.Data.Migrations
                         name: "FK_Orders_Post_PostId",
                         column: x => x.PostId,
                         principalTable: "Post",
-                        principalColumn: "PostId",
-                        onDelete: ReferentialAction.Cascade);
+                        principalColumn: "PostId");
                 });
 
             migrationBuilder.CreateTable(
