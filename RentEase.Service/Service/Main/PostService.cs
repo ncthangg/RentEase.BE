@@ -265,25 +265,19 @@ namespace RentEase.Service.Service.Main
                 return new ServiceResult(Const.ERROR_EXCEPTION_CODE, "Bạn không có quyền hạn.");
             }
 
-            item.UpdatedAt = DateTime.Now;
-            item.Status = false;
-
-            var result = await _unitOfWork.PostRepository.UpdateAsync(item);
-            if (result > 0)
+            if (accountId == item.PosterId && roleId == "2")
             {
-                if (accountId == item.PosterId && roleId == "2")
+                var listPost = _unitOfWork.PostRepository.GetByAptId(item.AptId);
+                foreach (var post in listPost.Result)
                 {
-                    var listPost = _unitOfWork.PostRepository.GetByAptId(item.AptId);
-                    foreach (var post in listPost.Result)
-                    {
-                        post.Status = false;
-                        post.UpdatedAt = DateTime.Now;
-                        await _unitOfWork.PostRepository.UpdateAsync(post);
-                    }
+                    post.Status = false;
+                    post.UpdatedAt = DateTime.Now;
+                    await _unitOfWork.PostRepository.UpdateAsync(post);
                 }
 
                 return new ServiceResult(Const.SUCCESS_ACTION_CODE, "Private");
             }
+
 
             return new ServiceResult(Const.ERROR_EXCEPTION_CODE, Const.ERROR_EXCEPTION_MSG);
         }
