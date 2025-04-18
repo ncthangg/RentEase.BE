@@ -186,7 +186,7 @@ namespace RentEase.Service.Service.Main
                 CreatedAt = DateTime.Now,
                 UpdatedAt = DateTime.Now,
                 DeletedAt = null,
-                Status = false
+                Status = item.Status
             };
             var result = await _unitOfWork.PostRepository.UpdateAsync(updateItem);
             if (result > 0)
