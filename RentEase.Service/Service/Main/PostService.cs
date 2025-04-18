@@ -214,6 +214,11 @@ namespace RentEase.Service.Service.Main
                 return new ServiceResult(Const.ERROR_EXCEPTION_CODE, "Bạn không có quyền hạn.");
             }
 
+            if (item.Status == true)
+            {
+                return new ServiceResult(Const.ERROR_EXCEPTION_CODE, "Đã PUBLIC");
+            }
+
             var account = await _unitOfWork.AccountRepository.GetByIdAsync(accountId);
             if (account.PublicPostTimes <= 0)
             {
