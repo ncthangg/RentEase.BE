@@ -169,9 +169,10 @@ namespace RentEase.Service.Service.Main
 
             var updateItem = new Post()
             {
+                
                 PostId = item.PostId,
                 PostCategoryId = request.PostCategoryId,
-                PosterId = item.PostId,
+                PosterId = item.PosterId,
                 AptId = item.AptId,
                 Title = request.Title,
                 TotalSlot = request.TotalSlot,
