@@ -110,6 +110,15 @@ namespace RentEase.Service.Service.Main
                 return new ServiceResult(Const.ERROR_EXCEPTION_CODE, "Apt đang trong trạng thái UNAVAILABLE!! hoặc không tồn tại");
             }
 
+            var imageExist = await _unitOfWork.AptImageRepository.GetByAptIdAsync(request.AptId);
+
+            var ultilityExist = await _unitOfWork.AptUtilityRepository.GetByAptId(request.AptId);
+
+            if (imageExist == null || ultilityExist == null)
+            {
+                return new ServiceResult(Const.ERROR_EXCEPTION_CODE, "Hãy thêm Image/Ultility trước khi tạo bài Post");
+            }
+
             var createItem = new Post()
             {
                 PostId = Guid.NewGuid().ToString("N"),

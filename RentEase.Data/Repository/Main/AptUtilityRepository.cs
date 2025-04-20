@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using RentEase.Common.DTOs;
+using RentEase.Common.DTOs.Dto;
 using RentEase.Data.DBContext;
 using RentEase.Data.Models;
 using RentEase.Data.Repository.Base;
@@ -21,6 +22,17 @@ namespace RentEase.Data.Repository.Main
                 page: page,
                 pageSize: pageSize,
                 includes: q => q.Include(i => i.Utility));
+        }
+        public async Task<IEnumerable<AptUtility>?> GetByAptId(string aptId)
+        {
+            var aptImages = await _context.AptUtilities
+                                          .Where(x => x.AptId == aptId)
+                                          .ToListAsync();
+
+            if (!aptImages.Any())
+                return null; // Không có ảnh, trả về null
+
+            return aptImages;
         }
 
         public async Task<bool> RemoveAsync(string aptId, int utilityId)
