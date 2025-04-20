@@ -81,6 +81,7 @@ namespace RentEase.Service.Service.Main
         public async Task<ServiceResult> Create(PostReq request)
         {
             string accountId = _helperWrapper.TokenHelper.GetAccountIdFromHttpContextAccessor(_httpContextAccessor);
+            string roleId = _helperWrapper.TokenHelper.GetRoleIdFromHttpContextAccessor(_httpContextAccessor);
 
             if (string.IsNullOrEmpty(accountId))
             {
@@ -111,12 +112,15 @@ namespace RentEase.Service.Service.Main
             }
 
             var imageExist = await _unitOfWork.AptImageRepository.GetByAptIdAsync(request.AptId);
-
             var ultilityExist = await _unitOfWork.AptUtilityRepository.GetByAptId(request.AptId);
 
             if (imageExist == null || ultilityExist == null)
             {
                 return new ServiceResult(Const.ERROR_EXCEPTION_CODE, "Hãy thêm Image/Ultility trước khi tạo bài Post");
+            }
+            if (aptExist.NumberOfSlot < request.TotalSlot || aptExist.NumberOfSlot < request.CurrentSlot || request.TotalSlot < request.CurrentSlot)
+            {
+                return new ServiceResult(Const.ERROR_EXCEPTION_CODE, "Không thể số slot nhiều hơn Chủ nhà cho phép");
             }
 
             var createItem = new Post()
@@ -127,7 +131,7 @@ namespace RentEase.Service.Service.Main
                 AptId = request.AptId,
                 Title = request.Title,
                 TotalSlot = request.TotalSlot,
-                CurrentSlot = request.CurrentSlot,
+                CurrentSlot = (roleId == "2") ?  0 : request.CurrentSlot,
                 PilePrice = request.PilePrice,
                 RentPrice = request.RentPrice,
                 GenderId = request.GenderId,
