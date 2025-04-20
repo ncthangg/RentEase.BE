@@ -1,5 +1,8 @@
 ﻿using MailKit.Net.Smtp;
+using MailKit.Security;
+using Microsoft.Extensions.Configuration;
 using MimeKit;
+using static Org.BouncyCastle.Math.EC.ECCurve;
 
 namespace RentEase.Service.Helper
 {
@@ -9,12 +12,15 @@ namespace RentEase.Service.Helper
     }
     public class EmailHelper : IEmailHelper
     {
-        private readonly SmtpClient _smtpClient;
+        private readonly ISmtpClient _smtpClient;
+        private readonly IConfiguration _config;
 
-        public EmailHelper(SmtpClient smtpClient)
+        public EmailHelper(ISmtpClient smtpClient, IConfiguration config)
         {
             _smtpClient = smtpClient;
+            _config = config;
         }
+
 
         public async Task SendVerificationEmailAsync(string email, string verifyCode, string verificationLink)
         {
@@ -34,7 +40,11 @@ If you didn't register for this account, please ignore this email.
 
 Thank you!"
             };
+
+            await _smtpClient.ConnectAsync(_config["SmtpSettings:Host"], int.Parse(_config["SmtpSettings:Port"]!), SecureSocketOptions.StartTls);
+            await _smtpClient.AuthenticateAsync(_config["SmtpSettings:Username"], _config["SmtpSettings:Password"]);
             await _smtpClient.SendAsync(message);
+            await _smtpClient.DisconnectAsync(true);
         }
 
 

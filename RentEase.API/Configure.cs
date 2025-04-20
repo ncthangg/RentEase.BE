@@ -63,12 +63,19 @@ namespace RentEase.API
         }
         public static IServiceCollection AddSmtpClient(this IServiceCollection services, IConfiguration configuration)
         {
-            services.AddTransient<SmtpClient>(provider =>
+            //services.AddTransient<SmtpClient>(provider =>
+            //{
+            //    var smtpClient = new SmtpClient();
+            //    smtpClient.Connect(configuration["SmtpSettings:Host"], int.Parse(configuration["SmtpSettings:Port"]!), SecureSocketOptions.StartTls);
+            //    smtpClient.Authenticate(configuration["SmtpSettings:Username"], configuration["SmtpSettings:Password"]);
+            //    return smtpClient;
+            //});
+
+            //return services;
+
+            services.AddTransient<ISmtpClient>(provider =>
             {
-                var smtpClient = new SmtpClient();
-                smtpClient.Connect(configuration["SmtpSettings:Host"], int.Parse(configuration["SmtpSettings:Port"]!), SecureSocketOptions.StartTls);
-                smtpClient.Authenticate(configuration["SmtpSettings:Username"], configuration["SmtpSettings:Password"]);
-                return smtpClient;
+                return new SmtpClient(); // <-- trả về interface
             });
 
             return services;
