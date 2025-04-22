@@ -131,7 +131,7 @@ namespace RentEase.Service.Service.Main
                 AptId = request.AptId,
                 Title = request.Title,
                 TotalSlot = request.TotalSlot,
-                CurrentSlot = (roleId == "2") ?  0 : request.CurrentSlot,
+                CurrentSlot = (roleId == "2") ? 0 : request.CurrentSlot,
                 PilePrice = request.PilePrice,
                 RentPrice = request.RentPrice,
                 GenderId = request.GenderId,
@@ -182,7 +182,7 @@ namespace RentEase.Service.Service.Main
 
             var updateItem = new Post()
             {
-                
+
                 PostId = item.PostId,
                 PostCategoryId = request.PostCategoryId,
                 PosterId = item.PosterId,
@@ -300,6 +300,17 @@ namespace RentEase.Service.Service.Main
 
                 return new ServiceResult(Const.SUCCESS_ACTION_CODE, "Private");
             }
+
+            if (accountId == item.PosterId && roleId == "3")
+            {
+
+                item.Status = false;
+                item.UpdatedAt = DateTime.Now;
+                await _unitOfWork.PostRepository.UpdateAsync(item);
+
+                return new ServiceResult(Const.SUCCESS_ACTION_CODE, "Private");
+            }
+
 
 
             return new ServiceResult(Const.ERROR_EXCEPTION_CODE, Const.ERROR_EXCEPTION_MSG);
