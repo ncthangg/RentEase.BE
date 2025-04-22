@@ -6,6 +6,7 @@ using RentEase.Common.DTOs.Dto;
 using RentEase.Common.DTOs.Response;
 using RentEase.Data;
 using RentEase.Data.Models;
+using RentEase.Service.Helper;
 
 namespace RentEase.Service.Service.Authenticate
 {
@@ -26,13 +27,15 @@ namespace RentEase.Service.Service.Authenticate
         private readonly HelperWrapper _helperWrapper;
         private readonly IAccountTokenService _accountTokenService;
         private readonly IAccountVerificationService _accountVerificationService;
+        private readonly IPasswordHelper _passwordHelper;
         public AuthenticateService(
             IHttpContextAccessor httpContextAccessor,
             IMapper mapper,
             ServiceWrapper serviceWrapper,
             HelperWrapper helperWrapper,
             IAccountTokenService accountTokenService,
-            IAccountVerificationService accountVerificationService
+            IAccountVerificationService accountVerificationService,
+            IPasswordHelper passwordHelper
             )
         {
             _httpContextAccessor = httpContextAccessor;
@@ -42,6 +45,7 @@ namespace RentEase.Service.Service.Authenticate
             _helperWrapper = helperWrapper;
             _accountTokenService = accountTokenService;
             _accountVerificationService = accountVerificationService;
+            _passwordHelper = passwordHelper;
         }
 
         public async Task<ServiceResult> SignIn(LoginReq request)
@@ -180,10 +184,9 @@ namespace RentEase.Service.Service.Authenticate
                     return new ServiceResult(Const.ERROR_EXCEPTION_CODE, "Status == False.");
                 }
 
-
-                if (item.PasswordHash.Equals(request.OldPassword) && request.NewPassword.Equals(request.ConfirmPassword))
+                if (_passwordHelper.VerifyPassword(request.OldPassword, item.PasswordHash) && request.NewPassword.Equals(request.ConfirmPassword))
                 {
-                    var passwordHash = request.NewPassword;
+                    var passwordHash = _passwordHelper.HashPassword(request.NewPassword);
                     var result = await _serviceWrapper.AccountService.UpdatePassword(id, passwordHash);
                     if (result.Status > 0)
                     {
