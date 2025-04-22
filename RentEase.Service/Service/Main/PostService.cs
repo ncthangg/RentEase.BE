@@ -189,7 +189,7 @@ namespace RentEase.Service.Service.Main
                 AptId = item.AptId,
                 Title = request.Title,
                 TotalSlot = request.TotalSlot,
-                CurrentSlot = request.CurrentSlot,
+                CurrentSlot = (roleId == "2") ? 0 : request.CurrentSlot,
                 PilePrice = request.PilePrice,
                 RentPrice = request.RentPrice,
                 GenderId = request.GenderId,
@@ -266,7 +266,6 @@ namespace RentEase.Service.Service.Main
 
                     return new ServiceResult(Const.SUCCESS_ACTION_CODE, "Public");
                 }
-
             }
 
             return new ServiceResult(Const.ERROR_EXCEPTION_CODE, Const.ERROR_EXCEPTION_MSG);
@@ -295,8 +294,14 @@ namespace RentEase.Service.Service.Main
                 {
                     post.Status = false;
                     post.UpdatedAt = DateTime.Now;
+                    post.EndPublic = DateTime.Now;
                     await _unitOfWork.PostRepository.UpdateAsync(post);
                 }
+
+                var apt = await _unitOfWork.AptRepository.GetByIdAsync(item.AptId);
+                apt.Status = false;
+                apt.UpdatedAt = DateTime.Now;
+                await _unitOfWork.AptRepository.UpdateAsync(apt);
 
                 return new ServiceResult(Const.SUCCESS_ACTION_CODE, "Private");
             }
@@ -306,7 +311,13 @@ namespace RentEase.Service.Service.Main
 
                 item.Status = false;
                 item.UpdatedAt = DateTime.Now;
+                item.EndPublic = DateTime.Now;
                 await _unitOfWork.PostRepository.UpdateAsync(item);
+
+                var apt = await _unitOfWork.AptRepository.GetByIdAsync(item.AptId);
+                apt.Status = false;
+                apt.UpdatedAt = DateTime.Now;
+                await _unitOfWork.AptRepository.UpdateAsync(apt);
 
                 return new ServiceResult(Const.SUCCESS_ACTION_CODE, "Private");
             }
