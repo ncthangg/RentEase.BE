@@ -170,7 +170,7 @@ namespace RentEase.Service.Service.Authenticate
                 // Kiểm tra người dùng đã tồn tại chưa
                 var item = await _unitOfWork.AccountRepository.GetByIdAsync(id);
 
-                if (accountId != item.AccountId && roleId != ((int)EnumType.Role.Admin).ToString())
+                if (accountId != item.AccountId && roleId != "1")
                 {
                     return new ServiceResult(Const.ERROR_EXCEPTION_CODE, "Bạn không có quyền hạn.");
                 }
